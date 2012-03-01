@@ -3,7 +3,7 @@ RAP mobile
 
 This repository contains the [RAP mobile](http://rapmobile.eclipsesource.com) server parts and additional features that are not contained in the [RAP core](http://eclipse.org/rap/).     
 
-Current Additional Feature
+Additional Feature
 --------------------------
 * Geolocation API, [inspired by phonegap](http://docs.phonegap.com/en/1.4.1/phonegap_geolocation_geolocation.md.html#Geolocation)
 
