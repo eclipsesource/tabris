@@ -15,7 +15,6 @@ import static com.eclipsesource.rap.mobile.geolocation.internal.GeolocationAdapt
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import org.eclipse.rwt.internal.protocol.IClientObject;
