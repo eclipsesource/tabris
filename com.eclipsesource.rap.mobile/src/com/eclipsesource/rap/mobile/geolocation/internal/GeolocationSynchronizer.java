@@ -15,6 +15,7 @@ import static com.eclipsesource.rap.mobile.geolocation.internal.GeolocationAdapt
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.eclipse.rwt.internal.protocol.IClientObject;
@@ -65,7 +66,7 @@ public class GeolocationSynchronizer extends AbstractObjectSynchronizer {
   private void extractGeolocationProperties( Geolocation geolocation ) {
     String timestampValue = readPropertyValue( PROP_TIMESTAMP );
     try {
-      Date timestamp = new SimpleDateFormat( "yyyy-MMM-dd-HH-mm-ss" ).parse( timestampValue );
+      Date timestamp = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ" ).parse( timestampValue );
       Coordinates coordinates = getCoordinates( geolocation );
       Position position = new Position( coordinates, timestamp );
       geolocation.getAdapter( GeolocationAdapter.class ).setPosition( position );
