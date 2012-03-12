@@ -9,7 +9,7 @@
 <listEntry value="target=rap-mobile-nightly"/>
 <listEntry value="build-identifier=N"/>
 </listAttribute>
-<stringAttribute key="M2_RUNTIME" value="/usr/share/java/maven-3.0.3"/>
+<stringAttribute key="M2_RUNTIME" value="EMBEDDED"/>
 <booleanAttribute key="M2_SKIP_TESTS" value="false"/>
 <booleanAttribute key="M2_UPDATE_SNAPSHOTS" value="false"/>
 <booleanAttribute key="M2_WORKSPACE_RESOLUTION" value="false"/>
