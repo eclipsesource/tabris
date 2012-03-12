@@ -19,9 +19,14 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.rwt.RWT;
+import org.eclipse.rwt.internal.protocol.ClientObjectAdapter;
 import org.eclipse.rwt.internal.protocol.IClientObject;
+import org.eclipse.rwt.internal.protocol.IClientObjectAdapter;
 import org.eclipse.rwt.lifecycle.PhaseId;
 import org.junit.After;
 import org.junit.Before;
@@ -32,8 +37,6 @@ import com.eclipsesource.rap.mobile.geolocation.GeolocationCallback;
 import com.eclipsesource.rap.mobile.geolocation.GeolocationOptions;
 import com.eclipsesource.rap.mobile.geolocation.Position;
 import com.eclipsesource.rap.mobile.geolocation.PositionError;
-import com.eclipsesource.rap.mobile.geolocation.internal.GeolocationAdapter;
-import com.eclipsesource.rap.mobile.geolocation.internal.GeolocationSynchronizer;
 import com.eclipsesource.rap.mobile.geolocation.internal.GeolocationAdapter.NeedsPositionFlavor;
 
 
@@ -47,10 +50,11 @@ public class GeolocationSynchronizerTest {
   public void setUp() {
     Fixture.setUp();
     object = mock( Geolocation.class );
-    GeolocationSynchronizer original = new GeolocationSynchronizer( object );
-    synchronizer = spy( original );
     adapter = mock( GeolocationAdapter.class );
     when( object.getAdapter( GeolocationAdapter.class ) ).thenReturn( adapter );
+    when( object.getAdapter( IClientObjectAdapter.class ) ).thenReturn( new ClientObjectAdapter() );
+    GeolocationSynchronizer original = new GeolocationSynchronizer( object );
+    synchronizer = spy( original );
   }
   
   @After
@@ -61,7 +65,7 @@ public class GeolocationSynchronizerTest {
   @Test
   public void testReadData() {
     when( synchronizer.readPropertyValue( GeolocationSynchronizer.PROP_LATITUDE ) ).thenReturn( "101.1" );
-    String date = "2012-Dec-30-20-15-43";
+    String date = "2012-03-12T10:40:13+0100";
     when( synchronizer.readPropertyValue( GeolocationSynchronizer.PROP_TIMESTAMP ) ).thenReturn( date );
     
     synchronizer.readData( object );

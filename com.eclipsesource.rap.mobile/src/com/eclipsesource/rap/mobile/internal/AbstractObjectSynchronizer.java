@@ -12,17 +12,18 @@ package com.eclipsesource.rap.mobile.internal;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.eclipse.rwt.Adaptable;
 import org.eclipse.rwt.RWT;
 import org.eclipse.rwt.internal.lifecycle.LifeCycleUtil;
 import org.eclipse.rwt.internal.protocol.ClientObjectFactory;
 import org.eclipse.rwt.internal.protocol.IClientObject;
+import org.eclipse.rwt.internal.protocol.IClientObjectAdapter;
 import org.eclipse.rwt.lifecycle.PhaseEvent;
 import org.eclipse.rwt.lifecycle.PhaseId;
 import org.eclipse.rwt.lifecycle.PhaseListener;
 import org.eclipse.rwt.service.IServiceStore;
 import org.eclipse.rwt.service.SessionStoreEvent;
 import org.eclipse.rwt.service.SessionStoreListener;
-import org.eclipse.swt.internal.widgets.WidgetAdapter;
 import org.eclipse.swt.widgets.Display;
 
 
@@ -30,17 +31,16 @@ public abstract class AbstractObjectSynchronizer implements PhaseListener, Sessi
   
   private final Display display;
   private final String id;
-  private final Object object;
+  private final Adaptable object;
   private boolean initialized;
 
-  public AbstractObjectSynchronizer( Object object ) {
+  public AbstractObjectSynchronizer( Adaptable object ) {
     this.object = object;
     this.initialized = false;
     RWT.getLifeCycle().addPhaseListener( this );
     RWT.getSessionStore().addSessionStoreListener( this );
     display = Display.getCurrent();
-    WidgetAdapter widgetAdapter = new WidgetAdapter();
-    id = widgetAdapter.getId();
+    id = object.getAdapter( IClientObjectAdapter.class ).getId();
   }
 
   public void beforePhase( PhaseEvent event ) {
@@ -70,7 +70,7 @@ public abstract class AbstractObjectSynchronizer implements PhaseListener, Sessi
   }
 
   private void renderInitializationInternal() {
-    IClientObject clientObject = ClientObjectFactory.getForId( id );
+    IClientObject clientObject = ClientObjectFactory.getClientObject( object );
     renderInitialization( clientObject, object );
   }
 
@@ -114,7 +114,7 @@ public abstract class AbstractObjectSynchronizer implements PhaseListener, Sessi
   // TODO move to Util
   public void renderProperty( String name, Object newValue, Object defaultValue ) {
     IServiceStore serviceStore = RWT.getServiceStore();
-    IClientObject clientObject = ClientObjectFactory.getForId( id );
+    IClientObject clientObject = ClientObjectFactory.getClientObject( object );
     Object attribute = serviceStore.getAttribute( id + "." + name );
     if( attribute == null ) {
       clientObject.set( name, newValue );
@@ -140,7 +140,7 @@ public abstract class AbstractObjectSynchronizer implements PhaseListener, Sessi
   }
 
   public void beforeDestroy( SessionStoreEvent event ) {
-    IClientObject clientObject = ClientObjectFactory.getForId( id );
+    IClientObject clientObject = ClientObjectFactory.getClientObject( object );
     destroy( clientObject );
     RWT.getLifeCycle().removePhaseListener( this );
     RWT.getSessionStore().removeSessionStoreListener( this );

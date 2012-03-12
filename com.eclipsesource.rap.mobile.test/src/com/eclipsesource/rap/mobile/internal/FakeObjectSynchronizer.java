@@ -1,12 +1,13 @@
 package com.eclipsesource.rap.mobile.internal;
 
+import org.eclipse.rwt.Adaptable;
 import org.eclipse.rwt.internal.protocol.IClientObject;
 
 import com.eclipsesource.rap.mobile.internal.AbstractObjectSynchronizer;
 
 public class FakeObjectSynchronizer extends AbstractObjectSynchronizer {
 
-	public FakeObjectSynchronizer(Object object) {
+	public FakeObjectSynchronizer(Adaptable object) {
 		super(object);
 	}
 

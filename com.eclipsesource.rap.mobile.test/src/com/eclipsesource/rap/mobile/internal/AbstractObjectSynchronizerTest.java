@@ -11,28 +11,28 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.eclipse.rap.rwt.testfixture.Fixture;
+import org.eclipse.rwt.Adaptable;
+import org.eclipse.rwt.internal.protocol.ClientObjectAdapter;
 import org.eclipse.rwt.internal.protocol.IClientObject;
+import org.eclipse.rwt.internal.protocol.IClientObjectAdapter;
 import org.eclipse.rwt.lifecycle.PhaseEvent;
 import org.eclipse.rwt.lifecycle.PhaseId;
 import org.eclipse.rwt.service.SessionStoreEvent;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
-import org.mockito.internal.exceptions.VerificationAwareInvocation;
-import org.mockito.verification.VerificationMode;
 
 public class AbstractObjectSynchronizerTest {
 	
 	private FakeObjectSynchronizer synchronizer;
-  private Object object;
+  private Adaptable object;
 
   @Before
 	public void setUp() {
     Fixture.setUp();
-	  object = mock( Object.class );
+	  object = mock( Adaptable.class );
+	  when( object.getAdapter( IClientObjectAdapter.class ) ).thenReturn( new ClientObjectAdapter() );
     FakeObjectSynchronizer original = new FakeObjectSynchronizer( object );
     synchronizer = spy( original );
 	}

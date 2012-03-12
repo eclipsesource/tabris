@@ -5,6 +5,8 @@ import static com.eclipsesource.rap.mobile.geolocation.internal.GeolocationAdapt
 import static com.eclipsesource.rap.mobile.geolocation.internal.GeolocationAdapter.NeedsPositionFlavor.ONCE;
 
 import org.eclipse.rwt.Adaptable;
+import org.eclipse.rwt.internal.protocol.ClientObjectAdapter;
+import org.eclipse.rwt.internal.protocol.IClientObjectAdapter;
 
 import com.eclipsesource.rap.mobile.geolocation.internal.GeolocationAdapter;
 import com.eclipsesource.rap.mobile.geolocation.internal.GeolocationSynchronizer;
@@ -16,8 +18,10 @@ import com.eclipsesource.rap.mobile.geolocation.internal.GeolocationSynchronizer
 public class Geolocation implements Adaptable {
   
   private final GeolocationAdapter geolocationAdapter;
+  private ClientObjectAdapter clientObjectAdapter;
   
   public Geolocation() {
+    clientObjectAdapter = new ClientObjectAdapter( "l" );
     new GeolocationSynchronizer( this );
     geolocationAdapter = new GeolocationAdapter();
     geolocationAdapter.setFlavor( NEVER );
@@ -46,6 +50,8 @@ public class Geolocation implements Adaptable {
     T result = null;
     if( adapter == GeolocationAdapter.class ) {
       result = ( T )geolocationAdapter;
+    } else if( adapter == IClientObjectAdapter.class ) {
+      result = ( T )clientObjectAdapter;
     }
     return result;
   }
