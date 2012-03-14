@@ -63,6 +63,11 @@
       <layout>p2</layout>
       <url>http://build.eclipse.org/rt/rap/base-platforms/extra-dependencies</url>
     </repository>
+    <repository>
+      <id>rap-nightly-repository</id>
+      <layout>p2</layout>
+      <url>http://download.eclipse.org/rt/rap/nightly/runtime/</url>
+    </repository>
   </repositories>
 
   <build>
@@ -105,12 +110,9 @@
           <resolver>p2</resolver>
           <ignoreTychoRepositories>true</ignoreTychoRepositories>
           <target>
-            <artifact>
-              <groupId>${project.groupId}</groupId>
-              <artifactId>${project.artifactId}</artifactId>
-              <version>${project.version}</version>
-              <classifier>../com.eclipsesource.rap.mobile.target/${target}</classifier>
-            </artifact>
+            <dependency-resolution>
+	            <optionalDependencies>ignore</optionalDependencies>
+            </dependency-resolution>
           </target>          
           <environments>
             <environment>
