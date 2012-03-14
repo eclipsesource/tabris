@@ -1,0 +1,171 @@
+Shell[TITLE], Shell[BORDER] {
+  background-color: #ffffff;
+  border: 1px solid #6e6e6e;
+  border-radius: 2px;
+  padding: 8px;
+  box-shadow: 0 0 4px #ababab;
+}
+
+Shell-Titlebar {
+  font: 20px bold Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+  background-color: #0080c0;
+  background-gradient-color: #0080c0;
+  color: #ffffff;
+  background-image: gradient( 
+    linear, left top, left bottom, 
+    from( #416693 ), to( #5882b5 ) 
+  );
+  padding: 0 0px 0 10px;
+  margin: 0px;
+  height: 32px;
+  border: none;
+  border-radius: 0;
+  text-shadow: none;
+}
+
+Label {
+  font: 18px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+}
+
+Shell {
+  border: none;
+}
+
+Tree[BORDER] {
+  border: none;
+}
+
+Button[PUSH],Button[FLAT] {
+  font: 18px bold Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+}
+
+Button[RADIO],Button[CHECK] {
+  font: 20px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+  spacing: 8px;
+}
+
+Button,
+Button[PUSH],
+Button[FLAT],
+Button[PUSH][BORDER], 
+Button[FLAT][BORDER] {
+  padding: 8px 8px;
+}
+
+Button[PUSH][BORDER], 
+Button[FLAT][BORDER] {
+  border: 1px solid #6e6e6e;
+}
+
+Text {
+  font: 15px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+}
+
+Link,Link-Hyperlink {
+  font: 13px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+}
+
+Combo {
+  font: 20px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+}
+
+DateTime {
+  font: 20px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+}
+
+ScrollBar {
+  width: 0px;
+}
+
+TabFolder-ContentContainer {
+  border: none;
+}
+
+TabFolder {
+ font: 18px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+}
+
+TabItem {
+  padding: 17px 0px 14px 0px;
+}
+
+TabItem:selected { 
+  padding: 17px 0px 14px 0px;
+}
+
+ToolItem {
+  border: none;
+  border-radius: 0px;
+  padding: 15px 6px;
+  spacing: 4px;
+  opacity: 1;
+}
+
+ToolItem[FLAT] {
+  border: none;
+  padding: 15px 6px;
+}
+
+Button-CheckIcon {
+  background-image: url( theme/checkbox_unchecked.png );
+}
+
+Button-CheckIcon:hover {
+  background-image: url( theme/checkbox_unchecked.png );
+}
+
+Button-CheckIcon:selected {
+  background-image: url( theme/checkbox_checked.png );
+}
+
+Button-CheckIcon:selected:hover {
+  background-image: url( theme/checkbox_checked.png );
+}
+
+Button-CheckIcon:selected:grayed {
+  background-image: url( theme/checkbox_checked.png );
+}
+
+Button-CheckIcon:selected:grayed:hover {
+  background-image: url( theme/checkbox_checked.png );
+}
+
+Button-RadioIcon {
+  background-image: url( theme/radio_unchecked.png );
+}
+
+Button-RadioIcon:hover {
+  background-image: url( theme/radio_unchecked.png );
+}
+
+Button-RadioIcon:selected {
+  background-image: url( theme/radio_checked.png );
+}
+
+Button-RadioIcon:selected:hover {
+  background-image: url( theme/radio_checked.png );
+}
+
+Group {
+  font: 18px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  color: #4a4a4a;
+  background-color: #ffffff;
+  border: none;
+}
+
+Group-Frame {
+  margin: 46px 10px 10px 10px;
+/*  padding: 15px 8px 8px 8px; */
+  border: 1px solid #bdbdbd;
+  border-radius: 2px;
+}
+
+Group-Label {
+  margin: 0;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  color: #4a4a4a;
+  padding: 25px 25px 0px 25px;
+  text-shadow: none;
+}

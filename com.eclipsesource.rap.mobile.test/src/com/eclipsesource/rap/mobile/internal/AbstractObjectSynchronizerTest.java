@@ -23,6 +23,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
 
+
+@SuppressWarnings("restriction")
 public class AbstractObjectSynchronizerTest {
 	
 	private FakeObjectSynchronizer synchronizer;

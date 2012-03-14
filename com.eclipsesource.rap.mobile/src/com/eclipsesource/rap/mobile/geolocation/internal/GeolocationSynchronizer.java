@@ -29,6 +29,7 @@ import com.eclipsesource.rap.mobile.geolocation.internal.GeolocationAdapter.Need
 import com.eclipsesource.rap.mobile.internal.AbstractObjectSynchronizer;
 
 
+@SuppressWarnings("restriction")
 public class GeolocationSynchronizer extends AbstractObjectSynchronizer {
 
   static final String TYPE = "rap.mobile.Geolocation";

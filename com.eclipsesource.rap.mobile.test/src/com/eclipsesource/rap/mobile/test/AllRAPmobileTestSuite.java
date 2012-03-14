@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import com.eclipsesource.rap.mobile.BootstrapperTest;
 import com.eclipsesource.rap.mobile.geolocation.GeolocationOptionsTest;
 import com.eclipsesource.rap.mobile.geolocation.GeolocationTest;
 import com.eclipsesource.rap.mobile.geolocation.PositionErrorTest;
@@ -21,6 +22,11 @@ import com.eclipsesource.rap.mobile.geolocation.PositionTest;
 import com.eclipsesource.rap.mobile.geolocation.internal.GeolocationAdapterTest;
 import com.eclipsesource.rap.mobile.geolocation.internal.GeolocationSynchronizerTest;
 import com.eclipsesource.rap.mobile.internal.AbstractObjectSynchronizerTest;
+import com.eclipsesource.rap.mobile.internal.bootstrap.ActivatorTest;
+import com.eclipsesource.rap.mobile.internal.bootstrap.ConfigurationWrapperTest;
+import com.eclipsesource.rap.mobile.internal.bootstrap.ConfiguratorHookTest;
+import com.eclipsesource.rap.mobile.internal.bootstrap.ProxyApplicationConfiguratorTest;
+import com.eclipsesource.rap.mobile.internal.bootstrap.ThemePhaseListenerTest;
 
 
 @RunWith( Suite.class )
@@ -31,7 +37,13 @@ import com.eclipsesource.rap.mobile.internal.AbstractObjectSynchronizerTest;
   PositionTest.class,
   GeolocationAdapterTest.class,
   GeolocationSynchronizerTest.class,
-  AbstractObjectSynchronizerTest.class
+  AbstractObjectSynchronizerTest.class,
+  ActivatorTest.class,
+  ConfigurationWrapperTest.class,
+  ProxyApplicationConfiguratorTest.class,
+  ThemePhaseListenerTest.class,
+  BootstrapperTest.class,
+  ConfiguratorHookTest.class
 } )
 public class AllRAPmobileTestSuite {
 }

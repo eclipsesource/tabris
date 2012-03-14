@@ -19,9 +19,6 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.rwt.RWT;
 import org.eclipse.rwt.internal.protocol.ClientObjectAdapter;
@@ -40,6 +37,7 @@ import com.eclipsesource.rap.mobile.geolocation.PositionError;
 import com.eclipsesource.rap.mobile.geolocation.internal.GeolocationAdapter.NeedsPositionFlavor;
 
 
+@SuppressWarnings("restriction")
 public class GeolocationSynchronizerTest {
   
   private GeolocationSynchronizer synchronizer;

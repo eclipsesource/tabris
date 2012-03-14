@@ -5,6 +5,8 @@ import org.eclipse.rwt.internal.protocol.IClientObject;
 
 import com.eclipsesource.rap.mobile.internal.AbstractObjectSynchronizer;
 
+
+@SuppressWarnings("restriction")
 public class FakeObjectSynchronizer extends AbstractObjectSynchronizer {
 
 	public FakeObjectSynchronizer(Adaptable object) {

@@ -15,6 +15,7 @@ import com.eclipsesource.rap.mobile.geolocation.internal.GeolocationSynchronizer
  * Geolocation API, more information at 
  * http://docs.phonegap.com/en/1.4.1/phonegap_geolocation_geolocation.md.html#Geolocation
  */
+@SuppressWarnings("restriction")
 public class Geolocation implements Adaptable {
   
   private final GeolocationAdapter geolocationAdapter;

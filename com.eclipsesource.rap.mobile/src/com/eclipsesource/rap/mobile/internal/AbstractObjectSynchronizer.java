@@ -27,6 +27,7 @@ import org.eclipse.rwt.service.SessionStoreListener;
 import org.eclipse.swt.widgets.Display;
 
 
+@SuppressWarnings("restriction")
 public abstract class AbstractObjectSynchronizer implements PhaseListener, SessionStoreListener {
   
   private final Display display;

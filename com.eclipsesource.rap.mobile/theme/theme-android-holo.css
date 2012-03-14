@@ -1,0 +1,171 @@
+* {
+  color: #4a4a4a;
+  background-color: #fff;
+  background-image: none;
+  font: 16px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+}
+
+Label {
+  font: 16px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+}
+
+Label[BORDER] {
+  border: 0px;
+  border-radius: 0px;
+}
+
+Shell {
+  border: none;
+}
+
+Button {
+  font: 16px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+}
+
+Button[PUSH],
+Button[TOGGLE],
+Button[FLAT] {
+  padding: 12px;
+}
+
+Button[CHECK], 
+Button[RADIO] {
+  padding: 0px;
+  spacing: 7px;
+}
+
+Text {
+  font: 16px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+  padding: 7px 12px 8px 12px;
+}
+
+Link,Link-Hyperlink {
+  font: 13px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+}
+
+Combo {
+ font: 16px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+ border: 0px;
+}
+
+Combo-Field {
+  padding: 10px 4px 10px 4px;
+}
+
+DateTime {
+  font: 16px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+  border: 0px;
+}
+
+DateTime-Field {
+  padding: 10px 4px 10px 4px;
+}
+
+ScrollBar {
+  width: 0px;
+}
+
+TabFolder {
+  font: 14px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  border: none;
+}
+
+TabFolder[BORDER] {
+  border: 0px;
+}
+
+TabFolder-ContentContainer {
+  border: 0px;
+}
+
+TabItem {
+  background-color: #ffffff;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #f9f9f9 ),
+    to( #e4e4e4 )
+  );
+  border-top-color: #5882b5;
+  border-bottom-color: #5882b5;
+  text-shadow: 0 1px 0 #ffffff;
+  padding: 14px;
+}
+
+TabItem:selected {
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #d5d5d5 ),
+    to( #eaeaea )
+  );
+  padding: 14px;
+}
+
+Tree {
+  background-color: #ffffff;
+  border: none;
+  color: #4a4a4a;
+  padding: 60px 0px 0px 0px;
+}
+
+Tree[BORDER] {
+  border: 0px;
+}
+
+Tree-Cell {
+  spacing: 0;
+  padding: 22px;
+}
+
+ToolItem {
+  border: none;
+  border-radius: 0px;
+  padding: 15px 6px;
+  spacing: 4px;
+  opacity: 1;
+}
+
+ToolItem[FLAT] {
+  border: none;
+  padding: 15px 6px;
+}
+
+Button-CheckIcon {
+  background-image: url( theme/btn_check_off_holo_light.png );
+}
+
+Button-CheckIcon:hover {
+  background-image: url( theme/btn_check_off_holo_light.png );
+}
+
+Button-CheckIcon:selected {
+  background-image: url( theme/btn_check_on_holo_light.png );
+}
+
+Button-CheckIcon:selected:hover {
+  background-image: url( theme/btn_check_on_holo_light.png );
+}
+
+Button-CheckIcon:selected:grayed {
+  background-image: url( theme/btn_check_on_holo_light.png );
+}
+
+Button-CheckIcon:selected:grayed:hover {
+  background-image: url( theme/btn_check_on_holo_light.png );
+}
+
+Button-RadioIcon {
+  background-image: url( theme/btn_radio_off_holo_light.png );
+}
+
+Button-RadioIcon:hover {
+  background-image: url( theme/btn_radio_off_holo_light.png );
+}
+
+Button-RadioIcon:selected {
+  background-image: url( theme/btn_radio_on_holo_light.png );
+}
+
+Button-RadioIcon:selected:hover {
+  background-image: url( theme/btn_radio_on_holo_light.png );
+}
+
