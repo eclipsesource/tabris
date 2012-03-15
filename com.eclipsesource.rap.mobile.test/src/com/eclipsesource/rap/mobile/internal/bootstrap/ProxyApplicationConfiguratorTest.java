@@ -13,7 +13,9 @@ package com.eclipsesource.rap.mobile.internal.bootstrap;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -24,6 +26,8 @@ import org.eclipse.rwt.internal.application.ApplicationContext;
 import org.eclipse.rwt.internal.lifecycle.PhaseListenerRegistry;
 import org.junit.Before;
 import org.junit.Test;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
 
 import com.eclipsesource.rap.mobile.Bootstrapper;
 
@@ -38,8 +42,17 @@ public class ProxyApplicationConfiguratorTest {
   @Before
   public void setUp() {
     original = mock( ApplicationConfigurator.class );
-    configurator = new ProxyApplicationConfigurator( original );
+    ProxyApplicationConfigurator originalProxy = new ProxyApplicationConfigurator( original );
+    configurator = spy( originalProxy );
+    mockBundle();
     configuration = mockConfiguration();
+  }
+
+  private void mockBundle() {
+    Bundle bundle = mock( Bundle.class );
+    BundleContext bundleContext = mock( BundleContext.class );
+    when( bundle.getBundleContext() ).thenReturn( bundleContext );
+    doReturn( bundle ).when( configurator ).getBundle();
   }
   
   private ApplicationConfigurationImpl mockConfiguration() {
@@ -57,6 +70,13 @@ public class ProxyApplicationConfiguratorTest {
     configurator.configure( configuration );
     
     verify( original ).configure( any( ConfigurationWrapper.class ) );
+  }
+  
+  @Test
+  public void testOpensTracker() {
+    configurator.configure( configuration );
+    
+    verify( configurator ).registerEntryPointLookup( configuration );
   }
   
   @Test

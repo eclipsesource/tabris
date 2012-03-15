@@ -13,6 +13,10 @@ package com.eclipsesource.rap.mobile.internal.bootstrap;
 import org.eclipse.rwt.application.ApplicationConfiguration;
 import org.eclipse.rwt.application.ApplicationConfigurator;
 import org.eclipse.rwt.internal.application.ApplicationConfigurationImpl;
+import org.eclipse.rwt.internal.application.ApplicationContext;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
 
 import com.eclipsesource.rap.mobile.Bootstrapper;
 
@@ -20,6 +24,7 @@ import com.eclipsesource.rap.mobile.Bootstrapper;
 public class ProxyApplicationConfigurator implements ApplicationConfigurator {
   
   private final ApplicationConfigurator original;
+  private HttpServiceTracker httpServiceTracker;
 
   public ProxyApplicationConfigurator( ApplicationConfigurator original ) {
     this.original = original;
@@ -28,12 +33,33 @@ public class ProxyApplicationConfigurator implements ApplicationConfigurator {
   public void configure( ApplicationConfiguration configuration ) {
     Bootstrapper.bootstrap( configuration );
     configureOriginal( configuration );
+    registerEntryPointLookup( configuration );
   }
 
   private void configureOriginal( ApplicationConfiguration configuration ) {
     ConfigurationWrapper configurationWrapper 
       = new ConfigurationWrapper( ( ApplicationConfigurationImpl )configuration, original );
     original.configure( configurationWrapper );
+  }
+  
+  void registerEntryPointLookup( ApplicationConfiguration configuration ) {
+    ApplicationContext context 
+      = ( ( ApplicationConfigurationImpl )configuration ).getAdapter( ApplicationContext.class );
+    Bundle bundle = getBundle();
+    BundleContext bundleContext = bundle.getBundleContext();
+    httpServiceTracker = new HttpServiceTracker( bundleContext, context );
+    httpServiceTracker.open();
+  }
+
+  public void unregister() {
+    if( httpServiceTracker != null ) {
+      httpServiceTracker.close();
+    }
+  }
+
+  // For testing purpose
+  Bundle getBundle() {
+    return FrameworkUtil.getBundle( getClass() );
   }
 
 }

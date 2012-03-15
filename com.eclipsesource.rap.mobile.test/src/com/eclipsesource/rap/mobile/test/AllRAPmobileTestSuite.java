@@ -25,6 +25,8 @@ import com.eclipsesource.rap.mobile.internal.AbstractObjectSynchronizerTest;
 import com.eclipsesource.rap.mobile.internal.bootstrap.ActivatorTest;
 import com.eclipsesource.rap.mobile.internal.bootstrap.ConfigurationWrapperTest;
 import com.eclipsesource.rap.mobile.internal.bootstrap.ConfiguratorHookTest;
+import com.eclipsesource.rap.mobile.internal.bootstrap.EntryPointLookupServletTest;
+import com.eclipsesource.rap.mobile.internal.bootstrap.HttpServiceTrackerTest;
 import com.eclipsesource.rap.mobile.internal.bootstrap.ProxyApplicationConfiguratorTest;
 import com.eclipsesource.rap.mobile.internal.bootstrap.ThemePhaseListenerTest;
 
@@ -43,7 +45,9 @@ import com.eclipsesource.rap.mobile.internal.bootstrap.ThemePhaseListenerTest;
   ProxyApplicationConfiguratorTest.class,
   ThemePhaseListenerTest.class,
   BootstrapperTest.class,
-  ConfiguratorHookTest.class
+  ConfiguratorHookTest.class,
+  HttpServiceTrackerTest.class,
+  EntryPointLookupServletTest.class
 } )
 public class AllRAPmobileTestSuite {
 }
