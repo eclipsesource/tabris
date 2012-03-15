@@ -63,8 +63,8 @@ public class EntryPointLookupServletTest {
     lookupServlet.doGet( req, resp );
     
     JSONArray points = getEntryPointArray( writer );
-    assertEquals( "/test", points.getString( 0 ) );
-    assertEquals( "/test2", points.getString( 1 ) );
+    assertEquals( "/test", points.getJSONObject( 0 ).getString( EntryPointLookupServlet.KEY_PATH ) );
+    assertEquals( "/test2", points.getJSONObject( 1 ).getString( EntryPointLookupServlet.KEY_PATH ) );
     assertEquals( 2, points.length() );
   }
 
