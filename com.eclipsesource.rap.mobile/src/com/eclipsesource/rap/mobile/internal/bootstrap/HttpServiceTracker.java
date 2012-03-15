@@ -22,7 +22,7 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 @SuppressWarnings("restriction")
 public class HttpServiceTracker implements ServiceTrackerCustomizer<HttpService, HttpService>{
   
-  static final String SERVLET_ALIAS = "/com.eclipsesource.rap.mobile/info.json";
+  static final String SERVLET_ALIAS = "/index.json";
   
   private ServiceTracker<HttpService, HttpService> httpServiceTracker;
   private BundleContext bundleContext;

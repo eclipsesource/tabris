@@ -20,12 +20,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.rwt.internal.application.ApplicationContext;
 import org.eclipse.rwt.internal.lifecycle.EntryPointManager;
+import org.eclipse.rwt.internal.theme.JsonArray;
+import org.eclipse.rwt.internal.theme.JsonObject;
 
 
 @SuppressWarnings("restriction")
 public class EntryPointLookupServlet extends HttpServlet {
   
   static final String KEY_ENTRYPOINTS = "entrypoints";
+  static final String KEY_PATH = "path";
   private EntryPointManager manager;
 
   public EntryPointLookupServlet( ApplicationContext applicationContext ) {
@@ -35,20 +38,24 @@ public class EntryPointLookupServlet extends HttpServlet {
   @Override
   protected void doGet( HttpServletRequest req, HttpServletResponse resp ) throws ServletException, IOException {
     Collection<String> servletPaths = manager.getServletPaths();
-    StringBuilder builder = new StringBuilder();
-    builder.append( "{'" + KEY_ENTRYPOINTS + "':[" );
-    appendPaths( servletPaths, builder );
-    builder.append( "]}" );
+    JsonObject jsonObject = createMessageObject( servletPaths );
     resp.setContentType( "application/json" );
-    resp.getWriter().write( builder.toString() );
+    resp.getWriter().write( jsonObject.toString() );
   }
 
-  private void appendPaths( Collection<String> servletPaths, StringBuilder builder ) {
+  private JsonObject createMessageObject( Collection<String> servletPaths ) {
+    JsonObject jsonObject = new JsonObject();
+    JsonArray array = new JsonArray();
+    appendPaths( servletPaths, array );
+    jsonObject.append( KEY_ENTRYPOINTS, array );
+    return jsonObject;
+  }
+
+  private void appendPaths( Collection<String> servletPaths, JsonArray array ) {
     for( String path : servletPaths ) {
-      if( !builder.toString().endsWith( "[" ) ) {
-        builder.append( "," );
-      } 
-      builder.append( "'" + path + "'" );
+      JsonObject object = new JsonObject();
+      object.append( KEY_PATH, path );
+      array.append( object );
     }
   }
 }
