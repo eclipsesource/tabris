@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2012 EclipseSource and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    EclipseSource - initial API and implementation
+ ******************************************************************************/
+
+/* Default theme for all widgets */
+
 * {
   color: #4a4a4a;
   background-color: #fff;
@@ -5,8 +18,316 @@
   font: 16px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
 }
 
+*:disabled {
+  color: #CFCFCF;
+}
+
+Widget-ToolTip {
+  padding: 8px;
+  background-color: #f0f0f0;
+  background-image : gradient(
+    linear, left top, right top,
+    from( #f8f9ff ),
+    to( #f4f4f4 )
+  );
+  border: 1px solid #a0b3ca;
+  border-radius: 2px;
+  font: 14px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  color: #4a4a4a;
+  opacity: 1;
+  animation: fadeIn 200ms linear, fadeOut 600ms ease-out;
+  box-shadow: none;
+}
+
+Display {
+  rwt-shadow-color: #a7a6aa;
+  rwt-highlight-color: #ffffff;
+  rwt-darkshadow-color: #85878c;
+  rwt-lightshadow-color: #dcdfe4;
+  rwt-thinborder-color: #aca899;
+  rwt-selectionmarker-color: #fec83c;
+  rwt-infobackground-color: #ffffff;
+
+  rwt-fontlist: 14px 'Segoe UI', Corbel, Calibri, Tahoma, 'Lucida Sans Unicode';
+
+  font: 14px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+}
+
+/* Default theme for all controls */
+
+* {
+  border: none;
+  padding: 0px;
+}
+
+*[BORDER] {
+  border: 1px solid #a4a4a4;
+}
+
+/* Default theme for all composites */
+
+Composite {
+  padding: 0;
+  opacity: 1;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  box-shadow: none;
+}
+
+Composite[BORDER] {
+  border: 1px solid #bdbdbd;
+  border-radius: 2px;
+}
+
+/* Button default theme */
+
+Button {
+  font: 16px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  background-image: none;
+  border: none;
+  border-radius: 2px;
+  padding: 6px 15px;
+  spacing: 2px;
+  cursor: default;
+  animation: none;
+  color: #4a4a4a;
+  background-color: #ffffff;
+  opacity: 1;
+  text-shadow: none;
+}
+
+Button[PUSH],
+Button[TOGGLE],
+Button[PUSH][BORDER],
+Button[TOGGLE][BORDER],
+Button[PUSH][FLAT],
+Button[TOGGLE][FLAT] {
+  border: 1px solid #bdbdbd;
+  border-radius: 2px;
+  padding: 12px;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #f9f9f9 ),
+    to( #e4e4e4 )
+  );
+  animation: none;
+  cursor: pointer;
+  text-shadow: 0 1px 0 #ffffff;
+}
+
+Button[PUSH]:default,
+Button[TOGGLE]:default {
+  background-color: #416693;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #e2eefc ),
+    to( #d4d4d4 )
+  );
+  border: 1px solid #a0b3ca;
+}
+
+Button[PUSH]:disabled,
+Button[TOGGLE]:disabled {
+  cursor: default;
+  color: #d2d2d2;
+  background-image: none;
+  background-color: #fafafa;
+  border: 1px solid #d2d2d2;
+}
+
+Button[PUSH]:hover,
+Button[TOGGLE]:hover {
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #eaeaea ),
+    to( #d5d5d5 )
+  );
+}
+
+Button[PUSH]:pressed,
+Button[TOGGLE]:pressed {
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #d5d5d5 ),
+    to( #eaeaea )
+  );
+}
+
+Button[TOGGLE]:selected {
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #d5d5d5 ),
+    to( #eaeaea )
+  );
+}
+
+Button[TOGGLE]:selected:hover {
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #d5d5d5 ),
+    to( #eaeaea )
+  );
+}
+
+Button[CHECK],
+Button[RADIO] {
+  padding: 0px;
+  spacing: 7px;
+}
+
+Button[CHECK][BORDER],
+Button[RADIO][BORDER] {
+  cursor: default;
+  background-image: none;
+  border: 1px solid #bdbdbd;
+  border-radius: 2px;
+}
+
+Button-FocusIndicator[PUSH], Button-FocusIndicator[TOGGLE] {
+  background-color: transparent;
+  border: 1px dotted #b8b8b8;
+  margin: 2px;
+  padding: 0px;
+  opacity: 1;
+}
+
+Button-FocusIndicator[CHECK], Button-FocusIndicator[RADIO] {
+  background-color: transparent;
+  border: 1px dotted #b8b8b8;
+  padding: 2px 2px 2px 1px;
+  margin: 0px;
+  opacity: 1;
+}
+
+/* Combo default theme */
+
+Combo,
+Combo[BORDER] {
+  font: 16px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+  color: #4a4a4a;
+  background-color: #ffffff;
+  border: 0px;
+  border-radius: 0 2px 2px 0;
+  background-image: none;
+  text-shadow: none;
+  box-shadow: inset 0 0 3px #bdbdbd;
+}
+
+Combo:focused,
+Combo[BORDER]:focused {
+  border: 1px solid #4f7cb1;
+  box-shadow: 0 0 5px #4f7cb1;
+}
+
+Combo-Button {
+  cursor: default;
+  background-color: #efefef;
+  border: none;
+  border-left: 1px solid #bdbdbd;
+  border-radius: 0px 2px 2px 0px;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #f9f9f9 ),
+    to( #e4e4e4 )
+  );
+  width: 30px;
+}
+
+Combo-List {
+  border: 1px solid #4f7cb1;
+  box-shadow: 0 0 5px #4f7cb1;
+  border-radius: 2px;
+}
+
+Combo-Field {
+  padding: 10px 4px 10px 4px;
+}
+
+Combo-FocusIndicator {
+  background-color: transparent;
+  border: none;
+  margin: 0;
+  opacity: 0;
+}
+
+/* CoolBar default theme */
+
+CoolBar {
+  background-image: none;
+}
+
+CoolItem-Handle {
+  border: 1px solid #bdbdbd;
+  width: 2px;
+}
+
+/* CTabFolder default theme */
+
+CTabFolder {
+  border-color: #bdbdbd;
+  border-radius: 2px;
+}
+
+CTabItem {
+  font: 14px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  color: #4a4a4a;
+  background-color: #f0f0f0;
+  background-image: none;
+  padding: 6px 15px;
+  spacing: 10px;
+  text-shadow: none;
+}
+
+CTabItem:selected {
+  color: #4a4a4a;
+  background-color: #d6d6d6;
+}
+
+/* Do not gray out disabled CTabItems, this is SWT behavior */
+CTabItem:disabled {
+  color: black;
+}
+
+/* Group default theme */
+
+Group {
+  font: 10px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  color: #4a4a4a;
+  background-color: #ffffff;
+  border: none;
+}
+
+Group-Frame {
+  margin: 20px 10px 10px 10px;
+  padding: 15px 8px 8px 8px;
+  border: 1px solid #bdbdbd;
+  border-radius: 2px;
+}
+
+Group-Label {
+  padding: 2px 10px 2px 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #bdbdbd;
+  border-radius: 10px;
+  color: #4a4a4a;
+  margin: 10px 10px 10px 20px;
+  text-shadow: none;
+}
+
+/* Label default theme */
+
 Label {
   font: 16px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+  color: #4a4a4a;
+  background-color: transparent;
+  background-image: none;
+  border: none;
+  border-radius: 2px;
+  text-decoration: none;
+  cursor: default;
+  opacity: 1;
+  text-shadow: none;
 }
 
 Label[BORDER] {
@@ -14,56 +335,368 @@ Label[BORDER] {
   border-radius: 0px;
 }
 
-Shell {
-  border: none;
+Label-SeparatorLine {
+  background-image: none;
+  background-color: transparent;
+  border: 1px solid #a4a4a4;
+  border-radius: 0px;
+  width: 2px;
 }
 
-Button {
-  font: 16px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+Label-SeparatorLine[SHADOW_IN] {
+  border: 1px inset;
 }
 
-Button[PUSH],
-Button[TOGGLE],
-Button[FLAT] {
-  padding: 12px;
+Label-SeparatorLine[SHADOW_OUT] {
+  border: 1px outset;
 }
 
-Button[CHECK], 
-Button[RADIO] {
-  padding: 0px;
-  spacing: 7px;
-}
+/* Link default theme */
 
-Text {
-  font: 16px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
-  padding: 7px 12px 8px 12px;
-}
-
-Link,Link-Hyperlink {
+Link {
   font: 13px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+  color: #4a4a4a;
+  text-shadow: none;
 }
 
-Combo {
- font: 16px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
- border: 0px;
+Link[BORDER] {
+  border: 1px solid #bdbdbd;
 }
 
-Combo-Field {
-  padding: 10px 4px 10px 4px;
+Link-Hyperlink {
+  color: #416693;
+  text-shadow: none;
 }
 
-DateTime {
-  font: 16px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
-  border: 0px;
+Link-Hyperlink:disabled {
+  color: #959595;
 }
 
-DateTime-Field {
-  padding: 10px 4px 10px 4px;
+/* List default theme */
+
+List {
+  font: 14px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  background-color: #ffffff;
+  border: none;
+  color: #4a4a4a;
 }
 
-ScrollBar {
-  width: 0px;
+List[BORDER] {
+  border: 1px solid #bdbdbd;
 }
+
+List-Item {
+  padding: 6px 10px 6px 10px;
+  font: 14px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  background-color: #ffffff;
+  color: #4a4a4a;
+  background-image: none;
+  text-shadow: none;
+}
+
+List-Item:hover {
+  color: #4a4a4a;
+  background-color: #dae9f7;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #ebebeb ),
+    to( #d5d5d5 )
+  );
+}
+
+List-Item:selected {
+  color: #ffffff;
+  background-color: #00589f;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #5882b5 ),
+    to( #416693 )
+  );
+}
+
+List-Item:selected:unfocused {
+  background-color: #959595;
+  color: #ffffff;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #b5b5b5 ),
+    to( #818181 )
+  );
+}
+
+List-Item:even {
+  background-color: #f0f0f0;
+}
+
+List-Item:even:hover {
+  color: #4a4a4a;
+  background-color: #818181;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #ebebeb ),
+    to( #d5d5d5 )
+  );
+}
+
+List-Item:even:selected {
+  color: #ffffff;
+  background-color: #818181;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #5882b5 ),
+    to( #416693 )
+  );
+}
+
+List-Item:even:selected:unfocused {
+  background-color: #959595;
+  color: #ffffff;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #b5b5b5 ),
+    to( #818181 )
+  );
+}
+
+/* Menu default theme */
+
+Menu {
+  padding: 0;
+  color: #0059a5;
+  background-color: #f9f9f9;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #f4f4f4 ),
+    to( #ffffff )
+  );
+  border: 1px solid #a0b3ca;
+  border-radius: 2px;
+  box-shadow: 0 0 4px #ababab;
+  opacity: 1;
+  animation: none;
+}
+
+MenuItem {
+  color: #4a4a4a;
+  background-color: transparent;
+  background-image: none;
+  opacity: 1;
+  text-shadow: none;
+  padding: 4px 10px 4px 10px;
+}
+
+MenuItem[SEPARATOR] {
+  padding: 0px 10px;
+}
+
+MenuItem:hover {
+  color: #ffffff;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #5882b5 ),
+    to( #416693 )
+  );
+}
+
+MenuItem:pressed {
+  color: #ffffff;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #416693 ),
+    to( #5882b5 )
+  );
+}
+
+MenuItem:disabled {
+  color: #bdbdbd;
+  text-shadow: none;
+}
+
+MenuItem:onMenuBar {
+  padding: 4px 6px;
+}
+
+/* ProgressBar default theme */
+
+ProgressBar {
+  background-color: #ffffff;
+  border: 1px solid #bdbdbd;
+  border-radius: 2px;
+}
+
+ProgressBar-Indicator {
+  background-color: #00589f;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #5882b5 ),
+    to( #416693 )
+  );
+  border: none;
+  opacity: 1;
+}
+
+ProgressBar-Indicator:paused {
+  background-image: gradient(
+    linear, left top, right top,
+    from( #818181 ),
+    to( #b5b5b5 )
+  );
+}
+
+ProgressBar-Indicator:error {
+  background-image: gradient(
+    linear, left top, right top,
+    from( #e9614f ),
+    to( #ec7869 )
+  );
+}
+
+/* Shell default theme */
+
+Shell {
+  animation: none;
+  border: none;
+  border-radius: 2px;
+  background-color: #ffffff;
+  background-image: none;
+  padding: 0;
+  opacity: 1;
+  box-shadow: none;
+}
+
+Shell[TITLE], Shell[BORDER] {
+  background-color: #ffffff;
+  border: 1px solid #6e6e6e;
+  border-radius: 2px;
+  padding: 15px;
+  box-shadow: 0 0 4px #ababab;
+}
+
+Shell[BORDER]:inactive, Shell[TITLE]:inactive {
+  border: 1px solid #bdbdbd;
+  box-shadow: none;
+}
+
+Shell:maximized, Shell:maximized:inactive {
+  border: none;
+  box-shadow: none;
+  border-radius: 0px;
+}
+
+Shell-DisplayOverlay {
+  animation: fadeIn 200ms linear, fadeOut 400ms ease-out;
+  background-image: none;
+  background-color: #808080;
+  opacity: 0.2;
+}
+
+/* Shell titlebar */
+
+Shell-Titlebar {
+  font: 14px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  background-color: #0080c0;
+  background-gradient-color: #0080c0;
+  color: #ffffff;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #416693 ), to( #5882b5 )
+  );
+  padding: 0 10px 0 10px;
+  margin: 0px;
+  height: 38px;
+  border: none;
+  border-radius: 0;
+  text-shadow: none;
+}
+
+Shell-Titlebar:inactive {
+  background-color: #7996a5;
+  background-gradient-color: #7996a5;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #818181 ), to( #b5b5b5 )
+  );
+}
+
+/* Shell buttons */
+
+/* Minimize button */
+
+Shell-MinButton {
+  margin: 0 -2px 0 0;
+}
+
+Shell-MinButton:inactive {
+  margin: 0 -2px 0 0;
+}
+
+/* Maximize button */
+
+Shell-MaxButton {
+  margin: 0 -2px 0 0;
+}
+
+Shell-MaxButton:inactive {
+  margin: 0 -2px 0 0;
+}
+
+/* Spinner default theme */
+
+Spinner {
+  font: 14px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  border: none;
+  border-radius: 0 2px 2px 0;
+  color: #464a4e;
+  background-color: #ffffff;
+  background-image: none;
+  text-shadow: none;
+  box-shadow: none;
+}
+
+Spinner[BORDER] {
+  border: 1px solid #aaaaaa;
+  border-radius: 0 2px 2px 0;
+  box-shadow: inset 0 0 3px #bdbdbd;
+}
+
+Spinner[BORDER]:focused {
+  border: 1px solid #4f7cb1;
+  box-shadow: 0 0 5px #4f7cb1;
+}
+
+Spinner-Field {
+  padding: 6px 10px 6px 10px;
+}
+
+Spinner-UpButton {
+  background-color: #efefef;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #f9f9f9 ),
+    to( #efefef )
+  );
+  width: 30px;
+  border: none;
+  border-left: 1px solid #bdbdbd;
+  border-radius: 0px 2px 0px 0px;
+  cursor: default;
+}
+
+Spinner-DownButton {
+  background-color: #efefef;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #efefef ),
+    to( #e4e4e4 )
+  );
+  width: 30px;
+  border: none;
+  border-left: 1px solid #bdbdbd;
+  border-radius: 0px 0px 2px 0px;
+  cursor: default;
+}
+
+/* TabFolder default theme */
 
 TabFolder {
   font: 14px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
@@ -100,6 +733,252 @@ TabItem:selected {
   padding: 14px;
 }
 
+/* Table default theme */
+
+Table {
+  font: 14px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  background-color: #ffffff;
+  background-image: none;
+  color: #4a4a4a;
+  border: none;
+}
+
+Table[BORDER] {
+  border: 1px solid #bdbdbd;
+}
+
+TableColumn {
+  font: 14px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  background-color: #f0f0f0;
+  padding: 8px 3px 8px 3px;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #f9f9f9 ),
+    to( #e4e4e4 )
+  );
+  color: #4a4a4a;
+  border-bottom: 1px solid #bdbdbd;
+  text-shadow: 0 1px 0 #ffffff;
+}
+
+TableColumn:hover {
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #e4e4e4 ),
+    to( #f9f9f9 )
+  );
+}
+
+TableItem {
+  background-color: transparent;
+  color: #4a4a4a;
+  text-decoration: none;
+  text-shadow: none;
+  background-image: none;
+}
+
+TableItem:hover {
+  color: #4a4a4a;
+  background-color: #b5b5b5;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #ebebeb ),
+    to( #d5d5d5 )
+  );
+}
+
+TableItem:selected {
+  color: #ffffff;
+  background-color: #5882b5;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #5882b5 ),
+    to( #416693 )
+  );
+}
+
+TableItem:selected:unfocused {
+  color: #ffffff;
+  background-color: #b5b5b5;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #b5b5b5 ),
+    to( #818181 )
+  );
+}
+
+TableItem:linesvisible:even {
+  background-color: #f0f0f0;
+  color: #4a4a4a;
+}
+
+TableItem:linesvisible:even:hover {
+  color: #4a4a4a;
+  background-color: #b5b5b5;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #ebebeb ),
+    to( #d5d5d5 )
+  );
+}
+
+TableItem:linesvisible:even:selected {
+  color: #ffffff;
+  background-color: #5882b5;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #5882b5 ),
+    to( #416693 )
+  );
+}
+
+TableItem:linesvisible:even:selected:unfocused {
+  background-color: #959595;
+  color: #ffffff;
+  text-decoration: none;
+  text-shadow: none;
+}
+
+TableColumn-SortIndicator {
+  background-image: none;
+}
+
+Table-Cell {
+  spacing: 3px;
+  padding: 6px 3px 6px 3px;
+}
+
+Table-GridLine {
+  color: #dedede;
+}
+
+Table-GridLine:horizontal {
+  color: transparent;
+}
+
+Table-Checkbox {
+  /*
+  For backward compatibility we have to keep the width property.
+  Deprecated, use "margin" instead.
+  */
+  width: 21px;
+  margin: 0 0 0 4px;
+}
+
+/* Text default theme */
+
+Text {
+  font: 16px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+  border: none;
+  border-radius: 0;
+  padding: 7px 12px 8px 12px;
+  color: #4a4a4a;
+  background-color: #ffffff;
+  background-image: none;
+  text-shadow: none;
+  box-shadow: none;
+}
+
+Text[MULTI] {
+/*
+ * padding currently has no effect because of bug 253644
+ * [TODO] remove comment if bug fixed
+ */
+  padding: 5px 10px 5px 10px;
+}
+
+Text[BORDER],
+Text[MULTI][BORDER] {
+  border: 1px solid #aaaaaa;
+  border-radius: 0;
+  box-shadow: inset 0 0 3px #bdbdbd;
+}
+
+Text[BORDER]:focused,
+Text[MULTI][BORDER]:focused {
+  border: 1px solid #4f7cb1;
+  box-shadow: 0 0 5px #4f7cb1;
+}
+
+Text-Message {
+  color: #4a4a4a;
+  text-shadow: none;
+}
+
+/* ToolBar default theme */
+
+ToolBar {
+  font: 14px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  color: #4a4a4a;
+  padding: 0;
+  spacing: 0;
+  background-color: #fff;
+  background-image: none;
+  border: none;
+  border-radius: 0;
+  opacity: 1;
+}
+
+ToolBar[BORDER] {
+  border: 1px solid #a4a4a4;
+  border-radius: 2px;
+}
+
+ToolItem {
+  font: 16px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  color: #4a4a4a;
+  background-color: #fff;
+  background-image: none;
+  border: none;
+  border-radius: 0px;
+  padding: 10px 0px;
+  spacing: 4px;
+  opacity: 1;
+  animation: none;
+  text-shadow: none;
+}
+
+ToolItem:hover {
+  background-color: #f0f0f0;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #f9f9f9 ),
+    to( #e4e4e4 )
+  );
+  border: 1px solid #bdbdbd;
+  border-radius: 2px;
+}
+
+ToolItem:pressed, ToolItem:selected {
+  border: 1px solid #a4a4a4;
+  border-radius: 2px;
+  padding: 9px 8px 8px 9px;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #e4e4e4 ),
+    to( #f9f9f9 )
+  );
+}
+
+ToolItem-DropDownIcon {
+  border: none;
+}
+
+ToolItem-DropDownIcon:hover {
+  border: 1px inset;
+}
+
+ToolItem-Separator {
+  width: 4px;
+}
+
+ToolItem[FLAT] {
+  border: none;
+  padding: 0;
+}
+
+/* Tree default theme */
+
 Tree {
   background-color: #ffffff;
   border: none;
@@ -111,23 +990,608 @@ Tree[BORDER] {
   border: 0px;
 }
 
+TreeItem {
+  background-color: transparent;
+  color: #4a4a4a;
+  text-decoration: none;
+  text-shadow: none;
+  background-image: none;
+}
+
+TreeItem:hover {
+  color: #4a4a4a;
+  background-color: #b5b5b5;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #ebebeb ),
+    to( #d5d5d5 )
+  );
+}
+
+TreeItem:selected {
+  color: #ffffff;
+  background-color: #5882b5;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #5882b5 ),
+    to( #416693 )
+  );
+}
+
+TreeItem:selected:unfocused {
+  color: #ffffff;
+  background-color: #b5b5b5;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #b5b5b5 ),
+    to( #818181 )
+  );
+}
+
+TreeItem:linesvisible:even {
+  background-color: #f0f0f0;
+  color: #4a4a4a;
+  border: none;
+}
+
+TreeItem:linesvisible:even:hover {
+  color: #4a4a4a;
+  background-color: #b5b5b5;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #ebebeb ),
+    to( #d5d5d5 )
+  );
+}
+
+TreeItem:linesvisible:even:selected {
+  color: #ffffff;
+  background-color: #5882b5;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #5882b5 ),
+    to( #416693 )
+  );
+}
+
+TreeItem:linesvisible:even:selected:unfocused {
+  color: #ffffff;
+  background-color: #b5b5b5;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #b5b5b5 ),
+    to( #818181 )
+  );
+}
+
+TreeColumn {
+  font: 14px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  color: #4a4a4a;
+  background-color: #f0f0f0;
+   background-image: gradient(
+    linear, left top, left bottom,
+    from( #f9f9f9 ),
+    to( #e4e4e4 )
+  );
+  padding: 8px 10px 8px 6px;
+  border-bottom: 1px solid #bdbdbd;
+  text-shadow: none;
+}
+
+TreeColumn:hover {
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #e4e4e4 ),
+    to( #f9f9f9 )
+  );
+}
+
+TreeColumn-SortIndicator {
+  background-image: none;
+}
+
 Tree-Cell {
   spacing: 0;
   padding: 22px;
 }
 
-ToolItem {
+Tree-GridLine {
+  color: #d0d0d0;
+}
+
+Tree-GridLine:horizontal {
+  color: transparent;
+}
+
+Tree-Checkbox {
+  margin: 0px 2px 0px 0px;
+}
+
+Tree-Indent {
+  width: 16px;
+  background-image: none;
+}
+
+Tree-Indent:line {
+  background-image: none;
+}
+
+Tree-Indent:first {
+  background-image: none;
+}
+
+Tree-Indent:last {
+  background-image: none;
+}
+
+Tree-Indent:first:last {
+  background-image: none;
+}
+
+/* Scale default theme */
+
+Scale {
+  background-color: white;
+  border-radius: 0;
+}
+
+Scale-Thumb {
+  background-color: #00589f;
+  border: 1px solid #a4a4a4;
+  border-radius: 2px 2px 2px 2px;
+}
+
+/* DateTime default theme */
+
+DateTime {
+  font: 16px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+  border: 0px;
+  border-radius: 0 2px 2px 0;
+  color: #464a4e;
+  background-color: #ffffff;
+  background-image: none;
+  text-shadow: none;
+}
+
+DateTime[BORDER]:focused {
+  border: 1px solid #4f7cb1;
+}
+
+DateTime-Field {
+  padding: 10px 4px 10px 4px;
+  text-shadow: none;
+}
+
+DateTime[BORDER] {
+  border: 1px solid #bdbdbd;
+  border-radius: 0 2px 2px 0;
+}
+
+DateTime-Calendar-Day {
+  text-shadow: none;
+}
+
+DateTime-Field:selected,
+DateTime-Calendar-Day:selected {
+  background-color: #5882b5;
+  color: #ffffff;
+}
+
+DateTime-Calendar-Day:selected:hover {
+  background-color: #5882b5;
+  color: #ffffff;
+}
+
+DateTime-Calendar-Day:selected:unfocused {
+  background-color: #c0c0c0;
+}
+
+DateTime-Calendar-Day:otherMonth {
+  background-color: transparent;
+  color: #808080;
+}
+
+DateTime-Calendar-Day:hover {
+  background-color: #b5b5b5;
+}
+
+DateTime-Calendar-Navbar {
   border: none;
-  border-radius: 0px;
-  padding: 15px 6px;
-  spacing: 4px;
+  border-radius: 0;
+  background-color: #00569c;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #416693 ), to( #5882b5 )
+  );
+  color: white;
+  font: 14px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  text-shadow: none;
+}
+
+DateTime-Calendar-PreviousMonthButton {
+  cursor: default;
+}
+
+DateTime-Calendar-NextMonthButton {
+  cursor: default;
+}
+
+DateTime-Calendar-PreviousYearButton {
+  cursor: default;
+}
+
+DateTime-Calendar-NextYearButton {
+  cursor: default;
+}
+
+DateTime-UpButton {
+  background-color: #f0f0f0;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #f9f9f9 ),
+    to( #efefef )
+  );;
+  width: 30px;
+  border: none;
+  border-left: 1px solid #bdbdbd;
+  border-radius: 0px 2px 0px 0px;
+  cursor: default;
+}
+
+DateTime-DownButton {
+  background-color: #f0f0f0;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #efefef ),
+    to( #e4e4e4 )
+  );
+  width: 30px;
+  border: none;
+  border-left: 1px solid #bdbdbd;
+  border-radius: 0px 0px 2px 0px;
+  cursor: default;
+}
+
+DateTime-DropDownButton {
+  cursor: default;
+  background-color: #f0f0f0;
+  border: none;
+  border-left: 1px solid #bdbdbd;
+  border-radius: 0px 2px 2px 0px;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #f9f9f9 ),
+    to( #e4e4e4 )
+  );
+  width: 30px;
+}
+
+DateTime-DropDownCalendar {
+  border: 1px #a7a6aa;
+}
+
+/* ExpandBar default theme */
+
+ExpandBar {
+  color: #4a4a4a;
+  background-color: white;
+}
+
+ExpandBar[BORDER] {
+  border: 1px solid #bdbdbd;
+  border-radius: 2px;
+}
+
+ExpandItem {
+  border: 1px solid #bdbdbd;
+  border-radius: 2px;
+}
+
+ExpandItem-Header {
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #f9f9f9 ),
+    to( #e4e4e4 )
+  );
+  text-shadow: none;
+}
+
+ExpandItem-Header:disabled {
+  cursor: default;
+}
+
+/* Sash default theme */
+
+Sash {
+  border: none;
+  background-image: none;
+  background-color: transparent;
+}
+
+Sash[BORDER] {
+  border: 1px solid #bdbdbd;
+}
+
+Sash:hover {
+  background-color: #5882b5;
+}
+
+Sash-Handle {
+  background-image: none;
+}
+
+/* Slider default theme */
+
+Slider {
+  border: none;
+  background-color: #f0f0f0;
+  border-radius: 2px;
+}
+
+/* Thumb */
+
+Slider-Thumb[HORIZONTAL],
+Slider-Thumb[VERTICAL] {
+  background-color: #e4e4e4;
+  border: 1px solid #bdbdbd;
+  border-radius: 2px;
+}
+
+/* Buttons */
+
+Slider-UpButton,
+Slider-DownButton {
+  background-color: #e4e4e4;
+  border: 1px solid #bdbdbd;
+  cursor: default;
+  padding: 0;
+}
+
+Slider-UpButton[HORIZONTAL],
+Slider-DownButton[HORIZONTAL] {
+  background-image: none;
+}
+
+Slider-UpButton[VERTICAL],
+Slider-DownButton[VERTICAL] {
+  background-image: none;
+}
+
+Slider-UpButton[HORIZONTAL]:pressed,
+Slider-DownButton[HORIZONTAL]:pressed {
+  background-image: none;
+}
+
+Slider-UpButton[VERTICAL]:pressed,
+Slider-DownButton[VERTICAL]:pressed {
+  background-image: none;
+}
+
+/* Rounded Borders */
+
+Slider-UpButton[HORIZONTAL] {
+  border-radius: 0px 2px 2px 0px;
+}
+
+Slider-UpButton[VERTICAL] {
+  border-radius: 0px 0px 2px 2px;
+}
+
+Slider-DownButton[HORIZONTAL] {
+  border-radius: 2px 0px 0px 2px;
+}
+
+Slider-DownButton[VERTICAL] {
+  border-radius: 2px 2px 0px 0px;
+}
+
+/* ToolTip default theme */
+
+ToolTip {
+  cursor: default;
+  border: 1px solid #a0b3ca;
+  border-radius: 2px;
+  padding: 8px;
+  opacity: 1;
+  color: #4a4a4a;
+  background-image : gradient(
+    linear, left top, right top,
+    from( #f8f9ff ),
+    to( #f4f4f4 )
+  );
+  font: 14px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  background-color: #fcfcfc;
+  animation: fadeIn 200ms linear, fadeOut 600ms ease-out;
+  box-shadow: 0 0 4px #adadad;
+}
+
+ToolTip-Text {
+  color: #4a4a4a;
+  font: bold 14px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  text-shadow: none;
+}
+
+ToolTip-Message {
+  color: #4a4a4a;
+  font: 14px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  text-shadow: none;
+}
+
+/* CCombo default theme */
+
+CCombo {
+  font: 14px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  color: #4a4a4a;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  border-radius: 0 2px 2px 0;
+  text-shadow: none;
+  box-shadow: none;
+}
+
+CCombo[BORDER] {
+  border: 1px solid #aaaaaa;
+  border-radius: 0 2px 2px 0;
+  box-shadow: inset 0 0 3px #bdbdbd;
+}
+
+CCombo[BORDER]:focused {
+  border: 1px solid #4f7cb1;
+  box-shadow: 0 0 5px #4f7cb1;
+}
+
+CCombo-Button {
+  cursor: default;
+  background-color: #efefef;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #f9f9f9 ),
+    to( #e4e4e4 )
+  );
+  border: none;
+  border-left: 1px solid #bdbdbd;
+  border-radius: 0px 2px 2px 0px;
+  width: 30px;
+}
+
+CCombo-List {
+  border: 1px solid #4f7cb1;
+  box-shadow: 0 0 5px #4f7cb1;
+  border-radius: 2px;
+}
+
+CCombo-Field {
+  padding: 5px 10px 5px 10px;
+}
+
+CCombo-FocusIndicator {
+  background-color: transparent;
+  border: none;
+  margin: 0;
+  opacity: 0;
+}
+
+/* CLabel default theme */
+
+CLabel {
+  font: 14px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  color: #4a4a4a;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  padding: 6px;
+  spacing: 5px;
+  cursor: default;
+  opacity: 1;
+  text-shadow: none;
+}
+
+CLabel[BORDER] {
+  border: 1px solid #bdbdbd;
+  border-radius: 2px;
+}
+
+/* Browser default theme */
+
+Browser {
+  border: none;
+}
+
+Browser[BORDER] {
+  border: 1px solid #a4a4a4;
+}
+
+/* ScrollBar default theme */
+
+ScrollBar {
+  background-color: #f0f0f0;
+  background-image: none;
+  border: none;
+  border-radius: 0;
+  width: 0px;
+}
+
+ScrollBar-Thumb {
+  background-color: #f0f0f0;
+  border: 1px solid #bdbdbd;
+  border-radius: 15px;
+  min-height: 20px;
+}
+
+ScrollBar-UpButton,
+ScrollBar-DownButton {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  cursor: default;
+}
+
+/* FileUpload default theme */
+
+FileUpload {
+  font: 14px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #f9f9f9 ),
+    to( #e4e4e4 )
+  );
+  border: 1px solid #bdbdbd;
+  border-radius: 2px;
+  padding: 6px 15px;
+  spacing: 2px;
+  cursor: pointer;
+  animation: none;
+  color: #4a4a4a;
+  background-color: #ffffff;
+  opacity: 1;
+  text-shadow: 0 1px 0 #ffffff;
+}
+
+FileUpload:disabled {
+  cursor: default;
+  color: #d2d2d2;
+  background-image: none;
+  background-color: #fafafa;
+  border: 1px solid #d2d2d2;
+}
+
+FileUpload:hover {
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #eaeaea ),
+    to( #d5d5d5 )
+  );
+}
+
+FileUpload:pressed {
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #d5d5d5 ),
+    to( #eaeaea )
+  );
+}
+
+FileUpload-FocusIndicator {
+  background-color: transparent;
+  border: 1px dotted #b8b8b8;
+  margin: 2px;
+  padding: 0px;
   opacity: 1;
 }
 
-ToolItem[FLAT] {
-  border: none;
-  padding: 15px 6px;
+/* JFace specific theming */
+
+Shell.jface_contentProposalPopup, Shell.jface_infoPopupDialog {
+  border: 1px solid #bdbdbd;
+  padding: 0;
+  box-shadow: 0 0 4px #ababab;
 }
+
+/* Android specific theming */
 
 Button-CheckIcon {
   background-image: url( theme/btn_check_off_holo_light.png );
@@ -168,4 +1632,3 @@ Button-RadioIcon:selected {
 Button-RadioIcon:selected:hover {
   background-image: url( theme/btn_radio_on_holo_light.png );
 }
-
