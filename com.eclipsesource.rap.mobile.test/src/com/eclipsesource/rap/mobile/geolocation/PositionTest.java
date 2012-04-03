@@ -36,7 +36,7 @@ public class PositionTest {
   @Test
   public void testCoordinates() {
     assertEquals( 10, position.getCoords().getLatitude(), 0 );
-    assertEquals( 11, position.getCoords().getLongtitude(), 0 );
+    assertEquals( 11, position.getCoords().getLongitude(), 0 );
     assertEquals( 12, position.getCoords().getAltitude(), 0 );
     assertEquals( 13, position.getCoords().getAccuracy(), 0 );
     assertEquals( 14, position.getCoords().getAltitudeAccuracy(), 0 );

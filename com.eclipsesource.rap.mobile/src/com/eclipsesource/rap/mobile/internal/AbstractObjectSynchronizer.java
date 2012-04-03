@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.eclipse.rwt.Adaptable;
 import org.eclipse.rwt.RWT;
+import org.eclipse.rwt.internal.application.RWTFactory;
 import org.eclipse.rwt.internal.lifecycle.LifeCycleUtil;
 import org.eclipse.rwt.internal.protocol.ClientObjectFactory;
 import org.eclipse.rwt.internal.protocol.IClientObject;
@@ -71,8 +72,7 @@ public abstract class AbstractObjectSynchronizer implements PhaseListener, Sessi
   }
 
   private void renderInitializationInternal() {
-    IClientObject clientObject = ClientObjectFactory.getClientObject( object );
-    renderInitialization( clientObject, object );
+    renderInitialization( getClientObject(), object );
   }
 
   protected abstract void renderInitialization( IClientObject clientObject, Object object );
@@ -115,13 +115,12 @@ public abstract class AbstractObjectSynchronizer implements PhaseListener, Sessi
   // TODO move to Util
   public void renderProperty( String name, Object newValue, Object defaultValue ) {
     IServiceStore serviceStore = RWT.getServiceStore();
-    IClientObject clientObject = ClientObjectFactory.getClientObject( object );
     Object attribute = serviceStore.getAttribute( id + "." + name );
     if( attribute == null ) {
-      clientObject.set( name, newValue );
+      getClientObject().set( name, newValue );
     } else if( !attribute.equals( newValue ) ) {
       if( defaultValue != null && !defaultValue.equals( attribute ) ) {
-        clientObject.set( name, newValue );
+        getClientObject().set( name, newValue );
       }
     }
   }
@@ -141,15 +140,20 @@ public abstract class AbstractObjectSynchronizer implements PhaseListener, Sessi
   }
 
   public void beforeDestroy( SessionStoreEvent event ) {
-    IClientObject clientObject = ClientObjectFactory.getClientObject( object );
-    destroy( clientObject );
-    RWT.getLifeCycle().removePhaseListener( this );
+    // TODO: Check RAP bug #375356
+    RWTFactory.getLifeCycleFactory().getLifeCycle().removePhaseListener( this );
     RWT.getSessionStore().removeSessionStoreListener( this );
   }
 
-  protected abstract void destroy( IClientObject clientObject );
+  protected void destroy() {
+    getClientObject().destroy();
+  }
   
   protected String getId() {
     return id;
+  }
+  
+  public IClientObject getClientObject() {
+    return ClientObjectFactory.getClientObject( object );
   }
 }

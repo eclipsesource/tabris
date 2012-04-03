@@ -27,6 +27,7 @@ public class GeolocationAdapter {
   private NeedsPositionFlavor flavor;
   private GeolocationCallback callback;
   private GeolocationOptions options;
+  private boolean disposed;
 
   public void setError( PositionError error ) {
     this.error = error;
@@ -66,5 +67,13 @@ public class GeolocationAdapter {
 
   public void setOptions( GeolocationOptions options ) {
     this.options = options;
+  }
+
+  public void dispose() {
+    this.disposed = true;
+  }
+  
+  public boolean isDisposed() {
+    return disposed;
   }
 }

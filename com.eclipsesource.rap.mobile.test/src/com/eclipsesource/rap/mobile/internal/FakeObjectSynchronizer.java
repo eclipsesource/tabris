@@ -38,9 +38,4 @@ public class FakeObjectSynchronizer extends AbstractObjectSynchronizer {
 
 	}
 
-	@Override
-	protected void destroy(IClientObject clientObject) {
-
-	}
-
 }

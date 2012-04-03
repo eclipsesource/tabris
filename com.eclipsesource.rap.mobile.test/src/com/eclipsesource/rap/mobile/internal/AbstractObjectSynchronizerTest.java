@@ -17,7 +17,6 @@ import org.eclipse.rwt.internal.protocol.IClientObject;
 import org.eclipse.rwt.internal.protocol.IClientObjectAdapter;
 import org.eclipse.rwt.lifecycle.PhaseEvent;
 import org.eclipse.rwt.lifecycle.PhaseId;
-import org.eclipse.rwt.service.SessionStoreEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -90,15 +89,6 @@ public class AbstractObjectSynchronizerTest {
     synchronizer.afterPhase( event );
     
     verify( synchronizer ).renderChanges( eq( object ) );
-  }
-  
-  @Test
-  public void testDispatchesDestroy() {
-    SessionStoreEvent event = mock( SessionStoreEvent.class );
-    
-    synchronizer.beforeDestroy( event );
-    
-    verify( synchronizer ).destroy( any( IClientObject.class ) );
   }
   
 }

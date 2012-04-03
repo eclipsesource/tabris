@@ -14,7 +14,7 @@ package com.eclipsesource.rap.mobile.geolocation;
 public class Coordinates {
   
   private final double latitude;
-  private final double longtitude;
+  private final double longitude;
   private final double altitude;
   private final double accuracy;
   private final double altitudeAccuracy;
@@ -22,7 +22,7 @@ public class Coordinates {
   private final double speed;
   
   public Coordinates( double latitude, 
-                      double longtitude, 
+                      double longitude, 
                       double altitude, 
                       double accuracy,
                       double altitudeAccuracy, 
@@ -30,7 +30,7 @@ public class Coordinates {
                       double speed ) 
   {
     this.latitude = latitude;
-    this.longtitude = longtitude;
+    this.longitude = longitude;
     this.altitude = altitude;
     this.accuracy = accuracy;
     this.altitudeAccuracy = altitudeAccuracy;
@@ -42,8 +42,8 @@ public class Coordinates {
     return latitude;
   }
 
-  public double getLongtitude() {
-    return longtitude;
+  public double getLongitude() {
+    return longitude;
   }
 
   public double getAltitude() {

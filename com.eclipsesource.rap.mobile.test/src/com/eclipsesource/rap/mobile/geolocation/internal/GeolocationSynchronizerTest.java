@@ -13,6 +13,7 @@ package com.eclipsesource.rap.mobile.geolocation.internal;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
@@ -122,7 +123,7 @@ public class GeolocationSynchronizerTest {
   
   @Test
   public void testRenderChanges() {
-    Fixture.fakePhase( PhaseId.READ_DATA );
+    Fixture.fakePhase( PhaseId.RENDER );
     when( adapter.getFlavor() ).thenReturn( NeedsPositionFlavor.CONTINUOUS );
     GeolocationOptions options = new GeolocationOptions().setFrequency( 10 ).enableHighAccuracy().setMaximumAge( 10 );
     when( adapter.getOptions() ).thenReturn( options );
@@ -211,9 +212,13 @@ public class GeolocationSynchronizerTest {
   
   @Test
   public void testDestroy() {
+    Fixture.fakePhase( PhaseId.RENDER );
+    when( adapter.getFlavor() ).thenReturn( NeedsPositionFlavor.CONTINUOUS );
+    doReturn( Boolean.TRUE ).when( adapter ).isDisposed();
     IClientObject clientObject = mock( IClientObject.class );
+    doReturn( clientObject ).when( synchronizer ).getClientObject();
     
-    synchronizer.destroy( clientObject );
+    synchronizer.renderChanges( object );
     
     verify( clientObject ).destroy();
   }

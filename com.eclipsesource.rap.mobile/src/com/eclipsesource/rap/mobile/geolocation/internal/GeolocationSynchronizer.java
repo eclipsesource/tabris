@@ -34,17 +34,19 @@ public class GeolocationSynchronizer extends AbstractObjectSynchronizer {
 
   static final String TYPE = "rap.mobile.Geolocation";
 
+  // write properties
   static final String PROP_ENABLE_HIGH_ACCURACY = "enableHighAccuracy";
   static final String PROP_MAXIMUM_AGE = "maximumAge";
   static final String PROP_FREQUENCY = "frequency";
   static final String PROP_TIMESTAMP = "timestamp";
   static final String PROP_NEEDS_POSITION = "needsPosition";
+  // read properties
   static final String PROP_SPEED = "speed";
   static final String PROP_HEADING = "heading";
   static final String PROP_ALTITUDE_ACCURACY = "altitudeAccuracy";
   static final String PROP_ACCURACY = "accuracy";
   static final String PROP_ALTITUDE = "altitude";
-  static final String PROP_LONGTITUDE = "longtitude";
+  static final String PROP_LONGITUDE = "longitude";
   static final String PROP_LATITUDE = "latitude";
   static final String PROP_ERROR_MESSAGE = "errorMessage";
   static final String PROP_ERROR_CODE = "errorCode";
@@ -77,7 +79,7 @@ public class GeolocationSynchronizer extends AbstractObjectSynchronizer {
 
   private Coordinates getCoordinates( Geolocation geolocation ) {
     return new Coordinates( getPropertyAsDouble( PROP_LATITUDE ), 
-                            getPropertyAsDouble( PROP_LONGTITUDE ), 
+                            getPropertyAsDouble( PROP_LONGITUDE ), 
                             getPropertyAsDouble( PROP_ALTITUDE ), 
                             getPropertyAsDouble( PROP_ACCURACY ), 
                             getPropertyAsDouble( PROP_ALTITUDE_ACCURACY ), 
@@ -133,6 +135,9 @@ public class GeolocationSynchronizer extends AbstractObjectSynchronizer {
 
   private void renderOptionsChanges( Geolocation geolocation ) {
     GeolocationAdapter geolocationAdapter = geolocation.getAdapter( GeolocationAdapter.class );
+    if( geolocationAdapter.isDisposed() ) {
+      destroy();
+    }
     GeolocationOptions options = geolocationAdapter.getOptions();
     if( options != null ) {
       renderProperty( PROP_FREQUENCY, options.getFrequency(), 10000 );
@@ -171,11 +176,6 @@ public class GeolocationSynchronizer extends AbstractObjectSynchronizer {
     }
     geolocationAdapter.setPosition( null );
     geolocationAdapter.setError( null );
-  }
-
-  @Override
-  protected void destroy( IClientObject clientObject ) {
-    clientObject.destroy();
   }
   
   // For testing only

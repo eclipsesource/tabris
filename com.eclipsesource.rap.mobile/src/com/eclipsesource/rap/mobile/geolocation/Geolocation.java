@@ -45,6 +45,10 @@ public class Geolocation implements Adaptable {
     geolocationAdapter.setCallback( null );
     geolocationAdapter.setOptions( null );
   }
+  
+  public void dispose() {
+    geolocationAdapter.dispose();
+  }
 
   @SuppressWarnings("unchecked")
   public <T> T getAdapter( Class<T> adapter ) {
