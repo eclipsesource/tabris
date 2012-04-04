@@ -24,11 +24,13 @@ public class GeolocationOptions {
     frequency = 10000;
   }
   
+  // ms
   public GeolocationOptions setMaximumAge( int maximumAge ) {
     this.maximumAge = maximumAge;
     return this;
   }
   
+  // ms
   public GeolocationOptions setFrequency( int frequency ) {
     this.frequency = frequency;
     return this;

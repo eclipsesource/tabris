@@ -38,9 +38,9 @@ public class GeolocationSynchronizer extends AbstractObjectSynchronizer {
   static final String PROP_ENABLE_HIGH_ACCURACY = "enableHighAccuracy";
   static final String PROP_MAXIMUM_AGE = "maximumAge";
   static final String PROP_FREQUENCY = "frequency";
-  static final String PROP_TIMESTAMP = "timestamp";
   static final String PROP_NEEDS_POSITION = "needsPosition";
   // read properties
+  static final String PROP_TIMESTAMP = "timestamp";
   static final String PROP_SPEED = "speed";
   static final String PROP_HEADING = "heading";
   static final String PROP_ALTITUDE_ACCURACY = "altitudeAccuracy";
