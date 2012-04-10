@@ -5,6 +5,7 @@ This repository contains the [RAP mobile](http://rapmobile.eclipsesource.com) se
 
 Additional Feature
 --------------------------
+* A Bootstraper that can be used when RAP mobile is used in a non OSGi environment. 
 * Geolocation API, [inspired by phonegap](http://docs.phonegap.com/en/1.4.1/phonegap_geolocation_geolocation.md.html#Geolocation)
 
 Demos
