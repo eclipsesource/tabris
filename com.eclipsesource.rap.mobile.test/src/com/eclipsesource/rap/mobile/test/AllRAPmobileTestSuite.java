@@ -22,6 +22,7 @@ import com.eclipsesource.rap.mobile.geolocation.PositionTest;
 import com.eclipsesource.rap.mobile.geolocation.internal.GeolocationAdapterTest;
 import com.eclipsesource.rap.mobile.geolocation.internal.GeolocationSynchronizerTest;
 import com.eclipsesource.rap.mobile.internal.AbstractObjectSynchronizerTest;
+import com.eclipsesource.rap.mobile.internal.GCOperationDispatcherTest;
 import com.eclipsesource.rap.mobile.internal.bootstrap.ActivatorTest;
 import com.eclipsesource.rap.mobile.internal.bootstrap.ConfigurationWrapperTest;
 import com.eclipsesource.rap.mobile.internal.bootstrap.ConfiguratorHookTest;
@@ -29,6 +30,7 @@ import com.eclipsesource.rap.mobile.internal.bootstrap.EntryPointLookupServletTe
 import com.eclipsesource.rap.mobile.internal.bootstrap.HttpServiceTrackerTest;
 import com.eclipsesource.rap.mobile.internal.bootstrap.ProxyApplicationConfiguratorTest;
 import com.eclipsesource.rap.mobile.internal.bootstrap.ThemePhaseListenerTest;
+import com.eclipsesource.rap.mobile.widgets.ClientCanvasTest;
 
 
 @RunWith( Suite.class )
@@ -47,7 +49,9 @@ import com.eclipsesource.rap.mobile.internal.bootstrap.ThemePhaseListenerTest;
   BootstrapperTest.class,
   ConfiguratorHookTest.class,
   HttpServiceTrackerTest.class,
-  EntryPointLookupServletTest.class
+  EntryPointLookupServletTest.class,
+  GCOperationDispatcherTest.class,
+  ClientCanvasTest.class
 } )
 public class AllRAPmobileTestSuite {
 }
