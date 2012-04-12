@@ -59,7 +59,7 @@ public class ClientCanvasTest {
       
       public void paintControl( PaintEvent event ) {
         // means that the gc.setLineWidth method was called
-        assertEquals( 3, event.gc.getLineWidth() );
+        assertEquals( ClientCanvasTestUtil.LINE_WITH, event.gc.getLineWidth() );
       }
     } );
     

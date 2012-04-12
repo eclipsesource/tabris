@@ -17,6 +17,9 @@ import com.eclipsesource.rap.mobile.internal.GCOperationDispatcher;
 
 public class ClientCanvasTestUtil {
   
+  public static final int LINE_WITH = 3;
+
+
   public static String createDrawings() {
     JSONArray drawings = new JSONArray();
     JSONArray polylineParam = createPolylineParam();
@@ -51,7 +54,7 @@ public class ClientCanvasTestUtil {
     JSONArray drawingParam2 = new JSONArray();
     drawingParam2.put( GCOperationDispatcher.PROP_LINE_WIDTH );
     JSONArray lineWidth = new JSONArray();
-    lineWidth.put( 3 );
+    lineWidth.put( LINE_WITH );
     drawingParam2.put( lineWidth );
     return drawingParam2;
   }
