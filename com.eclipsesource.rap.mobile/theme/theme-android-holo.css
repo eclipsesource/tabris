@@ -564,12 +564,16 @@ Shell {
   box-shadow: none;
 }
 
+Shell[APPLICATION_MODAL] {
+  padding: 15px 31px 31px 15px;
+}
+
 Shell[TITLE], Shell[BORDER] {
   background-color: #ffffff;
-  border: 1px solid #6e6e6e;
-  border-radius: 2px;
-  padding: 15px;
-  box-shadow: 0 0 4px #ababab;
+  border: 0px solid #6e6e6e;
+  border-radius: 0px;
+  padding: 17px 31px 31px 15px;
+  box-shadow: none;
 }
 
 Shell[BORDER]:inactive, Shell[TITLE]:inactive {
