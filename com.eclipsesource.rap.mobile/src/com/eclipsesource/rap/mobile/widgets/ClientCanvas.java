@@ -10,6 +10,9 @@
  ******************************************************************************/
 package com.eclipsesource.rap.mobile.widgets;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.eclipse.rwt.RWT;
@@ -40,7 +43,9 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
   
   static final String CLIENT_CANVAS = "CLIENT_CANVAS";
   
-  private String cachedDrawings;
+  private Set<String> cachedDrawings = new HashSet<String>();
+
+  private PaintListener paintListener;
 
   public ClientCanvas( Composite parent, int style ) {
     super( parent, style );
@@ -51,28 +56,40 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
   }
 
   private void addDispatchPaintListener() {
-    addPaintListener( new PaintListener() {
-      
+    paintListener = new PaintListener() {
       public void paintControl( PaintEvent event ) {
         GC gc = event.gc;
+//        gc.drawPoint( -1, -1 ); //FIXME: This is a workaround to submit basic properties
         processClientDrawings( gc );
       }
       
-    } );
+    };
+    addPaintListener( paintListener );
   }
 
+  @Override
+  public void addPaintListener( PaintListener listener ) {
+    removePaintListener( paintListener );
+    super.addPaintListener( listener );
+    super.addPaintListener( paintListener );
+  }
+  
   private void processClientDrawings( GC gc ) {
     String drawings = getDrawings();
     if( drawings != null ) {
-      cachedDrawings = drawings;
+      if( !cachedDrawings.contains( drawings ) ) {
+        cachedDrawings.add (drawings);
+      }
     }
     dispatchDrawings( gc );
   }
 
   private void dispatchDrawings( GC gc ) {
-    if( cachedDrawings != null ) {
-      GCOperationDispatcher dispatcher = new GCOperationDispatcher( gc, cachedDrawings );
-      dispatcher.dispatch();
+    if( !cachedDrawings.isEmpty() ) {
+      for( String drawing : cachedDrawings) {
+        GCOperationDispatcher dispatcher = new GCOperationDispatcher( gc, drawing );
+        dispatcher.dispatch();
+      }
     }
   }
 
