@@ -64,6 +64,11 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
     };
     addPaintListener( paintListener );
   }
+  
+  public void clear() {
+    cachedDrawings.clear();
+    redraw();
+  }
 
   @Override
   public void addPaintListener( PaintListener listener ) {

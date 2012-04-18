@@ -120,4 +120,17 @@ public class ClientCanvasTest {
     ArgumentCaptor<PaintEvent> captor = ArgumentCaptor.forClass( PaintEvent.class );
     verify( paintListener, times( 2 ) ).paintControl( captor.capture() );
   }
+  
+  @Test
+  public void testClear() {
+    CheckPaintListener listener = new CheckPaintListener();
+    clientCanvas.addPaintListener( listener );
+    
+    clientCanvas.clear();
+    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
+    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
+    Fixture.executeLifeCycleFromServerThread();
+    
+    assertTrue( listener.wasCalled() );
+  }
 }
