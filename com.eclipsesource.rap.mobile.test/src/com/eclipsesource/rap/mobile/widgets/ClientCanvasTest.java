@@ -232,7 +232,34 @@ public class ClientCanvasTest {
   }
   
   @Test
-  public void testFiresDrawingReceivedOnremoved() {
+  public void testFiresDrawingReceivedOnUndo() {
+    ClientDrawListener listener = mock( ClientDrawListener.class );
+    clientCanvas.addClientDrawListener( listener );
+    
+    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
+    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
+    Fixture.executeLifeCycleFromServerThread();
+    clientCanvas.undo();
+    
+    verify( listener, times( 2 ) ).receivedDrawing();
+  }
+  
+  @Test
+  public void testFiresDrawingReceivedOnRedo() {
+    ClientDrawListener listener = mock( ClientDrawListener.class );
+    clientCanvas.addClientDrawListener( listener );
+    
+    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
+    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
+    Fixture.executeLifeCycleFromServerThread();
+    clientCanvas.undo();
+    clientCanvas.redo();
+    
+    verify( listener, times( 3 ) ).receivedDrawing();
+  }
+  
+  @Test
+  public void testFiresDrawingReceivedOnRemoved() {
     ClientDrawListener listener = mock( ClientDrawListener.class );
     clientCanvas.addClientDrawListener( listener );
     clientCanvas.removeClientDrawListener( listener );

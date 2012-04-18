@@ -89,6 +89,7 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
       String lastObject = cachedDrawings.remove( lastObjectIndex );
       removedDrawings.add( lastObject );
       redraw();
+      fireDrawEvent();
     }
   }
   
@@ -102,6 +103,7 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
       String lastObject = removedDrawings.remove( lastObjectIndex );
       cachedDrawings.add( lastObject );
       redraw();
+      fireDrawEvent();
     }
   }
   
@@ -121,16 +123,14 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
     if( drawings != null ) {
       cacheDrawings( drawings );
       removedDrawings.clear();
+      fireDrawEvent();
     }
     dispatchDrawings( gc );
-    fireDrawEvent( drawings );
   }
 
-  private void fireDrawEvent( String drawings ) {
-    if( drawings != null ) {
-      for( ClientDrawListener listener : drawListeners ) {
-        listener.receivedDrawing();
-      }
+  private void fireDrawEvent() {
+    for( ClientDrawListener listener : drawListeners ) {
+      listener.receivedDrawing();
     }
   }
 
