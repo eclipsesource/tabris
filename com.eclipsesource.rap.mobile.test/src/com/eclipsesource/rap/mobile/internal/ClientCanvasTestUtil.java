@@ -18,13 +18,23 @@ import com.eclipsesource.rap.mobile.internal.GCOperationDispatcher;
 public class ClientCanvasTestUtil {
   
   public static final int LINE_WITH = 3;
-
-
-  public static String createDrawings() {
+  
+  public static String createDrawingsWithoutLineWidth() {
     JSONArray drawings = new JSONArray();
     JSONArray polylineParam = createPolylineParam();
     drawings.put( polylineParam );
-    JSONArray lineWidthParam = createLineWidthParam();
+    JSONArray colorParam = createColorParam();
+    drawings.put( colorParam );
+    JSONArray polylineParam2 = createPolylineParam();
+    drawings.put( polylineParam2 );
+    return drawings.toString();
+  }
+  
+  public static String createDrawings( int lineWidth ) {
+    JSONArray drawings = new JSONArray();
+    JSONArray polylineParam = createPolylineParam();
+    drawings.put( polylineParam );
+    JSONArray lineWidthParam = createLineWidthParam( lineWidth );
     drawings.put( lineWidthParam );
     JSONArray colorParam = createColorParam();
     drawings.put( colorParam );
@@ -50,12 +60,12 @@ public class ClientCanvasTestUtil {
     return polyline;
   }
 
-  private static JSONArray createLineWidthParam() {
+  private static JSONArray createLineWidthParam( int lineWidth ) {
     JSONArray drawingParam2 = new JSONArray();
     drawingParam2.put( GCOperationDispatcher.PROP_LINE_WIDTH );
-    JSONArray lineWidth = new JSONArray();
-    lineWidth.put( LINE_WITH );
-    drawingParam2.put( lineWidth );
+    JSONArray lineWidthArray = new JSONArray();
+    lineWidthArray.put( lineWidth );
+    drawingParam2.put( lineWidthArray );
     return drawingParam2;
   }
 
@@ -66,10 +76,10 @@ public class ClientCanvasTestUtil {
     color.put( 50 );
     color.put( 100 );
     color.put( 200 );
+    color.put( 10 ); // alpha
     drawingParam3.put( color );
     return drawingParam3;
   }
-  
   
   private ClientCanvasTestUtil() {
     // prevent instantiation

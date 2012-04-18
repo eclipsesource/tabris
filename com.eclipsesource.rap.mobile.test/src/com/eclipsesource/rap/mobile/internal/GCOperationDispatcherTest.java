@@ -11,6 +11,7 @@
 package com.eclipsesource.rap.mobile.internal;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.AdditionalMatchers.aryEq;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
@@ -36,7 +37,7 @@ public class GCOperationDispatcherTest {
     Fixture.setUp();
     new Display();
     gc = mock( GC.class );
-    dispatcher = new GCOperationDispatcher( gc, ClientCanvasTestUtil.createDrawings() );
+    dispatcher = new GCOperationDispatcher( gc, ClientCanvasTestUtil.createDrawings( 3 ) );
   }
   
   @After
@@ -53,6 +54,7 @@ public class GCOperationDispatcherTest {
     order.verify( gc ).setLineWidth( 3 );
     ArgumentCaptor<Color> captor = ArgumentCaptor.forClass( Color.class );
     order.verify( gc ).setForeground( captor.capture() );
+    order.verify( gc ).setAlpha( 10 );
     Color color = captor.getValue();
     assertEquals( 50, color.getRed() );
     assertEquals( 100, color.getGreen() );
@@ -70,6 +72,15 @@ public class GCOperationDispatcherTest {
     GCOperationDispatcher dispatcher2 = new GCOperationDispatcher( gc, "[{ 'test' : 'test' }]" );
     
     dispatcher2.dispatch();
+  }
+  
+  @Test
+  public void testRestoresState() {
+    dispatcher.dispatch();
+    
+    assertEquals( 0, gc.getAlpha() );
+    assertEquals( 0, gc.getLineWidth() );
+    assertNull( gc.getForeground() );
   }
 
 }

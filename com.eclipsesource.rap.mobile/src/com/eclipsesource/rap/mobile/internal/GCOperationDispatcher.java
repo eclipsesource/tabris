@@ -47,15 +47,26 @@ public class GCOperationDispatcher {
     int lineWidth = gc.getLineWidth();
     Color foreground = gc.getForeground();
     int alpha = gc.getAlpha();
+    dispatchOperations();
+    restoreLastSettings( lineWidth, foreground, alpha );
+    forceUpdateProperties(); 
+  }
+
+  private void dispatchOperations() throws JSONException {
     for( int i = 0; i < drawings.length(); i++ ) {
       JSONArray operation = drawings.getJSONArray( i );
       dispatchOperation( operation );
     }
+  }
+
+  private void restoreLastSettings( int lineWidth, Color foreground, int alpha ) {
     gc.setLineWidth( lineWidth );
     gc.setForeground( foreground );
     gc.setAlpha( alpha );
-    gc.drawPoint( -1, -1 ); //FIXME: This is a workaround
+  }
 
+  private void forceUpdateProperties() {
+    gc.drawPoint( -1, -1 ); //TODO: This is a workaround, see RAP bug 377070
   }
 
   private void dispatchOperation( JSONArray operation ) throws JSONException {

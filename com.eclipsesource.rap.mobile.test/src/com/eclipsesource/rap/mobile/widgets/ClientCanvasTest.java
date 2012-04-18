@@ -11,8 +11,15 @@
 package com.eclipsesource.rap.mobile.widgets;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
+import java.util.EventListener;
 
 import org.eclipse.rap.rwt.testfixture.Fixture;
+import org.eclipse.rwt.internal.events.IEventAdapter;
 import org.eclipse.rwt.internal.protocol.IClientObjectAdapter;
 import org.eclipse.rwt.lifecycle.WidgetUtil;
 import org.eclipse.swt.SWT;
@@ -23,6 +30,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 import com.eclipsesource.rap.mobile.internal.ClientCanvasTestUtil;
 
@@ -52,19 +60,64 @@ public class ClientCanvasTest {
     assertEquals( ClientCanvas.CLIENT_CANVAS, data );
   }
   
+  private class CheckPaintListener implements PaintListener {
+    
+    private boolean wasCalled;
+
+    public boolean wasCalled() {
+      return wasCalled;
+    }
+    
+    public void paintControl( PaintEvent event ) {
+      wasCalled = true;
+    }
+  }
   
   @Test
   public void testRedraws() {
-    clientCanvas.addPaintListener( new PaintListener() {
-      
-      public void paintControl( PaintEvent event ) {
-        // means that the gc.setLineWidth method was called
-        assertEquals( ClientCanvasTestUtil.LINE_WITH, event.gc.getLineWidth() );
-      }
-    } );
+    CheckPaintListener listener = new CheckPaintListener();
+    clientCanvas.addPaintListener( listener );
     
     IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
-    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings() );
+    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 3 ) );
     Fixture.executeLifeCycleFromServerThread();
+    
+    assertTrue( listener.wasCalled() );
+  }
+  
+  @Test
+  public void testAddDispatchListener() {
+    IEventAdapter adapter = clientCanvas.getAdapter( IEventAdapter.class );
+    EventListener[] listeners = adapter.getListener( PaintListener.class );
+    
+    assertEquals( 1, listeners.length );
+  }
+  
+  @Test
+  public void testAddsDispatchListenerLast() {
+    PaintListener listener = mock( PaintListener.class );
+    
+    clientCanvas.addPaintListener( listener );
+    
+    IEventAdapter adapter = clientCanvas.getAdapter( IEventAdapter.class );
+    EventListener[] listeners = adapter.getListener( PaintListener.class );
+    
+    assertEquals( listener, listeners[ 0 ] );
+    assertEquals( 2, listeners.length );
+  }
+  
+  @Test
+  public void testCachesDrawings() {
+    PaintListener paintListener = mock( PaintListener.class );
+    clientCanvas.addPaintListener( paintListener );
+    
+    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
+    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
+    Fixture.executeLifeCycleFromServerThread();
+    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawingsWithoutLineWidth() );
+    Fixture.executeLifeCycleFromServerThread();
+    
+    ArgumentCaptor<PaintEvent> captor = ArgumentCaptor.forClass( PaintEvent.class );
+    verify( paintListener, times( 2 ) ).paintControl( captor.capture() );
   }
 }

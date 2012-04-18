@@ -10,8 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.rap.mobile.widgets;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -43,12 +43,12 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
   
   static final String CLIENT_CANVAS = "CLIENT_CANVAS";
   
-  private Set<String> cachedDrawings = new HashSet<String>();
-
+  private List<String> cachedDrawings;
   private PaintListener paintListener;
 
   public ClientCanvas( Composite parent, int style ) {
     super( parent, style );
+    cachedDrawings = new ArrayList<String>();
     RWT.getLifeCycle().addPhaseListener( this );
     RWT.getSessionStore().addSessionStoreListener( this );
     addDispatchPaintListener();
@@ -59,10 +59,8 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
     paintListener = new PaintListener() {
       public void paintControl( PaintEvent event ) {
         GC gc = event.gc;
-//        gc.drawPoint( -1, -1 ); //FIXME: This is a workaround to submit basic properties
         processClientDrawings( gc );
       }
-      
     };
     addPaintListener( paintListener );
   }
@@ -77,11 +75,15 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
   private void processClientDrawings( GC gc ) {
     String drawings = getDrawings();
     if( drawings != null ) {
-      if( !cachedDrawings.contains( drawings ) ) {
-        cachedDrawings.add (drawings);
-      }
+      cacheDrawings( drawings );
     }
     dispatchDrawings( gc );
+  }
+
+  private void cacheDrawings( String drawings ) {
+    if( !cachedDrawings.contains( drawings ) ) {
+      cachedDrawings.add( drawings );
+    }
   }
 
   private void dispatchDrawings( GC gc ) {
