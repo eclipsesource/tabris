@@ -44,11 +44,13 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
   static final String CLIENT_CANVAS = "CLIENT_CANVAS";
   
   private List<String> cachedDrawings;
+  private List<String> removedDrawings;
   private PaintListener paintListener;
 
   public ClientCanvas( Composite parent, int style ) {
     super( parent, style );
     cachedDrawings = new ArrayList<String>();
+    removedDrawings = new ArrayList<String>();
     RWT.getLifeCycle().addPhaseListener( this );
     RWT.getSessionStore().addSessionStoreListener( this );
     addDispatchPaintListener();
@@ -68,6 +70,28 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
   public void clear() {
     cachedDrawings.clear();
     redraw();
+  }
+  
+  public void undo() {
+    int lastObjectIndex = cachedDrawings.size() - 1;
+    String lastObject = cachedDrawings.remove( lastObjectIndex );
+    removedDrawings.add( lastObject );
+    redraw();
+  }
+  
+  public boolean hasUndo() {
+    return !cachedDrawings.isEmpty();
+  }
+  
+  public void redo() {
+    int lastObjectIndex = removedDrawings.size() - 1;
+    String lastObject = removedDrawings.remove( lastObjectIndex );
+    cachedDrawings.add( lastObject );
+    redraw();
+  }
+  
+  public boolean hasRedo() {
+    return !removedDrawings.isEmpty();
   }
 
   @Override

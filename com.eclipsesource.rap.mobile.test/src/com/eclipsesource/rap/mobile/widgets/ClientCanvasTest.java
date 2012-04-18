@@ -11,6 +11,7 @@
 package com.eclipsesource.rap.mobile.widgets;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -130,6 +131,79 @@ public class ClientCanvasTest {
     IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
     Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
     Fixture.executeLifeCycleFromServerThread();
+    
+    assertTrue( listener.wasCalled() );
+  }
+  
+  @Test
+  public void testHasUndo() {
+    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
+    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
+    Fixture.executeLifeCycleFromServerThread();
+    
+    assertTrue( clientCanvas.hasUndo() );
+    assertFalse( clientCanvas.hasRedo() );
+  }
+  
+  @Test
+  public void testUndo() {
+    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
+    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
+    Fixture.executeLifeCycleFromServerThread();
+    
+    clientCanvas.undo();
+    
+    assertFalse( clientCanvas.hasUndo() );
+    assertTrue( clientCanvas.hasRedo() );
+  }
+  
+  @Test
+  public void testUndoRedraws() {
+    CheckPaintListener listener = new CheckPaintListener();
+    clientCanvas.addPaintListener( listener );
+    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
+    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
+    Fixture.executeLifeCycleFromServerThread();
+    
+    clientCanvas.undo();
+    
+    assertTrue( listener.wasCalled() );
+  }
+  
+  @Test
+  public void testHasRedo() {
+    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
+    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
+    Fixture.executeLifeCycleFromServerThread();
+    
+    clientCanvas.undo();
+
+    assertTrue( clientCanvas.hasRedo() );
+  }
+  
+  @Test
+  public void testRedo() {
+    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
+    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
+    Fixture.executeLifeCycleFromServerThread();
+    clientCanvas.undo();
+    
+    clientCanvas.redo();
+    
+    assertTrue( clientCanvas.hasUndo() );
+    assertFalse( clientCanvas.hasRedo() );
+  }
+  
+  @Test
+  public void testRedoRedraws() {
+    CheckPaintListener listener = new CheckPaintListener();
+    clientCanvas.addPaintListener( listener );
+    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
+    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
+    Fixture.executeLifeCycleFromServerThread();
+    clientCanvas.undo();
+    
+    clientCanvas.redo();
     
     assertTrue( listener.wasCalled() );
   }
