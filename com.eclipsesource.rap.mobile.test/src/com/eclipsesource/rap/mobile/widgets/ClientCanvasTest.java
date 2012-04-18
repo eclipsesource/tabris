@@ -14,6 +14,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -216,5 +217,30 @@ public class ClientCanvasTest {
     Fixture.executeLifeCycleFromServerThread();
     
     assertFalse( clientCanvas.hasRedo() );
+  }
+  
+  @Test
+  public void testFiresDrawingReceived() {
+    ClientDrawListener listener = mock( ClientDrawListener.class );
+    clientCanvas.addClientDrawListener( listener );
+    
+    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
+    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
+    Fixture.executeLifeCycleFromServerThread();
+    
+    verify( listener ).receivedDrawing();
+  }
+  
+  @Test
+  public void testFiresDrawingReceivedOnremoved() {
+    ClientDrawListener listener = mock( ClientDrawListener.class );
+    clientCanvas.addClientDrawListener( listener );
+    clientCanvas.removeClientDrawListener( listener );
+    
+    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
+    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
+    Fixture.executeLifeCycleFromServerThread();
+    
+    verify( listener, never() ).receivedDrawing();
   }
 }

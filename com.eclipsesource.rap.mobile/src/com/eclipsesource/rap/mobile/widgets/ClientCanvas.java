@@ -45,12 +45,14 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
   
   private List<String> cachedDrawings;
   private List<String> removedDrawings;
+  private List<ClientDrawListener> drawListeners;
   private PaintListener paintListener;
 
   public ClientCanvas( Composite parent, int style ) {
     super( parent, style );
     cachedDrawings = new ArrayList<String>();
     removedDrawings = new ArrayList<String>();
+    drawListeners = new ArrayList<ClientDrawListener>();
     RWT.getLifeCycle().addPhaseListener( this );
     RWT.getSessionStore().addSessionStoreListener( this );
     addDispatchPaintListener();
@@ -62,9 +64,18 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
       public void paintControl( PaintEvent event ) {
         GC gc = event.gc;
         processClientDrawings( gc );
+        gc.drawPoint( -1, -1 ); //TODO: This is a workaround to force updates, see RAP bug 377070
       }
     };
     addPaintListener( paintListener );
+  }
+  
+  public void addClientDrawListener( ClientDrawListener listener ) {
+    drawListeners.add( listener );
+  }
+  
+  public void removeClientDrawListener( ClientDrawListener listener ) {
+    drawListeners.remove( listener );
   }
   
   public void clear() {
@@ -112,6 +123,15 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
       removedDrawings.clear();
     }
     dispatchDrawings( gc );
+    fireDrawEvent( drawings );
+  }
+
+  private void fireDrawEvent( String drawings ) {
+    if( drawings != null ) {
+      for( ClientDrawListener listener : drawListeners ) {
+        listener.receivedDrawing();
+      }
+    }
   }
 
   private void cacheDrawings( String drawings ) {
