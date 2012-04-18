@@ -81,6 +81,7 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
   public void clear() {
     cachedDrawings.clear();
     redraw();
+    fireDrawEvent();
   }
   
   public void undo() {

@@ -259,6 +259,19 @@ public class ClientCanvasTest {
   }
   
   @Test
+  public void testFiresDrawingReceivedOnClear() {
+    ClientDrawListener listener = mock( ClientDrawListener.class );
+    clientCanvas.addClientDrawListener( listener );
+    
+    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
+    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
+    Fixture.executeLifeCycleFromServerThread();
+    clientCanvas.clear();
+    
+    verify( listener, times( 2 ) ).receivedDrawing();
+  }
+  
+  @Test
   public void testFiresDrawingReceivedOnRemoved() {
     ClientDrawListener listener = mock( ClientDrawListener.class );
     clientCanvas.addClientDrawListener( listener );
