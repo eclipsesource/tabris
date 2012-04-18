@@ -207,4 +207,14 @@ public class ClientCanvasTest {
     
     assertTrue( listener.wasCalled() );
   }
+  
+  @Test
+  public void testDrawDeletesRedoStack() {
+    clientCanvas.undo();
+    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
+    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
+    Fixture.executeLifeCycleFromServerThread();
+    
+    assertFalse( clientCanvas.hasRedo() );
+  }
 }

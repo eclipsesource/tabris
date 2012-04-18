@@ -73,10 +73,12 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
   }
   
   public void undo() {
-    int lastObjectIndex = cachedDrawings.size() - 1;
-    String lastObject = cachedDrawings.remove( lastObjectIndex );
-    removedDrawings.add( lastObject );
-    redraw();
+    if( !cachedDrawings.isEmpty() ) {
+      int lastObjectIndex = cachedDrawings.size() - 1;
+      String lastObject = cachedDrawings.remove( lastObjectIndex );
+      removedDrawings.add( lastObject );
+      redraw();
+    }
   }
   
   public boolean hasUndo() {
@@ -84,10 +86,12 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
   }
   
   public void redo() {
-    int lastObjectIndex = removedDrawings.size() - 1;
-    String lastObject = removedDrawings.remove( lastObjectIndex );
-    cachedDrawings.add( lastObject );
-    redraw();
+    if( !removedDrawings.isEmpty() ) {
+      int lastObjectIndex = removedDrawings.size() - 1;
+      String lastObject = removedDrawings.remove( lastObjectIndex );
+      cachedDrawings.add( lastObject );
+      redraw();
+    }
   }
   
   public boolean hasRedo() {
@@ -105,6 +109,7 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
     String drawings = getDrawings();
     if( drawings != null ) {
       cacheDrawings( drawings );
+      removedDrawings.clear();
     }
     dispatchDrawings( gc );
   }
@@ -116,11 +121,9 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
   }
 
   private void dispatchDrawings( GC gc ) {
-    if( !cachedDrawings.isEmpty() ) {
-      for( String drawing : cachedDrawings) {
-        GCOperationDispatcher dispatcher = new GCOperationDispatcher( gc, drawing );
-        dispatcher.dispatch();
-      }
+    for( String drawing : cachedDrawings) {
+      GCOperationDispatcher dispatcher = new GCOperationDispatcher( gc, drawing );
+      dispatcher.dispatch();
     }
   }
 
