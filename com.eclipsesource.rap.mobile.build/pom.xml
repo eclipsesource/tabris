@@ -26,7 +26,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <tycho-version>0.14.0</tycho-version>
     <tycho-groupid>org.eclipse.tycho</tycho-groupid>
-    
+    <findbugs-version>2.3.3</findbugs-version>
     <surefire-version>2.9</surefire-version>
     <junit-version>4.8.2</junit-version>
     <mockito-version>1.8.4</mockito-version>
