@@ -913,14 +913,14 @@ Text-Message {
 
 ToolBar {
   font: 14px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
-  color: #4a4a4a;
-  padding: 0;
+  color: #4a4a4a;  
   spacing: 0;
   background-color: #fff;
   background-image: none;
   border: none;
   border-radius: 0;
   opacity: 1;
+  padding: 3px 0px;
 }
 
 ToolBar[BORDER] {
@@ -978,7 +978,7 @@ ToolItem-Separator {
 
 ToolItem[FLAT] {
   border: none;
-  padding: 0;
+  padding: 11px 0px;
 }
 
 /* Tree default theme */
