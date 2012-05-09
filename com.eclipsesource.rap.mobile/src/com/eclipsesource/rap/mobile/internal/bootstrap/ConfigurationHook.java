@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.rap.rwt.osgi.ApplicationLauncher;
-import org.eclipse.rwt.application.ApplicationConfigurator;
+import org.eclipse.rwt.application.ApplicationConfiguration;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceEvent;
@@ -27,22 +27,22 @@ import org.osgi.framework.hooks.service.FindHook;
 import org.osgi.framework.hooks.service.ListenerHook.ListenerInfo;
 
 
-public class ConfiguratorHook implements EventListenerHook, FindHook {
+public class ConfigurationHook implements EventListenerHook, FindHook {
   
   static final String RWT_OSGI_ID = "org.eclipse.rap.rwt.osgi";
   private final BundleContext bundleContext;
-  private final Map<ApplicationConfigurator, ProxyApplicationConfigurator> proxyMap;
-  private final Map<ProxyApplicationConfigurator, ServiceRegistration<?>> proxyRegistrationMap;
+  private final Map<ApplicationConfiguration, ProxyApplicationConfiguration> proxyMap;
+  private final Map<ProxyApplicationConfiguration, ServiceRegistration<?>> proxyRegistrationMap;
 
-  public ConfiguratorHook( BundleContext context ) {
+  public ConfigurationHook( BundleContext context ) {
     bundleContext = context;
-    proxyMap = new HashMap<ApplicationConfigurator, ProxyApplicationConfigurator>();
-    proxyRegistrationMap = new HashMap<ProxyApplicationConfigurator, ServiceRegistration<?>>();
+    proxyMap = new HashMap<ApplicationConfiguration, ProxyApplicationConfiguration>();
+    proxyRegistrationMap = new HashMap<ProxyApplicationConfiguration, ServiceRegistration<?>>();
   }
 
   public void event( ServiceEvent event, Map<BundleContext, Collection<ListenerInfo>> listeners ) {
     Object service = bundleContext.getService( event.getServiceReference() );
-    if( isPlainConfigurator( service ) ) {
+    if( isPlainConfiguration( service ) ) {
       dispatchEvent( event, service );
       listeners.remove( getRWTOSGiBundleContext() );
     } else {
@@ -52,30 +52,30 @@ public class ConfiguratorHook implements EventListenerHook, FindHook {
 
   private void dispatchEvent( ServiceEvent event, Object service ) {
     if( event.getType() == ServiceEvent.REGISTERED ) {
-      registerProxy( ( ApplicationConfigurator ) service );
+      registerProxy( ( ApplicationConfiguration ) service );
     } else if( event.getType() == ServiceEvent.UNREGISTERING ) {
-      unregisterProxy( ( ApplicationConfigurator )service );
+      unregisterProxy( ( ApplicationConfiguration )service );
       bundleContext.ungetService( event.getServiceReference() );
     }
   }
 
-  private void registerProxy( ApplicationConfigurator service ) {
-    ProxyApplicationConfigurator proxy = new ProxyApplicationConfigurator( service );
+  private void registerProxy( ApplicationConfiguration service ) {
+    ProxyApplicationConfiguration proxy = new ProxyApplicationConfiguration( service );
     proxyMap.put( service, proxy );
     ServiceRegistration<?> registration 
-      = bundleContext.registerService( ApplicationConfigurator.class.getName(), proxy, null );
+      = bundleContext.registerService( ApplicationConfiguration.class.getName(), proxy, null );
     proxyRegistrationMap.put( proxy, registration );
   }
 
-  private void unregisterProxy( ApplicationConfigurator service ) {
-    ProxyApplicationConfigurator proxy = proxyMap.remove( service );
+  private void unregisterProxy( ApplicationConfiguration service ) {
+    ProxyApplicationConfiguration proxy = proxyMap.remove( service );
     if( proxy != null ) {
       unregisterService( proxy );
     }
     proxy.unregister();
   }
 
-  private void unregisterService( ProxyApplicationConfigurator proxy ) {
+  private void unregisterService( ProxyApplicationConfiguration proxy ) {
     ServiceRegistration<?> registration = proxyRegistrationMap.remove( proxy );
     if( registration != null ) {
       registration.unregister();
@@ -89,28 +89,28 @@ public class ConfiguratorHook implements EventListenerHook, FindHook {
                     Collection<ServiceReference<?>> references )
   {
     
-    if( name != null && name.equals( ApplicationConfigurator.class.getName() ) ) {
+    if( name != null && name.equals( ApplicationConfiguration.class.getName() ) ) {
       if( context.getBundle().getSymbolicName().equals( RWT_OSGI_ID ) ) {
         ArrayList<ServiceReference<?>> serviceReferences = new ArrayList<ServiceReference<?>>( references );
         for( ServiceReference<?> serviceReference : serviceReferences ) {
-          removeApplicationConfigurators( references, serviceReference );
+          removeApplicationConfigurations( references, serviceReference );
         }
       }
     }
   }
 
-  private void removeApplicationConfigurators( Collection<ServiceReference<?>> references,
+  private void removeApplicationConfigurations( Collection<ServiceReference<?>> references,
                                                ServiceReference<?> serviceReference )
   {
     Object service = bundleContext.getService( serviceReference );
-    if( isPlainConfigurator( service ) ) {
+    if( isPlainConfiguration( service ) ) {
       references.remove( serviceReference );
     }
     bundleContext.ungetService( serviceReference );
   }
 
-  private boolean isPlainConfigurator( Object service ) {
-    return service instanceof ApplicationConfigurator && !( service instanceof ProxyApplicationConfigurator );
+  private boolean isPlainConfiguration( Object service ) {
+    return service instanceof ApplicationConfiguration && !( service instanceof ProxyApplicationConfiguration );
   }
 
   // for testing purpose

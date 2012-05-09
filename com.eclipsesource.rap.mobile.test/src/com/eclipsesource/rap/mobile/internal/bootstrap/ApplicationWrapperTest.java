@@ -14,22 +14,22 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import org.eclipse.rwt.application.ApplicationConfigurator;
-import org.eclipse.rwt.internal.application.ApplicationConfigurationImpl;
+import org.eclipse.rwt.application.ApplicationConfiguration;
 import org.eclipse.rwt.internal.application.ApplicationContext;
+import org.eclipse.rwt.internal.application.ApplicationImpl;
 import org.junit.Test;
 
 
 @SuppressWarnings("restriction")
-public class ConfigurationWrapperTest {
+public class ApplicationWrapperTest {
   
   @Test
   public void testCreatesWithRightContext() {
-    ApplicationConfigurationImpl configuration = mock( ApplicationConfigurationImpl.class );
-    ApplicationConfigurator configurator = mock( ApplicationConfigurator.class );
+    ApplicationImpl application = mock( ApplicationImpl.class );
+    ApplicationConfiguration configuration = mock( ApplicationConfiguration.class );
     
-    new ConfigurationWrapper( configuration, configurator );
+    new ApplicationWrapper( application, configuration );
     
-    verify( configuration ).getAdapter( eq( ApplicationContext.class ) );
+    verify( application ).getAdapter( eq( ApplicationContext.class ) );
   }
 }

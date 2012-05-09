@@ -49,10 +49,10 @@ public class ActivatorTest {
     
     InOrder order = inOrder( context );
     order.verify( context ).registerService( eq( FindHook.class.getName() ), 
-                                             any( ConfiguratorHook.class ), 
+                                             any( ConfigurationHook.class ), 
                                              any( Dictionary.class ) );
     order.verify( context ).registerService( eq( EventListenerHook.class.getName() ), 
-                                             any( ConfiguratorHook.class ), 
+                                             any( ConfigurationHook.class ), 
                                              any( Dictionary.class ) );
   }
   
@@ -71,7 +71,7 @@ public class ActivatorTest {
   private ServiceRegistration createFindRegistration() {
     ServiceRegistration findRegistration = mock( ServiceRegistration.class );
     when( context.registerService( eq( FindHook.class.getName() ), 
-                                   any( ConfiguratorHook.class ), 
+                                   any( ConfigurationHook.class ), 
                                    any( Dictionary.class ) ) ).thenReturn( findRegistration );
     return findRegistration;
   }
@@ -79,7 +79,7 @@ public class ActivatorTest {
   private ServiceRegistration createEventListenerRegistration() {
     ServiceRegistration eventRegistration = mock( ServiceRegistration.class );
     when( context.registerService( eq( EventListenerHook.class.getName() ), 
-                                   any( ConfiguratorHook.class ), 
+                                   any( ConfigurationHook.class ), 
                                    any( Dictionary.class ) ) ).thenReturn( eventRegistration );
     return eventRegistration;
   }

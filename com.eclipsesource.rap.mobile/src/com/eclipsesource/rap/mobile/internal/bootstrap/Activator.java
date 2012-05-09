@@ -23,7 +23,7 @@ public class Activator implements BundleActivator {
   private ServiceRegistration<?> eventListenerRegistration;
 
   public void start( BundleContext context ) throws Exception {
-    ConfiguratorHook hook = new ConfiguratorHook( context );
+    ConfigurationHook hook = new ConfigurationHook( context );
     findRegistration = context.registerService( FindHook.class.getName(), hook, null );
     eventListenerRegistration = context.registerService( EventListenerHook.class.getName(), hook, null );
   }

@@ -28,7 +28,7 @@ import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.rwt.application.ApplicationConfigurator;
+import org.eclipse.rwt.application.ApplicationConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,15 +44,15 @@ import org.osgi.framework.hooks.service.ListenerHook.ListenerInfo;
 
 @RunWith( MockitoJUnitRunner.class )
 @SuppressWarnings("unchecked")
-public class ConfiguratorHookTest {
+public class ConfigurationHookTest {
   
   @Mock private BundleContext context;
   @Mock private BundleContext rwtContext;
-  private ConfiguratorHook hook;
+  private ConfigurationHook hook;
   
   @Before
   public void setUp() {
-    ConfiguratorHook original = new ConfiguratorHook( context );
+    ConfigurationHook original = new ConfigurationHook( context );
     hook = spy( original );
     doReturn( rwtContext ).when( hook ).getRWTOSGiBundleContext();
   }
@@ -75,14 +75,14 @@ public class ConfiguratorHookTest {
     Map<BundleContext, Collection<ListenerInfo>> listeners = createListeners();
     ServiceReference reference = mock( ServiceReference.class );
     ServiceEvent serviceEvent = new ServiceEvent( ServiceEvent.REGISTERED, reference );
-    Object service = mock( ApplicationConfigurator.class );
+    Object service = mock( ApplicationConfiguration.class );
     when( context.getService( reference ) ).thenReturn( service );
     
     hook.event( serviceEvent, listeners );
     
     assertEquals( 0, listeners.size() );
-    verify( context ).registerService( eq( ApplicationConfigurator.class.getName() ), 
-                                       any( ProxyApplicationConfigurator.class ), 
+    verify( context ).registerService( eq( ApplicationConfiguration.class.getName() ), 
+                                       any( ProxyApplicationConfiguration.class ), 
                                        any( Dictionary.class ) );
   }
   
@@ -91,14 +91,14 @@ public class ConfiguratorHookTest {
     Map<BundleContext, Collection<ListenerInfo>> listeners = createListeners();
     ServiceReference reference = mock( ServiceReference.class );
     ServiceEvent serviceEvent = new ServiceEvent( ServiceEvent.REGISTERED, reference );
-    Object service = mock( ProxyApplicationConfigurator.class );
+    Object service = mock( ProxyApplicationConfiguration.class );
     when( context.getService( reference ) ).thenReturn( service );
     
     hook.event( serviceEvent, listeners );
     
     assertEquals( 1, listeners.size() );
-    verify( context, never() ).registerService( eq( ApplicationConfigurator.class.getName() ), 
-                                                any( ProxyApplicationConfigurator.class ), 
+    verify( context, never() ).registerService( eq( ApplicationConfiguration.class.getName() ), 
+                                                any( ProxyApplicationConfiguration.class ), 
                                                 any( Dictionary.class ) );
   }
   
@@ -108,7 +108,7 @@ public class ConfiguratorHookTest {
     ServiceReference reference = mock( ServiceReference.class );
     ServiceEvent registerEvent = new ServiceEvent( ServiceEvent.REGISTERED, reference );
     ServiceEvent unregisterEvent = new ServiceEvent( ServiceEvent.UNREGISTERING, reference );
-    Object service = mock( ApplicationConfigurator.class );
+    Object service = mock( ApplicationConfiguration.class );
     when( context.getService( reference ) ).thenReturn( service );
     ServiceRegistration registration = mock( ServiceRegistration.class );
     when( context.registerService( anyString(), 
@@ -128,7 +128,7 @@ public class ConfiguratorHookTest {
     ServiceReference reference = mock( ServiceReference.class );
     ServiceEvent registerEvent = new ServiceEvent( ServiceEvent.REGISTERED, reference );
     ServiceEvent unregisterEvent = new ServiceEvent( ServiceEvent.UNREGISTERING, reference );
-    Object service = mock( ProxyApplicationConfigurator.class );
+    Object service = mock( ProxyApplicationConfiguration.class );
     when( context.getService( reference ) ).thenReturn( service );
     ServiceRegistration registration = mock( ServiceRegistration.class );
     when( context.registerService( anyString(), 
@@ -146,18 +146,18 @@ public class ConfiguratorHookTest {
   public void testFiltersPlainConfigurators() {
     ServiceReference plainReference = mock( ServiceReference.class );
     ServiceReference proxyReference = mock( ServiceReference.class );
-    ApplicationConfigurator plain = mock( ApplicationConfigurator.class );
-    ApplicationConfigurator proxy = mock( ProxyApplicationConfigurator.class );
+    ApplicationConfiguration plain = mock( ApplicationConfiguration.class );
+    ApplicationConfiguration proxy = mock( ProxyApplicationConfiguration.class );
     when( context.getService( plainReference ) ).thenReturn( plain );
     when( context.getService( proxyReference ) ).thenReturn( proxy );
     Collection<ServiceReference<?>> references = new ArrayList<ServiceReference<?>>();
     references.add( plainReference );
     references.add( proxyReference );
     Bundle bundle = mock( Bundle.class );
-    when( bundle.getSymbolicName() ).thenReturn( ConfiguratorHook.RWT_OSGI_ID );
+    when( bundle.getSymbolicName() ).thenReturn( ConfigurationHook.RWT_OSGI_ID );
     when( rwtContext.getBundle() ).thenReturn( bundle );
     
-    hook.find( rwtContext, ApplicationConfigurator.class.getName(), null, true, references );
+    hook.find( rwtContext, ApplicationConfiguration.class.getName(), null, true, references );
     
     assertFalse( references.contains( plainReference ) );
   }

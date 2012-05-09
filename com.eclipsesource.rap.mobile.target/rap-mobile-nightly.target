@@ -5,8 +5,8 @@
 <locations>
 <location path="${project_loc:com.eclipsesource.rap.mobile.target}/bundles" type="Directory"/>
 <location includeAllPlatforms="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.rap.runtime.requirements.feature.group" version="1.5.0.20120319-0119"/>
-<unit id="org.eclipse.rap.runtime.feature.group" version="1.5.0.20120319-0119"/>
+<unit id="org.eclipse.rap.runtime.requirements.feature.group" version="1.5.0.20120509-0118"/>
+<unit id="org.eclipse.rap.runtime.feature.group" version="1.5.0.20120509-0118"/>
 <repository location="http://download.eclipse.org/rt/rap/nightly/runtime/"/>
 </location>
 </locations>

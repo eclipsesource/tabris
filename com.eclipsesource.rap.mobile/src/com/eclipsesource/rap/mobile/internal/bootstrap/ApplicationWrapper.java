@@ -10,16 +10,16 @@
  ******************************************************************************/
 package com.eclipsesource.rap.mobile.internal.bootstrap;
 
-import org.eclipse.rwt.application.ApplicationConfigurator;
-import org.eclipse.rwt.internal.application.ApplicationConfigurationImpl;
+import org.eclipse.rwt.application.ApplicationConfiguration;
 import org.eclipse.rwt.internal.application.ApplicationContext;
+import org.eclipse.rwt.internal.application.ApplicationImpl;
 
 @SuppressWarnings("restriction")
-public class ConfigurationWrapper extends ApplicationConfigurationImpl {
+public class ApplicationWrapper extends ApplicationImpl {
 
-  public ConfigurationWrapper( ApplicationConfigurationImpl configuration, ApplicationConfigurator configurator )
+  public ApplicationWrapper( ApplicationImpl application, ApplicationConfiguration configuration )
   {
-    super( configuration.getAdapter( ApplicationContext.class ), configurator );
+    super( application.getAdapter( ApplicationContext.class ), configuration );
   }
 
 }

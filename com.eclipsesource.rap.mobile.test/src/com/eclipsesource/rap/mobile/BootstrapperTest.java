@@ -21,9 +21,9 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 
-import org.eclipse.rwt.application.ApplicationConfigurator;
-import org.eclipse.rwt.internal.application.ApplicationConfigurationImpl;
+import org.eclipse.rwt.application.ApplicationConfiguration;
 import org.eclipse.rwt.internal.application.ApplicationContext;
+import org.eclipse.rwt.internal.application.ApplicationImpl;
 import org.eclipse.rwt.internal.lifecycle.PhaseListenerRegistry;
 import org.eclipse.rwt.internal.theme.Theme;
 import org.eclipse.rwt.internal.theme.ThemeManager;
@@ -31,55 +31,55 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
-import com.eclipsesource.rap.mobile.internal.bootstrap.ProxyApplicationConfigurator;
+import com.eclipsesource.rap.mobile.internal.bootstrap.ProxyApplicationConfiguration;
 import com.eclipsesource.rap.mobile.internal.bootstrap.ThemePhaseListener;
 
 
 @SuppressWarnings("restriction")
 public class BootstrapperTest {
   
-  private ApplicationConfigurator configurator;
-  private ApplicationConfigurationImpl configuration;
+  private ApplicationConfiguration configuration;
+  private ApplicationImpl application;
   private PhaseListenerRegistry registry;
   private ThemeManager themeManager;
 
   @Before
   public void setUp() {
-    configurator = mock( ProxyApplicationConfigurator.class );
-    configuration = mockConfiguration();
+    configuration = mock( ProxyApplicationConfiguration.class );
+    application = mockConfiguration();
   }
   
   @Test
   public void testRegistersTheme() {
-    Bootstrapper.bootstrap( configuration );
+    Bootstrapper.bootstrap( application );
     
-    verify( configuration ).addStyleSheet( eq( Bootstrapper.THEME_ID_ANDROID ), anyString() );
-    verify( configuration ).addStyleSheet( eq( Bootstrapper.THEME_ID_IOS ), anyString() );
+    verify( application ).addStyleSheet( eq( Bootstrapper.THEME_ID_ANDROID ), anyString() );
+    verify( application ).addStyleSheet( eq( Bootstrapper.THEME_ID_IOS ), anyString() );
   }
   
   @Test
   public void testRegistersPhaseListener() {
-    Bootstrapper.bootstrap( configuration );
+    Bootstrapper.bootstrap( application );
     
-    verify( configuration ).addPhaseListener( any( ThemePhaseListener.class ) );
+    verify( application ).addPhaseListener( any( ThemePhaseListener.class ) );
   }
   
   @Test
   public void testRegistersPhaseListenerWithWrapper() {
-    ApplicationConfigurator original = mock( ApplicationConfigurator.class );
-    when( configuration.getAdapter( ApplicationConfigurator.class ) ).thenReturn( original );
+    ApplicationConfiguration original = mock( ApplicationConfiguration.class );
+    when( application.getAdapter( ApplicationConfiguration.class ) ).thenReturn( original );
     
-    Bootstrapper.bootstrap( configuration );
+    Bootstrapper.bootstrap( application );
     
     verify( registry ).add( any( ThemePhaseListener.class ) );
   }
   
   @Test
   public void testRegistersThemesWithWrapper() {
-    ApplicationConfigurator original = mock( ApplicationConfigurator.class );
-    when( configuration.getAdapter( ApplicationConfigurator.class ) ).thenReturn( original );
+    ApplicationConfiguration original = mock( ApplicationConfiguration.class );
+    when( application.getAdapter( ApplicationConfiguration.class ) ).thenReturn( original );
     
-    Bootstrapper.bootstrap( configuration );
+    Bootstrapper.bootstrap( application );
     
     ArgumentCaptor<Theme> captor = ArgumentCaptor.forClass( Theme.class );
     verify( themeManager, times( 2 ) ).registerTheme( captor.capture() );
@@ -88,15 +88,15 @@ public class BootstrapperTest {
     assertEquals( Bootstrapper.THEME_ID_IOS, values.get( 1 ).getId() );
   }
   
-  private ApplicationConfigurationImpl mockConfiguration() {
-    ApplicationConfigurationImpl configuration = mock( ApplicationConfigurationImpl.class );
+  private ApplicationImpl mockConfiguration() {
+    ApplicationImpl application = mock( ApplicationImpl.class );
     ApplicationContext context = mock( ApplicationContext.class );
     themeManager = mock( ThemeManager.class );
     when( context.getThemeManager() ).thenReturn( themeManager );
     registry = mock( PhaseListenerRegistry.class );
     when( context.getPhaseListenerRegistry() ).thenReturn( registry );
-    when( configuration.getAdapter( ApplicationContext.class ) ).thenReturn( context );
-    when( configuration.getAdapter( ApplicationConfigurator.class ) ).thenReturn( configurator );
-    return configuration;
+    when( application.getAdapter( ApplicationContext.class ) ).thenReturn( context );
+    when( application.getAdapter( ApplicationConfiguration.class ) ).thenReturn( configuration );
+    return application;
   }
 }

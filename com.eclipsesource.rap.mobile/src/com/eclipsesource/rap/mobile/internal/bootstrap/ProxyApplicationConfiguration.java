@@ -10,10 +10,10 @@
  ******************************************************************************/
 package com.eclipsesource.rap.mobile.internal.bootstrap;
 
+import org.eclipse.rwt.application.Application;
 import org.eclipse.rwt.application.ApplicationConfiguration;
-import org.eclipse.rwt.application.ApplicationConfigurator;
-import org.eclipse.rwt.internal.application.ApplicationConfigurationImpl;
 import org.eclipse.rwt.internal.application.ApplicationContext;
+import org.eclipse.rwt.internal.application.ApplicationImpl;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
@@ -21,30 +21,30 @@ import org.osgi.framework.FrameworkUtil;
 import com.eclipsesource.rap.mobile.Bootstrapper;
 
 @SuppressWarnings("restriction")
-public class ProxyApplicationConfigurator implements ApplicationConfigurator {
+public class ProxyApplicationConfiguration implements ApplicationConfiguration {
   
-  private final ApplicationConfigurator original;
+  private final ApplicationConfiguration original;
   private HttpServiceTracker httpServiceTracker;
 
-  public ProxyApplicationConfigurator( ApplicationConfigurator original ) {
+  public ProxyApplicationConfiguration( ApplicationConfiguration original ) {
     this.original = original;
   }
 
-  public void configure( ApplicationConfiguration configuration ) {
-    Bootstrapper.bootstrap( configuration );
-    configureOriginal( configuration );
-    registerEntryPointLookup( configuration );
+  public void configure( Application application ) {
+    Bootstrapper.bootstrap( application );
+    configureOriginal( application );
+    registerEntryPointLookup( application );
   }
 
-  private void configureOriginal( ApplicationConfiguration configuration ) {
-    ConfigurationWrapper configurationWrapper 
-      = new ConfigurationWrapper( ( ApplicationConfigurationImpl )configuration, original );
+  private void configureOriginal( Application configuration ) {
+    ApplicationWrapper configurationWrapper 
+      = new ApplicationWrapper( ( ApplicationImpl )configuration, original );
     original.configure( configurationWrapper );
   }
   
-  void registerEntryPointLookup( ApplicationConfiguration configuration ) {
+  void registerEntryPointLookup( Application configuration ) {
     ApplicationContext context 
-      = ( ( ApplicationConfigurationImpl )configuration ).getAdapter( ApplicationContext.class );
+      = ( ( ApplicationImpl )configuration ).getAdapter( ApplicationContext.class );
     Bundle bundle = getBundle();
     BundleContext bundleContext = bundle.getBundleContext();
     httpServiceTracker = new HttpServiceTracker( bundleContext, context );

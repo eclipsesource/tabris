@@ -19,10 +19,10 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.eclipse.rwt.application.Application;
 import org.eclipse.rwt.application.ApplicationConfiguration;
-import org.eclipse.rwt.application.ApplicationConfigurator;
-import org.eclipse.rwt.internal.application.ApplicationConfigurationImpl;
 import org.eclipse.rwt.internal.application.ApplicationContext;
+import org.eclipse.rwt.internal.application.ApplicationImpl;
 import org.eclipse.rwt.internal.lifecycle.PhaseListenerRegistry;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,64 +33,64 @@ import com.eclipsesource.rap.mobile.Bootstrapper;
 
 
 @SuppressWarnings("restriction")
-public class ProxyApplicationConfiguratorTest {
+public class ProxyApplicationConfigurationTest {
   
-  private ApplicationConfigurator original;
-  private ProxyApplicationConfigurator configurator;
-  private ApplicationConfiguration configuration;
+  private ApplicationConfiguration original;
+  private ProxyApplicationConfiguration configuration;
+  private Application application;
 
   @Before
   public void setUp() {
-    original = mock( ApplicationConfigurator.class );
-    ProxyApplicationConfigurator originalProxy = new ProxyApplicationConfigurator( original );
-    configurator = spy( originalProxy );
+    original = mock( ApplicationConfiguration.class );
+    ProxyApplicationConfiguration originalProxy = new ProxyApplicationConfiguration( original );
+    configuration = spy( originalProxy );
     mockBundle();
-    configuration = mockConfiguration();
+    application = mockConfiguration();
   }
 
   private void mockBundle() {
     Bundle bundle = mock( Bundle.class );
     BundleContext bundleContext = mock( BundleContext.class );
     when( bundle.getBundleContext() ).thenReturn( bundleContext );
-    doReturn( bundle ).when( configurator ).getBundle();
+    doReturn( bundle ).when( configuration ).getBundle();
   }
   
-  private ApplicationConfigurationImpl mockConfiguration() {
-    ApplicationConfigurationImpl configuration = mock( ApplicationConfigurationImpl.class );
+  private ApplicationImpl mockConfiguration() {
+    ApplicationImpl application = mock( ApplicationImpl.class );
     ApplicationContext context = mock( ApplicationContext.class );
     PhaseListenerRegistry registry = mock( PhaseListenerRegistry.class );
     when( context.getPhaseListenerRegistry() ).thenReturn( registry );
-    when( configuration.getAdapter( ApplicationContext.class ) ).thenReturn( context );
-    when( configuration.getAdapter( ApplicationConfigurator.class ) ).thenReturn( configurator );
-    return configuration;
+    when( application.getAdapter( ApplicationContext.class ) ).thenReturn( context );
+    when( application.getAdapter( ApplicationConfiguration.class ) ).thenReturn( configuration );
+    return application;
   }
 
   @Test
   public void testDelegatesConfigure() {
-    configurator.configure( configuration );
+    configuration.configure( application );
     
-    verify( original ).configure( any( ConfigurationWrapper.class ) );
+    verify( original ).configure( any( ApplicationWrapper.class ) );
   }
   
   @Test
   public void testOpensTracker() {
-    configurator.configure( configuration );
+    configuration.configure( application );
     
-    verify( configurator ).registerEntryPointLookup( configuration );
+    verify( configuration ).registerEntryPointLookup( application );
   }
   
   @Test
   public void testRegistersThemes() {
-    configurator.configure( configuration );
+    configuration.configure( application );
     
-    verify( configuration ).addStyleSheet( eq( Bootstrapper.THEME_ID_ANDROID ), anyString() );
-    verify( configuration ).addStyleSheet( eq( Bootstrapper.THEME_ID_IOS ), anyString() );
+    verify( application ).addStyleSheet( eq( Bootstrapper.THEME_ID_ANDROID ), anyString() );
+    verify( application ).addStyleSheet( eq( Bootstrapper.THEME_ID_IOS ), anyString() );
   }
   
   @Test
   public void testRegistersPhaseListener() {
-    configurator.configure( configuration );
+    configuration.configure( application );
     
-    verify( configuration ).addPhaseListener( any( ThemePhaseListener.class ) );
+    verify( application ).addPhaseListener( any( ThemePhaseListener.class ) );
   }
 }

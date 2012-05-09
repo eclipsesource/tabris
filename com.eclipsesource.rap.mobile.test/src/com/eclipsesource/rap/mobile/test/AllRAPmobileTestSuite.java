@@ -24,11 +24,11 @@ import com.eclipsesource.rap.mobile.geolocation.internal.GeolocationSynchronizer
 import com.eclipsesource.rap.mobile.internal.AbstractObjectSynchronizerTest;
 import com.eclipsesource.rap.mobile.internal.GCOperationDispatcherTest;
 import com.eclipsesource.rap.mobile.internal.bootstrap.ActivatorTest;
-import com.eclipsesource.rap.mobile.internal.bootstrap.ConfigurationWrapperTest;
-import com.eclipsesource.rap.mobile.internal.bootstrap.ConfiguratorHookTest;
+import com.eclipsesource.rap.mobile.internal.bootstrap.ApplicationWrapperTest;
+import com.eclipsesource.rap.mobile.internal.bootstrap.ConfigurationHookTest;
 import com.eclipsesource.rap.mobile.internal.bootstrap.EntryPointLookupServletTest;
 import com.eclipsesource.rap.mobile.internal.bootstrap.HttpServiceTrackerTest;
-import com.eclipsesource.rap.mobile.internal.bootstrap.ProxyApplicationConfiguratorTest;
+import com.eclipsesource.rap.mobile.internal.bootstrap.ProxyApplicationConfigurationTest;
 import com.eclipsesource.rap.mobile.internal.bootstrap.ThemePhaseListenerTest;
 import com.eclipsesource.rap.mobile.widgets.ClientCanvasTest;
 
@@ -43,11 +43,11 @@ import com.eclipsesource.rap.mobile.widgets.ClientCanvasTest;
   GeolocationSynchronizerTest.class,
   AbstractObjectSynchronizerTest.class,
   ActivatorTest.class,
-  ConfigurationWrapperTest.class,
-  ProxyApplicationConfiguratorTest.class,
+  ApplicationWrapperTest.class,
+  ProxyApplicationConfigurationTest.class,
   ThemePhaseListenerTest.class,
   BootstrapperTest.class,
-  ConfiguratorHookTest.class,
+  ConfigurationHookTest.class,
   HttpServiceTrackerTest.class,
   EntryPointLookupServletTest.class,
   GCOperationDispatcherTest.class,
