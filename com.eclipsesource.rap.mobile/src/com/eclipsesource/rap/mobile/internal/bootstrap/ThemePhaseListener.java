@@ -17,24 +17,21 @@ import org.eclipse.rwt.lifecycle.PhaseId;
 import org.eclipse.rwt.lifecycle.PhaseListener;
 
 import com.eclipsesource.rap.mobile.Bootstrapper;
+import com.eclipsesource.rap.mobile.internal.Constants;
 
 
 @SuppressWarnings("restriction")
 public class ThemePhaseListener implements PhaseListener {
 
-  static final String USER_AGENT = "User-Agent";
-  static final String ID_ANDROID = "com.eclipsesource.rap.mobile.client.android";
-  static final String ID_IOS = "com.eclipsesource.rap.mobile.client.ios";
-
   public void beforePhase( PhaseEvent event ) {
-    String userAgent = RWT.getRequest().getHeader( USER_AGENT );
+    String userAgent = RWT.getRequest().getHeader( Constants.USER_AGENT );
     setCurrentTheme( userAgent );
   }
 
   private void setCurrentTheme( String userAgent ) {
-    if( userAgent.contains( ID_IOS ) ) {
+    if( userAgent.contains( Constants.ID_IOS ) ) {
       ThemeUtil.setCurrentThemeId( Bootstrapper.THEME_ID_IOS );
-    } else if( userAgent.contains( ID_ANDROID ) ) {
+    } else if( userAgent.contains( Constants.ID_ANDROID ) ) {
       ThemeUtil.setCurrentThemeId( Bootstrapper.THEME_ID_ANDROID );
     }
   }

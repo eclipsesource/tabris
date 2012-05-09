@@ -15,6 +15,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import com.eclipsesource.rap.mobile.BootstrapperTest;
+import com.eclipsesource.rap.mobile.ClientDeviceTest;
 import com.eclipsesource.rap.mobile.geolocation.GeolocationOptionsTest;
 import com.eclipsesource.rap.mobile.geolocation.GeolocationTest;
 import com.eclipsesource.rap.mobile.geolocation.PositionErrorTest;
@@ -51,7 +52,8 @@ import com.eclipsesource.rap.mobile.widgets.ClientCanvasTest;
   HttpServiceTrackerTest.class,
   EntryPointLookupServletTest.class,
   GCOperationDispatcherTest.class,
-  ClientCanvasTest.class
+  ClientCanvasTest.class,
+  ClientDeviceTest.class
 } )
 public class AllRAPmobileTestSuite {
 }

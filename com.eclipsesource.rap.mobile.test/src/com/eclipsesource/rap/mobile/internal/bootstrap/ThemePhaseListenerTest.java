@@ -35,6 +35,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.eclipsesource.rap.mobile.Bootstrapper;
+import com.eclipsesource.rap.mobile.internal.Constants;
 
 
 @SuppressWarnings("restriction")
@@ -65,7 +66,7 @@ public class ThemePhaseListenerTest {
   public void testUsesIOSTheme() throws IOException {
     registerTheme( Bootstrapper.THEME_ID_IOS );
     TestRequest request = ( TestRequest )RWT.getRequest();
-    request.setHeader( ThemePhaseListener.USER_AGENT, ThemePhaseListener.ID_IOS );
+    request.setHeader( Constants.USER_AGENT, Constants.ID_IOS );
     
     listener.beforePhase( mock( PhaseEvent.class ) );
     
@@ -77,7 +78,7 @@ public class ThemePhaseListenerTest {
   public void testUsesAndroidTheme() throws IOException {
     registerTheme( Bootstrapper.THEME_ID_ANDROID );
     TestRequest request = ( TestRequest )RWT.getRequest();
-    request.setHeader( ThemePhaseListener.USER_AGENT, ThemePhaseListener.ID_ANDROID );
+    request.setHeader( Constants.USER_AGENT, Constants.ID_ANDROID );
     
     listener.beforePhase( mock( PhaseEvent.class ) );
     
