@@ -144,8 +144,10 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
 
   private void dispatchDrawings( GC gc ) {
     for( String drawing : cache.getCachedDrawings() ) {
-      GCOperationDispatcher dispatcher = new GCOperationDispatcher( gc, drawing );
-      dispatcher.dispatch();
+      if( drawing != null ) {
+        GCOperationDispatcher dispatcher = new GCOperationDispatcher( gc, drawing );
+        dispatcher.dispatch();
+      }
     }
   }
 
