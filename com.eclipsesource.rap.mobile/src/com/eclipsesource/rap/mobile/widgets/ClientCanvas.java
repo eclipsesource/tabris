@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
+import com.eclipsesource.rap.mobile.internal.DrawingsCache;
 import com.eclipsesource.rap.mobile.internal.GCOperationDispatcher;
 
 
@@ -43,16 +44,14 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
   
   static final String CLIENT_CANVAS = "CLIENT_CANVAS";
   
-  private List<String> cachedDrawings;
-  private List<String> removedDrawings;
   private List<ClientDrawListener> drawListeners;
+  private DrawingsCache cache;
   private PaintListener paintListener;
 
   public ClientCanvas( Composite parent, int style ) {
     super( parent, style );
-    cachedDrawings = new ArrayList<String>();
-    removedDrawings = new ArrayList<String>();
     drawListeners = new ArrayList<ClientDrawListener>();
+    cache = new DrawingsCache();
     RWT.getLifeCycle().addPhaseListener( this );
     RWT.getSessionStore().addSessionStoreListener( this );
     addDispatchPaintListener();
@@ -79,38 +78,39 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
   }
   
   public void clear() {
-    cachedDrawings.clear();
-    removedDrawings.clear();
-    redraw();
-    fireDrawEvent();
+    if( !isDisposed() ) {
+      cache.clear();
+      redraw();
+      fireDrawEvent();
+    }
   }
   
   public void undo() {
-    if( !cachedDrawings.isEmpty() ) {
-      int lastObjectIndex = cachedDrawings.size() - 1;
-      String lastObject = cachedDrawings.remove( lastObjectIndex );
-      removedDrawings.add( lastObject );
-      redraw();
-      fireDrawEvent();
+    if( !isDisposed() ) {
+      if( cache.hasUndo() ) {
+        cache.undo();
+        redraw();
+        fireDrawEvent();
+      }
     }
   }
   
   public boolean hasUndo() {
-    return !cachedDrawings.isEmpty();
+    return cache.hasUndo();
   }
   
   public void redo() {
-    if( !removedDrawings.isEmpty() ) {
-      int lastObjectIndex = removedDrawings.size() - 1;
-      String lastObject = removedDrawings.remove( lastObjectIndex );
-      cachedDrawings.add( lastObject );
-      redraw();
-      fireDrawEvent();
+    if( !isDisposed() ) {
+      if( cache.hasRedo() ) {
+        cache.redo();
+        redraw();
+        fireDrawEvent();
+      }
     }
   }
   
   public boolean hasRedo() {
-    return !removedDrawings.isEmpty();
+    return cache.hasRedo();
   }
 
   @Override
@@ -124,26 +124,26 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
     String drawings = getDrawings();
     if( drawings != null ) {
       cacheDrawings( drawings );
-      removedDrawings.clear();
+      cache.clearRemoved();
       fireDrawEvent();
     }
     dispatchDrawings( gc );
   }
 
   private void fireDrawEvent() {
-    for( ClientDrawListener listener : drawListeners ) {
-      listener.receivedDrawing();
+    if( !isDisposed() ) {
+      for( ClientDrawListener listener : drawListeners ) {
+        listener.receivedDrawing();
+      }
     }
   }
 
   private void cacheDrawings( String drawings ) {
-    if( !cachedDrawings.contains( drawings ) ) {
-      cachedDrawings.add( drawings );
-    }
+    cache.cache( drawings );
   }
 
   private void dispatchDrawings( GC gc ) {
-    for( String drawing : cachedDrawings) {
+    for( String drawing : cache.getCachedDrawings() ) {
       GCOperationDispatcher dispatcher = new GCOperationDispatcher( gc, drawing );
       dispatcher.dispatch();
     }
@@ -177,6 +177,16 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
     // TODO: Check RAP bug #375356
     RWTFactory.getLifeCycleFactory().getLifeCycle().removePhaseListener( this );
     RWT.getSessionStore().removeSessionStoreListener( this );
+  }
+  
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T getAdapter( Class<T> adapter ) {
+    T result = super.getAdapter( adapter );
+    if( adapter == DrawingsCache.class ) {
+      result = ( T )cache;
+    }
+    return result;
   }
 
 }
