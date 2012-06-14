@@ -1,16 +1,16 @@
-RAP mobile
-==========
+Tabris
+======
 
-This repository contains the [RAP mobile](http://rapmobile.eclipsesource.com) server parts and additional features that are not contained in the [RAP core](http://eclipse.org/rap/).     
+This repository contains the [Tabris](http://rapmobile.eclipsesource.com) server parts and additional features that are not contained in the [RAP core](http://eclipse.org/rap/).     
 
 Additional Feature
 --------------------------
-* A Bootstraper that can be used when RAP mobile is used in a non OSGi environment. 
+* A Bootstraper that can be used when Tabris is used in a non OSGi environment. 
 * Geolocation API, [inspired by phonegap](http://docs.phonegap.com/en/1.4.1/phonegap_geolocation_geolocation.md.html#Geolocation)
 
 Demos
 -----
-Demos using these features are located in the [rap-mobile-demos repository](https://github.com/eclipsesource/rap-mobile-demos).
+Demos using these features are located in the [tabris-demos repository](https://github.com/eclipsesource/rap-mobile-demos).
 
 License
 -------
