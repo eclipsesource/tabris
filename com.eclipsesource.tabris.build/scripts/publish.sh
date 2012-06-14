@@ -32,7 +32,7 @@ echo "Using build qualifier $BUILD_QUALIFIER"
 # a location on download.eclipse.org where they can be downloaded.
 # Move the generated p2 repository to a location on download.eclipse.org
 # where they can be consumed.   
-VERSION="0.6.0" 
+VERSION="0.6" 
 echo "Using build version $VERSION" 
 
 DOWNLOAD_FOLDER=/home/build/public_html/tabris/$VERSION
