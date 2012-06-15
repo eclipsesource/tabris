@@ -24,7 +24,7 @@
     <rap-mobile-version>1.0.0-SNAPSHOT</rap-mobile-version>
     <artifact-build-version>${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}.v${maven.build.timestamp}-${build-identifier}</artifact-build-version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <tycho-version>0.14.1</tycho-version>
+    <tycho-version>0.14.0</tycho-version>
     <tycho-groupid>org.eclipse.tycho</tycho-groupid>
     <findbugs-version>2.3.3</findbugs-version>
     <surefire-version>2.9</surefire-version>
@@ -121,14 +121,6 @@
               <arch>x86</arch>
             </environment>
           </environments>
-          <filters>
-            <!-- work around Equinox bug 348045 -->
-            <filter>
-              <type>p2-installable-unit</type>
-              <id>org.eclipse.equinox.servletbridge.extensionbundle</id>
-              <removeAll />
-            </filter>
-          </filters>
         </configuration>
       </plugin>
 
