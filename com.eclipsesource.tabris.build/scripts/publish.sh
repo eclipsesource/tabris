@@ -35,7 +35,7 @@ echo "Using build qualifier $BUILD_QUALIFIER"
 VERSION="0.6" 
 echo "Using build version $VERSION" 
 
-DOWNLOAD_FOLDER=/home/build/public_html/tabris/$VERSION
+DOWNLOAD_FOLDER=/var/www/download.eclipsesource.com/technology/tabris/$VERSION
 if [ ! -d "$DOWNLOAD_FOLDER" ]; then
 #we are not on the eclipsesource build machine. for testing, let's
 #deploy the build inside the builds folder of com.eclipsesource.tabris.build
