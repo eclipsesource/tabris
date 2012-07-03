@@ -519,36 +519,6 @@ MenuItem:onMenuBar {
 /* ProgressBar default theme */
 
 ProgressBar {
-  background-color: #ffffff;
-  border: 1px solid #bdbdbd;
-  border-radius: 2px;
-}
-
-ProgressBar-Indicator {
-  background-color: #00589f;
-  background-image: gradient(
-    linear, left top, left bottom,
-    from( #5882b5 ),
-    to( #416693 )
-  );
-  border: none;
-  opacity: 1;
-}
-
-ProgressBar-Indicator:paused {
-  background-image: gradient(
-    linear, left top, right top,
-    from( #818181 ),
-    to( #b5b5b5 )
-  );
-}
-
-ProgressBar-Indicator:error {
-  background-image: gradient(
-    linear, left top, right top,
-    from( #e9614f ),
-    to( #ec7869 )
-  );
 }
 
 /* Shell default theme */
