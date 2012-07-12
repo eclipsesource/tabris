@@ -70,10 +70,10 @@ sh $SCRIPTS_FOLDER/comp-repo.sh $DOWNLOAD_FOLDER add $BUILD_VERSION
 echo "Purging the old builds."
 cd $DOWNLOAD_FOLDER
 
-files_in_dir=`ls -d */ | wc -l`
+files_in_dir=`ls -d */ | grep -v "sdk" | wc -l`
 files_to_delete_number=`expr $files_in_dir - 10`
 if [ $files_to_delete_number -gt 0 ]; then
-  files_to_delete=`ls -t | tail -n $files_to_delete_number`
+  files_to_delete=`ls -t | grep -v "sdk" | tail -n $files_to_delete_number`
   cd $CURRENT_DIR
   for file in $files_to_delete; do
     sh $SCRIPTS_FOLDER/comp-repo.sh $DOWNLOAD_FOLDER remove $file
