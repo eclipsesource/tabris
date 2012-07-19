@@ -18,7 +18,7 @@
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>RAP mobile</name>
+  <name>Tabris</name>
 
   <properties>
     <rap-mobile-version>1.0.0-SNAPSHOT</rap-mobile-version>
@@ -30,7 +30,8 @@
     <surefire-version>2.9</surefire-version>
     <junit-version>4.8.2</junit-version>
     <mockito-version>1.8.4</mockito-version>
-    <test-arguments>-Xms512m -Xmx512m</test-arguments>
+    <jacocoagent>${basedir}/../com.eclipsesource.tabris.build/lib/jacocoagent.jar</jacocoagent>
+    <test-arguments>-Xms512m -Xmx512m -javaagent:${jacocoagent}=destfile=${basedir}/../com.eclipsesource.tabris/target/jacoco.exec,append=true</test-arguments>
   </properties>
 
   <licenses>
