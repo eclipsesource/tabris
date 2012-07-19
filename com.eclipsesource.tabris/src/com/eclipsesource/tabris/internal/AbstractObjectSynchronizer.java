@@ -127,7 +127,7 @@ public abstract class AbstractObjectSynchronizer implements PhaseListener, Sessi
   
   // TODO move to Util
   public void renderProperty( String name, int newValue, int defaultValue ) {
-    renderProperty( name, Integer.valueOf( newValue ), new Integer( defaultValue ) );
+    renderProperty( name, Integer.valueOf( newValue ), Integer.valueOf( defaultValue ) );
   }
   
   // TODO move to Util
