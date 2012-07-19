@@ -55,5 +55,5 @@ import com.eclipsesource.tabris.widgets.ClientCanvasTest;
   ClientCanvasTest.class,
   ClientDeviceTest.class
 } )
-public class AllRAPmobileTestSuite {
+public class AllTabrisTestSuite {
 }

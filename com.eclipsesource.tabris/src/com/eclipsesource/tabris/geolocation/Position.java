@@ -20,7 +20,7 @@ public class Position {
 
   public Position( Coordinates coords, Date timestamp ) {
     this.coords = coords;
-    this.timestamp = timestamp;
+    this.timestamp = new Date( timestamp.getTime() );
   }
 
   public Coordinates getCoords() {
@@ -28,7 +28,7 @@ public class Position {
   }
   
   public Date getTimestamp() {
-    return timestamp;
+    return new Date( timestamp.getTime() );
   }
   
 }

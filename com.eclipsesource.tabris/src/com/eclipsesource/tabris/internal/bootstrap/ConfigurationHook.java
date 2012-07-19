@@ -71,8 +71,8 @@ public class ConfigurationHook implements EventListenerHook, FindHook {
     ProxyApplicationConfiguration proxy = proxyMap.remove( service );
     if( proxy != null ) {
       unregisterService( proxy );
+      proxy.unregister();
     }
-    proxy.unregister();
   }
 
   private void unregisterService( ProxyApplicationConfiguration proxy ) {
