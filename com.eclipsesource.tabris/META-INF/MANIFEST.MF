@@ -8,7 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.rap.rwt;bundle-version="[1.5.0,2.1.0)"
 Export-Package: com.eclipsesource.tabris;version="0.6.2",
  com.eclipsesource.tabris.geolocation;version="0.6.2",
- com.eclipsesource.tabris.internal;version="0.6.2",
+ com.eclipsesource.tabris.internal;version="0.6.2";x-internal:=true,
  com.eclipsesource.tabris.widgets;version="0.6.2"
 Import-Package: javax.servlet;version="[2.3.0,4.0.0)",
  javax.servlet.http;version="[2.3.0,4.0.0)",

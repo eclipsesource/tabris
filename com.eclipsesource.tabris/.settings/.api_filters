@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="com.eclipsesource.tabris" version="2">
+    <resource path="src/com/eclipsesource/tabris/internal/AbstractObjectSynchronizer.java" type="com.eclipsesource.tabris.internal.AbstractObjectSynchronizer">
+        <filter id="305365105">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.internal.AbstractObjectSynchronizer"/>
+                <message_argument value="com.eclipsesource.tabris_0.6.2"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/internal/Constants.java" type="com.eclipsesource.tabris.internal.Constants">
+        <filter id="305365105">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.internal.Constants"/>
+                <message_argument value="com.eclipsesource.tabris_0.6.2"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/internal/DrawingsCache.java" type="com.eclipsesource.tabris.internal.DrawingsCache">
+        <filter id="305365105">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.internal.DrawingsCache"/>
+                <message_argument value="com.eclipsesource.tabris_0.6.2"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/internal/GCOperationDispatcher.java" type="com.eclipsesource.tabris.internal.GCOperationDispatcher">
+        <filter id="305365105">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.internal.GCOperationDispatcher"/>
+                <message_argument value="com.eclipsesource.tabris_0.6.2"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>
