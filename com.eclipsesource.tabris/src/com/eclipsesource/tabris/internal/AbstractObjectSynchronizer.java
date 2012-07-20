@@ -140,7 +140,6 @@ public abstract class AbstractObjectSynchronizer implements PhaseListener, Sessi
   }
 
   public void beforeDestroy( SessionStoreEvent event ) {
-    // TODO: Check RAP bug #375356
     RWTFactory.getLifeCycleFactory().getLifeCycle().removePhaseListener( this );
     RWT.getSessionStore().removeSessionStoreListener( this );
   }
