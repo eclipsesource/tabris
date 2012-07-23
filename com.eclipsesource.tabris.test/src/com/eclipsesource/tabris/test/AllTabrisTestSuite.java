@@ -33,7 +33,7 @@ import com.eclipsesource.tabris.internal.bootstrap.HttpServiceTrackerTest;
 import com.eclipsesource.tabris.internal.bootstrap.ProxyApplicationConfigurationTest;
 import com.eclipsesource.tabris.internal.bootstrap.ThemePhaseListenerTest;
 import com.eclipsesource.tabris.widgets.ClientCanvasTest;
-import com.eclipsesource.tabris.widgets.VideoTest;
+
 
 
 @RunWith( Suite.class )
@@ -57,7 +57,14 @@ import com.eclipsesource.tabris.widgets.VideoTest;
   ClientCanvasTest.class,
   ClientDeviceTest.class,
   VideoTest.class,
-  VideoLifeCycleAdapterTest.class
+  VideoLifeCycleAdapterTest.class,
+  ClientDeviceTest.class,
+  WidgetsTest.class,
+  WidgetDecoratorTest.class,
+  TextDecoratorTest.class,
+  ToolItemDecoratorTest.class,
+  TreeDecoratorTest.class,
+  ScrolledCompositeDecoratorTest.class
 } )
 public class AllTabrisTestSuite {
 }

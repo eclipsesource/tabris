@@ -1,22 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <component id="com.eclipsesource.tabris" version="2">
-    <resource path="src/com/eclipsesource/tabris/Bootstrapper.java" type="com.eclipsesource.tabris.Bootstrapper">
-        <filter id="338792546">
+    <resource path="META-INF/MANIFEST.MF">
+        <filter id="924844039">
             <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.Bootstrapper"/>
-                <message_argument value="bootstrap(Application)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1143996420">
-            <message_arguments>
-                <message_argument value="bootstrap(Application)"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="src/com/eclipsesource/tabris/geolocation/Geolocation.java" type="com.eclipsesource.tabris.geolocation.Geolocation">
-        <filter id="337682486">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.geolocation.Geolocation"/>
+                <message_argument value="0.6.2"/>
+                <message_argument value="0.6.0"/>
             </message_arguments>
         </filter>
     </resource>
@@ -24,7 +12,7 @@
         <filter id="305365105">
             <message_arguments>
                 <message_argument value="com.eclipsesource.tabris.internal.AbstractObjectSynchronizer"/>
-                <message_argument value="com.eclipsesource.tabris_0.7.0"/>
+                <message_argument value="com.eclipsesource.tabris_0.6.2"/>
             </message_arguments>
         </filter>
     </resource>
@@ -32,7 +20,7 @@
         <filter id="305365105">
             <message_arguments>
                 <message_argument value="com.eclipsesource.tabris.internal.Constants"/>
-                <message_argument value="com.eclipsesource.tabris_0.7.0"/>
+                <message_argument value="com.eclipsesource.tabris_0.6.2"/>
             </message_arguments>
         </filter>
     </resource>
@@ -40,7 +28,7 @@
         <filter id="305365105">
             <message_arguments>
                 <message_argument value="com.eclipsesource.tabris.internal.DrawingsCache"/>
-                <message_argument value="com.eclipsesource.tabris_0.7.0"/>
+                <message_argument value="com.eclipsesource.tabris_0.6.2"/>
             </message_arguments>
         </filter>
     </resource>
@@ -48,58 +36,7 @@
         <filter id="305365105">
             <message_arguments>
                 <message_argument value="com.eclipsesource.tabris.internal.GCOperationDispatcher"/>
-                <message_argument value="com.eclipsesource.tabris_0.7.0"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="src/com/eclipsesource/tabris/widgets/ClientCanvas.java" type="com.eclipsesource.tabris.widgets.ClientCanvas">
-        <filter id="337682486">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.widgets.ClientCanvas"/>
-            </message_arguments>
-        </filter>
-        <filter id="338792546">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.widgets.ClientCanvas"/>
-                <message_argument value="afterPhase(PhaseEvent)"/>
-            </message_arguments>
-        </filter>
-        <filter id="338792546">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.widgets.ClientCanvas"/>
-                <message_argument value="beforeDestroy(SessionStoreEvent)"/>
-            </message_arguments>
-        </filter>
-        <filter id="338792546">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.widgets.ClientCanvas"/>
-                <message_argument value="beforePhase(PhaseEvent)"/>
-            </message_arguments>
-        </filter>
-        <filter id="338792546">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.widgets.ClientCanvas"/>
-                <message_argument value="getPhaseId()"/>
-            </message_arguments>
-        </filter>
-        <filter id="1143996420">
-            <message_arguments>
-                <message_argument value="afterPhase(PhaseEvent)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1143996420">
-            <message_arguments>
-                <message_argument value="beforeDestroy(SessionStoreEvent)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1143996420">
-            <message_arguments>
-                <message_argument value="beforePhase(PhaseEvent)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1143996420">
-            <message_arguments>
-                <message_argument value="getPhaseId()"/>
+                <message_argument value="com.eclipsesource.tabris_0.6.2"/>
             </message_arguments>
         </filter>
     </resource>
