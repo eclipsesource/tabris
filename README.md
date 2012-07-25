@@ -1,12 +1,13 @@
 Tabris
 ======
 
-This repository contains the [Tabris](http://rapmobile.eclipsesource.com) server parts and additional features that are not contained in the [RAP core](http://eclipse.org/rap/).     
+This repository contains the [Tabris](http://developer.eclipsesource.com/tabris/) server parts and additional features that are not contained in the [RAP core](http://eclipse.org/rap/).     
 
-Additional Feature
+Additional Features
 --------------------------
 * A Bootstraper that can be used when Tabris is used in a non OSGi environment. 
 * Geolocation API, [inspired by phonegap](http://docs.phonegap.com/en/1.4.1/phonegap_geolocation_geolocation.md.html#Geolocation)
+* ClientCanvas, SWT Canvas extension to be able to draw on the client side.
 
 Demos
 -----

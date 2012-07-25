@@ -1,0 +1,27 @@
+<project name="Tabris JaCoCo XMl Converter" xmlns:jacoco="antlib:org.jacoco.ant" default="report">
+
+	<taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
+		<classpath path="${basedir}/../lib/jacocoant.jar" />
+	</taskdef>
+	
+	<target name="report">
+		<!-- Create coverage report -->
+		<jacoco:report>
+			<!-- This task needs the collected execution data and ... -->
+			<executiondata>
+				<file file="${basedir}/../../com.eclipsesource.tabris/target/jacoco.exec" />
+			</executiondata>
+			<!-- the class files and optional source files ... -->
+			<structure name="Tabris Coverage Report">
+				<classfiles>
+					<fileset dir="${basedir}/../../com.eclipsesource.tabris/target/classes" />
+				</classfiles>
+				<sourcefiles encoding="UTF-8">
+					<fileset dir="${basedir}/../../com.eclipsesource.tabris/src" />
+				</sourcefiles>
+			</structure>
+			<!-- to produce reports in different formats. -->
+			<xml destfile="${basedir}/../../com.eclipsesource.tabris/target/report.xml" />
+		</jacoco:report>
+	</target>
+</project>

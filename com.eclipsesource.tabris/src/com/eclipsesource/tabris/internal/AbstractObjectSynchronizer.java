@@ -100,7 +100,7 @@ public abstract class AbstractObjectSynchronizer implements PhaseListener, Sessi
   
   // TODO move to Util
   protected void preserveProperty( String name, int value ) {
-    preserveProperty( name, new Integer( value ) );
+    preserveProperty( name, Integer.valueOf( value ) );
   }
   
   // TODO move to Util
@@ -127,7 +127,7 @@ public abstract class AbstractObjectSynchronizer implements PhaseListener, Sessi
   
   // TODO move to Util
   public void renderProperty( String name, int newValue, int defaultValue ) {
-    renderProperty( name, new Integer( newValue ), new Integer( defaultValue ) );
+    renderProperty( name, Integer.valueOf( newValue ), Integer.valueOf( defaultValue ) );
   }
   
   // TODO move to Util
@@ -140,7 +140,6 @@ public abstract class AbstractObjectSynchronizer implements PhaseListener, Sessi
   }
 
   public void beforeDestroy( SessionStoreEvent event ) {
-    // TODO: Check RAP bug #375356
     RWTFactory.getLifeCycleFactory().getLifeCycle().removePhaseListener( this );
     RWT.getSessionStore().removeSessionStoreListener( this );
   }

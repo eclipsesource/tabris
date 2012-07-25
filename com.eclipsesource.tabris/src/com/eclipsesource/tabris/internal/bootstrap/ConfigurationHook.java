@@ -12,7 +12,9 @@ package com.eclipsesource.tabris.internal.bootstrap;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 
 import org.eclipse.rap.rwt.osgi.ApplicationLauncher;
@@ -52,18 +54,31 @@ public class ConfigurationHook implements EventListenerHook, FindHook {
 
   private void dispatchEvent( ServiceEvent event, Object service ) {
     if( event.getType() == ServiceEvent.REGISTERED ) {
-      registerProxy( ( ApplicationConfiguration ) service );
+      Dictionary<String, ?> properties = createProperties( event );
+      registerProxy( ( ApplicationConfiguration ) service, properties );
     } else if( event.getType() == ServiceEvent.UNREGISTERING ) {
       unregisterProxy( ( ApplicationConfiguration )service );
       bundleContext.ungetService( event.getServiceReference() );
     }
   }
 
-  private void registerProxy( ApplicationConfiguration service ) {
+  private Dictionary<String, ?> createProperties( ServiceEvent event ) {
+    Dictionary<String, Object> properties = null;
+    String[] keys = event.getServiceReference().getPropertyKeys();
+    if( keys != null && keys.length > 0 ) {
+      properties = new Hashtable<String, Object>();
+      for( String key : keys ) {
+        properties.put( key, event.getServiceReference().getProperty( key ) );
+      }
+    }
+    return properties;
+  }
+
+  private void registerProxy( ApplicationConfiguration service, Dictionary<String, ?> properties ) {
     ProxyApplicationConfiguration proxy = new ProxyApplicationConfiguration( service );
     proxyMap.put( service, proxy );
     ServiceRegistration<?> registration 
-      = bundleContext.registerService( ApplicationConfiguration.class.getName(), proxy, null );
+      = bundleContext.registerService( ApplicationConfiguration.class.getName(), proxy, properties );
     proxyRegistrationMap.put( proxy, registration );
   }
 
@@ -71,8 +86,8 @@ public class ConfigurationHook implements EventListenerHook, FindHook {
     ProxyApplicationConfiguration proxy = proxyMap.remove( service );
     if( proxy != null ) {
       unregisterService( proxy );
+      proxy.unregister();
     }
-    proxy.unregister();
   }
 
   private void unregisterService( ProxyApplicationConfiguration proxy ) {

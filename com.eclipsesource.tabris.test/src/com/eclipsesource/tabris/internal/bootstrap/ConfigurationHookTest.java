@@ -32,6 +32,7 @@ import org.eclipse.rwt.application.ApplicationConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.osgi.framework.Bundle;
@@ -40,9 +41,6 @@ import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.framework.hooks.service.ListenerHook.ListenerInfo;
-
-import com.eclipsesource.tabris.internal.bootstrap.ConfigurationHook;
-import com.eclipsesource.tabris.internal.bootstrap.ProxyApplicationConfiguration;
 
 
 @RunWith( MockitoJUnitRunner.class )
@@ -87,6 +85,26 @@ public class ConfigurationHookTest {
     verify( context ).registerService( eq( ApplicationConfiguration.class.getName() ), 
                                        any( ProxyApplicationConfiguration.class ), 
                                        any( Dictionary.class ) );
+  }
+  
+  @Test
+  public void testRegistersProxyWithOriginalProperties() {
+    Map<BundleContext, Collection<ListenerInfo>> listeners = createListeners();
+    ServiceReference reference = mock( ServiceReference.class );
+    when( reference.getPropertyKeys() ).thenReturn( new String[] { "test" } );
+    when( reference.getProperty( eq( "test" ) ) ).thenReturn( "test" );
+    ServiceEvent serviceEvent = new ServiceEvent( ServiceEvent.REGISTERED, reference );
+    Object service = mock( ApplicationConfiguration.class );
+    when( context.getService( reference ) ).thenReturn( service );
+    
+    hook.event( serviceEvent, listeners );
+
+    ArgumentCaptor<Dictionary> captor = ArgumentCaptor.forClass( Dictionary.class );
+    verify( context ).registerService( eq( ApplicationConfiguration.class.getName() ), 
+                                       any( ProxyApplicationConfiguration.class ), 
+                                       captor.capture() );
+    assertEquals( 1, captor.getValue().size() );
+    assertEquals( "test", captor.getValue().get( "test" ) );
   }
   
   @Test

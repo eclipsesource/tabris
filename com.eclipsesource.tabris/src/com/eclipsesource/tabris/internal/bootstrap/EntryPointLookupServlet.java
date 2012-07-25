@@ -29,7 +29,8 @@ public class EntryPointLookupServlet extends HttpServlet {
   
   static final String KEY_ENTRYPOINTS = "entrypoints";
   static final String KEY_PATH = "path";
-  private EntryPointManager manager;
+  private transient EntryPointManager manager;
+  private static final long serialVersionUID = 1L;  
 
   public EntryPointLookupServlet( ApplicationContext applicationContext ) {
     manager = applicationContext.getEntryPointManager();
