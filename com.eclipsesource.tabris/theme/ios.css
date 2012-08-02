@@ -31,11 +31,31 @@ Shell {
   border: none;
 }
 
-Tree[BORDER] {
+/* Tree default theme */
+
+Tree {
+  background-color: #ffffff;
   border: none;
+  color: #4a4a4a;
+  padding: 60px 0px 0px 0px;
 }
 
-Button[PUSH],Button[FLAT] {
+Tree[BORDER] {
+  border: 0px;
+}
+
+List {
+  font: 20px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  background-color: #ffffff;
+  border: none;
+  color: #4a4a4a;
+}
+
+List[BORDER] {
+  border: 0px;
+}
+
+Button[PUSH],Button[FLAT],Button[TOGGLE] {
   font: 18px bold Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
 }
 
@@ -47,13 +67,16 @@ Button[RADIO],Button[CHECK] {
 Button,
 Button[PUSH],
 Button[FLAT],
+Button[TOGGLE],
 Button[PUSH][BORDER], 
-Button[FLAT][BORDER] {
-  padding: 8px 8px;
+Button[FLAT][BORDER],
+Button[PUSH][TOGGLE] { 
+  padding: 8px 8px 8px 8px;
 }
 
 Button[PUSH][BORDER], 
-Button[FLAT][BORDER] {
+Button[FLAT][BORDER],
+Button[FLAT][TOGGLE] {
   border: 1px solid #6e6e6e;
 }
 
