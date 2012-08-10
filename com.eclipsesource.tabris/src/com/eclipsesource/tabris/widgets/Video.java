@@ -31,7 +31,7 @@ import com.eclipsesource.tabris.internal.VideoLifeCycleAdapter.PlaybackOptions;
 public class Video extends Composite {
   
   public enum PlaybackMode {
-    PLAY, PAUSE, STOP, INTERUPT, FAST_FORWARD, FAST_BACKWARD, USER_EXIT, DONE, ERROR
+    PLAY, PAUSE, STOP, INTERRUPT, FAST_FORWARD, FAST_BACKWARD, USER_EXIT, DONE, ERROR
   }
   public enum PresentationMode {
     FULL_SCREEN, EMBEDDED
