@@ -12,7 +12,6 @@ package com.eclipsesource.tabris.widgets;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.inOrder;
@@ -20,13 +19,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
 import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.eclipse.rwt.RWT;
 import org.eclipse.rwt.lifecycle.ILifeCycleAdapter;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -66,38 +63,6 @@ public class VideoTest {
   @Test
   public void testGetUrl() throws MalformedURLException {
     assertEquals( new URL( "http://test.com" ), video.getURL() );
-  }
-  
-  @Test
-  public void testWithVideoFile() {
-    Fixture.fakeNewRequest( parent.getDisplay() );
-
-    video = new Video( mock( InputStream.class ), parent );
-    
-    assertNotNull( video.getURL() );
-  }
-  
-  @Test
-  public void testUnregistersVideoResourceonDispose() {
-    Fixture.fakeNewRequest( parent.getDisplay() );
-    video = new Video( mock( InputStream.class ), parent );
-    String[] segments = video.getURL().getPath().split( "/" );
-    String registeredResurceName = segments[ segments.length - 1 ];
-    
-    video.dispose();
-    
-    assertFalse( RWT.getResourceManager().unregister( registeredResurceName ) );
-  }
-  
-  @Test( expected = IllegalStateException.class )
-  public void testUnregistersAlreadyUnregisteredResource() {
-    Fixture.fakeNewRequest( parent.getDisplay() );
-    video = new Video( mock( InputStream.class ), parent );
-    String[] segments = video.getURL().getPath().split( "/" );
-    String registeredResurceName = segments[ segments.length - 1 ];
-
-    RWT.getResourceManager().unregister( registeredResurceName );
-    video.dispose();
   }
   
   @Test

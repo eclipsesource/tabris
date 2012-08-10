@@ -10,19 +10,13 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets;
 
-import java.io.InputStream;
-import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.eclipse.rwt.RWT;
 import org.eclipse.rwt.lifecycle.ILifeCycleAdapter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -49,20 +43,6 @@ public class Video extends Composite {
   private URL videoUrl;
   private List<VideoListener> listeners = new ArrayList<VideoListener>();
   private Map<PlaybackOptions, Object> playbackOptions = new HashMap<PlaybackOptions, Object>();
-  private String resourceName;
-  
-  public Video( InputStream video, Composite parent ) {
-    super( parent, SWT.NONE );
-    resourceName = new BigInteger( 130, new SecureRandom() ).toString( 32 );
-    RWT.getResourceManager().register( resourceName, video );
-    initiateDefaultValues();
-    assignUrl( computeServerUrl() + RWT.getResourceManager().getLocation( resourceName ) );
-  }
-  
-  private String computeServerUrl() {
-    HttpServletRequest request = RWT.getRequest();
-    return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/";
-  }
   
   public Video( String videoUrl, Composite parent ) {
     super( parent, SWT.NONE );
@@ -190,16 +170,6 @@ public class Video extends Composite {
   private void firePresentationChanged( PresentationMode newMode ) {
     for( VideoListener listener : listeners ) {
       listener.presentationChanged( newMode );
-    }
-  }
-  
-  @Override
-  public void dispose() {
-    super.dispose();
-    if( resourceName != null ) {
-      if( !RWT.getResourceManager().unregister( resourceName ) ) {
-        throw new IllegalStateException( "Could not unregister video resource: " + resourceName );
-      }
     }
   }
   
