@@ -24,6 +24,7 @@ import com.eclipsesource.tabris.geolocation.internal.GeolocationAdapterTest;
 import com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizerTest;
 import com.eclipsesource.tabris.internal.AbstractObjectSynchronizerTest;
 import com.eclipsesource.tabris.internal.GCOperationDispatcherTest;
+import com.eclipsesource.tabris.internal.VideoLifeCycleAdapterTest;
 import com.eclipsesource.tabris.internal.bootstrap.ActivatorTest;
 import com.eclipsesource.tabris.internal.bootstrap.ApplicationWrapperTest;
 import com.eclipsesource.tabris.internal.bootstrap.ConfigurationHookTest;
@@ -32,6 +33,7 @@ import com.eclipsesource.tabris.internal.bootstrap.HttpServiceTrackerTest;
 import com.eclipsesource.tabris.internal.bootstrap.ProxyApplicationConfigurationTest;
 import com.eclipsesource.tabris.internal.bootstrap.ThemePhaseListenerTest;
 import com.eclipsesource.tabris.widgets.ClientCanvasTest;
+import com.eclipsesource.tabris.widgets.VideoTest;
 
 
 @RunWith( Suite.class )
@@ -53,7 +55,9 @@ import com.eclipsesource.tabris.widgets.ClientCanvasTest;
   EntryPointLookupServletTest.class,
   GCOperationDispatcherTest.class,
   ClientCanvasTest.class,
-  ClientDeviceTest.class
+  ClientDeviceTest.class,
+  VideoTest.class,
+  VideoLifeCycleAdapterTest.class
 } )
 public class AllTabrisTestSuite {
 }
