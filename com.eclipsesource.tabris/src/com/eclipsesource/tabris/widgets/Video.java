@@ -71,12 +71,12 @@ public class Video extends Composite {
   }
   
   private void initiateDefaultValues() {
-    playbackOptions.put( PlaybackOptions.PLABACK_MODE, PlaybackMode.STOP );
+    playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, PlaybackMode.STOP );
     playbackOptions.put( PlaybackOptions.PRESENTATION_MODE, PresentationMode.EMBEDDED );
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( HALT_SPEED ) );
     playbackOptions.put( PlaybackOptions.CONTROLS_VISIBLE, Boolean.valueOf( true ) );
     playbackOptions.put( PlaybackOptions.REPEAT, Boolean.valueOf( false ) );
-    playbackOptions.put( PlaybackOptions.AUTO_PLAY, Boolean.valueOf( false ) );
+    playbackOptions.put( PlaybackOptions.AUTOPLAY, Boolean.valueOf( false ) );
   }
 
   private void assignUrl( String videoUrl ) {
@@ -93,19 +93,19 @@ public class Video extends Composite {
 
   public void play() {
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( PLAY_SPEED ) );
-    playbackOptions.put( PlaybackOptions.PLABACK_MODE, PlaybackMode.PLAY );
+    playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, PlaybackMode.PLAY );
     firePlaybackChanged( PlaybackMode.PLAY );
   }
   
   public void pause() {
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( HALT_SPEED ) );
-    playbackOptions.put( PlaybackOptions.PLABACK_MODE, PlaybackMode.PAUSE );
+    playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, PlaybackMode.PAUSE );
     firePlaybackChanged( PlaybackMode.PAUSE );
   }
   
   public void stop() {
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( HALT_SPEED ) );
-    playbackOptions.put( PlaybackOptions.PLABACK_MODE, PlaybackMode.STOP );
+    playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, PlaybackMode.STOP );
     firePlaybackChanged( PlaybackMode.STOP );
   }
   
@@ -114,7 +114,7 @@ public class Video extends Composite {
       throw new IllegalArgumentException( "Speed has to be > 1 for a fast fotward. But was " + speed );
     }
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( speed ) );
-    playbackOptions.put( PlaybackOptions.PLABACK_MODE, PlaybackMode.FAST_FORWARD );
+    playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, PlaybackMode.FAST_FORWARD );
     firePlaybackChanged( PlaybackMode.FAST_FORWARD );
   }
   
@@ -123,7 +123,7 @@ public class Video extends Composite {
       throw new IllegalArgumentException( "Speed has to be < 1 for a fast backward. But was " + speed );
     }
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( speed ) );
-    playbackOptions.put( PlaybackOptions.PLABACK_MODE, PlaybackMode.FAST_BACKWARD );
+    playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, PlaybackMode.FAST_BACKWARD );
     firePlaybackChanged( PlaybackMode.FAST_BACKWARD );
   }
   
@@ -144,11 +144,11 @@ public class Video extends Composite {
   }
   
   public void setAutoPlay( boolean autoPlay ) {
-    playbackOptions.put( PlaybackOptions.AUTO_PLAY, Boolean.valueOf( autoPlay ) );
+    playbackOptions.put( PlaybackOptions.AUTOPLAY, Boolean.valueOf( autoPlay ) );
   }
   
   public boolean hasAutoPlay() {
-    return ( ( Boolean )playbackOptions.get( PlaybackOptions.AUTO_PLAY ) ).booleanValue();
+    return ( ( Boolean )playbackOptions.get( PlaybackOptions.AUTOPLAY ) ).booleanValue();
   }
   
   public void setFullscreen( boolean fullScreenEnabled ) {
@@ -166,7 +166,7 @@ public class Video extends Composite {
   }
   
   public PlaybackMode getPlaybackMode() {
-    return ( PlaybackMode )playbackOptions.get( PlaybackOptions.PLABACK_MODE );
+    return ( PlaybackMode )playbackOptions.get( PlaybackOptions.PLAYBACK_MODE );
   }
   
   public PresentationMode getPresentationMode() {
@@ -219,7 +219,7 @@ public class Video extends Composite {
   public class PlaybackAdapter {
     
     public void setPlaybackMode( PlaybackMode mode ) {
-      playbackOptions.put( PlaybackOptions.PLABACK_MODE, mode );
+      playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, mode );
       firePlaybackChanged( mode );
     }
     

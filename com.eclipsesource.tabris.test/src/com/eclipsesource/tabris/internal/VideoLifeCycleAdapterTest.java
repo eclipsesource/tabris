@@ -102,7 +102,7 @@ public class VideoLifeCycleAdapterTest {
   
   @Test
   public void testFiresPlaybackChange() {
-    Fixture.fakeRequestParam( WidgetUtil.getId( video ) + "." + keyForEnum( PlaybackOptions.PLABACK_MODE ), 
+    Fixture.fakeRequestParam( WidgetUtil.getId( video ) + "." + keyForEnum( PlaybackOptions.PLAYBACK_MODE ), 
                               PlaybackMode.ERROR.name() );
     lifeCycleAdapter.readData( video );
     
@@ -137,8 +137,8 @@ public class VideoLifeCycleAdapterTest {
     lifeCycleAdapter.renderChanges( video );
     
     Message message = Fixture.getProtocolMessage();
-    SetOperation operation = message.findSetOperation( video, keyForEnum( PlaybackOptions.PLABACK_MODE ) );
-    assertEquals( keyForEnum( PlaybackMode.PLAY ), operation.getProperty( keyForEnum( PlaybackOptions.PLABACK_MODE ) ) );
+    SetOperation operation = message.findSetOperation( video, keyForEnum( PlaybackOptions.PLAYBACK_MODE ) );
+    assertEquals( keyForEnum( PlaybackMode.PLAY ), operation.getProperty( keyForEnum( PlaybackOptions.PLAYBACK_MODE ) ) );
   }
   
   @Test
@@ -211,9 +211,9 @@ public class VideoLifeCycleAdapterTest {
     lifeCycleAdapter.renderChanges( video );
     
     Message message = Fixture.getProtocolMessage();
-    SetOperation operation = message.findSetOperation( video, keyForEnum( PlaybackOptions.AUTO_PLAY ) );
+    SetOperation operation = message.findSetOperation( video, keyForEnum( PlaybackOptions.AUTOPLAY ) );
     assertEquals( Boolean.TRUE, 
-                  operation.getProperty( keyForEnum( PlaybackOptions.AUTO_PLAY ) ) );
+                  operation.getProperty( keyForEnum( PlaybackOptions.AUTOPLAY ) ) );
   }
   
   @Test
