@@ -18,6 +18,7 @@ import org.eclipse.rwt.internal.protocol.ClientObjectFactory;
 import org.eclipse.rwt.internal.protocol.IClientObject;
 import org.eclipse.rwt.lifecycle.AbstractWidgetLCA;
 import org.eclipse.rwt.lifecycle.ControlLCAUtil;
+import org.eclipse.rwt.lifecycle.ProcessActionRunner;
 import org.eclipse.rwt.lifecycle.WidgetLCAUtil;
 import org.eclipse.rwt.lifecycle.WidgetUtil;
 import org.eclipse.swt.widgets.Control;
@@ -51,8 +52,17 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA {
     if( playbackMode != null ) {
       PlaybackMode newMode = PlaybackMode.valueOf( playbackMode );
       Video video = ( Video )widget;
-      video.getAdapter( PlaybackAdapter.class ).setPlaybackMode( newMode );
+      notifyListenersAboutPlaybackModeChange( newMode, video );
     }
+  }
+
+  private void notifyListenersAboutPlaybackModeChange( final PlaybackMode newMode, final Video video ) {
+    ProcessActionRunner.add( new Runnable() {
+      @Override
+      public void run() {
+        video.getAdapter( PlaybackAdapter.class ).setPlaybackMode( newMode );
+      }
+    } );
   }
 
   private void readPresentationMode( Widget widget ) {
@@ -60,12 +70,21 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA {
     if( presentationMode != null ) {
       PresentationMode newMode = PresentationMode.valueOf( presentationMode );
       Video video = ( Video )widget;
-      if( newMode == PresentationMode.EMBEDDED ) {
-        video.setFullscreen( false );
-      } else {
-        video.setFullscreen( true );
-      }
+      notifyListenersAboutPresentationModeChange( newMode, video );
     }
+  }
+
+  private void notifyListenersAboutPresentationModeChange( final PresentationMode newMode, final Video video ) {
+    ProcessActionRunner.add( new Runnable() {
+      @Override
+      public void run() {
+        if( newMode == PresentationMode.EMBEDDED ) {
+          video.setFullscreen( false );
+        } else {
+          video.setFullscreen( true );
+        }
+      }
+    } );
   }
 
   @Override

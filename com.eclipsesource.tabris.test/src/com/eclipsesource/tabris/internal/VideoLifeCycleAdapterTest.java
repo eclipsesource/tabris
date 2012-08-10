@@ -104,7 +104,8 @@ public class VideoLifeCycleAdapterTest {
   public void testFiresPlaybackChange() {
     Fixture.fakeRequestParam( WidgetUtil.getId( video ) + "." + keyForEnum( PlaybackOptions.PLAYBACK_MODE ), 
                               PlaybackMode.ERROR.name() );
-    lifeCycleAdapter.readData( video );
+    
+    Fixture.executeLifeCycleFromServerThread();
     
     verify( videoListener ).playbackChanged( PlaybackMode.ERROR );
   }
@@ -113,7 +114,8 @@ public class VideoLifeCycleAdapterTest {
   public void testFiresPresentationChange() {
     Fixture.fakeRequestParam( WidgetUtil.getId( video ) + "." + keyForEnum( PlaybackOptions.PRESENTATION_MODE ), 
                               PresentationMode.EMBEDDED.name() );
-    lifeCycleAdapter.readData( video );
+   
+    Fixture.executeLifeCycleFromServerThread();
     
     verify( videoListener ).presentationChanged( PresentationMode.EMBEDDED );
   }
@@ -122,7 +124,8 @@ public class VideoLifeCycleAdapterTest {
   public void testFiresPresentationChangeToFullScreen() {
     Fixture.fakeRequestParam( WidgetUtil.getId( video ) + "." + keyForEnum( PlaybackOptions.PRESENTATION_MODE ), 
                               PresentationMode.FULL_SCREEN.name() );
-    lifeCycleAdapter.readData( video );
+    
+    Fixture.executeLifeCycleFromServerThread();
     
     verify( videoListener ).presentationChanged( PresentationMode.FULL_SCREEN );
   }
