@@ -30,11 +30,71 @@ import com.eclipsesource.tabris.internal.VideoLifeCycleAdapter.PlaybackOptions;
  */
 public class Video extends Composite {
   
+  /**
+   * The current playback state of the video player.
+   * This may also change as a result of the user interacting with the video player controls.
+   */
   public enum PlaybackMode {
-    PLAY, PAUSE, STOP, INTERRUPT, FAST_FORWARD, FAST_BACKWARD, USER_EXIT, DONE, ERROR
+    /**
+     * Video playback is currently under way.
+     */
+    PLAY,
+    
+    /**
+     * Video playback is currently paused.
+     */
+    PAUSE,
+
+    /**
+     * Video playback is currently stopped.
+     */
+    STOP,
+
+    /**
+     * Video playback is temporarily interrupted, perhaps because the buffer ran out of content.
+     */
+    INTERRUPT,
+    
+    /**
+     * The player is currently seeking towards the end of the video.
+     */
+    FAST_FORWARD,
+    
+    /**
+     * The player is currently seeking towards the beginning of the video.
+     */
+    FAST_BACKWARD,
+    
+    /**
+     * NOT USED
+     */
+    USER_EXIT,
+    
+    /**
+     * The player has reached the end of the video and finished playing.
+     */
+    DONE,
+    
+    /**
+     * An error has occurred like: buffering of data has stalled.
+     */
+    ERROR
   }
+  
+  /**
+   * The current presentation mode of the video player.
+   * This may also change as a result of the user interacting with the video player controls.
+   */
   public enum PresentationMode {
-    FULL_SCREEN, EMBEDDED
+    /**
+     * The player has entered or should enter full-screen mode.
+     */
+    FULL_SCREEN,
+
+    /**
+     * The player has exited or should exit full-screen mode.
+     */
+    EMBEDDED
   }
 
   private static final float PLAY_SPEED = 1;
