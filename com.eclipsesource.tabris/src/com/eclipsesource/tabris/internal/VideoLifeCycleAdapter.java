@@ -45,7 +45,7 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA {
   static final String TYPE = "tabris.widgets.Video";
   static final String PARENT = "parent";
   static final String VIDEO_URL = "videoURL";
-  static final String VIDEO_LISTENER_PROPERTY = "videoListener";
+  static final String VIDEO_LISTENER_PROPERTY = "video";
 
   @Override
   public void readData( Widget widget ) {
