@@ -1,6 +1,7 @@
 package com.eclipsesource.tabris.internal;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.inOrder;
@@ -17,6 +18,7 @@ import org.eclipse.rwt.internal.protocol.IClientObject;
 import org.eclipse.rwt.internal.protocol.IClientObjectAdapter;
 import org.eclipse.rwt.lifecycle.PhaseEvent;
 import org.eclipse.rwt.lifecycle.PhaseId;
+import org.eclipse.swt.widgets.Display;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,6 +34,7 @@ public class AbstractObjectSynchronizerTest {
   @Before
 	public void setUp() {
     Fixture.setUp();
+    new Display();
 	  object = mock( Adaptable.class );
 	  when( object.getAdapter( IClientObjectAdapter.class ) ).thenReturn( new ClientObjectAdapter() );
     FakeObjectSynchronizer original = new FakeObjectSynchronizer( object );
@@ -46,6 +49,11 @@ public class AbstractObjectSynchronizerTest {
   @Test
   public void testPhaseId() {
     assertEquals( PhaseId.ANY, synchronizer.getPhaseId() );
+  }
+  
+  @Test
+  public void testGetDisplay() {
+    assertNotNull( synchronizer.getDisplay() );
   }
   
   @Test

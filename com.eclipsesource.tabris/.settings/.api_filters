@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <component id="com.eclipsesource.tabris" version="2">
+    <resource path="META-INF/MANIFEST.MF">
+        <filter id="924844039">
+            <message_arguments>
+                <message_argument value="0.6.2"/>
+                <message_argument value="0.6.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="src/com/eclipsesource/tabris/internal/AbstractObjectSynchronizer.java" type="com.eclipsesource.tabris.internal.AbstractObjectSynchronizer">
         <filter id="305365105">
             <message_arguments>

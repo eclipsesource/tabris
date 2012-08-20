@@ -51,7 +51,7 @@ public abstract class AbstractObjectSynchronizer implements PhaseListener, Sessi
 
   public void afterPhase( PhaseEvent event ) {
     Display sessionDisplay = LifeCycleUtil.getSessionDisplay();
-    if( display == sessionDisplay ) {
+    if( getDisplay() == sessionDisplay ) {
       processLifeCycleMethods( event );
     }
   }
@@ -154,5 +154,9 @@ public abstract class AbstractObjectSynchronizer implements PhaseListener, Sessi
   
   public IClientObject getClientObject() {
     return ClientObjectFactory.getClientObject( object );
+  }
+
+  public Display getDisplay() {
+    return display;
   }
 }

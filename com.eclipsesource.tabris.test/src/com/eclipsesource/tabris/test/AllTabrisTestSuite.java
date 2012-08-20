@@ -16,6 +16,11 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import com.eclipsesource.tabris.BootstrapperTest;
 import com.eclipsesource.tabris.ClientDeviceTest;
+import com.eclipsesource.tabris.camera.CameraOptionsTest;
+import com.eclipsesource.tabris.camera.CameraTest;
+import com.eclipsesource.tabris.camera.internal.Base64Test;
+import com.eclipsesource.tabris.camera.internal.CameraAdapterTest;
+import com.eclipsesource.tabris.camera.internal.CameraSynchronizerTest;
 import com.eclipsesource.tabris.geolocation.GeolocationOptionsTest;
 import com.eclipsesource.tabris.geolocation.GeolocationTest;
 import com.eclipsesource.tabris.geolocation.PositionErrorTest;
@@ -53,7 +58,12 @@ import com.eclipsesource.tabris.widgets.ClientCanvasTest;
   EntryPointLookupServletTest.class,
   GCOperationDispatcherTest.class,
   ClientCanvasTest.class,
-  ClientDeviceTest.class
+  ClientDeviceTest.class,
+  Base64Test.class,
+  CameraTest.class,
+  CameraOptionsTest.class,
+  CameraAdapterTest.class,
+  CameraSynchronizerTest.class
 } )
 public class AllTabrisTestSuite {
 }

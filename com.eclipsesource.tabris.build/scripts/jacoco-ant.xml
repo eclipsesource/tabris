@@ -14,10 +14,14 @@
 			<!-- the class files and optional source files ... -->
 			<structure name="Tabris Coverage Report">
 				<classfiles>
-					<fileset dir="${basedir}/../../com.eclipsesource.tabris/target/classes" />
+					<fileset dir="${basedir}/../../com.eclipsesource.tabris/target/classes">
+					  <exclude name="**/Base64.class" />
+					</fileset>
 				</classfiles>
 				<sourcefiles encoding="UTF-8">
-					<fileset dir="${basedir}/../../com.eclipsesource.tabris/src" />
+					<fileset dir="${basedir}/../../com.eclipsesource.tabris/src">
+					  <exclude name="**/Base64.java" />
+					</fileset>	
 				</sourcefiles>
 			</structure>
 			<!-- to produce reports in different formats. -->
