@@ -21,6 +21,7 @@ import java.io.IOException;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.rap.rwt.testfixture.Message;
 import org.eclipse.rap.rwt.testfixture.Message.CreateOperation;
+import org.eclipse.rap.rwt.testfixture.Message.ListenOperation;
 import org.eclipse.rap.rwt.testfixture.Message.SetOperation;
 import org.eclipse.rwt.lifecycle.AbstractWidgetLCA;
 import org.eclipse.rwt.lifecycle.ILifeCycleAdapter;
@@ -53,7 +54,6 @@ public class VideoLifeCycleAdapterTest {
     parent = new Shell( display );
     video = new Video( "http://test.com", parent );
     videoListener = mock( VideoListener.class );
-    video.addVideoListener( videoListener );
     lifeCycleAdapter = ( AbstractWidgetLCA )video.getAdapter( ILifeCycleAdapter.class );
     Fixture.fakeNewRequest( display );
   }
@@ -102,6 +102,7 @@ public class VideoLifeCycleAdapterTest {
   
   @Test
   public void testFiresPlaybackChange() {
+    video.addVideoListener( videoListener );
     Fixture.fakeRequestParam( WidgetUtil.getId( video ) + "." + keyForEnum( PlaybackOptions.PLAYBACK_MODE ), 
                               PlaybackMode.ERROR.name() );
     
@@ -112,6 +113,7 @@ public class VideoLifeCycleAdapterTest {
   
   @Test
   public void testFiresPresentationChange() {
+    video.addVideoListener( videoListener );
     Fixture.fakeRequestParam( WidgetUtil.getId( video ) + "." + keyForEnum( PlaybackOptions.PRESENTATION_MODE ), 
                               PresentationMode.EMBEDDED.name() );
    
@@ -122,6 +124,7 @@ public class VideoLifeCycleAdapterTest {
   
   @Test
   public void testFiresPresentationChangeToFullScreen() {
+    video.addVideoListener( videoListener );
     Fixture.fakeRequestParam( WidgetUtil.getId( video ) + "." + keyForEnum( PlaybackOptions.PRESENTATION_MODE ), 
                               PresentationMode.FULL_SCREEN.name() );
     
@@ -247,6 +250,20 @@ public class VideoLifeCycleAdapterTest {
     SetOperation operation = message.findSetOperation( video, keyForEnum( PlaybackOptions.HEAD_POSITION ) );
     assertEquals( Integer.valueOf( 23 ), 
                   operation.getProperty( keyForEnum( PlaybackOptions.HEAD_POSITION ) ) );
+  }
+  
+  @Test
+  public void testRendersVideoListener() throws IOException {
+    Fixture.markInitialized( video.getDisplay() );
+    Fixture.markInitialized( video );
+    Fixture.preserveWidgets();
+    
+    video.addVideoListener( mock( VideoListener.class ) );
+    lifeCycleAdapter.renderChanges( video );
+    
+    Message message = Fixture.getProtocolMessage();
+    ListenOperation listenOperation = message.findListenOperation( video, VideoLifeCycleAdapter.VIDEO_LISTENER_PROPERTY );
+    assertNotNull( listenOperation );
   }
   
   @Test

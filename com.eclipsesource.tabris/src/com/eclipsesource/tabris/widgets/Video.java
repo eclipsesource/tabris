@@ -256,6 +256,10 @@ public class Video extends Composite {
     public Map<PlaybackOptions, Object> getOptions() {
       return playbackOptions;
     }
+
+    public boolean hasVideoListener() {
+      return !listeners.isEmpty();
+    }
     
   }
   

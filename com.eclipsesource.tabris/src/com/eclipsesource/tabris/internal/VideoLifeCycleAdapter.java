@@ -10,6 +10,11 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import static org.eclipse.rwt.lifecycle.WidgetLCAUtil.preserveListener;
+import static org.eclipse.rwt.lifecycle.WidgetLCAUtil.preserveProperty;
+import static org.eclipse.rwt.lifecycle.WidgetLCAUtil.renderListener;
+import static org.eclipse.rwt.lifecycle.WidgetLCAUtil.renderProperty;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -40,6 +45,7 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA {
   static final String TYPE = "tabris.widgets.Video";
   static final String PARENT = "parent";
   static final String VIDEO_URL = "videoURL";
+  static final String VIDEO_LISTENER_PROPERTY = "videoListener";
 
   @Override
   public void readData( Widget widget ) {
@@ -94,8 +100,9 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA {
     PlaybackAdapter adapter = video.getAdapter( PlaybackAdapter.class );
     Map<PlaybackOptions, Object> options = adapter.getOptions();
     for( Entry<PlaybackOptions, Object> entry : options.entrySet() ) {
-      WidgetLCAUtil.preserveProperty( video, keyForEnum( entry.getKey() ), jsonizeValue( entry ) );
+      preserveProperty( video, keyForEnum( entry.getKey() ), jsonizeValue( entry ) );
     }
+    preserveListener( video, VIDEO_LISTENER_PROPERTY, adapter.hasVideoListener() );
   }
 
   @Override
@@ -105,8 +112,9 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA {
     PlaybackAdapter adapter = video.getAdapter( PlaybackAdapter.class );
     Map<PlaybackOptions, Object> options = adapter.getOptions();
     for( Entry<PlaybackOptions, Object> entry : options.entrySet() ) {
-      WidgetLCAUtil.renderProperty( widget, keyForEnum( entry.getKey() ), jsonizeValue( entry ), null );
+      renderProperty( widget, keyForEnum( entry.getKey() ), jsonizeValue( entry ), null );
     }
+    renderListener( video, VIDEO_LISTENER_PROPERTY, adapter.hasVideoListener(), false );
   }
 
   @Override

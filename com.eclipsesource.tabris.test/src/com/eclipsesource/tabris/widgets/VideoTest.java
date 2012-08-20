@@ -354,4 +354,32 @@ public class VideoTest {
     verify( videoListener ).playbackChanged( PlaybackMode.ERROR );
   }
   
+  @Test
+  public void testHasListenerDefault() {
+    video = new Video( "http://test.com", parent );
+    PlaybackAdapter adapter = video.getAdapter( PlaybackAdapter.class );
+    
+    assertFalse( adapter.hasVideoListener() );
+  }
+  
+  @Test
+  public void testHasListener() {
+    video = new Video( "http://test.com", parent );
+    video.addVideoListener( mock( VideoListener.class ) );
+    PlaybackAdapter adapter = video.getAdapter( PlaybackAdapter.class );
+    
+    assertTrue( adapter.hasVideoListener() );
+  }
+  
+  @Test
+  public void testHasListenerWithAddAndRemove() {
+    video = new Video( "http://test.com", parent );
+    VideoListener listener = mock( VideoListener.class );
+    video.addVideoListener( listener );
+    video.removeVideoListener( listener );
+    PlaybackAdapter adapter = video.getAdapter( PlaybackAdapter.class );
+    
+    assertFalse( adapter.hasVideoListener() );
+  }
+  
 }
