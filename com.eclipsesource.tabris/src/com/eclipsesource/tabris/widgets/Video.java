@@ -36,7 +36,7 @@ public class Video extends Composite {
    */
   public enum PlaybackMode {
     /**
-     * Video playback is ready..
+     * Video playback is ready.
      */
     READY,
     
