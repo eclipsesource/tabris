@@ -50,7 +50,7 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA {
   private void readPlaybackMode( Widget widget ) {
     String playbackMode = WidgetLCAUtil.readPropertyValue( widget, keyForEnum( PlaybackOptions.PLAYBACK_MODE ) );
     if( playbackMode != null ) {
-      PlaybackMode newMode = PlaybackMode.valueOf( playbackMode );
+      PlaybackMode newMode = PlaybackMode.valueOf( playbackMode.toUpperCase() );
       Video video = ( Video )widget;
       notifyListenersAboutPlaybackModeChange( newMode, video );
     }
@@ -68,7 +68,7 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA {
   private void readPresentationMode( Widget widget ) {
     String presentationMode = WidgetLCAUtil.readPropertyValue( widget, keyForEnum( PlaybackOptions.PRESENTATION_MODE ) );
     if( presentationMode != null ) {
-      PresentationMode newMode = PresentationMode.valueOf( presentationMode );
+      PresentationMode newMode = PresentationMode.valueOf( presentationMode.toUpperCase() );
       Video video = ( Video )widget;
       notifyListenersAboutPresentationModeChange( newMode, video );
     }

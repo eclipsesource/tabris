@@ -36,6 +36,11 @@ public class Video extends Composite {
    */
   public enum PlaybackMode {
     /**
+     * Video playback is ready..
+     */
+    READY,
+    
+    /**
      * Video playback is currently under way.
      */
     PLAY,
@@ -64,11 +69,6 @@ public class Video extends Composite {
      * The player is currently seeking towards the beginning of the video.
      */
     FAST_BACKWARD,
-    
-    /**
-     * NOT USED
-     */
-    USER_EXIT,
     
     /**
      * The player has reached the end of the video and finished playing.
