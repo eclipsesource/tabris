@@ -309,9 +309,12 @@ public class VideoTest {
   
   @Test
   public void testStopThrowsEvent() {
+    video.pause();
     video.stop();
     
-    verify( videoListener ).playbackChanged( PlaybackMode.STOP );
+    InOrder order = inOrder( videoListener );
+    order.verify( videoListener ).playbackChanged( PlaybackMode.PAUSE );
+    order.verify( videoListener ).playbackChanged( PlaybackMode.STOP );
   }
   
   @Test
@@ -343,6 +346,22 @@ public class VideoTest {
     InOrder order = inOrder( videoListener );
     order.verify( videoListener ).presentationChanged( PresentationMode.FULL_SCREEN );
     order.verify( videoListener ).presentationChanged( PresentationMode.EMBEDDED );
+  }
+  
+  @Test
+  public void testFiresPresentationEventOnlyOnce() {
+    video.setFullscreen( true );
+    video.setFullscreen( true );
+    
+    verify( videoListener ).presentationChanged( PresentationMode.FULL_SCREEN );
+  }
+  
+  @Test
+  public void testFiresPlaybackEventOnlyOnce() {
+    video.play();
+    video.play();
+    
+    verify( videoListener ).playbackChanged( PlaybackMode.PLAY );
   }
   
   @Test

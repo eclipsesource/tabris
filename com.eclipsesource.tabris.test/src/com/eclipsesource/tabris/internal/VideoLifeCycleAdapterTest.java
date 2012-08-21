@@ -13,6 +13,7 @@ package com.eclipsesource.tabris.internal;
 import static com.eclipsesource.tabris.internal.VideoLifeCycleAdapter.keyForEnum;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -26,6 +27,8 @@ import org.eclipse.rap.rwt.testfixture.Message.SetOperation;
 import org.eclipse.rwt.lifecycle.AbstractWidgetLCA;
 import org.eclipse.rwt.lifecycle.ILifeCycleAdapter;
 import org.eclipse.rwt.lifecycle.WidgetUtil;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
@@ -53,6 +56,7 @@ public class VideoLifeCycleAdapterTest {
     Display display = new Display();
     parent = new Shell( display );
     video = new Video( "http://test.com", parent );
+    new Button( parent, SWT.PUSH );
     videoListener = mock( VideoListener.class );
     lifeCycleAdapter = ( AbstractWidgetLCA )video.getAdapter( ILifeCycleAdapter.class );
     Fixture.fakeNewRequest( display );
@@ -112,14 +116,27 @@ public class VideoLifeCycleAdapterTest {
   }
   
   @Test
+  public void testRendersPlaybackOnce() {
+    video.addVideoListener( videoListener );
+    Fixture.fakeRequestParam( WidgetUtil.getId( video ) + "." + keyForEnum( PlaybackOptions.PLAYBACK_MODE ), 
+                              PlaybackMode.READY.name().toLowerCase() );
+    
+    Fixture.executeLifeCycleFromServerThread();
+    
+    verify( videoListener ).playbackChanged( PlaybackMode.READY );
+    Message message = Fixture.getProtocolMessage();
+    assertNull( message.findSetOperation( video, keyForEnum( PlaybackOptions.PLAYBACK_MODE ) ) );
+  }
+  
+  @Test
   public void testFiresPresentationChange() {
     video.addVideoListener( videoListener );
     Fixture.fakeRequestParam( WidgetUtil.getId( video ) + "." + keyForEnum( PlaybackOptions.PRESENTATION_MODE ), 
-                              PresentationMode.EMBEDDED.name() );
+                              PresentationMode.FULL_SCREEN.name() );
    
     Fixture.executeLifeCycleFromServerThread();
     
-    verify( videoListener ).presentationChanged( PresentationMode.EMBEDDED );
+    verify( videoListener ).presentationChanged( PresentationMode.FULL_SCREEN );
   }
   
   @Test

@@ -133,20 +133,23 @@ public class Video extends Composite {
 
   public void play() {
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( PLAY_SPEED ) );
+    PlaybackMode oldMode = ( PlaybackMode )playbackOptions.get( PlaybackOptions.PLAYBACK_MODE );
     playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, PlaybackMode.PLAY );
-    firePlaybackChanged( PlaybackMode.PLAY );
+    firePlaybackChanged( oldMode, PlaybackMode.PLAY );
   }
   
   public void pause() {
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( HALT_SPEED ) );
+    PlaybackMode oldMode = ( PlaybackMode )playbackOptions.get( PlaybackOptions.PLAYBACK_MODE );
     playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, PlaybackMode.PAUSE );
-    firePlaybackChanged( PlaybackMode.PAUSE );
+    firePlaybackChanged( oldMode, PlaybackMode.PAUSE );
   }
   
   public void stop() {
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( HALT_SPEED ) );
+    PlaybackMode oldMode = ( PlaybackMode )playbackOptions.get( PlaybackOptions.PLAYBACK_MODE );
     playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, PlaybackMode.STOP );
-    firePlaybackChanged( PlaybackMode.STOP );
+    firePlaybackChanged( oldMode, PlaybackMode.STOP );
   }
   
   public void fastForward( float speed ) {
@@ -154,8 +157,9 @@ public class Video extends Composite {
       throw new IllegalArgumentException( "Speed has to be > 1 for a fast fotward. But was " + speed );
     }
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( speed ) );
+    PlaybackMode oldMode = ( PlaybackMode )playbackOptions.get( PlaybackOptions.PLAYBACK_MODE );
     playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, PlaybackMode.FAST_FORWARD );
-    firePlaybackChanged( PlaybackMode.FAST_FORWARD );
+    firePlaybackChanged( oldMode, PlaybackMode.FAST_FORWARD );
   }
   
   public void fastBackward( float speed ) {
@@ -163,8 +167,9 @@ public class Video extends Composite {
       throw new IllegalArgumentException( "Speed has to be < 1 for a fast backward. But was " + speed );
     }
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( speed ) );
+    PlaybackMode oldMode = ( PlaybackMode )playbackOptions.get( PlaybackOptions.PLAYBACK_MODE );
     playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, PlaybackMode.FAST_BACKWARD );
-    firePlaybackChanged( PlaybackMode.FAST_BACKWARD );
+    firePlaybackChanged( oldMode, PlaybackMode.FAST_BACKWARD );
   }
   
   public float getSpeed() {
@@ -193,8 +198,9 @@ public class Video extends Composite {
   
   public void setFullscreen( boolean fullScreenEnabled ) {
     PresentationMode presentationMode = fullScreenEnabled ? PresentationMode.FULL_SCREEN : PresentationMode.EMBEDDED;
+    PresentationMode oldMode = ( PresentationMode )playbackOptions.get( PlaybackOptions.PRESENTATION_MODE );
     playbackOptions.put( PlaybackOptions.PRESENTATION_MODE, presentationMode );
-    firePresentationChanged( presentationMode );
+    firePresentationChanged( oldMode, presentationMode );
   }
   
   public void setPlayerControlsVisible( boolean visibility ) {
@@ -221,15 +227,19 @@ public class Video extends Composite {
     listeners.remove( listener );
   }
   
-  private void firePlaybackChanged( PlaybackMode newMode ) {
-    for( VideoListener listener : listeners ) {
-      listener.playbackChanged( newMode );
+  private void firePlaybackChanged( PlaybackMode oldMode, PlaybackMode newMode ) {
+    if( oldMode != newMode ) {
+      for( VideoListener listener : listeners ) {
+        listener.playbackChanged( newMode );
+      }
     }
   }
   
-  private void firePresentationChanged( PresentationMode newMode ) {
-    for( VideoListener listener : listeners ) {
-      listener.presentationChanged( newMode );
+  private void firePresentationChanged( PresentationMode oldMode, PresentationMode newMode ) {
+    if( oldMode != newMode ) {
+      for( VideoListener listener : listeners ) {
+        listener.presentationChanged( newMode );
+      }
     }
   }
   
@@ -249,8 +259,9 @@ public class Video extends Composite {
   public class PlaybackAdapter {
     
     public void setPlaybackMode( PlaybackMode mode ) {
+      PlaybackMode oldMode = ( PlaybackMode )playbackOptions.get( PlaybackOptions.PLAYBACK_MODE );
       playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, mode );
-      firePlaybackChanged( mode );
+      firePlaybackChanged( oldMode, mode );
     }
     
     public Map<PlaybackOptions, Object> getOptions() {
