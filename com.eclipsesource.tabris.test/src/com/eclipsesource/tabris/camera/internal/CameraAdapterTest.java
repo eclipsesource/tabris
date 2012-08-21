@@ -41,6 +41,7 @@ public class CameraAdapterTest {
     assertNull( adapter.getOptions() );
     assertNull( adapter.getEncodedImage() );
     assertFalse( adapter.isDisposed() );
+    assertFalse( adapter.isOpen() );
   }
   
   @Test
@@ -76,5 +77,20 @@ public class CameraAdapterTest {
     adapter.dispose();
     
     assertTrue( adapter.isDisposed() );
+  }
+  
+  @Test
+  public void testOpen() {
+    adapter.open();
+    
+    assertTrue( adapter.isOpen() );
+  }
+  
+  @Test
+  public void testClose() {
+    adapter.open();
+    adapter.close();
+    
+    assertFalse( adapter.isOpen() );
   }
 }

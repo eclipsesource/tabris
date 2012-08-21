@@ -43,6 +43,7 @@ public class Camera implements Adaptable {
 
   public void takePicture( CameraCallback callback ) {
     cameraAdapter.setCallback( callback );
+    cameraAdapter.open();
   }
   
   public void dispose() {

@@ -31,6 +31,7 @@ public class CameraSynchronizer extends AbstractObjectSynchronizer {
   static final String PROPERTY_SOURCETYPE = "sourceType";
   static final String PROPERTY_RESOLUTION = "resolution";
   static final String PROPERTY_SAVETOALBUM = "saveToAlbum";
+  static final String PROPERTY_CLOSE = "close";
 
   public CameraSynchronizer( Adaptable camera ) {
     super( camera );
@@ -72,6 +73,10 @@ public class CameraSynchronizer extends AbstractObjectSynchronizer {
     if( image != null ) {
       adapter.setEncodedImage( image );
     }
+    String close = readPropertyValue( PROPERTY_CLOSE );
+    if( close != null ) {
+      adapter.close();
+    }
   }
 
   @Override
@@ -108,7 +113,7 @@ public class CameraSynchronizer extends AbstractObjectSynchronizer {
   @Override
   protected void renderChanges( Object camera ) {
     CameraAdapter adapter = ( ( Camera )camera ).getAdapter( CameraAdapter.class );
-    if( adapter.getCallback() != null ) {
+    if( adapter.isOpen() ) {
       getClientObject().call( "open", null );
     }
     if( adapter.isDisposed() ) {

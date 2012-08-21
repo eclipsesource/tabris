@@ -22,6 +22,7 @@ public class CameraAdapter {
   private CameraCallback callback;
   private boolean disposed;
   private String encodedImage;
+  private boolean open;
 
   public void setOptions( CameraOptions options ) {
     this.options = new CameraOptions();
@@ -63,6 +64,18 @@ public class CameraAdapter {
 
   public String getEncodedImage() {
     return encodedImage;
+  }
+
+  public void open() {
+    this.open = true;
+  }
+  
+  public void close() {
+    this.open = false;
+  }
+
+  public boolean isOpen() {
+    return open;
   }
   
 }

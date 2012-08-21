@@ -12,6 +12,7 @@ package com.eclipsesource.tabris.camera;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import org.eclipse.rap.rwt.testfixture.Fixture;
@@ -45,6 +46,17 @@ public class CameraTest {
     camera.takePicture( callback );
     
     assertSame( callback, adapter.getCallback() );
+  }
+  
+  @Test
+  public void testOpen() {
+    Camera camera = new Camera( CameraOptions.NONE );
+    CameraAdapter adapter = camera.getAdapter( CameraAdapter.class );
+    CameraCallback callback = mock( CameraCallback.class );
+    
+    camera.takePicture( callback );
+    
+    assertTrue( adapter.isOpen() );
   }
   
   @Test

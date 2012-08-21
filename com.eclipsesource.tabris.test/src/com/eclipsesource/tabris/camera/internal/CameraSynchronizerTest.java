@@ -72,6 +72,16 @@ public class CameraSynchronizerTest {
   }
   
   @Test
+  public void testClose() {
+    String image = "true";
+    when( synchronizer.readPropertyValue( CameraSynchronizer.PROPERTY_CLOSE ) ).thenReturn( image );
+    
+    synchronizer.readData( object );
+    
+    verify( adapter ).close();
+  }
+  
+  @Test
   public void testRenderInitialization() {
     CameraOptions options = new CameraOptions();
     options.setResolution( 100, 100 );
@@ -104,7 +114,7 @@ public class CameraSynchronizerTest {
   @Test
   public void testRenderChangesWithOpen() {
     CameraAdapter cameraAdapter = new CameraAdapter();
-    cameraAdapter.setCallback( mock( CameraCallback.class ) );
+    cameraAdapter.open();
     when( object.getAdapter( CameraAdapter.class ) ).thenReturn( cameraAdapter );
     IClientObject clientObject = mock( IClientObject.class );
     doReturn( clientObject ).when( synchronizer ).getClientObject();
