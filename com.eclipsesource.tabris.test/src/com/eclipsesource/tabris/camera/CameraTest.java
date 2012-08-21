@@ -66,4 +66,9 @@ public class CameraTest {
     
     assertSame( SourceType.PHOTOLIBRARY, adapter.getOptions().getSourceType() );
   }
+  
+  @Test( expected = IllegalArgumentException.class )
+  public void testPhotoWithNullOptions() {
+    new Camera( null );
+  }
 }

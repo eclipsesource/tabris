@@ -76,6 +76,7 @@ public class CameraSynchronizerTest {
     CameraOptions options = new CameraOptions();
     options.setResolution( 100, 100 );
     options.setSourceType( SourceType.PHOTOLIBRARY );
+    options.setSaveToAlbum( true );
     when( adapter.getOptions() ).thenReturn( options );
     IClientObject clientObject = mock( IClientObject.class );
     
@@ -84,6 +85,7 @@ public class CameraSynchronizerTest {
     verify( clientObject ).create( CameraSynchronizer.TYPE );
     verify( clientObject ).set( CameraSynchronizer.PROPERTY_RESOLUTION, new int[]{ 100, 100 } );
     verify( clientObject ).set( CameraSynchronizer.PROPERTY_SOURCETYPE, SourceType.PHOTOLIBRARY.toString().toLowerCase() );
+    verify( clientObject ).set( CameraSynchronizer.PROPERTY_SAVETOALBUM, true );
   }
   
   @Test

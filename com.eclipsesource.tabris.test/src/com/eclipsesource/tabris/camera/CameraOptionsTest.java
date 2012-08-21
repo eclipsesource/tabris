@@ -11,7 +11,9 @@
 package com.eclipsesource.tabris.camera;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 
 import org.eclipse.swt.graphics.Point;
 import org.junit.Test;
@@ -39,10 +41,10 @@ public class CameraOptionsTest {
     assertEquals( SourceType.PHOTOLIBRARY, cameraOptions.getSourceType() );
   }
   
-  
   @Test
   public void testNoneOptions() {
     assertNull( CameraOptions.NONE.getResolution() );
-    assertNull( CameraOptions.NONE.getSourceType() );
+    assertSame( SourceType.CAMERA, CameraOptions.NONE.getSourceType() );
+    assertFalse( CameraOptions.NONE.savesToAlbum() );
   }
 }

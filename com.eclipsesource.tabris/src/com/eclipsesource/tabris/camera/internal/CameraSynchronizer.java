@@ -30,6 +30,7 @@ public class CameraSynchronizer extends AbstractObjectSynchronizer {
   static final String PROPERTY_IMAGE = "image";
   static final String PROPERTY_SOURCETYPE = "sourceType";
   static final String PROPERTY_RESOLUTION = "resolution";
+  static final String PROPERTY_SAVETOALBUM = "saveToAlbum";
 
   public CameraSynchronizer( Adaptable camera ) {
     super( camera );
@@ -41,6 +42,7 @@ public class CameraSynchronizer extends AbstractObjectSynchronizer {
     CameraAdapter adapter = ( ( Camera )camera ).getAdapter( CameraAdapter.class );
     setResolution( clientObject, adapter );
     setSourceType( clientObject, adapter );
+    setSaveToAlbum( clientObject, adapter );
   }
 
   private void setResolution( IClientObject clientObject, CameraAdapter adapter ) {
@@ -54,6 +56,12 @@ public class CameraSynchronizer extends AbstractObjectSynchronizer {
     SourceType sourceType = adapter.getOptions().getSourceType();
     if( sourceType != null ) {
       clientObject.set( PROPERTY_SOURCETYPE, sourceType.toString().toLowerCase() );
+    }
+  }
+  
+  private void setSaveToAlbum( IClientObject clientObject, CameraAdapter adapter ) {
+    if( adapter.getOptions().savesToAlbum() ) {
+      clientObject.set( PROPERTY_SAVETOALBUM, adapter.getOptions().savesToAlbum() );
     }
   }
 

@@ -22,9 +22,14 @@ public class CameraOptions {
   
   private SourceType sourceType;
   private Point resolution;
+  private boolean saveToAlbum;
 
   public enum SourceType {
-    PHOTOLIBRARY, SAVEDPHOTOALBUM
+    CAMERA, PHOTOLIBRARY, SAVEDPHOTOALBUM
+  }
+  
+  public CameraOptions() {
+    sourceType = SourceType.CAMERA;
   }
   
   public void setSourceType( SourceType sourceType ) {
@@ -43,6 +48,14 @@ public class CameraOptions {
     return resolution;
   }
 
+  public boolean savesToAlbum() {
+    return saveToAlbum;
+  }
+
+  public void setSaveToAlbum( boolean saveToAlbum ) {
+    this.saveToAlbum = saveToAlbum;
+  }
+
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -50,6 +63,9 @@ public class CameraOptions {
     result = prime * result + ( ( resolution == null )
                                                       ? 0
                                                       : resolution.hashCode() );
+    result = prime * result + ( saveToAlbum
+                                           ? 1231
+                                           : 1237 );
     result = prime * result + ( ( sourceType == null )
                                                       ? 0
                                                       : sourceType.hashCode() );
@@ -70,9 +86,11 @@ public class CameraOptions {
         return false;
     } else if( !resolution.equals( other.resolution ) )
       return false;
+    if( saveToAlbum != other.saveToAlbum )
+      return false;
     if( sourceType != other.sourceType )
       return false;
     return true;
   }
-  
+
 }

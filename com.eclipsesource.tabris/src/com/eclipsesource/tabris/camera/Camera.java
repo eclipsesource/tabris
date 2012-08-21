@@ -28,12 +28,19 @@ public class Camera implements Adaptable {
   private CameraAdapter cameraAdapter;
 
   public Camera( CameraOptions options ) {
+    checkOptions( options );
     clientObjectAdapter = new ClientObjectAdapter( "c" );
     new CameraSynchronizer( this );
     cameraAdapter = new CameraAdapter();
     cameraAdapter.setOptions( options );
   }
   
+  private void checkOptions( CameraOptions options ) {
+    if( options == null ) {
+      throw new IllegalArgumentException( "Camera Options mus tnot be null, you can use CameraOptions.NONE." );
+    }
+  }
+
   public void takePicture( CameraCallback callback ) {
     cameraAdapter.setCallback( callback );
   }

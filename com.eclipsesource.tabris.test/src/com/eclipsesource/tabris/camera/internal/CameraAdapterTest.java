@@ -48,6 +48,7 @@ public class CameraAdapterTest {
     CameraOptions cameraOptions = new CameraOptions();
     cameraOptions.setResolution( 100, 100 );
     cameraOptions.setSourceType( SourceType.PHOTOLIBRARY );
+    cameraOptions.setSaveToAlbum( true );
     adapter.setOptions( cameraOptions );
     
     assertNotSame( cameraOptions, adapter.getOptions() );

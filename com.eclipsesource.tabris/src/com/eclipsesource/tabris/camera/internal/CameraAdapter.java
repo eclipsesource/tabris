@@ -14,7 +14,6 @@ import org.eclipse.swt.graphics.Point;
 
 import com.eclipsesource.tabris.camera.CameraCallback;
 import com.eclipsesource.tabris.camera.CameraOptions;
-import com.eclipsesource.tabris.camera.CameraOptions.SourceType;
 
 
 public class CameraAdapter {
@@ -34,10 +33,8 @@ public class CameraAdapter {
     if( resolution != null ) {
       this.options.setResolution( resolution.x, resolution.y );
     }
-    SourceType sourceType = options.getSourceType();
-    if( sourceType != null ) {
-      this.options.setSourceType( sourceType );
-    }
+    this.options.setSourceType( options.getSourceType() );
+    this.options.setSaveToAlbum( options.savesToAlbum() );
   }
 
   public CameraOptions getOptions() {
