@@ -100,6 +100,10 @@ public class CameraSynchronizer extends AbstractObjectSynchronizer {
   @Override
   protected void renderChanges( Object camera ) {
     CameraAdapter adapter = ( ( Camera )camera ).getAdapter( CameraAdapter.class );
+    if( adapter.getCallback() != null ) {
+      getClientObject().call( "open", null );
+    }
+    
     if( adapter.isDisposed() ) {
       getClientObject().destroy();
     }

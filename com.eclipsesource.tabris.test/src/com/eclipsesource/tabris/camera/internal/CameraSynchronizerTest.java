@@ -86,7 +86,6 @@ public class CameraSynchronizerTest {
     verify( clientObject ).set( CameraSynchronizer.PROPERTY_SOURCETYPE, SourceType.PHOTOLIBRARY.toString().toLowerCase() );
   }
   
-  
   @Test
   public void testRenderChanges() {
     CameraAdapter cameraAdapter = new CameraAdapter();
@@ -98,6 +97,19 @@ public class CameraSynchronizerTest {
     synchronizer.renderChanges( object );
     
     verify( clientObject ).destroy();
+  }
+  
+  @Test
+  public void testRenderChangesWithOpen() {
+    CameraAdapter cameraAdapter = new CameraAdapter();
+    cameraAdapter.setCallback( mock( CameraCallback.class ) );
+    when( object.getAdapter( CameraAdapter.class ) ).thenReturn( cameraAdapter );
+    IClientObject clientObject = mock( IClientObject.class );
+    doReturn( clientObject ).when( synchronizer ).getClientObject();
+    
+    synchronizer.renderChanges( object );
+    
+    verify( clientObject ).call( "open", null );
   }
   
   @Test
