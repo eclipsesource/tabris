@@ -84,7 +84,7 @@ public class VideoTest {
   
   @Test
   public void testDefaultPlaybackMode() {
-    assertEquals( PlaybackMode.STOP, video.getPlaybackMode() );
+    assertEquals( PlaybackMode.PAUSE, video.getPlaybackMode() );
   }
   
   @Test
@@ -302,19 +302,19 @@ public class VideoTest {
   
   @Test
   public void testPauseThrowsEvent() {
+    video.stop();
     video.pause();
     
-    verify( videoListener ).playbackChanged( PlaybackMode.PAUSE );
+    InOrder order = inOrder( videoListener );
+    order.verify( videoListener ).playbackChanged( PlaybackMode.STOP );
+    order.verify( videoListener ).playbackChanged( PlaybackMode.PAUSE );
   }
   
   @Test
   public void testStopThrowsEvent() {
-    video.pause();
     video.stop();
     
-    InOrder order = inOrder( videoListener );
-    order.verify( videoListener ).playbackChanged( PlaybackMode.PAUSE );
-    order.verify( videoListener ).playbackChanged( PlaybackMode.STOP );
+    verify( videoListener ).playbackChanged( PlaybackMode.STOP );
   }
   
   @Test

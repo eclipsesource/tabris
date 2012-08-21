@@ -111,7 +111,7 @@ public class Video extends Composite {
   }
   
   private void initiateDefaultValues() {
-    playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, PlaybackMode.STOP );
+    playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, PlaybackMode.PAUSE );
     playbackOptions.put( PlaybackOptions.PRESENTATION_MODE, PresentationMode.EMBEDDED );
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( HALT_SPEED ) );
     playbackOptions.put( PlaybackOptions.CONTROLS_VISIBLE, Boolean.valueOf( true ) );
