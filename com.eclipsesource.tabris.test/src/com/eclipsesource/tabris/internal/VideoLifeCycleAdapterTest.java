@@ -116,14 +116,29 @@ public class VideoLifeCycleAdapterTest {
   }
   
   @Test
-  public void testRendersPlaybackOnce() {
+  public void testRendersPlaybackReadyOnce() {
     video.addVideoListener( videoListener );
+    Fixture.executeLifeCycleFromServerThread();
+    Fixture.fakeNewRequest( parent.getDisplay() );
     Fixture.fakeRequestParam( WidgetUtil.getId( video ) + "." + keyForEnum( PlaybackOptions.PLAYBACK_MODE ), 
                               PlaybackMode.READY.name().toLowerCase() );
-    
     Fixture.executeLifeCycleFromServerThread();
     
     verify( videoListener ).playbackChanged( PlaybackMode.READY );
+    Message message = Fixture.getProtocolMessage();
+    assertNull( message.findSetOperation( video, keyForEnum( PlaybackOptions.PLAYBACK_MODE ) ) );
+  }
+  
+  @Test
+  public void testRendersPlaybackPlayOnce() {
+    video.addVideoListener( videoListener );
+    Fixture.executeLifeCycleFromServerThread();
+    Fixture.fakeNewRequest( parent.getDisplay() );
+    Fixture.fakeRequestParam( WidgetUtil.getId( video ) + "." + keyForEnum( PlaybackOptions.PLAYBACK_MODE ), 
+                              PlaybackMode.PLAY.name().toLowerCase() );
+    Fixture.executeLifeCycleFromServerThread();
+    
+    verify( videoListener ).playbackChanged( PlaybackMode.PLAY );
     Message message = Fixture.getProtocolMessage();
     assertNull( message.findSetOperation( video, keyForEnum( PlaybackOptions.PLAYBACK_MODE ) ) );
   }
@@ -148,6 +163,21 @@ public class VideoLifeCycleAdapterTest {
     Fixture.executeLifeCycleFromServerThread();
     
     verify( videoListener ).presentationChanged( PresentationMode.FULL_SCREEN );
+  }
+  
+  @Test
+  public void testFiresPresentationChangeToFullScreenOnce() {
+    video.addVideoListener( videoListener );
+    Fixture.executeLifeCycleFromServerThread();
+    Fixture.fakeNewRequest( parent.getDisplay() );
+    Fixture.fakeRequestParam( WidgetUtil.getId( video ) + "." + keyForEnum( PlaybackOptions.PRESENTATION_MODE ), 
+                              PresentationMode.FULL_SCREEN.name() );
+    
+    Fixture.executeLifeCycleFromServerThread();
+    
+    verify( videoListener ).presentationChanged( PresentationMode.FULL_SCREEN );
+    Message message = Fixture.getProtocolMessage();
+    assertNull( message.findSetOperation( video, keyForEnum( PlaybackOptions.PRESENTATION_MODE ) ) );
   }
   
   @Test

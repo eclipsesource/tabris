@@ -365,12 +365,21 @@ public class VideoTest {
   }
   
   @Test
-  public void testPlaybackAdapter() {
+  public void testPlaybackAdapterPlaybackModeChange() {
     PlaybackAdapter adapter = video.getAdapter( PlaybackAdapter.class );
     
-    adapter.setPlaybackMode( PlaybackMode.ERROR );
+    adapter.firePlaybackChange( PlaybackMode.ERROR );
     
     verify( videoListener ).playbackChanged( PlaybackMode.ERROR );
+  }
+  
+  @Test
+  public void testPlaybackAdapterPresentationModeChange() {
+    PlaybackAdapter adapter = video.getAdapter( PlaybackAdapter.class );
+    
+    adapter.firePresentationChange( PresentationMode.EMBEDDED );
+    
+    verify( videoListener ).presentationChanged( PresentationMode.EMBEDDED );
   }
   
   @Test

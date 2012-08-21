@@ -259,9 +259,15 @@ public class Video extends Composite {
   public class PlaybackAdapter {
     
     public void setPlaybackMode( PlaybackMode mode ) {
-      PlaybackMode oldMode = ( PlaybackMode )playbackOptions.get( PlaybackOptions.PLAYBACK_MODE );
       playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, mode );
-      firePlaybackChanged( oldMode, mode );
+    }
+    
+    public void firePlaybackChange( PlaybackMode mode ) {
+      firePlaybackChanged( null, mode );
+    }
+    
+    public void firePresentationChange( PresentationMode mode ) {
+      firePresentationChanged( null, mode );
     }
     
     public Map<PlaybackOptions, Object> getOptions() {

@@ -58,6 +58,7 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA {
     if( playbackMode != null ) {
       PlaybackMode newMode = PlaybackMode.valueOf( playbackMode.toUpperCase() );
       Video video = ( Video )widget;
+      video.getAdapter( PlaybackAdapter.class ).setPlaybackMode( newMode );
       notifyListenersAboutPlaybackModeChange( newMode, video );
     }
   }
@@ -66,7 +67,7 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA {
     ProcessActionRunner.add( new Runnable() {
       @Override
       public void run() {
-        video.getAdapter( PlaybackAdapter.class ).setPlaybackMode( newMode );
+        video.getAdapter( PlaybackAdapter.class ).firePlaybackChange( newMode );
       }
     } );
   }
@@ -76,6 +77,7 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA {
     if( presentationMode != null ) {
       PresentationMode newMode = PresentationMode.valueOf( presentationMode.toUpperCase() );
       Video video = ( Video )widget;
+      video.getAdapter( PlaybackAdapter.class ).getOptions().put( PlaybackOptions.PRESENTATION_MODE, newMode );
       notifyListenersAboutPresentationModeChange( newMode, video );
     }
   }
@@ -84,11 +86,7 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA {
     ProcessActionRunner.add( new Runnable() {
       @Override
       public void run() {
-        if( newMode == PresentationMode.EMBEDDED ) {
-          video.setFullscreen( false );
-        } else {
-          video.setFullscreen( true );
-        }
+        video.getAdapter( PlaybackAdapter.class ).firePresentationChange( newMode );
       }
     } );
   }
