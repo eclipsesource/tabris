@@ -70,10 +70,10 @@ public class CameraSynchronizer extends AbstractObjectSynchronizer {
   protected void processAction( Object object ) {
     Camera camera = ( Camera )object;
     CameraAdapter cameraAdapter = camera.getAdapter( CameraAdapter.class );
-    if( cameraAdapter.getCallback() != null ) {
+    if( cameraAdapter.getCallback() != null && cameraAdapter.getEncodedImage() != null ) {
       handleCameraResult( cameraAdapter, camera );
+      reset( cameraAdapter );
     }
-    reset( cameraAdapter );
   }
 
   private void handleCameraResult( CameraAdapter cameraAdapter, Camera camera ) {
@@ -103,7 +103,6 @@ public class CameraSynchronizer extends AbstractObjectSynchronizer {
     if( adapter.getCallback() != null ) {
       getClientObject().call( "open", null );
     }
-    
     if( adapter.isDisposed() ) {
       getClientObject().destroy();
     }
