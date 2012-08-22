@@ -125,6 +125,20 @@ public class CameraSynchronizerTest {
   }
   
   @Test
+  public void testRenderChangesWithOpenOnce() {
+    CameraAdapter cameraAdapter = new CameraAdapter();
+    cameraAdapter.open();
+    when( object.getAdapter( CameraAdapter.class ) ).thenReturn( cameraAdapter );
+    IClientObject clientObject = mock( IClientObject.class );
+    doReturn( clientObject ).when( synchronizer ).getClientObject();
+    
+    synchronizer.renderChanges( object );
+    synchronizer.renderChanges( object );
+    
+    verify( clientObject ).call( "open", null );
+  }
+  
+  @Test
   public void testProcessAction() throws IOException {
     when( adapter.getEncodedImage() ).thenReturn( getEncodedImage() );
     CameraCallback callback = mock( CameraCallback.class );

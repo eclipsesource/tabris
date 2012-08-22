@@ -115,6 +115,7 @@ public class CameraSynchronizer extends AbstractObjectSynchronizer {
     CameraAdapter adapter = ( ( Camera )camera ).getAdapter( CameraAdapter.class );
     if( adapter.isOpen() ) {
       getClientObject().call( "open", null );
+      adapter.close();
     }
     if( adapter.isDisposed() ) {
       getClientObject().destroy();
