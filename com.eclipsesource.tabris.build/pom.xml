@@ -67,7 +67,7 @@
     <repository>
       <id>rap-nightly-repository</id>
       <layout>p2</layout>
-      <url>http://download.eclipse.org/rt/rap/1.5/runtime/RC4-20120612-1458</url>
+      <url>http://download.eclipse.org/rt/rap/2.0/M1-20120821-1934</url>
     </repository>
   </repositories>
 
