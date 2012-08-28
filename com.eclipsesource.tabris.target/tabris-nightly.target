@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
 
-<target name="RAP 1.5 milestones" sequenceNumber="22">
+<target name="RAP 1.5 milestones" sequenceNumber="23">
 <locations>
 <location path="${project_loc:com.eclipsesource.tabris.target}/bundles" type="Directory"/>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.rap.runtime.requirements.feature.group" version="1.5.0.20120612-1510"/>
-<unit id="org.eclipse.rap.runtime.feature.group" version="1.5.0.20120612-1510"/>
-<repository location="http://download.eclipse.org/rt/rap/1.5/runtime"/>
+<unit id="org.eclipse.rap.feature.feature.group" version="2.0.0.20120821-1934"/>
+<unit id="org.eclipse.rap.equinox.target.feature.feature.group" version="2.0.0.20120821-1939"/>
+<repository location="http://download.eclipse.org/rt/rap/2.0/M1-20120821-1934"/>
 </location>
 </locations>
 </target>

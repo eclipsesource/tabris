@@ -26,8 +26,6 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 
-import com.eclipsesource.tabris.internal.GCOperationDispatcher;
-
 
 public class GCOperationDispatcherTest {
   

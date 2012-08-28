@@ -5,9 +5,9 @@ import static junit.framework.Assert.assertNull;
 
 import java.io.IOException;
 
+import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.rap.rwt.testfixture.Message;
-import org.eclipse.rwt.lifecycle.WidgetUtil;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.HelpEvent;
 import org.eclipse.swt.events.HelpListener;

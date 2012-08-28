@@ -12,15 +12,13 @@ package com.eclipsesource.tabris;
 
 import static org.junit.Assert.assertTrue;
 
+import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.rap.rwt.testfixture.TestRequest;
-import org.eclipse.rwt.RWT;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.eclipsesource.tabris.ClientDevice;
-import com.eclipsesource.tabris.Platform;
 import com.eclipsesource.tabris.internal.Constants;
 
 

@@ -12,8 +12,6 @@ package com.eclipsesource.tabris.internal;
 
 import org.json.JSONArray;
 
-import com.eclipsesource.tabris.internal.GCOperationDispatcher;
-
 
 public class ClientCanvasTestUtil {
   

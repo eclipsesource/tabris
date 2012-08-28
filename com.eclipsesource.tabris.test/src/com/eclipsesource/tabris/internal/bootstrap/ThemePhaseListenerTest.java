@@ -17,26 +17,25 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.internal.application.ApplicationContext;
+import org.eclipse.rap.rwt.internal.service.ContextProvider;
+import org.eclipse.rap.rwt.internal.theme.Theme;
+import org.eclipse.rap.rwt.internal.theme.ThemeManager;
+import org.eclipse.rap.rwt.internal.theme.css.CssFileReader;
+import org.eclipse.rap.rwt.internal.theme.css.StyleSheet;
+import org.eclipse.rap.rwt.lifecycle.PhaseEvent;
+import org.eclipse.rap.rwt.lifecycle.PhaseId;
+import org.eclipse.rap.rwt.resources.ResourceLoader;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.rap.rwt.testfixture.TestRequest;
 import org.eclipse.rap.rwt.testfixture.internal.engine.ThemeManagerHelper;
-import org.eclipse.rwt.RWT;
-import org.eclipse.rwt.internal.application.ApplicationContext;
-import org.eclipse.rwt.internal.service.ContextProvider;
-import org.eclipse.rwt.internal.theme.Theme;
-import org.eclipse.rwt.internal.theme.ThemeManager;
-import org.eclipse.rwt.internal.theme.css.CssFileReader;
-import org.eclipse.rwt.internal.theme.css.StyleSheet;
-import org.eclipse.rwt.lifecycle.PhaseEvent;
-import org.eclipse.rwt.lifecycle.PhaseId;
-import org.eclipse.rwt.resources.ResourceLoader;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.Bootstrapper;
 import com.eclipsesource.tabris.internal.Constants;
-import com.eclipsesource.tabris.internal.bootstrap.ThemePhaseListener;
 
 
 @SuppressWarnings("restriction")

@@ -19,14 +19,14 @@ import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
 
+import org.eclipse.rap.rwt.lifecycle.AbstractWidgetLCA;
+import org.eclipse.rap.rwt.lifecycle.ILifeCycleAdapter;
+import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.rap.rwt.testfixture.Message;
 import org.eclipse.rap.rwt.testfixture.Message.CreateOperation;
 import org.eclipse.rap.rwt.testfixture.Message.ListenOperation;
 import org.eclipse.rap.rwt.testfixture.Message.SetOperation;
-import org.eclipse.rwt.lifecycle.AbstractWidgetLCA;
-import org.eclipse.rwt.lifecycle.ILifeCycleAdapter;
-import org.eclipse.rwt.lifecycle.WidgetUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;

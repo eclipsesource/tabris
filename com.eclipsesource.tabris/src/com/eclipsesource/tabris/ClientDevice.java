@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris;
 
-import org.eclipse.rwt.RWT;
+import org.eclipse.rap.rwt.RWT;
 
 import com.eclipsesource.tabris.internal.Constants;
 

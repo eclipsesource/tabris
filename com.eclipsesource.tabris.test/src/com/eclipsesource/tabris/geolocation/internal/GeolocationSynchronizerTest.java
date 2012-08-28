@@ -20,12 +20,12 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.internal.protocol.ClientObjectAdapter;
+import org.eclipse.rap.rwt.internal.protocol.IClientObject;
+import org.eclipse.rap.rwt.internal.protocol.IClientObjectAdapter;
+import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.eclipse.rwt.RWT;
-import org.eclipse.rwt.internal.protocol.ClientObjectAdapter;
-import org.eclipse.rwt.internal.protocol.IClientObject;
-import org.eclipse.rwt.internal.protocol.IClientObjectAdapter;
-import org.eclipse.rwt.lifecycle.PhaseId;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,8 +35,6 @@ import com.eclipsesource.tabris.geolocation.GeolocationCallback;
 import com.eclipsesource.tabris.geolocation.GeolocationOptions;
 import com.eclipsesource.tabris.geolocation.Position;
 import com.eclipsesource.tabris.geolocation.PositionError;
-import com.eclipsesource.tabris.geolocation.internal.GeolocationAdapter;
-import com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer;
 import com.eclipsesource.tabris.geolocation.internal.GeolocationAdapter.NeedsPositionFlavor;
 
 

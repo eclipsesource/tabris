@@ -10,11 +10,11 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.bootstrap;
 
-import org.eclipse.rwt.RWT;
-import org.eclipse.rwt.internal.theme.ThemeUtil;
-import org.eclipse.rwt.lifecycle.PhaseEvent;
-import org.eclipse.rwt.lifecycle.PhaseId;
-import org.eclipse.rwt.lifecycle.PhaseListener;
+import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.internal.theme.ThemeUtil;
+import org.eclipse.rap.rwt.lifecycle.PhaseEvent;
+import org.eclipse.rap.rwt.lifecycle.PhaseId;
+import org.eclipse.rap.rwt.lifecycle.PhaseListener;
 
 import com.eclipsesource.tabris.Bootstrapper;
 import com.eclipsesource.tabris.internal.Constants;

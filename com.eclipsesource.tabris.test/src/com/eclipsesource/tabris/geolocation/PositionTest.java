@@ -17,9 +17,6 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.eclipsesource.tabris.geolocation.Coordinates;
-import com.eclipsesource.tabris.geolocation.Position;
-
 
 public class PositionTest {
   

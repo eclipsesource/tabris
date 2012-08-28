@@ -12,19 +12,19 @@ package com.eclipsesource.tabris.internal;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.eclipse.rwt.Adaptable;
-import org.eclipse.rwt.RWT;
-import org.eclipse.rwt.internal.application.RWTFactory;
-import org.eclipse.rwt.internal.lifecycle.LifeCycleUtil;
-import org.eclipse.rwt.internal.protocol.ClientObjectFactory;
-import org.eclipse.rwt.internal.protocol.IClientObject;
-import org.eclipse.rwt.internal.protocol.IClientObjectAdapter;
-import org.eclipse.rwt.lifecycle.PhaseEvent;
-import org.eclipse.rwt.lifecycle.PhaseId;
-import org.eclipse.rwt.lifecycle.PhaseListener;
-import org.eclipse.rwt.service.IServiceStore;
-import org.eclipse.rwt.service.SessionStoreEvent;
-import org.eclipse.rwt.service.SessionStoreListener;
+import org.eclipse.rap.rwt.Adaptable;
+import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.internal.application.RWTFactory;
+import org.eclipse.rap.rwt.internal.lifecycle.LifeCycleUtil;
+import org.eclipse.rap.rwt.internal.protocol.ClientObjectFactory;
+import org.eclipse.rap.rwt.internal.protocol.IClientObject;
+import org.eclipse.rap.rwt.internal.protocol.IClientObjectAdapter;
+import org.eclipse.rap.rwt.lifecycle.PhaseEvent;
+import org.eclipse.rap.rwt.lifecycle.PhaseId;
+import org.eclipse.rap.rwt.lifecycle.PhaseListener;
+import org.eclipse.rap.rwt.service.IServiceStore;
+import org.eclipse.rap.rwt.service.SessionStoreEvent;
+import org.eclipse.rap.rwt.service.SessionStoreListener;
 import org.eclipse.swt.widgets.Display;
 
 

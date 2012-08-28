@@ -10,9 +10,9 @@
  ******************************************************************************/
 package com.eclipsesource.tabris;
 
-import org.eclipse.rwt.application.Application;
-import org.eclipse.rwt.application.ApplicationConfiguration;
-import org.eclipse.rwt.internal.application.ApplicationImpl;
+import org.eclipse.rap.rwt.application.Application;
+import org.eclipse.rap.rwt.application.ApplicationConfiguration;
+import org.eclipse.rap.rwt.internal.application.ApplicationImpl;
 
 import com.eclipsesource.tabris.internal.bootstrap.ApplicationWrapper;
 import com.eclipsesource.tabris.internal.bootstrap.ProxyApplicationConfiguration;
@@ -20,6 +20,9 @@ import com.eclipsesource.tabris.internal.bootstrap.ThemePhaseListener;
 
 
 @SuppressWarnings("restriction")
+/**
+ * @since 0.6
+ */
 public class Bootstrapper {
   
   public static final String THEME_ID_IOS = "com.eclipsesource.rap.mobile.theme.ios";

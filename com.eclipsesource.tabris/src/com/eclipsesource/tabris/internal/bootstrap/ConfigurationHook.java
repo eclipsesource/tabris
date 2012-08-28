@@ -17,8 +17,8 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
+import org.eclipse.rap.rwt.application.ApplicationConfiguration;
 import org.eclipse.rap.rwt.osgi.ApplicationLauncher;
-import org.eclipse.rwt.application.ApplicationConfiguration;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceEvent;

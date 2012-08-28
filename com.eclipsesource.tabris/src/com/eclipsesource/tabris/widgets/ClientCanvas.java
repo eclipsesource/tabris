@@ -15,16 +15,15 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.eclipse.rwt.RWT;
-import org.eclipse.rwt.internal.application.RWTFactory;
-import org.eclipse.rwt.internal.lifecycle.LifeCycleUtil;
-import org.eclipse.rwt.internal.protocol.IClientObjectAdapter;
-import org.eclipse.rwt.lifecycle.PhaseEvent;
-import org.eclipse.rwt.lifecycle.PhaseId;
-import org.eclipse.rwt.lifecycle.PhaseListener;
-import org.eclipse.rwt.lifecycle.WidgetUtil;
-import org.eclipse.rwt.service.SessionStoreEvent;
-import org.eclipse.rwt.service.SessionStoreListener;
+import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.internal.application.RWTFactory;
+import org.eclipse.rap.rwt.internal.lifecycle.LifeCycleUtil;
+import org.eclipse.rap.rwt.internal.protocol.IClientObjectAdapter;
+import org.eclipse.rap.rwt.lifecycle.PhaseEvent;
+import org.eclipse.rap.rwt.lifecycle.PhaseId;
+import org.eclipse.rap.rwt.lifecycle.PhaseListener;
+import org.eclipse.rap.rwt.service.SessionStoreEvent;
+import org.eclipse.rap.rwt.service.SessionStoreListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
@@ -38,6 +37,7 @@ import com.eclipsesource.tabris.internal.GCOperationDispatcher;
 
 /**
  * Provisional API, may change in future versions. Use it at your own risk.
+ * @since 0.6
  */
 @SuppressWarnings("restriction")
 public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreListener {
@@ -55,7 +55,7 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
     RWT.getLifeCycle().addPhaseListener( this );
     RWT.getSessionStore().addSessionStoreListener( this );
     addDispatchPaintListener();
-    setData( WidgetUtil.CUSTOM_VARIANT, CLIENT_CANVAS );
+    setData( RWT.CUSTOM_VARIANT, CLIENT_CANVAS );
   }
 
   private void addDispatchPaintListener() {

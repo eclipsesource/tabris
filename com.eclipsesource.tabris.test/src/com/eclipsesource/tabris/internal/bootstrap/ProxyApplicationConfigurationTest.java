@@ -19,20 +19,17 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.eclipse.rwt.application.Application;
-import org.eclipse.rwt.application.ApplicationConfiguration;
-import org.eclipse.rwt.internal.application.ApplicationContext;
-import org.eclipse.rwt.internal.application.ApplicationImpl;
-import org.eclipse.rwt.internal.lifecycle.PhaseListenerRegistry;
+import org.eclipse.rap.rwt.application.Application;
+import org.eclipse.rap.rwt.application.ApplicationConfiguration;
+import org.eclipse.rap.rwt.internal.application.ApplicationContext;
+import org.eclipse.rap.rwt.internal.application.ApplicationImpl;
+import org.eclipse.rap.rwt.internal.lifecycle.PhaseListenerRegistry;
 import org.junit.Before;
 import org.junit.Test;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 import com.eclipsesource.tabris.Bootstrapper;
-import com.eclipsesource.tabris.internal.bootstrap.ApplicationWrapper;
-import com.eclipsesource.tabris.internal.bootstrap.ProxyApplicationConfiguration;
-import com.eclipsesource.tabris.internal.bootstrap.ThemePhaseListener;
 
 
 @SuppressWarnings("restriction")

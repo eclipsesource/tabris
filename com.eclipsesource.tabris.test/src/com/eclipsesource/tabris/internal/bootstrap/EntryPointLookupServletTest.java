@@ -24,8 +24,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.eclipse.rwt.internal.application.ApplicationContext;
-import org.eclipse.rwt.internal.lifecycle.EntryPointManager;
+import org.eclipse.rap.rwt.internal.application.ApplicationContext;
+import org.eclipse.rap.rwt.internal.lifecycle.EntryPointManager;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,8 +35,6 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import com.eclipsesource.tabris.internal.bootstrap.EntryPointLookupServlet;
 
 
 @SuppressWarnings("restriction")

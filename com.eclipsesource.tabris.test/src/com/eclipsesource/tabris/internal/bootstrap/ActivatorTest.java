@@ -30,9 +30,6 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.framework.hooks.service.EventListenerHook;
 import org.osgi.framework.hooks.service.FindHook;
 
-import com.eclipsesource.tabris.internal.bootstrap.Activator;
-import com.eclipsesource.tabris.internal.bootstrap.ConfigurationHook;
-
 
 @SuppressWarnings("unchecked")
 @RunWith( MockitoJUnitRunner.class )

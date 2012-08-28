@@ -18,10 +18,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.eclipse.rwt.internal.application.ApplicationContext;
-import org.eclipse.rwt.internal.lifecycle.EntryPointManager;
-import org.eclipse.rwt.internal.theme.JsonArray;
-import org.eclipse.rwt.internal.theme.JsonObject;
+import org.eclipse.rap.rwt.internal.application.ApplicationContext;
+import org.eclipse.rap.rwt.internal.lifecycle.EntryPointManager;
+import org.eclipse.rap.rwt.internal.theme.JsonArray;
+import org.eclipse.rap.rwt.internal.theme.JsonObject;
 
 
 @SuppressWarnings("restriction")

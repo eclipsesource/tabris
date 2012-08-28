@@ -23,7 +23,7 @@ import java.util.Dictionary;
 
 import javax.servlet.ServletException;
 
-import org.eclipse.rwt.internal.application.ApplicationContext;
+import org.eclipse.rap.rwt.internal.application.ApplicationContext;
 import org.junit.Before;
 import org.junit.Test;
 import org.osgi.framework.BundleContext;
@@ -32,9 +32,6 @@ import org.osgi.service.http.HttpContext;
 import org.osgi.service.http.HttpService;
 import org.osgi.service.http.NamespaceException;
 import org.osgi.util.tracker.ServiceTracker;
-
-import com.eclipsesource.tabris.internal.bootstrap.EntryPointLookupServlet;
-import com.eclipsesource.tabris.internal.bootstrap.HttpServiceTracker;
 
 
 @SuppressWarnings("restriction")

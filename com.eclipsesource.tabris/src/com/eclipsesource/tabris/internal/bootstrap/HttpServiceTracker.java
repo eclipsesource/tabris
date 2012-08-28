@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.bootstrap;
 
-import org.eclipse.rwt.internal.application.ApplicationContext;
+import org.eclipse.rap.rwt.internal.application.ApplicationContext;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.http.HttpService;

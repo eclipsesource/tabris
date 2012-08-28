@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.rwt.lifecycle.ILifeCycleAdapter;
+import org.eclipse.rap.rwt.lifecycle.ILifeCycleAdapter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
@@ -26,7 +26,7 @@ import com.eclipsesource.tabris.internal.VideoLifeCycleAdapter.PlaybackOptions;
 
 
 /**
- * @since 0.6
+ * @since 0.7
  */
 public class Video extends Composite {
   

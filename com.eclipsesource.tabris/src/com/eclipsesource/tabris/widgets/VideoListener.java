@@ -15,7 +15,7 @@ import com.eclipsesource.tabris.widgets.Video.PresentationMode;
 
 
 /**
- * @since 0.6
+ * @since 0.7
  */
 public interface VideoListener {
   

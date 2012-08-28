@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: RAP mobile Server Components Tests
+Bundle-Name: Tabris Server Components Tests
 Bundle-SymbolicName: com.eclipsesource.tabris.test
-Bundle-Version: 0.6.0.qualifier
+Bundle-Version: 0.7.0.qualifier
 Bundle-Vendor: EclipseSource
 Fragment-Host: com.eclipsesource.tabris;bundle-version="0.6.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

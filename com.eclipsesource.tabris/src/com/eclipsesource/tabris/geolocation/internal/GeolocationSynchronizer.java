@@ -17,7 +17,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.eclipse.rwt.internal.protocol.IClientObject;
+import org.eclipse.rap.rwt.internal.protocol.IClientObject;
 
 import com.eclipsesource.tabris.geolocation.Coordinates;
 import com.eclipsesource.tabris.geolocation.Geolocation;

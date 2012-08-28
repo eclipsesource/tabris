@@ -23,8 +23,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
+import org.eclipse.rap.rwt.lifecycle.ILifeCycleAdapter;
 import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.eclipse.rwt.lifecycle.ILifeCycleAdapter;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.After;

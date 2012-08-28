@@ -4,9 +4,9 @@ import static com.eclipsesource.tabris.geolocation.internal.GeolocationAdapter.N
 import static com.eclipsesource.tabris.geolocation.internal.GeolocationAdapter.NeedsPositionFlavor.NEVER;
 import static com.eclipsesource.tabris.geolocation.internal.GeolocationAdapter.NeedsPositionFlavor.ONCE;
 
-import org.eclipse.rwt.Adaptable;
-import org.eclipse.rwt.internal.protocol.ClientObjectAdapter;
-import org.eclipse.rwt.internal.protocol.IClientObjectAdapter;
+import org.eclipse.rap.rwt.Adaptable;
+import org.eclipse.rap.rwt.internal.protocol.ClientObjectAdapter;
+import org.eclipse.rap.rwt.internal.protocol.IClientObjectAdapter;
 
 import com.eclipsesource.tabris.geolocation.internal.GeolocationAdapter;
 import com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer;
@@ -14,6 +14,8 @@ import com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer;
 /**
  * Geolocation API, more information at 
  * http://docs.phonegap.com/en/1.4.1/phonegap_geolocation_geolocation.md.html#Geolocation
+ * 
+ * @since 0.6
  */
 @SuppressWarnings("restriction")
 public class Geolocation implements Adaptable {

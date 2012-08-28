@@ -10,9 +10,9 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.bootstrap;
 
-import org.eclipse.rwt.application.ApplicationConfiguration;
-import org.eclipse.rwt.internal.application.ApplicationContext;
-import org.eclipse.rwt.internal.application.ApplicationImpl;
+import org.eclipse.rap.rwt.application.ApplicationConfiguration;
+import org.eclipse.rap.rwt.internal.application.ApplicationContext;
+import org.eclipse.rap.rwt.internal.application.ApplicationImpl;
 
 @SuppressWarnings("restriction")
 public class ApplicationWrapper extends ApplicationImpl {

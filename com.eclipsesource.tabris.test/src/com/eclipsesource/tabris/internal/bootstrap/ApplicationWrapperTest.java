@@ -14,12 +14,10 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import org.eclipse.rwt.application.ApplicationConfiguration;
-import org.eclipse.rwt.internal.application.ApplicationContext;
-import org.eclipse.rwt.internal.application.ApplicationImpl;
+import org.eclipse.rap.rwt.application.ApplicationConfiguration;
+import org.eclipse.rap.rwt.internal.application.ApplicationContext;
+import org.eclipse.rap.rwt.internal.application.ApplicationImpl;
 import org.junit.Test;
-
-import com.eclipsesource.tabris.internal.bootstrap.ApplicationWrapper;
 
 
 @SuppressWarnings("restriction")

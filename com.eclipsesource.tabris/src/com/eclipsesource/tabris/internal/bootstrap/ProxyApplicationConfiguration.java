@@ -10,10 +10,10 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.bootstrap;
 
-import org.eclipse.rwt.application.Application;
-import org.eclipse.rwt.application.ApplicationConfiguration;
-import org.eclipse.rwt.internal.application.ApplicationContext;
-import org.eclipse.rwt.internal.application.ApplicationImpl;
+import org.eclipse.rap.rwt.application.Application;
+import org.eclipse.rap.rwt.application.ApplicationConfiguration;
+import org.eclipse.rap.rwt.internal.application.ApplicationContext;
+import org.eclipse.rap.rwt.internal.application.ApplicationImpl;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;

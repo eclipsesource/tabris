@@ -20,10 +20,10 @@ import static org.mockito.Mockito.verify;
 
 import java.util.EventListener;
 
+import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.internal.events.IEventAdapter;
+import org.eclipse.rap.rwt.internal.protocol.IClientObjectAdapter;
 import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.eclipse.rwt.internal.events.IEventAdapter;
-import org.eclipse.rwt.internal.protocol.IClientObjectAdapter;
-import org.eclipse.rwt.lifecycle.WidgetUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -35,8 +35,6 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import com.eclipsesource.tabris.internal.ClientCanvasTestUtil;
-import com.eclipsesource.tabris.widgets.ClientCanvas;
-import com.eclipsesource.tabris.widgets.ClientDrawListener;
 
 
 @SuppressWarnings("restriction")
@@ -59,7 +57,7 @@ public class ClientCanvasTest {
   
   @Test
   public void testHasCustomVariant() {
-    Object data = clientCanvas.getData( WidgetUtil.CUSTOM_VARIANT );
+    Object data = clientCanvas.getData( RWT.CUSTOM_VARIANT );
     
     assertEquals( ClientCanvas.CLIENT_CANVAS, data );
   }

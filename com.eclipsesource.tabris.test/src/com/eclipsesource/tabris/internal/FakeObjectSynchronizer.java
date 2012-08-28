@@ -1,9 +1,7 @@
 package com.eclipsesource.tabris.internal;
 
-import org.eclipse.rwt.Adaptable;
-import org.eclipse.rwt.internal.protocol.IClientObject;
-
-import com.eclipsesource.tabris.internal.AbstractObjectSynchronizer;
+import org.eclipse.rap.rwt.Adaptable;
+import org.eclipse.rap.rwt.internal.protocol.IClientObject;
 
 
 @SuppressWarnings("restriction")

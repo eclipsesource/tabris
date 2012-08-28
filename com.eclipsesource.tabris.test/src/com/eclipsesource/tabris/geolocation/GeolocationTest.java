@@ -19,9 +19,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.eclipsesource.tabris.geolocation.Geolocation;
-import com.eclipsesource.tabris.geolocation.GeolocationCallback;
-import com.eclipsesource.tabris.geolocation.GeolocationOptions;
 import com.eclipsesource.tabris.geolocation.internal.GeolocationAdapter;
 import com.eclipsesource.tabris.geolocation.internal.GeolocationAdapter.NeedsPositionFlavor;
 

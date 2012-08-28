@@ -20,7 +20,6 @@ import com.eclipsesource.tabris.geolocation.GeolocationCallback;
 import com.eclipsesource.tabris.geolocation.GeolocationOptions;
 import com.eclipsesource.tabris.geolocation.Position;
 import com.eclipsesource.tabris.geolocation.PositionError;
-import com.eclipsesource.tabris.geolocation.internal.GeolocationAdapter;
 import com.eclipsesource.tabris.geolocation.internal.GeolocationAdapter.NeedsPositionFlavor;
 
 
