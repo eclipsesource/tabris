@@ -10,13 +10,13 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
-import org.eclipse.rwt.lifecycle.WidgetUtil;
+import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.widgets.Widget;
 
 
 public class WidgetsUtil {
 
-  public static final String TABRIS_VARIANT = WidgetUtil.CUSTOM_VARIANT;
+  public static final String TABRIS_VARIANT = RWT.CUSTOM_VARIANT;
 
   public static void setVariant( Widget widget, String variant ) {
     widget.setData( TABRIS_VARIANT, variant );

@@ -33,6 +33,13 @@ import com.eclipsesource.tabris.internal.bootstrap.HttpServiceTrackerTest;
 import com.eclipsesource.tabris.internal.bootstrap.ProxyApplicationConfigurationTest;
 import com.eclipsesource.tabris.internal.bootstrap.ThemePhaseListenerTest;
 import com.eclipsesource.tabris.widgets.ClientCanvasTest;
+import com.eclipsesource.tabris.widgets.ScrolledCompositeDecoratorTest;
+import com.eclipsesource.tabris.widgets.TextDecoratorTest;
+import com.eclipsesource.tabris.widgets.ToolItemDecoratorTest;
+import com.eclipsesource.tabris.widgets.TreeDecoratorTest;
+import com.eclipsesource.tabris.widgets.VideoTest;
+import com.eclipsesource.tabris.widgets.WidgetDecoratorTest;
+import com.eclipsesource.tabris.widgets.WidgetsTest;
 
 
 
