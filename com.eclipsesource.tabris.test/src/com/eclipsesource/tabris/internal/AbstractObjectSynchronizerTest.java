@@ -18,16 +18,7 @@ import org.eclipse.rap.rwt.internal.protocol.IClientObjectAdapter;
 import org.eclipse.rap.rwt.lifecycle.PhaseEvent;
 import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.testfixture.Fixture;
-<<<<<<< HEAD
-=======
-import org.eclipse.rwt.Adaptable;
-import org.eclipse.rwt.internal.protocol.ClientObjectAdapter;
-import org.eclipse.rwt.internal.protocol.IClientObject;
-import org.eclipse.rwt.internal.protocol.IClientObjectAdapter;
-import org.eclipse.rwt.lifecycle.PhaseEvent;
-import org.eclipse.rwt.lifecycle.PhaseId;
 import org.eclipse.swt.widgets.Display;
->>>>>>> camera
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

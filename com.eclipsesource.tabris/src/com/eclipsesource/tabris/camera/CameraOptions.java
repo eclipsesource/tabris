@@ -14,7 +14,7 @@ import org.eclipse.swt.graphics.Point;
 
 
 /**
- * @since 0.6
+ * @since 0.8
  */
 public class CameraOptions {
   

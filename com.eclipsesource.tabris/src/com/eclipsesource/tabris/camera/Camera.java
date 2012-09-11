@@ -10,16 +10,16 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.camera;
 
-import org.eclipse.rwt.Adaptable;
-import org.eclipse.rwt.internal.protocol.ClientObjectAdapter;
-import org.eclipse.rwt.internal.protocol.IClientObjectAdapter;
+import org.eclipse.rap.rwt.Adaptable;
+import org.eclipse.rap.rwt.internal.protocol.ClientObjectAdapter;
+import org.eclipse.rap.rwt.internal.protocol.IClientObjectAdapter;
 
 import com.eclipsesource.tabris.camera.internal.CameraAdapter;
 import com.eclipsesource.tabris.camera.internal.CameraSynchronizer;
 
 
 /**
- * @since 0.6
+ * @since 0.8
  */
 @SuppressWarnings("restriction")
 public class Camera implements Adaptable {

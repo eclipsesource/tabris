@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Text;
 
 
 /**
- * @since 0.6
+ * @since 0.8
  */
 public class TextDecorator extends WidgetDecorator<TextDecorator> {
   

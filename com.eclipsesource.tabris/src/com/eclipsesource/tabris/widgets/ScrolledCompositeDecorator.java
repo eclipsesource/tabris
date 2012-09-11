@@ -16,7 +16,7 @@ import org.eclipse.swt.custom.ScrolledComposite;
 
 
 /**
- * @since 0.6
+ * @since 0.8
  */
 public class ScrolledCompositeDecorator extends WidgetDecorator<ScrolledCompositeDecorator> {
   

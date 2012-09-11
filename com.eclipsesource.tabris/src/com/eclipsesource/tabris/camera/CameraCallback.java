@@ -14,7 +14,7 @@ import org.eclipse.swt.graphics.Image;
 
 
 /**
- * @since 0.6
+ * @since 0.8
  */
 public interface CameraCallback {
 

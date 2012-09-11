@@ -12,8 +12,8 @@ package com.eclipsesource.tabris.camera.internal;
 
 import java.io.ByteArrayInputStream;
 
-import org.eclipse.rwt.Adaptable;
-import org.eclipse.rwt.internal.protocol.IClientObject;
+import org.eclipse.rap.rwt.Adaptable;
+import org.eclipse.rap.rwt.internal.protocol.IClientObject;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 
