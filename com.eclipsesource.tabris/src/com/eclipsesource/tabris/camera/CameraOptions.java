@@ -25,7 +25,7 @@ public class CameraOptions {
   private boolean saveToAlbum;
 
   public enum SourceType {
-    CAMERA, PHOTOLIBRARY, SAVEDPHOTOALBUM
+    CAMERA, PHOTO_LIBRARY, SAVED_PHOTO_ALBUM
   }
   
   public CameraOptions() {
