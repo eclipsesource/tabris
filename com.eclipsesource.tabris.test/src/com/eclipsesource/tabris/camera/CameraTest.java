@@ -72,11 +72,11 @@ public class CameraTest {
   @Test
   public void testSourceType() {
     CameraOptions options = new CameraOptions();
-    options.setSourceType( SourceType.PHOTOLIBRARY );
+    options.setSourceType( SourceType.PHOTO_LIBRARY );
     Camera camera = new Camera( options );
     CameraAdapter adapter = camera.getAdapter( CameraAdapter.class );
     
-    assertSame( SourceType.PHOTOLIBRARY, adapter.getOptions().getSourceType() );
+    assertSame( SourceType.PHOTO_LIBRARY, adapter.getOptions().getSourceType() );
   }
   
   @Test( expected = IllegalArgumentException.class )

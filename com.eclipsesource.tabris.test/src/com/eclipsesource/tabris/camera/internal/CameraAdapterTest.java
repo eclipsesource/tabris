@@ -23,7 +23,6 @@ import org.junit.Test;
 import com.eclipsesource.tabris.camera.CameraCallback;
 import com.eclipsesource.tabris.camera.CameraOptions;
 import com.eclipsesource.tabris.camera.CameraOptions.SourceType;
-import com.eclipsesource.tabris.camera.internal.CameraAdapter;
 
 
 public class CameraAdapterTest {
@@ -48,7 +47,7 @@ public class CameraAdapterTest {
   public void testOptionsIsSafeCopy() {
     CameraOptions cameraOptions = new CameraOptions();
     cameraOptions.setResolution( 100, 100 );
-    cameraOptions.setSourceType( SourceType.PHOTOLIBRARY );
+    cameraOptions.setSourceType( SourceType.PHOTO_LIBRARY );
     cameraOptions.setSaveToAlbum( true );
     adapter.setOptions( cameraOptions );
     

@@ -36,9 +36,9 @@ public class CameraOptionsTest {
   public void testSourceType() {
     CameraOptions cameraOptions = new CameraOptions();
     
-    cameraOptions.setSourceType( SourceType.PHOTOLIBRARY );
+    cameraOptions.setSourceType( SourceType.PHOTO_LIBRARY );
 
-    assertEquals( SourceType.PHOTOLIBRARY, cameraOptions.getSourceType() );
+    assertEquals( SourceType.PHOTO_LIBRARY, cameraOptions.getSourceType() );
   }
   
   @Test
