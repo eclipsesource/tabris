@@ -8,6 +8,9 @@ Additional Features
 * A Bootstraper that can be used when Tabris is used in a non OSGi environment. 
 * Geolocation API, [inspired by phonegap](http://docs.phonegap.com/en/1.4.1/phonegap_geolocation_geolocation.md.html#Geolocation)
 * ClientCanvas, SWT Canvas extension to be able to draw on the client side.
+* Video, Video Widget to play videos on a client device.
+* Camera, Custom Widget to take pictures form the client's camera.
+* Widgets API, API to control keyboard styles, animations and so on.
 
 Demos
 -----
