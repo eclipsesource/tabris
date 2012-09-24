@@ -32,7 +32,7 @@ import com.eclipsesource.tabris.internal.AbstractObjectSynchronizer;
 @SuppressWarnings("restriction")
 public class GeolocationSynchronizer extends AbstractObjectSynchronizer {
 
-  static final String TYPE = "rap.mobile.Geolocation";
+  static final String TYPE = "tabris.Geolocation";
 
   // write properties
   static final String PROP_ENABLE_HIGH_ACCURACY = "enableHighAccuracy";
@@ -56,6 +56,7 @@ public class GeolocationSynchronizer extends AbstractObjectSynchronizer {
     super( location );
   }
 
+  @Override
   public void readData( Object object ) {
     Geolocation geolocation = ( Geolocation )object;
     if( readPropertyValue( PROP_LATITUDE ) != null ) {
