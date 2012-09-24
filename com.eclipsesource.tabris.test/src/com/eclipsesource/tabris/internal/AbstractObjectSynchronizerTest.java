@@ -99,4 +99,27 @@ public class AbstractObjectSynchronizerTest {
     verify( synchronizer ).renderChanges( eq( object ) );
   }
   
+  @Test
+  public void testDispatchesInitializationBeforeFirstRenderChanges() {
+    PhaseEvent event = mock( PhaseEvent.class );
+    when( event.getPhaseId() ).thenReturn( PhaseId.RENDER );
+    
+    synchronizer.afterPhase( event );
+    
+    verify( synchronizer ).renderInitialization( any( IClientObject.class ), eq( object ) );
+    verify( synchronizer ).renderChanges( eq( object ) );
+  }
+  
+  @Test
+  public void testDispatchesInitializationBeforeFirstRenderChangesOnlyOnce() {
+    PhaseEvent event = mock( PhaseEvent.class );
+    when( event.getPhaseId() ).thenReturn( PhaseId.RENDER );
+    
+    synchronizer.afterPhase( event );
+    synchronizer.afterPhase( event );
+    
+    verify( synchronizer ).renderInitialization( any( IClientObject.class ), eq( object ) );
+    verify( synchronizer, times( 2 ) ).renderChanges( eq( object ) );
+  }
+  
 }

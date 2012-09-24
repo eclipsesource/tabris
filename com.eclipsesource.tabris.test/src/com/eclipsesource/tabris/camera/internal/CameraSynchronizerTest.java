@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.camera.internal;
 
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -24,9 +25,16 @@ import java.io.InputStream;
 import org.eclipse.rap.rwt.internal.protocol.ClientObjectAdapter;
 import org.eclipse.rap.rwt.internal.protocol.IClientObject;
 import org.eclipse.rap.rwt.internal.protocol.IClientObjectAdapter;
+import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.testfixture.Fixture;
+import org.eclipse.rap.rwt.testfixture.Message;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -179,4 +187,52 @@ public class CameraSynchronizerTest {
     verify( adapter ).setCallback( null );
     verify( adapter ).setEncodedImage( null );
   }
+  
+  @Test
+  public void testCameraInListener() {
+    CameraSelectionAdapter cameraAdapter = new CameraSelectionAdapter();
+    
+    forceSelectionEvent( cameraAdapter );
+    
+    Message message = Fixture.getProtocolMessage();
+    Camera camera = cameraAdapter.getCamera();
+    IClientObjectAdapter adapter = camera.getAdapter( IClientObjectAdapter.class );
+    assertNotNull( message.findCreateOperation( adapter.getId() ) );
+  }
+
+  private void forceSelectionEvent( CameraSelectionAdapter cameraAdapter ) {
+    Shell shell = new Shell();
+    Button button = new Button( shell, SWT.PUSH );
+    button.addSelectionListener( cameraAdapter );
+    String id = WidgetUtil.getId( button );
+    Fixture.fakeRequestParam( id + ".selection", String.valueOf( true ) );
+    Fixture.fakeRequestParam( "org.eclipse.swt.events.widgetSelected", id );
+    Fixture.executeLifeCycleFromServerThread();
+  }
+
+  private static class CameraSelectionAdapter extends SelectionAdapter {
+    
+    private Camera camera;
+    
+    public Camera getCamera() {
+      return camera;
+    }
+  
+    @Override
+    public void widgetSelected( SelectionEvent e ) {
+      CameraOptions cameraOptions = new CameraOptions();
+      camera = new Camera( cameraOptions );
+      camera.takePicture( new CameraCallback() {
+        
+        @Override
+        public void onSuccess( Image image ) {
+        }
+        
+        @Override
+        public void onError() {
+        }
+      } );
+    }
+  }
+  
 }

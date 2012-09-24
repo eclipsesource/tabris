@@ -45,10 +45,12 @@ public abstract class AbstractObjectSynchronizer implements PhaseListener, Sessi
     id = object.getAdapter( IClientObjectAdapter.class ).getId();
   }
 
+  @Override
   public void beforePhase( PhaseEvent event ) {
     // do nothing
   }
 
+  @Override
   public void afterPhase( PhaseEvent event ) {
     Display sessionDisplay = LifeCycleUtil.getSessionDisplay();
     if( getDisplay() == sessionDisplay ) {
@@ -59,15 +61,22 @@ public abstract class AbstractObjectSynchronizer implements PhaseListener, Sessi
   private void processLifeCycleMethods( PhaseEvent event ) {
     PhaseId currentPhase = event.getPhaseId();
     if( currentPhase == PhaseId.PREPARE_UI_ROOT && !initialized ) {
-      renderInitializationInternal();
-      initialized = true;
+      initialize();
     } else if( currentPhase == PhaseId.READ_DATA ) {
       readData( object );
       preserveValues( object );
     } else if( currentPhase == PhaseId.PROCESS_ACTION ) {
       processAction( object );
     } else if( currentPhase == PhaseId.RENDER ) {
+      initialize();
       renderChanges( object );
+    }
+  }
+
+  private void initialize() {
+    if( !initialized ) {
+      renderInitializationInternal();
+      initialized = true;
     }
   }
 
@@ -135,10 +144,12 @@ public abstract class AbstractObjectSynchronizer implements PhaseListener, Sessi
     renderProperty( name, Boolean.valueOf( newValue ), Boolean.valueOf( defaultValue ) );
   }
 
+  @Override
   public PhaseId getPhaseId() {
     return PhaseId.ANY;
   }
 
+  @Override
   public void beforeDestroy( SessionStoreEvent event ) {
     RWTFactory.getLifeCycleFactory().getLifeCycle().removePhaseListener( this );
     RWT.getSessionStore().removeSessionStoreListener( this );
