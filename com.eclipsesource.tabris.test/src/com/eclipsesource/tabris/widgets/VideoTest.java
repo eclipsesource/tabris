@@ -233,26 +233,6 @@ public class VideoTest {
   }
   
   @Test
-  public void testDefaultAutoPlay() {
-    assertFalse( video.hasAutoPlay() );
-  }
-  
-  @Test
-  public void testAutoPlay() {
-    video.setAutoPlay( true );
-    
-    assertTrue( video.hasAutoPlay() );
-  }
-  
-  @Test
-  public void testAutoPlayAfterUnAutoPlay() {
-    video.setAutoPlay( true );
-    video.setAutoPlay( false );
-    
-    assertFalse( video.hasAutoPlay() );
-  }
-  
-  @Test
   public void testStepTo() {
     video.stepToTime( 20 );
     

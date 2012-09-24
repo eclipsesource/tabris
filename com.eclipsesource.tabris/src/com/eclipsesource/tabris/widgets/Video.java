@@ -101,8 +101,8 @@ public class Video extends Composite {
   private static final float HALT_SPEED = 0;
   
   private URL videoUrl;
-  private List<VideoListener> listeners = new ArrayList<VideoListener>();
-  private Map<PlaybackOptions, Object> playbackOptions = new HashMap<PlaybackOptions, Object>();
+  private final List<VideoListener> listeners = new ArrayList<VideoListener>();
+  private final Map<PlaybackOptions, Object> playbackOptions = new HashMap<PlaybackOptions, Object>();
   
   public Video( String videoUrl, Composite parent ) {
     super( parent, SWT.NONE );
@@ -116,7 +116,6 @@ public class Video extends Composite {
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( HALT_SPEED ) );
     playbackOptions.put( PlaybackOptions.CONTROLS_VISIBLE, Boolean.valueOf( true ) );
     playbackOptions.put( PlaybackOptions.REPEAT, Boolean.valueOf( false ) );
-    playbackOptions.put( PlaybackOptions.AUTOPLAY, Boolean.valueOf( false ) );
   }
 
   private void assignUrl( String videoUrl ) {
@@ -188,14 +187,6 @@ public class Video extends Composite {
     return ( ( Boolean )playbackOptions.get( PlaybackOptions.REPEAT ) ).booleanValue();
   }
   
-  public void setAutoPlay( boolean autoPlay ) {
-    playbackOptions.put( PlaybackOptions.AUTOPLAY, Boolean.valueOf( autoPlay ) );
-  }
-  
-  public boolean hasAutoPlay() {
-    return ( ( Boolean )playbackOptions.get( PlaybackOptions.AUTOPLAY ) ).booleanValue();
-  }
-  
   public void setFullscreen( boolean fullScreenEnabled ) {
     PresentationMode presentationMode = fullScreenEnabled ? PresentationMode.FULL_SCREEN : PresentationMode.EMBEDDED;
     PresentationMode oldMode = ( PresentationMode )playbackOptions.get( PlaybackOptions.PRESENTATION_MODE );
@@ -243,6 +234,7 @@ public class Video extends Composite {
     }
   }
   
+  @Override
   @SuppressWarnings("unchecked")
   public <T> T getAdapter( Class<T> adapter ) {
     T result;

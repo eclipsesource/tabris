@@ -255,21 +255,6 @@ public class VideoLifeCycleAdapterTest {
   }
   
   @Test
-  public void testRendersAutoPlay() throws IOException {
-    Fixture.markInitialized( video.getDisplay() );
-    Fixture.markInitialized( video );
-    Fixture.preserveWidgets();
-    
-    video.setAutoPlay( true );
-    lifeCycleAdapter.renderChanges( video );
-    
-    Message message = Fixture.getProtocolMessage();
-    SetOperation operation = message.findSetOperation( video, keyForEnum( PlaybackOptions.AUTOPLAY ) );
-    assertEquals( Boolean.TRUE, 
-                  operation.getProperty( keyForEnum( PlaybackOptions.AUTOPLAY ) ) );
-  }
-  
-  @Test
   public void testRendersControlsVisible() throws IOException {
     Fixture.markInitialized( video.getDisplay() );
     Fixture.markInitialized( video );

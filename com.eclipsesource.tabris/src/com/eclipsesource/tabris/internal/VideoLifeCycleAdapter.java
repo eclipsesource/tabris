@@ -39,7 +39,7 @@ import com.eclipsesource.tabris.widgets.Video.PresentationMode;
 public class VideoLifeCycleAdapter extends AbstractWidgetLCA {
   
   public enum PlaybackOptions {
-    SPEED, REPEAT, AUTOPLAY, CONTROLS_VISIBLE, PLAYBACK_MODE, PRESENTATION_MODE, HEAD_POSITION
+    SPEED, REPEAT, CONTROLS_VISIBLE, PLAYBACK_MODE, PRESENTATION_MODE, HEAD_POSITION
   }
 
   static final String TYPE = "tabris.widgets.Video";
