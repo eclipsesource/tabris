@@ -55,7 +55,7 @@ echo "Check if Composite Repository creation is needed"
 if [ ! -f "$DOWNLOAD_FOLDER/compositeArtifacts.xml" ]; then
   echo "Create Composite Repository at $DOWNLOAD_FOLDER"
   cd $CURRENT_DIR
-  sh $SCRIPTS_FOLDER/comp-repo.sh $DOWNLOAD_FOLDER create "Tabris Repository"
+  sh $SCRIPTS_FOLDER/comp-repo.sh $DOWNLOAD_FOLDER create "Tabris Repository (Nighly Builds)"
 fi
 
 
