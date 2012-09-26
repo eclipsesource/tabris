@@ -31,19 +31,17 @@ echo "Using build qualifier $BUILD_QUALIFIER"
 # Move one linux zip archive of each product to
 # a location on download.eclipse.org where they can be downloaded.
 # Move the generated p2 repository to a location on download.eclipse.org
-# where they can be consumed.   
-VERSION="0.7" 
-echo "Using build version $VERSION" 
+# where they can be consumed.    
 
-DOWNLOAD_FOLDER=/var/www/download.eclipsesource.com/technology/tabris/downloads/$VERSION
+DOWNLOAD_FOLDER=/var/www/download.eclipsesource.com/technology/tabris/downloads/nightly
 if [ ! -d "$DOWNLOAD_FOLDER" ]; then
 #we are not on the eclipsesource build machine. for testing, let's
 #deploy the build inside the builds folder of com.eclipsesource.tabris.build
-   DOWNLOAD_FOLDER="$ROOT_FOLDER/com.eclipsesource.tabris.build/target/downloads/$VERSION"
+   DOWNLOAD_FOLDER="$ROOT_FOLDER/com.eclipsesource.tabris.build/target/downloads/nightly"
    mkdir -p $DOWNLOAD_FOLDER
 fi             
                    
-BUILD_VERSION="$VERSION-$BUILD_QUALIFIER"
+BUILD_VERSION="$BUILD_QUALIFIER"
 echo "Creating p2 repo dir $DOWNLOAD_FOLDER/$BUILD_VERSION" 
 mkdir -p $DOWNLOAD_FOLDER/$BUILD_VERSION
        
