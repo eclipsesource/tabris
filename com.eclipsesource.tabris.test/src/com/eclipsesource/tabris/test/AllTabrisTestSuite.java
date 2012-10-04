@@ -45,6 +45,11 @@ import com.eclipsesource.tabris.widgets.TreeDecoratorTest;
 import com.eclipsesource.tabris.widgets.VideoTest;
 import com.eclipsesource.tabris.widgets.WidgetDecoratorTest;
 import com.eclipsesource.tabris.widgets.WidgetsTest;
+import com.eclipsesource.tabris.xcallbackurl.XCallbackAdapterTest;
+import com.eclipsesource.tabris.xcallbackurl.XCallbackConfigurationTest;
+import com.eclipsesource.tabris.xcallbackurl.XCallbackURLTest;
+import com.eclipsesource.tabris.xcallbackurl.internal.XCallbackSyncAdapterTest;
+import com.eclipsesource.tabris.xcallbackurl.internal.XCallbackURLSynchronizerTest;
 
 
 
@@ -81,7 +86,12 @@ import com.eclipsesource.tabris.widgets.WidgetsTest;
   CameraTest.class,
   CameraOptionsTest.class,
   CameraAdapterTest.class,
-  CameraSynchronizerTest.class
+  CameraSynchronizerTest.class,
+  XCallbackURLTest.class,
+  XCallbackConfigurationTest.class,
+  XCallbackAdapterTest.class,
+  XCallbackSyncAdapterTest.class,
+  XCallbackURLSynchronizerTest.class
 } )
 public class AllTabrisTestSuite {
 }

@@ -29,14 +29,14 @@ import org.eclipse.swt.widgets.Display;
 
 
 @SuppressWarnings("restriction")
-public abstract class AbstractObjectSynchronizer implements PhaseListener, SessionStoreListener {
+public abstract class AbstractObjectSynchronizer<T extends Adaptable> implements PhaseListener, SessionStoreListener {
   
   private final Display display;
   private final String id;
-  private final Adaptable object;
+  private final T object;
   private boolean initialized;
 
-  public AbstractObjectSynchronizer( Adaptable object ) {
+  public AbstractObjectSynchronizer( T object ) {
     this.object = object;
     this.initialized = false;
     RWT.getLifeCycle().addPhaseListener( this );
@@ -84,9 +84,9 @@ public abstract class AbstractObjectSynchronizer implements PhaseListener, Sessi
     renderInitialization( getClientObject(), object );
   }
 
-  protected abstract void renderInitialization( IClientObject clientObject, Object object );
+  protected abstract void renderInitialization( IClientObject clientObject, T object );
 
-  protected abstract void readData( Object object );
+  protected abstract void readData( T object );
 
   // TODO: move to Util
   public String readPropertyValue( String name ) {
@@ -99,7 +99,7 @@ public abstract class AbstractObjectSynchronizer implements PhaseListener, Sessi
     return request.getParameter( key.toString() );
   }
 
-  protected abstract void preserveValues( Object object );
+  protected abstract void preserveValues( T object );
 
   // TODO move to Util
   protected void preserveProperty( String name, Object value ) {
@@ -117,9 +117,22 @@ public abstract class AbstractObjectSynchronizer implements PhaseListener, Sessi
     preserveProperty( name, Boolean.valueOf( value ) );
   }
 
-  protected abstract void processAction( Object object );
+  protected abstract void processAction( T object );
 
-  protected abstract void renderChanges( Object object );
+  protected abstract void renderChanges( T object );
+  
+  // TODO move to Util
+  public boolean hasPropertyChanged( String name, Object newValue ) {
+    IServiceStore serviceStore = RWT.getServiceStore();
+    Object attribute = serviceStore.getAttribute( id + "." + name );
+    boolean result = false;
+    if( attribute != null ) {
+      if( !attribute.equals( newValue ) ) {
+        result = true;
+      }
+    }
+    return result;
+  }
   
   // TODO move to Util
   public void renderProperty( String name, Object newValue, Object defaultValue ) {
