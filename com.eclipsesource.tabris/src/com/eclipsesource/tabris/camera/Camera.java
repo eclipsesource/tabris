@@ -37,7 +37,7 @@ public class Camera implements Adaptable {
   
   private void checkOptions( CameraOptions options ) {
     if( options == null ) {
-      throw new IllegalArgumentException( "Camera Options mus tnot be null, you can use CameraOptions.NONE." );
+      throw new IllegalArgumentException( "Camera Options must not be null, you can use CameraOptions.NONE." );
     }
   }
 
