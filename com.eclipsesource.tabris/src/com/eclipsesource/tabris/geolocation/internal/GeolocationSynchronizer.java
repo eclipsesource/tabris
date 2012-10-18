@@ -136,8 +136,9 @@ public class GeolocationSynchronizer extends AbstractObjectSynchronizer {
 
   private void renderOptionsChanges( Geolocation geolocation ) {
     GeolocationAdapter geolocationAdapter = geolocation.getAdapter( GeolocationAdapter.class );
-    if( geolocationAdapter.isDisposed() ) {
+    if( geolocationAdapter.isDisposed() && !geolocationAdapter.isDestroyed() ) {
       destroy();
+      geolocationAdapter.destroy();
     }
     GeolocationOptions options = geolocationAdapter.getOptions();
     if( options != null ) {

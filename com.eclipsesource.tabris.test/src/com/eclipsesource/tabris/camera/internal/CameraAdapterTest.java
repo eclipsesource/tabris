@@ -79,6 +79,13 @@ public class CameraAdapterTest {
   }
   
   @Test
+  public void testDestroy() {
+    adapter.destroy();
+    
+    assertTrue( adapter.isDestroyed() );
+  }
+  
+  @Test
   public void testOpen() {
     adapter.open();
     

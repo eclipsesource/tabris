@@ -11,6 +11,7 @@
 package com.eclipsesource.tabris.geolocation.internal;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import org.junit.Before;
@@ -73,5 +74,19 @@ public class GeolocationAdapterTest {
     adapter.setFlavor( NeedsPositionFlavor.CONTINUOUS );
     
     assertEquals( NeedsPositionFlavor.CONTINUOUS, adapter.getFlavor() );
+  }
+  
+  @Test
+  public void testDispose() {
+    adapter.dispose();
+    
+    assertTrue( adapter.isDisposed() );
+  }
+  
+  @Test
+  public void testDestroy() {
+    adapter.destroy();
+    
+    assertTrue( adapter.isDestroyed() );
   }
 }

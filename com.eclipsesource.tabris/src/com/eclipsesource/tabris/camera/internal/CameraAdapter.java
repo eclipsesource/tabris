@@ -21,6 +21,7 @@ public class CameraAdapter {
   private CameraOptions options;
   private CameraCallback callback;
   private boolean disposed;
+  private boolean destroyed;
   private String encodedImage;
   private boolean open;
 
@@ -76,6 +77,14 @@ public class CameraAdapter {
 
   public boolean isOpen() {
     return open;
+  }
+
+  public boolean isDestroyed() {
+    return destroyed;
+  }
+  
+  public void destroy() {
+    destroyed = true;
   }
   
 }

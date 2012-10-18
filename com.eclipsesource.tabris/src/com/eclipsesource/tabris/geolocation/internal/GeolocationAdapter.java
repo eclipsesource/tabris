@@ -28,6 +28,7 @@ public class GeolocationAdapter {
   private GeolocationCallback callback;
   private GeolocationOptions options;
   private boolean disposed;
+  private boolean destroyed;
 
   public void setError( PositionError error ) {
     this.error = error;
@@ -75,5 +76,13 @@ public class GeolocationAdapter {
   
   public boolean isDisposed() {
     return disposed;
+  }
+
+  public boolean isDestroyed() {
+    return destroyed;
+  }
+
+  public void destroy() {
+    destroyed = true;
   }
 }

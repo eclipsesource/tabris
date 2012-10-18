@@ -223,6 +223,19 @@ public class GeolocationSynchronizerTest {
     verify( clientObject ).destroy();
   }
   
+  @Test
+  public void testDestroyedInAdapter() {
+    Fixture.fakePhase( PhaseId.RENDER );
+    when( adapter.getFlavor() ).thenReturn( NeedsPositionFlavor.CONTINUOUS );
+    doReturn( Boolean.TRUE ).when( adapter ).isDisposed();
+    IClientObject clientObject = mock( IClientObject.class );
+    doReturn( clientObject ).when( synchronizer ).getClientObject();
+    
+    synchronizer.renderChanges( object );
+    
+    verify( adapter ).destroy();
+  }
+  
   @Test( expected = IllegalStateException.class )
   public void testParseError() {
     when( synchronizer.readPropertyValue( GeolocationSynchronizer.PROP_LATITUDE ) ).thenReturn( "101.1" );

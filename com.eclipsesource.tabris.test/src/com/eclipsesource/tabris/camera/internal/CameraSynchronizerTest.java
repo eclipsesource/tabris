@@ -10,7 +10,9 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.camera.internal;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -208,6 +210,18 @@ public class CameraSynchronizerTest {
     Fixture.fakeRequestParam( id + ".selection", String.valueOf( true ) );
     Fixture.fakeRequestParam( "org.eclipse.swt.events.widgetSelected", id );
     Fixture.executeLifeCycleFromServerThread();
+  }
+  
+  @Test
+  public void testDisposesCallsDestroy() {
+    CameraAdapter cameraAdapter = new CameraAdapter();
+    when( object.getAdapter( CameraAdapter.class ) ).thenReturn( cameraAdapter );
+    assertFalse( cameraAdapter.isDestroyed() );
+    
+    cameraAdapter.dispose();
+    synchronizer.renderChanges( object );
+    
+    assertTrue( cameraAdapter.isDestroyed() );
   }
 
   private static class CameraSelectionAdapter extends SelectionAdapter {
