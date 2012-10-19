@@ -2,7 +2,7 @@
 <feature
       id="com.eclipsesource.tabris.feature"
       label="Tabris Target Components"
-      version="0.7.0.qualifier"
+      version="0.8.0.qualifier"
       provider-name="EclipseSource">
 
    <description url="http://rapmobile.eclipsesource.com">
