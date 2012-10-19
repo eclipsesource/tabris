@@ -10,7 +10,14 @@
  ******************************************************************************/
 package com.eclipsesource.tabris;
 
-
+/**
+ * <p>
+ * Enumeration to make the identification of a requesting client easier.
+ * </p>
+ * 
+ * @see ClientDevice
+ * @since 0.6
+ */
 public enum Platform {
   IOS, ANDROID, WEB
 }

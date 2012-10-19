@@ -15,12 +15,32 @@ import com.eclipsesource.tabris.widgets.Video.PresentationMode;
 
 
 /**
+ * <p>
+ * A <code>VideoListener</code> can be added to a <code>Video</code> object to receive video events like a change of the 
+ * <code>PlaybackMode</code> or the <code>Presentationmode</code>
+ * </p>
+ * 
+ * @see Video
  * @since 0.7
  */
 public interface VideoListener {
   
+  /**
+   * <p>
+   * Gets called when the <code>PlaybackMode</code> has changed, e.g. from PLAY to PAUSE.
+   * </p>
+   * 
+   * @see PlaybackMode
+   */
   void playbackChanged( PlaybackMode newMode );
   
+  /**
+   * <p>
+   * Gets called when the <code>PresentationMode</code> has changed, e.g. from FULLSCREEN to EMBEDDED.
+   * </p>
+   * 
+   * @see PresentationMode
+   */
   void presentationChanged( PresentationMode newMode );
   
 }

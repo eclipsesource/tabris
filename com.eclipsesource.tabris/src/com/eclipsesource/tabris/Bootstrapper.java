@@ -21,6 +21,23 @@ import com.eclipsesource.tabris.internal.bootstrap.ThemePhaseListener;
 
 @SuppressWarnings("restriction")
 /**
+ * <p>The <code>Bootstrapper</code> needs to be called before registering EntryPoints to make Tabris work.
+ * It registers themes and other resources that are needed to make mobile clients work.
+ * </p>
+ * <p>
+ * Typically the bootstrap method is called within the <code>ApplicationConfiguration#configure</code> method:
+ * <pre>
+ * public class ExampleConfiguration implements ApplicationConfiguration {
+ *
+ *   public void configure( Application application ) {
+ *     Bootstrapper.bootstrap( application );
+ *     configuration.addEntryPoint( &quot;/example&quot;, ExampleEntryPoint.class, null );
+ *   }
+ * }
+ * </pre>
+ * </p> 
+ * 
+ * @see ApplicationConfiguration
  * @since 0.6
  */
 public class Bootstrapper {
@@ -30,6 +47,12 @@ public class Bootstrapper {
   private static final String THEME_PATH_IOS = "theme/ios.css";
   private static final String THEME_PATH_ANDROID = "theme/theme-android-holo.css";
   
+  /**
+   * <p>
+   * Registers themes and other resources needed for the mobile clients. Needs to be called before an EntryPoint is 
+   * registered.
+   * </p>
+   */
   public static void bootstrap( Application application ) {
     ApplicationImpl config = chooseApplication( application );
     config.addPhaseListener( new ThemePhaseListener() );

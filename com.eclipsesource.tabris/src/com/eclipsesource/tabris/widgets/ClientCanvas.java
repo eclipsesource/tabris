@@ -36,7 +36,14 @@ import com.eclipsesource.tabris.internal.GCOperationDispatcher;
 
 
 /**
- * Provisional API, may change in future versions. Use it at your own risk.
+ * <i>Provisional API, may change in future versions. Use it at your own risk.</i>
+ * <p>
+ * A <code>ClientCanvas</code> can be used like a SWT <code>Canvas</code> with the difference that a client can draw on 
+ * it's area, too. Client side drawing will be sent back to the server and registered <code>ClientDrawListeners</code>
+ * will be notified.</code>
+ * </p>
+ * 
+ * @see ClientDrawListener
  * @since 0.6
  */
 @SuppressWarnings("restriction")
@@ -44,8 +51,8 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
   
   static final String CLIENT_CANVAS = "CLIENT_CANVAS";
   
-  private List<ClientDrawListener> drawListeners;
-  private DrawingsCache cache;
+  private final List<ClientDrawListener> drawListeners;
+  private final DrawingsCache cache;
   private PaintListener paintListener;
 
   public ClientCanvas( Composite parent, int style ) {
@@ -60,6 +67,7 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
 
   private void addDispatchPaintListener() {
     paintListener = new PaintListener() {
+      @Override
       public void paintControl( PaintEvent event ) {
         GC gc = event.gc;
         processClientDrawings( gc );
@@ -69,14 +77,33 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
     addPaintListener( paintListener );
   }
   
+  /**
+   * <p>
+   * Adds a <code>ClientDrawListener</code> that gets called when a client draws.
+   * </p>
+   * 
+   * @see ClientDrawListener
+   */
   public void addClientDrawListener( ClientDrawListener listener ) {
     drawListeners.add( listener );
   }
   
+  /**
+   * <p>
+   * Removes a <code>ClientDrawListener</code>.
+   * </p>
+   * 
+   * @see ClientDrawListener
+   */
   public void removeClientDrawListener( ClientDrawListener listener ) {
     drawListeners.remove( listener );
   }
   
+  /**
+   * <p>
+   * Clears all client side drawings.
+   * </p>
+   */
   public void clear() {
     if( !isDisposed() ) {
       cache.clear();
@@ -85,6 +112,11 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
     }
   }
   
+  /**
+   * <p>
+   * Undo the most recent client side drawing.
+   * </p>
+   */
   public void undo() {
     if( !isDisposed() ) {
       if( cache.hasUndo() ) {
@@ -95,10 +127,20 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
     }
   }
   
+  /**
+   * <p>
+   * returns if a undo can be performed.
+   * </p>
+   */
   public boolean hasUndo() {
     return cache.hasUndo();
   }
   
+  /**
+   * <p>
+   * Redo the most recent undo.
+   * </p>
+   */
   public void redo() {
     if( !isDisposed() ) {
       if( cache.hasRedo() ) {
@@ -109,6 +151,11 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
     }
   }
   
+  /**
+   * <p>
+   * Returns if a redo can be performed.
+   * </p>
+   */
   public boolean hasRedo() {
     return cache.hasRedo();
   }
@@ -151,6 +198,7 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
     }
   }
 
+  @Override
   public void beforePhase( PhaseEvent event ) {
     Display sessionDisplay = LifeCycleUtil.getSessionDisplay();
     if( getDisplay() == sessionDisplay ) {
@@ -167,14 +215,17 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
     return drawings;
   }
 
+  @Override
   public void afterPhase( PhaseEvent event ) {
     // do nothing
   }
 
+  @Override
   public PhaseId getPhaseId() {
     return PhaseId.PROCESS_ACTION;
   }
 
+  @Override
   public void beforeDestroy( SessionStoreEvent event ) {
     // TODO: Check RAP bug #375356
     RWTFactory.getLifeCycleFactory().getLifeCycle().removePhaseListener( this );

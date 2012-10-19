@@ -21,6 +21,11 @@ import org.eclipse.swt.widgets.Widget;
 
 
 /**
+ * <p>
+ * The <code>Widgets</code> class provides static methods to enhance Widgets with features limited to mobile devices 
+ * like a number keyboard on <code>Text</code> widgets and so on.
+ * </p>
+ * 
  * @since 0.8
  */
 public class Widgets {

@@ -11,10 +11,44 @@
 package com.eclipsesource.tabris.geolocation;
 
 
+/**
+ * <p>
+ * A <code>PositionError</code> will be used as a parameter when the client fails to determine the location. It will
+ * be passed as a parameter to <code>GeolocationCallback#onError</code>.
+ * </p>
+ * 
+ * @see GeolocationCallback
+ * @since 0.6
+ */
 public class PositionError {
   
+  /**
+   * <p>
+   * <code>PositionErrorCode</code> is a helper enumeration to unify the most common client errors.
+   * </p>
+   */
   public enum PositionErrorCode {
-    PERMISSION_DENIED, POSITION_UNAVAILABLE, UNKNOWN;
+    /**
+     * <p>
+     * Means that the client app had not the sufficient permissions to determine the location. When the user doesn't 
+     * allow to use the device location this error occurs.
+     * </p> 
+     */
+    PERMISSION_DENIED, 
+    
+    /**
+     * <p>
+     * The client could not determine the location, e.g. when the GPS is not activated.
+     * </p>
+     */
+    POSITION_UNAVAILABLE, 
+    
+    /**
+     * <p>
+     * An unknown error occured.
+     * </p>
+     */
+    UNKNOWN;
   }
   
   private final PositionErrorCode code;
@@ -25,10 +59,22 @@ public class PositionError {
     this.message = message;
   }
 
+  /**
+   * <p>
+   * Returns the error message passed from the mobile device.
+   * </p>
+   */
   public String getMessage() {
     return message;
   }
 
+  /**
+   * <p>
+   * Returns the error code.
+   * </p>
+   * 
+   * @see PositionErrorCode
+   */
   public PositionErrorCode getCode() {
     return code;
   }

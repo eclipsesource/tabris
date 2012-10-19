@@ -14,9 +14,22 @@ import org.eclipse.rap.rwt.RWT;
 
 import com.eclipsesource.tabris.internal.Constants;
 
-
+/**
+ * <p>
+ * The <code>ClientDevice</code> provides service method to distinguish the requesting client. See <code>Platform</code>
+ * for the available clients.
+ * <p>
+ * 
+ * @see Platform
+ * @since 0.6
+ */
 public class ClientDevice {
   
+  /**
+   * <p>
+   * Return true when the current requesting client matches with the <code>Platform</code> passed as a parameter.
+   * </p>
+   */
   public boolean isPlatform( Platform platform ) {
     String userAgent = RWT.getRequest().getHeader( Constants.USER_AGENT );
     Platform result = Platform.WEB;

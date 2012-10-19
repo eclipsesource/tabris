@@ -19,14 +19,33 @@ import com.eclipsesource.tabris.camera.internal.CameraSynchronizer;
 
 
 /**
+ * <p>
+ * The <code>Camera</code> component can be used to take and receive pictures from a mobile client's camera or photo 
+ * album. The taken picture will be sent to the server side and a callback will be called. See 
+ * <code>CameraCallback</code>. 
+ * </p>
+ * <p>
+ * To configure the client's camera an options object needs to be passed as a constructor argument.
+ * </p>
+ * 
+ * @see CameraCallback
+ * @see CameraOptions
  * @since 0.8
  */
 @SuppressWarnings("restriction")
 public class Camera implements Adaptable {
   
-  private ClientObjectAdapter clientObjectAdapter;
-  private CameraAdapter cameraAdapter;
+  private final ClientObjectAdapter clientObjectAdapter;
+  private final CameraAdapter cameraAdapter;
 
+  /**
+   * <p>
+   * Creates a new camera object with the configuration passed as argument. 
+   * </p>
+   * 
+   * @param options the configuration for the camera. Must not be <code>null</code>.
+   * @see CameraOptions
+   */
   public Camera( CameraOptions options ) {
     checkOptions( options );
     clientObjectAdapter = new ClientObjectAdapter( "c" );
@@ -41,15 +60,30 @@ public class Camera implements Adaptable {
     }
   }
 
+  /**
+   * <p>
+   * Instructs the client to open the camera or photo album. The <code>CameraCallback</code> will be called when the 
+   * user has taken/selected a picture or in the case of an error.
+   * </p>
+   * 
+   *  @param callback The callback to call. Must not be <code>null</code>.
+   *  @see CameraCallback
+   */
   public void takePicture( CameraCallback callback ) {
     cameraAdapter.setCallback( callback );
     cameraAdapter.open();
   }
   
+  /**
+   * <p>
+   * Destroys the camera object. Behaves the same like other SWT Widgets.
+   * </p>
+   */
   public void dispose() {
     cameraAdapter.dispose();
   }
 
+  @Override
   @SuppressWarnings("unchecked")
   public <T> T getAdapter( Class<T> adapter ) {
     T result = null;

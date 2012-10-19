@@ -11,6 +11,14 @@
 package com.eclipsesource.tabris.geolocation;
 
 
+/**
+ * <p>
+ * <code>Coordinates</code> is a wrapper for GPS positions. It's used within a <code>Position</code>
+ * </p>
+ * 
+ * @see Position
+ * @since 0.6
+ */
 public class Coordinates {
   
   private final double latitude;

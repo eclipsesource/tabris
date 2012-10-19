@@ -11,6 +11,14 @@
 package com.eclipsesource.tabris.widgets;
 
 
+/**
+ * <p>
+ * A <code>ClientDrawListener</code> will be called when a client draws on a <code>ClientCanvas</code>.
+ * </p>
+ * 
+ * @see ClientCanvas
+ * @since 0.6
+ */
 public interface ClientDrawListener {
   
   void receivedDrawing();
