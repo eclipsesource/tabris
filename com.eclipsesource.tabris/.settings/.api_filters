@@ -13,6 +13,33 @@
             </message_arguments>
         </filter>
     </resource>
+    <resource path="src/com/eclipsesource/tabris/camera/Camera.java" type="com.eclipsesource.tabris.camera.Camera">
+        <filter id="1108344834">
+            <message_arguments>
+                <message_argument value="0.8"/>
+                <message_argument value="0.9"/>
+                <message_argument value="com.eclipsesource.tabris.camera.Camera"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/camera/CameraCallback.java" type="com.eclipsesource.tabris.camera.CameraCallback">
+        <filter id="1108344834">
+            <message_arguments>
+                <message_argument value="0.8"/>
+                <message_argument value="0.9"/>
+                <message_argument value="com.eclipsesource.tabris.camera.CameraCallback"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/camera/CameraOptions.java" type="com.eclipsesource.tabris.camera.CameraOptions">
+        <filter id="1108344834">
+            <message_arguments>
+                <message_argument value="0.8"/>
+                <message_argument value="0.9"/>
+                <message_argument value="com.eclipsesource.tabris.camera.CameraOptions"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="src/com/eclipsesource/tabris/geolocation/Geolocation.java" type="com.eclipsesource.tabris.geolocation.Geolocation">
         <filter id="337682486">
             <message_arguments>
@@ -24,7 +51,7 @@
         <filter id="305365105">
             <message_arguments>
                 <message_argument value="com.eclipsesource.tabris.internal.AbstractObjectSynchronizer"/>
-                <message_argument value="com.eclipsesource.tabris_0.8.0"/>
+                <message_argument value="com.eclipsesource.tabris_0.9.0"/>
             </message_arguments>
         </filter>
     </resource>
@@ -32,7 +59,7 @@
         <filter id="305365105">
             <message_arguments>
                 <message_argument value="com.eclipsesource.tabris.internal.Constants"/>
-                <message_argument value="com.eclipsesource.tabris_0.8.0"/>
+                <message_argument value="com.eclipsesource.tabris_0.9.0"/>
             </message_arguments>
         </filter>
     </resource>
@@ -40,7 +67,7 @@
         <filter id="305365105">
             <message_arguments>
                 <message_argument value="com.eclipsesource.tabris.internal.DrawingsCache"/>
-                <message_argument value="com.eclipsesource.tabris_0.8.0"/>
+                <message_argument value="com.eclipsesource.tabris_0.9.0"/>
             </message_arguments>
         </filter>
     </resource>
@@ -48,7 +75,7 @@
         <filter id="305365105">
             <message_arguments>
                 <message_argument value="com.eclipsesource.tabris.internal.GCOperationDispatcher"/>
-                <message_argument value="com.eclipsesource.tabris_0.8.0"/>
+                <message_argument value="com.eclipsesource.tabris_0.9.0"/>
             </message_arguments>
         </filter>
     </resource>
@@ -103,11 +130,56 @@
             </message_arguments>
         </filter>
     </resource>
+    <resource path="src/com/eclipsesource/tabris/widgets/LabelDecorator.java" type="com.eclipsesource.tabris.widgets.LabelDecorator">
+        <filter id="1108344834">
+            <message_arguments>
+                <message_argument value="0.8"/>
+                <message_argument value="0.9"/>
+                <message_argument value="com.eclipsesource.tabris.widgets.LabelDecorator"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/widgets/ScrolledCompositeDecorator.java" type="com.eclipsesource.tabris.widgets.ScrolledCompositeDecorator">
+        <filter id="1108344834">
+            <message_arguments>
+                <message_argument value="0.8"/>
+                <message_argument value="0.9"/>
+                <message_argument value="com.eclipsesource.tabris.widgets.ScrolledCompositeDecorator"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/widgets/TextDecorator.java" type="com.eclipsesource.tabris.widgets.TextDecorator">
+        <filter id="1108344834">
+            <message_arguments>
+                <message_argument value="0.8"/>
+                <message_argument value="0.9"/>
+                <message_argument value="com.eclipsesource.tabris.widgets.TextDecorator"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/widgets/ToolItemDecorator.java" type="com.eclipsesource.tabris.widgets.ToolItemDecorator">
+        <filter id="1108344834">
+            <message_arguments>
+                <message_argument value="0.8"/>
+                <message_argument value="0.9"/>
+                <message_argument value="com.eclipsesource.tabris.widgets.ToolItemDecorator"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/widgets/TreeDecorator.java" type="com.eclipsesource.tabris.widgets.TreeDecorator">
+        <filter id="1108344834">
+            <message_arguments>
+                <message_argument value="0.8"/>
+                <message_argument value="0.9"/>
+                <message_argument value="com.eclipsesource.tabris.widgets.TreeDecorator"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="src/com/eclipsesource/tabris/widgets/Video.java" type="com.eclipsesource.tabris.widgets.Video">
         <filter id="1108344834">
             <message_arguments>
                 <message_argument value="0.7"/>
-                <message_argument value="0.8"/>
+                <message_argument value="0.9"/>
                 <message_argument value="com.eclipsesource.tabris.widgets.Video"/>
             </message_arguments>
         </filter>
@@ -116,8 +188,26 @@
         <filter id="1108344834">
             <message_arguments>
                 <message_argument value="0.7"/>
-                <message_argument value="0.8"/>
+                <message_argument value="0.9"/>
                 <message_argument value="com.eclipsesource.tabris.widgets.VideoListener"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/widgets/WidgetDecorator.java" type="com.eclipsesource.tabris.widgets.WidgetDecorator">
+        <filter id="1108344834">
+            <message_arguments>
+                <message_argument value="0.8"/>
+                <message_argument value="0.9"/>
+                <message_argument value="com.eclipsesource.tabris.widgets.WidgetDecorator"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/widgets/Widgets.java" type="com.eclipsesource.tabris.widgets.Widgets">
+        <filter id="1108344834">
+            <message_arguments>
+                <message_argument value="0.8"/>
+                <message_argument value="0.9"/>
+                <message_argument value="com.eclipsesource.tabris.widgets.Widgets"/>
             </message_arguments>
         </filter>
     </resource>
