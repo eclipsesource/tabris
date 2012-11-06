@@ -29,7 +29,7 @@ public class EntryPointLookupServlet extends HttpServlet {
   
   static final String KEY_ENTRYPOINTS = "entrypoints";
   static final String KEY_PATH = "path";
-  private transient EntryPointManager manager;
+  private final EntryPointManager manager;
   private static final long serialVersionUID = 1L;  
 
   public EntryPointLookupServlet( ApplicationContext applicationContext ) {

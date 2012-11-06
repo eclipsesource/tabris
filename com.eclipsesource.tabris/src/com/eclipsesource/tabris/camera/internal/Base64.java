@@ -1,5 +1,8 @@
 package com.eclipsesource.tabris.camera.internal;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+
 // where did this code come from?
 // Answer: See end of comment -> http://iharder.net/base64
 /**
@@ -997,13 +1000,21 @@ public class Base64 {
       }
     } // end finally
     // Return value according to relevant encoding.
+    return streamToString( baos );
+  } // end encode
+
+  private static String streamToString( java.io.ByteArrayOutputStream baos ) {
     try {
       return new String( baos.toByteArray(), PREFERRED_ENCODING );
     } // end try
     catch( java.io.UnsupportedEncodingException uue ) {
-      return new String( baos.toByteArray() );
+      try {
+        return new String( baos.toByteArray(), Charset.defaultCharset().name() );
+      } catch( UnsupportedEncodingException e ) {
+        throw new IllegalStateException( "Could not create String with default encoding. Something went terribly wrong" );
+      }
     } // end catch
-  } // end encode
+  }
 
   /**
    * Encodes a byte array into Base64 notation. Does not GZip-compress data.
@@ -1113,12 +1124,7 @@ public class Base64 {
         }
       } // end finally
       // Return value according to relevant encoding.
-      try {
-        return new String( baos.toByteArray(), PREFERRED_ENCODING );
-      } // end try
-      catch( java.io.UnsupportedEncodingException uue ) {
-        return new String( baos.toByteArray() );
-      } // end catch
+      return streamToString( baos );
     } // end if: compress
     // Convert option to boolean in way that code likes it.
     boolean breakLines = dontBreakLines == 0;
@@ -1152,7 +1158,11 @@ public class Base64 {
       return new String( outBuff, 0, e, PREFERRED_ENCODING );
     } // end try
     catch( java.io.UnsupportedEncodingException uue ) {
-      return new String( outBuff, 0, e );
+      try {
+        return new String( outBuff, 0, e, Charset.defaultCharset().name() );
+      } catch( UnsupportedEncodingException e1 ) {
+        throw new IllegalStateException( "Could not create String with default encoding." );
+      }
     } // end catch
   } // end encodeBytes
 
@@ -1320,7 +1330,11 @@ public class Base64 {
       bytes = s.getBytes( PREFERRED_ENCODING );
     } // end try
     catch( java.io.UnsupportedEncodingException uee ) {
-      bytes = s.getBytes();
+      try {
+        bytes = s.getBytes( Charset.defaultCharset().name() );
+      } catch( UnsupportedEncodingException e ) {
+        throw new IllegalStateException( "Could not create bytes with default encoding." );
+      }
     } // end catch
     // </change>
     // Decode
@@ -1611,15 +1625,15 @@ public class Base64 {
    */
   public static class InputStream extends java.io.FilterInputStream {
 
-    private boolean encode; // Encoding or decoding
+    private final boolean encode; // Encoding or decoding
     private int position; // Current position in the buffer
-    private byte[] buffer; // Small buffer holding converted data
-    private int bufferLength; // Length of buffer (3 or 4)
+    private final byte[] buffer; // Small buffer holding converted data
+    private final int bufferLength; // Length of buffer (3 or 4)
     private int numSigBytes; // Number of meaningful bytes in the buffer
     private int lineLength;
-    private boolean breakLines; // Break lines at less than 80 characters
-    private int options; // Record options used to create the stream.
-    private byte[] decodabet; // Local copies to avoid extra method calls
+    private final boolean breakLines; // Break lines at less than 80 characters
+    private final int options; // Record options used to create the stream.
+    private final byte[] decodabet; // Local copies to avoid extra method calls
 
     /**
      * Constructs a {@link Base64.InputStream} in DECODE mode.
@@ -1794,16 +1808,16 @@ public class Base64 {
    */
   public static class OutputStream extends java.io.FilterOutputStream {
 
-    private boolean encode;
+    private final boolean encode;
     private int position;
     private byte[] buffer;
-    private int bufferLength;
+    private final int bufferLength;
     private int lineLength;
-    private boolean breakLines;
-    private byte[] b4; // Scratch used in a few places
-    private boolean suspendEncoding;
-    private int options; // Record for later
-    private byte[] decodabet; // Local copies to avoid extra method calls
+    private final boolean breakLines;
+    private final byte[] b4; // Scratch used in a few places
+    private final boolean suspendEncoding;
+    private final int options; // Record for later
+    private final byte[] decodabet; // Local copies to avoid extra method calls
 
     /**
      * Constructs a {@link Base64.OutputStream} in ENCODE mode.
