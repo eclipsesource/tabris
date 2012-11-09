@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris;
 
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.rap.rwt.RWT;
@@ -19,6 +20,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.eclipsesource.tabris.ClientDevice.Platform;
 import com.eclipsesource.tabris.internal.Constants;
 
 
@@ -55,13 +57,46 @@ public class ClientDeviceTest {
   }
   
   @Test
-  public void testDefaultIsWeb() {
+  public void testIsWebByDefault() {
     TestRequest request = ( TestRequest )RWT.getRequest();
     request.setHeader( Constants.USER_AGENT, "Mozilla/bla" );
-
+  
     ClientDevice device = ClientDevice.getCurrent();
     
     assertTrue( device.isPlatform( Platform.WEB ) );
+  }
+
+  @Test
+  public void testGetPlatformIsAndroid() {
+    TestRequest request = ( TestRequest )RWT.getRequest();
+    request.setHeader( Constants.USER_AGENT, Constants.ID_ANDROID );
+    ClientDevice device = ClientDevice.getCurrent();
+    
+    Platform platform = device.getPlatform();
+    
+    assertSame( Platform.ANDROID, platform );
+  }
+  
+  @Test
+  public void testGetPlatformIsIOS() {
+    TestRequest request = ( TestRequest )RWT.getRequest();
+    request.setHeader( Constants.USER_AGENT, Constants.ID_IOS );
+    ClientDevice device = ClientDevice.getCurrent();
+
+    Platform platform = device.getPlatform();
+    
+    assertSame( Platform.IOS, platform );
+  }
+  
+  @Test
+  public void testGetPlatformIsWebByDefault() {
+    TestRequest request = ( TestRequest )RWT.getRequest();
+    request.setHeader( Constants.USER_AGENT, "Mozilla/bla" );
+    ClientDevice device = ClientDevice.getCurrent();
+    
+    Platform platform = device.getPlatform();
+    
+    assertSame( Platform.WEB, platform );
   }
   
 }

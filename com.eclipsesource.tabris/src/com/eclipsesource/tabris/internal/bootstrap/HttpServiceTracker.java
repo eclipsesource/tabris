@@ -22,24 +22,26 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 @SuppressWarnings("restriction")
 public class HttpServiceTracker implements ServiceTrackerCustomizer<HttpService, HttpService>{
   
-  static final String SERVLET_ALIAS = "/index.json";
-  
-  private ServiceTracker<HttpService, HttpService> httpServiceTracker;
-  private BundleContext bundleContext;
-  private ApplicationContext context;
+  private final ServiceTracker<HttpService, HttpService> httpServiceTracker;
+  private final BundleContext bundleContext;
+  private final ApplicationContext context;
 
-  public HttpServiceTracker( BundleContext bundleContext, ApplicationContext context ) {
+  private final String path;
+
+  public HttpServiceTracker( BundleContext bundleContext, ApplicationContext context, String path ) {
     this.bundleContext = bundleContext;
     this.context = context;
+    this.path = path;
     httpServiceTracker = new ServiceTracker<HttpService, HttpService>( bundleContext, 
                                                                        HttpService.class.getName(), 
                                                                        this );
   }
 
+  @Override
   public HttpService addingService( ServiceReference<HttpService> reference ) {
     HttpService httpService = bundleContext.getService( reference );
     try {
-      httpService.registerServlet( SERVLET_ALIAS, 
+      httpService.registerServlet( path, 
                                    new EntryPointLookupServlet( context ), 
                                    null, 
                                    null );
@@ -49,7 +51,7 @@ public class HttpServiceTracker implements ServiceTrackerCustomizer<HttpService,
     return httpService;
   }
   
-  void open() {
+  public void open() {
     getTracker().open();
   }
 
@@ -57,14 +59,20 @@ public class HttpServiceTracker implements ServiceTrackerCustomizer<HttpService,
     getTracker().close();
   }
   
+  @Override
   public void modifiedService( ServiceReference<HttpService> reference, HttpService service ) {
     // do nothing
   }
 
+  @Override
   public void removedService( ServiceReference<HttpService> reference, HttpService service ) {
-    service.unregister( SERVLET_ALIAS );
+    service.unregister( path );
   }
   
+  public String getPath() {
+    return path;
+  }
+
   // For testing purpose
   ServiceTracker<HttpService, HttpService> getTracker() {
     return httpServiceTracker;

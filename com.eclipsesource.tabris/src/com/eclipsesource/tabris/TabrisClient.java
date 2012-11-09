@@ -10,14 +10,17 @@
  ******************************************************************************/
 package com.eclipsesource.tabris;
 
+import org.eclipse.rap.rwt.client.Client;
+import org.eclipse.rap.rwt.client.service.ClientService;
+
+
 /**
- * <p>
- * Enumeration to make the identification of a requesting client easier.
- * </p>
- * 
- * @see ClientDevice
- * @since 0.6
+ * @since 0.9
  */
-public enum Platform {
-  IOS, ANDROID, WEB
+public class TabrisClient implements Client {
+
+  @Override
+  public <T extends ClientService> T getService( Class<T> type ) {
+    return null;
+  }
 }

@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.bootstrap;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -37,6 +38,7 @@ import org.osgi.util.tracker.ServiceTracker;
 @SuppressWarnings("restriction")
 public class HttpServiceTrackerTest {
   
+  private static final String SERVLET_ALIAS = "/test";
   private HttpServiceTracker tracker;
   private BundleContext bundleContext;
 
@@ -44,7 +46,7 @@ public class HttpServiceTrackerTest {
   public void setUp() {
     bundleContext = mock( BundleContext.class );
     ApplicationContext context = mock( ApplicationContext.class );
-    tracker = new HttpServiceTracker( bundleContext, context );
+    tracker = new HttpServiceTracker( bundleContext, context, SERVLET_ALIAS );
   }
   
   @Test
@@ -56,7 +58,7 @@ public class HttpServiceTrackerTest {
     
     tracker.addingService( reference );
     
-    verify( service ).registerServlet( eq( HttpServiceTracker.SERVLET_ALIAS ), 
+    verify( service ).registerServlet( eq( SERVLET_ALIAS ), 
                                        any( EntryPointLookupServlet.class ), 
                                        any( Dictionary.class ), 
                                        any( HttpContext.class ) );
@@ -97,6 +99,11 @@ public class HttpServiceTrackerTest {
   }
   
   @Test
+  public void testGetPath() {
+    assertEquals( SERVLET_ALIAS, tracker.getPath() );
+  }
+  
+  @Test
   @SuppressWarnings("unchecked")
   public void testUnregistersServlet() {
     ServiceReference<HttpService> reference = mock( ServiceReference.class );
@@ -104,7 +111,7 @@ public class HttpServiceTrackerTest {
     
     tracker.removedService( reference, service );
     
-    verify( service ).unregister( HttpServiceTracker.SERVLET_ALIAS );
+    verify( service ).unregister( SERVLET_ALIAS );
   }
   
 }

@@ -6,11 +6,11 @@ Bundle-Version: 0.9.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.rap.rwt;bundle-version="[2.0.0,2.1.0)"
-Export-Package: com.eclipsesource.tabris;version="0.8.0",
- com.eclipsesource.tabris.camera;version="0.8.0",
- com.eclipsesource.tabris.geolocation;version="0.8.0",
- com.eclipsesource.tabris.internal;version="0.8.0";x-internal:=true,
- com.eclipsesource.tabris.widgets;version="0.8.0"
+Export-Package: com.eclipsesource.tabris;version="0.9.0",
+ com.eclipsesource.tabris.camera;version="0.9.0",
+ com.eclipsesource.tabris.geolocation;version="0.9.0",
+ com.eclipsesource.tabris.internal;version="0.9.0";x-internal:=true,
+ com.eclipsesource.tabris.widgets;version="0.9.0"
 Import-Package: javax.servlet;version="[2.3.0,4.0.0)",
  javax.servlet.http;version="[2.3.0,4.0.0)",
  org.eclipse.rap.rwt.osgi;version="[1.5.0,2.1.0)",
@@ -20,6 +20,5 @@ Import-Package: javax.servlet;version="[2.3.0,4.0.0)",
  org.osgi.util.tracker;version="[1.5.0,1.6.0)"
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
-Bundle-Activator: com.eclipsesource.tabris.internal.bootstrap.Activator
 Bundle-ClassPath: libraries/org.json_1.0.0.v201011060100.jar,
  .

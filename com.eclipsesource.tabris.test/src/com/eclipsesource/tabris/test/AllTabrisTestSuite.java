@@ -29,14 +29,10 @@ import com.eclipsesource.tabris.geolocation.internal.GeolocationAdapterTest;
 import com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizerTest;
 import com.eclipsesource.tabris.internal.AbstractObjectSynchronizerTest;
 import com.eclipsesource.tabris.internal.GCOperationDispatcherTest;
+import com.eclipsesource.tabris.internal.TabrisClientProviderTest;
 import com.eclipsesource.tabris.internal.VideoLifeCycleAdapterTest;
-import com.eclipsesource.tabris.internal.bootstrap.ActivatorTest;
-import com.eclipsesource.tabris.internal.bootstrap.ApplicationWrapperTest;
-import com.eclipsesource.tabris.internal.bootstrap.ConfigurationHookTest;
 import com.eclipsesource.tabris.internal.bootstrap.EntryPointLookupServletTest;
 import com.eclipsesource.tabris.internal.bootstrap.HttpServiceTrackerTest;
-import com.eclipsesource.tabris.internal.bootstrap.ProxyApplicationConfigurationTest;
-import com.eclipsesource.tabris.internal.bootstrap.ThemePhaseListenerTest;
 import com.eclipsesource.tabris.widgets.ClientCanvasTest;
 import com.eclipsesource.tabris.widgets.ScrolledCompositeDecoratorTest;
 import com.eclipsesource.tabris.widgets.TextDecoratorTest;
@@ -45,7 +41,6 @@ import com.eclipsesource.tabris.widgets.TreeDecoratorTest;
 import com.eclipsesource.tabris.widgets.VideoTest;
 import com.eclipsesource.tabris.widgets.WidgetDecoratorTest;
 import com.eclipsesource.tabris.widgets.WidgetsTest;
-
 
 
 @RunWith( Suite.class )
@@ -57,12 +52,7 @@ import com.eclipsesource.tabris.widgets.WidgetsTest;
   GeolocationAdapterTest.class,
   GeolocationSynchronizerTest.class,
   AbstractObjectSynchronizerTest.class,
-  ActivatorTest.class,
-  ApplicationWrapperTest.class,
-  ProxyApplicationConfigurationTest.class,
-  ThemePhaseListenerTest.class,
   BootstrapperTest.class,
-  ConfigurationHookTest.class,
   HttpServiceTrackerTest.class,
   EntryPointLookupServletTest.class,
   GCOperationDispatcherTest.class,
@@ -81,7 +71,8 @@ import com.eclipsesource.tabris.widgets.WidgetsTest;
   CameraTest.class,
   CameraOptionsTest.class,
   CameraAdapterTest.class,
-  CameraSynchronizerTest.class
+  CameraSynchronizerTest.class,
+  TabrisClientProviderTest.class
 } )
 public class AllTabrisTestSuite {
 }

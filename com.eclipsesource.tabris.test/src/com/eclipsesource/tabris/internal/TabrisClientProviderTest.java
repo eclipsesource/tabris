@@ -8,10 +8,11 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.internal.bootstrap;
+package com.eclipsesource.tabris.internal;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -24,8 +25,6 @@ import org.eclipse.rap.rwt.internal.theme.Theme;
 import org.eclipse.rap.rwt.internal.theme.ThemeManager;
 import org.eclipse.rap.rwt.internal.theme.css.CssFileReader;
 import org.eclipse.rap.rwt.internal.theme.css.StyleSheet;
-import org.eclipse.rap.rwt.lifecycle.PhaseEvent;
-import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.resources.ResourceLoader;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.rap.rwt.testfixture.TestRequest;
@@ -35,20 +34,20 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.Bootstrapper;
-import com.eclipsesource.tabris.internal.Constants;
+import com.eclipsesource.tabris.TabrisClient;
 
 
 @SuppressWarnings("restriction")
-public class ThemePhaseListenerTest {
+public class TabrisClientProviderTest {
   
   private static final String CURRENT_THEME_ID = "org.eclipse.rap.theme.current";
-  private ThemePhaseListener listener;
+  
+  private TabrisClientProvider provider;
 
   @Before
   public void setUp() {
     Fixture.setUp();
-    Fixture.fakeNewRequest();
-    listener = new ThemePhaseListener();
+    provider = new TabrisClientProvider();
   }
   
   @After
@@ -56,10 +55,30 @@ public class ThemePhaseListenerTest {
     Fixture.tearDown();
   }
   
+  @Test
+  public void testAcceptForAndroid() {
+    TestRequest request = ( TestRequest )RWT.getRequest();
+    request.setHeader( Constants.USER_AGENT, Constants.ID_ANDROID );
+    
+    assertTrue( provider.accept( request ) );
+  }
   
   @Test
-  public void testPhaseId() {
-    assertEquals( PhaseId.PREPARE_UI_ROOT, listener.getPhaseId() );
+  public void testAcceptForIOS() {
+    TestRequest request = ( TestRequest )RWT.getRequest();
+    request.setHeader( Constants.USER_AGENT, Constants.ID_IOS );
+    
+    assertTrue( provider.accept( request ) );
+  }
+  
+  @Test
+  public void testDoesNotAcceptForWeb() {
+    assertFalse( provider.accept( RWT.getRequest() ) );
+  }
+  
+  @Test
+  public void testReturnsTabrisClient() {
+    assertTrue( provider.getClient() instanceof TabrisClient );
   }
   
   @Test
@@ -68,7 +87,7 @@ public class ThemePhaseListenerTest {
     TestRequest request = ( TestRequest )RWT.getRequest();
     request.setHeader( Constants.USER_AGENT, Constants.ID_IOS );
     
-    listener.beforePhase( mock( PhaseEvent.class ) );
+    provider.accept( request );
     
     String currentTheme = ( String )ContextProvider.getSessionStore().getAttribute( CURRENT_THEME_ID );
     assertEquals( Bootstrapper.THEME_ID_IOS, currentTheme );
@@ -80,15 +99,16 @@ public class ThemePhaseListenerTest {
     TestRequest request = ( TestRequest )RWT.getRequest();
     request.setHeader( Constants.USER_AGENT, Constants.ID_ANDROID );
     
-    listener.beforePhase( mock( PhaseEvent.class ) );
+    provider.accept( request );
     
     String currentTheme = ( String )ContextProvider.getSessionStore().getAttribute( CURRENT_THEME_ID );
     assertEquals( Bootstrapper.THEME_ID_ANDROID, currentTheme );
   }
-
+  
   private void registerTheme( String themeId ) throws IOException {
     ResourceLoader resourceLoader = new ResourceLoader() {
       
+      @Override
       public InputStream getResourceAsStream( String resourceName ) throws IOException {
         return new ByteArrayInputStream( "".getBytes() );
       }

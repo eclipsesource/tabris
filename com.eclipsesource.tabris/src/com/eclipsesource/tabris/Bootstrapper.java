@@ -10,13 +10,18 @@
  ******************************************************************************/
 package com.eclipsesource.tabris;
 
-import org.eclipse.rap.rwt.application.Application;
-import org.eclipse.rap.rwt.application.ApplicationConfiguration;
-import org.eclipse.rap.rwt.internal.application.ApplicationImpl;
+import java.io.IOException;
+import java.io.InputStream;
 
-import com.eclipsesource.tabris.internal.bootstrap.ApplicationWrapper;
-import com.eclipsesource.tabris.internal.bootstrap.ProxyApplicationConfiguration;
-import com.eclipsesource.tabris.internal.bootstrap.ThemePhaseListener;
+import org.eclipse.rap.rwt.application.Application;
+import org.eclipse.rap.rwt.internal.application.ApplicationContext;
+import org.eclipse.rap.rwt.internal.application.ApplicationImpl;
+import org.eclipse.rap.rwt.resources.ResourceLoader;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+
+import com.eclipsesource.tabris.internal.TabrisClientProvider;
+import com.eclipsesource.tabris.internal.bootstrap.HttpServiceTracker;
 
 
 @SuppressWarnings("restriction")
@@ -47,34 +52,67 @@ public class Bootstrapper {
   private static final String THEME_PATH_IOS = "theme/ios.css";
   private static final String THEME_PATH_ANDROID = "theme/theme-android-holo.css";
   
+  private final ApplicationImpl application;
+  private HttpServiceTracker httpServiceTracker;
+  
+  /**
+   * @since 0.9
+   */
+  public Bootstrapper( Application application ) throws IllegalArgumentException {
+    if( !( application instanceof ApplicationImpl ) ) {
+      throw new IllegalArgumentException( "Application needs to be an ApplicationImpl" );
+    }
+    this.application = ( ApplicationImpl )application;
+  }
+  
   /**
    * <p>
    * Registers themes and other resources needed for the mobile clients. Needs to be called before an EntryPoint is 
    * registered.
    * </p>
+   * 
+   * @since 0.9
    */
-  public static void bootstrap( Application application ) {
-    ApplicationImpl config = chooseApplication( application );
-    config.addPhaseListener( new ThemePhaseListener() );
-    registerMobileThemes( config );
+  public void bootstrap() {
+    application.addClientProvider( new TabrisClientProvider() );
+    registerMobileThemes();
   }
   
-  private static ApplicationImpl chooseApplication( Application application ) {
-    ApplicationImpl app = ( ApplicationImpl )application;
-    ApplicationConfiguration configuration = app.getAdapter( ApplicationConfiguration.class );
-    if( !( configuration instanceof ProxyApplicationConfiguration ) ) {
-      ProxyApplicationConfiguration proxy = new ProxyApplicationConfiguration( configuration );
-      app = new ApplicationWrapper( app, proxy );
+  private static class ResourceLoaderImpl implements ResourceLoader {
+
+    @Override
+    public InputStream getResourceAsStream( String resourceName ) throws IOException {
+      return Bootstrapper.class.getClassLoader().getResourceAsStream( resourceName );
     }
-    return app;
   }
   
-  private static void registerMobileThemes( Application config ) {
-    config.addStyleSheet( THEME_ID_ANDROID, THEME_PATH_ANDROID );
-    config.addStyleSheet( THEME_ID_IOS, THEME_PATH_IOS );
+  private void registerMobileThemes() {
+    ResourceLoaderImpl resourceLoader = new ResourceLoaderImpl();
+    application.addStyleSheet( THEME_ID_ANDROID, THEME_PATH_ANDROID, resourceLoader );
+    application.addStyleSheet( THEME_ID_IOS, THEME_PATH_IOS, resourceLoader );
+  }
+  
+  /**
+   * <p>
+   * Registers a servlet that returns all entrypoint registered within the passed <code>Application</code>. The 
+   * registered servlet can be reached by making a GET request to <code>http(s)://server:port/${path}</code>. The 
+   * call returns a JSON object that contains all entrypoints.
+   * </p>
+   * 
+   * @param bundle The bundle is used to call the OSGi HttpService to register the servlet.
+   * @param path The path to register the lookup. Needs to start with a "/".
+   * 
+   * @since 0.9
+   */
+  public void registerEntryPointLookup( Bundle bundle, String path ) {
+    ApplicationContext appContext = ( application ).getAdapter( ApplicationContext.class );
+    BundleContext bundleContext = bundle.getBundleContext();
+    httpServiceTracker = new HttpServiceTracker( bundleContext, appContext, path );
+    httpServiceTracker.open();
   }
 
-  private Bootstrapper() {
-    // prevent instantiation
+  HttpServiceTracker getHttpServiceTracker() {
+    return httpServiceTracker;
   }
+
 }

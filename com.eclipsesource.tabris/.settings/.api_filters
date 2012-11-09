@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <component id="com.eclipsesource.tabris" version="2">
+    <resource path="META-INF/MANIFEST.MF" type="com.eclipsesource.tabris.Platform">
+        <filter id="305324134">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.Platform"/>
+                <message_argument value="com.eclipsesource.tabris_0.9.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="src/com/eclipsesource/tabris/Bootstrapper.java" type="com.eclipsesource.tabris.Bootstrapper">
         <filter id="338792546">
             <message_arguments>
@@ -7,9 +15,12 @@
                 <message_argument value="bootstrap(Application)"/>
             </message_arguments>
         </filter>
-        <filter id="1143996420">
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/ClientDevice.java" type="com.eclipsesource.tabris.ClientDevice">
+        <filter id="338792546">
             <message_arguments>
-                <message_argument value="bootstrap(Application)"/>
+                <message_argument value="com.eclipsesource.tabris.ClientDevice"/>
+                <message_argument value="isPlatform(Platform)"/>
             </message_arguments>
         </filter>
     </resource>
@@ -107,6 +118,11 @@
             <message_arguments>
                 <message_argument value="com.eclipsesource.tabris.widgets.ClientCanvas"/>
                 <message_argument value="getPhaseId()"/>
+            </message_arguments>
+        </filter>
+        <filter id="338849923">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.widgets.ClientCanvas"/>
             </message_arguments>
         </filter>
         <filter id="1143996420">
