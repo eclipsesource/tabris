@@ -10,6 +10,23 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.geolocation.internal;
 
+import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.LOCATION_UPDATE_ERROR_EVENT;
+import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.LOCATION_UPDATE_EVENT;
+import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_ACCURACY;
+import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_ALTITUDE;
+import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_ALTITUDE_ACCURACY;
+import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_ENABLE_HIGH_ACCURACY;
+import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_ERROR_CODE;
+import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_ERROR_MESSAGE;
+import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_FREQUENCY;
+import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_HEADING;
+import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_LATITUDE;
+import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_LONGITUDE;
+import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_MAXIMUM_AGE;
+import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_NEEDS_POSITION;
+import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_SPEED;
+import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_TIMESTAMP;
+import static org.eclipse.rap.rwt.testfixture.Fixture.fakeNotifyOperation;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -20,6 +37,9 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.internal.protocol.ClientObjectAdapter;
 import org.eclipse.rap.rwt.internal.protocol.IClientObject;
@@ -29,6 +49,9 @@ import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import com.eclipsesource.tabris.geolocation.Geolocation;
 import com.eclipsesource.tabris.geolocation.GeolocationCallback;
@@ -38,22 +61,24 @@ import com.eclipsesource.tabris.geolocation.PositionError;
 import com.eclipsesource.tabris.geolocation.internal.GeolocationAdapter.NeedsPositionFlavor;
 
 
+@RunWith( MockitoJUnitRunner.class )
 @SuppressWarnings("restriction")
 public class GeolocationSynchronizerTest {
   
+  private static final String ID = "g42";
+  
+  @Mock private GeolocationAdapter adapter;
+  @Mock private Geolocation object;
   private GeolocationSynchronizer synchronizer;
-  private Geolocation object;
-  private GeolocationAdapter adapter;
 
   @Before
   public void setUp() {
     Fixture.setUp();
-    object = mock( Geolocation.class );
-    adapter = mock( GeolocationAdapter.class );
     when( object.getAdapter( GeolocationAdapter.class ) ).thenReturn( adapter );
-    when( object.getAdapter( IClientObjectAdapter.class ) ).thenReturn( new ClientObjectAdapter() );
-    GeolocationSynchronizer original = new GeolocationSynchronizer( object );
-    synchronizer = spy( original );
+    ClientObjectAdapter clientObjectAdapter = mock( ClientObjectAdapter.class );
+    when( clientObjectAdapter.getId() ).thenReturn( ID );
+    when( object.getAdapter( IClientObjectAdapter.class ) ).thenReturn( clientObjectAdapter );
+    synchronizer = spy( new GeolocationSynchronizer( object ) );
   }
   
   @After
@@ -63,9 +88,17 @@ public class GeolocationSynchronizerTest {
   
   @Test
   public void testReadData() {
-    when( synchronizer.readPropertyValue( GeolocationSynchronizer.PROP_LATITUDE ) ).thenReturn( "101.1" );
-    String date = "2012-03-12T10:40:13+0100";
-    when( synchronizer.readPropertyValue( GeolocationSynchronizer.PROP_TIMESTAMP ) ).thenReturn( date );
+    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
+    Map<String, Object> parameters = new HashMap<String, Object>();
+    parameters.put( PROP_TIMESTAMP, "2012-03-12T10:40:13+0100" );
+    parameters.put( PROP_LATITUDE, "101.1" );
+    parameters.put( PROP_LONGITUDE, "43.1" );
+    parameters.put( PROP_ALTITUDE, "3.1" );
+    parameters.put( PROP_ACCURACY, "5.1" );
+    parameters.put( PROP_ALTITUDE_ACCURACY, "1.1" );
+    parameters.put( PROP_HEADING, "21.1" );
+    parameters.put( PROP_SPEED, "216.1" );
+    fakeNotifyOperation( ID, LOCATION_UPDATE_EVENT, parameters );
     
     synchronizer.readData( object );
     
@@ -74,7 +107,11 @@ public class GeolocationSynchronizerTest {
   
   @Test
   public void testReadDataWithError() {
-    when( synchronizer.readPropertyValue( GeolocationSynchronizer.PROP_ERROR_CODE ) ).thenReturn( "UNKNOWN" );
+    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
+    Map<String, Object> parameters = new HashMap<String, Object>();
+    parameters.put( PROP_ERROR_CODE, "UNKNOWN" );
+    parameters.put( PROP_ERROR_MESSAGE, "A Message" );
+    fakeNotifyOperation( ID, LOCATION_UPDATE_ERROR_EVENT, parameters );
     
     synchronizer.readData( object );
     
@@ -87,9 +124,7 @@ public class GeolocationSynchronizerTest {
     when( adapter.getFlavor() ).thenReturn( NeedsPositionFlavor.CONTINUOUS );
     synchronizer.preserveValues( object );
     
-    assertNotNull( RWT.getServiceStore().getAttribute( synchronizer.getObjectId() 
-                                                       + "." 
-                                                       + GeolocationSynchronizer.PROP_NEEDS_POSITION ) );
+    assertNotNull( RWT.getServiceStore().getAttribute( ID + "." + PROP_NEEDS_POSITION ) );
   }
   
   @Test
@@ -101,15 +136,9 @@ public class GeolocationSynchronizerTest {
     
     synchronizer.preserveValues( object );
     
-    assertNotNull( RWT.getServiceStore().getAttribute( synchronizer.getObjectId() 
-                                                       + "." 
-                                                       + GeolocationSynchronizer.PROP_ENABLE_HIGH_ACCURACY ) );
-    assertNotNull( RWT.getServiceStore().getAttribute( synchronizer.getObjectId() 
-                                                       + "." 
-                                                       + GeolocationSynchronizer.PROP_FREQUENCY ) );
-    assertNotNull( RWT.getServiceStore().getAttribute( synchronizer.getObjectId() 
-                                                       + "." 
-                                                       + GeolocationSynchronizer.PROP_MAXIMUM_AGE ) );
+    assertNotNull( RWT.getServiceStore().getAttribute( ID + "." + PROP_ENABLE_HIGH_ACCURACY ) );
+    assertNotNull( RWT.getServiceStore().getAttribute( ID + "." + PROP_FREQUENCY ) );
+    assertNotNull( RWT.getServiceStore().getAttribute( ID + "." + PROP_MAXIMUM_AGE ) );
   }
   
   @Test
@@ -130,13 +159,13 @@ public class GeolocationSynchronizerTest {
     
     synchronizer.renderChanges( object );
     
-    verify( synchronizer ).renderProperty( eq( GeolocationSynchronizer.PROP_NEEDS_POSITION ), 
+    verify( synchronizer ).renderProperty( eq( PROP_NEEDS_POSITION ), 
                                            any( NeedsPositionFlavor.class ), 
                                            any( NeedsPositionFlavor.class ) );
-    verify( synchronizer ).renderProperty( eq( GeolocationSynchronizer.PROP_MAXIMUM_AGE ), 
+    verify( synchronizer ).renderProperty( eq( PROP_MAXIMUM_AGE ), 
                                            any( Integer.class ), 
                                            any( Integer.class ) );
-    verify( synchronizer ).renderProperty( eq( GeolocationSynchronizer.PROP_FREQUENCY ), 
+    verify( synchronizer ).renderProperty( eq( PROP_FREQUENCY ), 
                                            any( Integer.class ), 
                                            any( Integer.class ) );
   }
@@ -237,10 +266,17 @@ public class GeolocationSynchronizerTest {
   }
   
   @Test( expected = IllegalStateException.class )
-  public void testParseError() {
-    when( synchronizer.readPropertyValue( GeolocationSynchronizer.PROP_LATITUDE ) ).thenReturn( "101.1" );
-    String date = "2012-12-30-20-15-43";
-    when( synchronizer.readPropertyValue( GeolocationSynchronizer.PROP_TIMESTAMP ) ).thenReturn( date );
+  public void testParseDateError() {
+    Map<String, Object> parameters = new HashMap<String, Object>();
+    parameters.put( PROP_TIMESTAMP, "2012-12-30-20-15-43" );
+    parameters.put( PROP_LATITUDE, "101.1" );
+    parameters.put( PROP_LONGITUDE, "43.1" );
+    parameters.put( PROP_ALTITUDE, "3.1" );
+    parameters.put( PROP_ACCURACY, "5.1" );
+    parameters.put( PROP_ALTITUDE_ACCURACY, "1.1" );
+    parameters.put( PROP_HEADING, "21.1" );
+    parameters.put( PROP_SPEED, "216.1" );
+    fakeNotifyOperation( ID, LOCATION_UPDATE_EVENT, parameters );
     
     synchronizer.readData( object );
   }

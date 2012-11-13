@@ -12,12 +12,15 @@ package com.eclipsesource.tabris.geolocation.internal;
 
 import static com.eclipsesource.tabris.geolocation.internal.GeolocationAdapter.NeedsPositionFlavor.NEVER;
 import static com.eclipsesource.tabris.geolocation.internal.GeolocationAdapter.NeedsPositionFlavor.ONCE;
+import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.readEventPropertyValueAsString;
+import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.wasEventSent;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.eclipse.rap.rwt.internal.protocol.IClientObject;
+import org.eclipse.rap.rwt.lifecycle.ProcessActionRunner;
 
 import com.eclipsesource.tabris.geolocation.Coordinates;
 import com.eclipsesource.tabris.geolocation.Geolocation;
@@ -40,6 +43,8 @@ public class GeolocationSynchronizer extends AbstractObjectSynchronizer {
   static final String PROP_FREQUENCY = "frequency";
   static final String PROP_NEEDS_POSITION = "needsPosition";
   // read properties
+  static final String LOCATION_UPDATE_ERROR_EVENT = "LocationUpdateError";
+  static final String LOCATION_UPDATE_EVENT = "LocationUpdate";
   static final String PROP_TIMESTAMP = "timestamp";
   static final String PROP_SPEED = "speed";
   static final String PROP_HEADING = "heading";
@@ -51,7 +56,6 @@ public class GeolocationSynchronizer extends AbstractObjectSynchronizer {
   static final String PROP_ERROR_MESSAGE = "errorMessage";
   static final String PROP_ERROR_CODE = "errorCode";
   
-  
   public GeolocationSynchronizer( Geolocation location ) {
     super( location );
   }
@@ -59,23 +63,34 @@ public class GeolocationSynchronizer extends AbstractObjectSynchronizer {
   @Override
   public void readData( Object object ) {
     Geolocation geolocation = ( Geolocation )object;
-    if( readPropertyValue( PROP_LATITUDE ) != null ) {
+    if( wasEventSent( getId(), LOCATION_UPDATE_EVENT ) ) {
       extractGeolocationProperties( geolocation );
-    } else if( readPropertyValue( PROP_ERROR_CODE ) != null ) {
+    }
+    if( wasEventSent( getId(), LOCATION_UPDATE_ERROR_EVENT ) ) {
       handlePositionError( geolocation );
     }
   }
 
   private void extractGeolocationProperties( Geolocation geolocation ) {
-    String timestampValue = readPropertyValue( PROP_TIMESTAMP );
+    String timestampValue = readEventPropertyValueAsString( getId(), LOCATION_UPDATE_EVENT, PROP_TIMESTAMP );
     try {
       Date timestamp = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ" ).parse( timestampValue );
       Coordinates coordinates = getCoordinates( geolocation );
       Position position = new Position( coordinates, timestamp );
-      geolocation.getAdapter( GeolocationAdapter.class ).setPosition( position );
+      firePositionEvent( geolocation, position );
     } catch( ParseException e ) {
-      throw new IllegalStateException( "Could not parse date from string: " +  timestampValue );
+      throw new IllegalStateException( "Could not parse date from string: " +  timestampValue 
+                                       + ", needs to be yyyy-MM-dd'T'HH:mm:ssZ" );
     }
+  }
+
+  private void firePositionEvent( final Geolocation geolocation, final Position position ) {
+    ProcessActionRunner.add( new Runnable() {
+      @Override
+      public void run() {
+        geolocation.getAdapter( GeolocationAdapter.class ).setPosition( position );
+      }
+    } );
   }
 
   private Coordinates getCoordinates( Geolocation geolocation ) {
@@ -89,7 +104,7 @@ public class GeolocationSynchronizer extends AbstractObjectSynchronizer {
   }
 
   private double getPropertyAsDouble( String propertyName ) {
-    String value = readPropertyValue( propertyName );
+    String value = readEventPropertyValueAsString( getId(), LOCATION_UPDATE_EVENT, propertyName );
     double result = -1;
     if( value != null ) {
       result = Double.valueOf( value  ).doubleValue();
@@ -98,11 +113,20 @@ public class GeolocationSynchronizer extends AbstractObjectSynchronizer {
   }
 
   private void handlePositionError( Geolocation geolocation ) {
-    String code = readPropertyValue( PROP_ERROR_CODE );
+    String code = readEventPropertyValueAsString( getId(), LOCATION_UPDATE_ERROR_EVENT, PROP_ERROR_CODE );
     PositionErrorCode errorCode = PositionErrorCode.valueOf( code );
-    String message = readPropertyValue( PROP_ERROR_MESSAGE );
+    String message = readEventPropertyValueAsString( getId(), LOCATION_UPDATE_ERROR_EVENT, PROP_ERROR_MESSAGE );
     PositionError positionError = new PositionError( errorCode, message );
-    geolocation.getAdapter( GeolocationAdapter.class ).setError( positionError );
+    firePositionError( geolocation, positionError );
+  }
+
+  private void firePositionError( final Geolocation geolocation, final PositionError positionError ) {
+    ProcessActionRunner.add( new Runnable() {
+      @Override
+      public void run() {
+        geolocation.getAdapter( GeolocationAdapter.class ).setError( positionError );
+      }
+    } );
   }
 
   @Override
@@ -178,11 +202,6 @@ public class GeolocationSynchronizer extends AbstractObjectSynchronizer {
     }
     geolocationAdapter.setPosition( null );
     geolocationAdapter.setError( null );
-  }
-  
-  // For testing only
-  String getObjectId() {
-    return getId();
   }
    
 }
