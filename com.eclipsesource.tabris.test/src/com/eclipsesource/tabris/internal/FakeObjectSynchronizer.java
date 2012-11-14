@@ -5,34 +5,34 @@ import org.eclipse.rap.rwt.internal.protocol.IClientObject;
 
 
 @SuppressWarnings("restriction")
-public class FakeObjectSynchronizer extends AbstractObjectSynchronizer {
+public class FakeObjectSynchronizer extends AbstractObjectSynchronizer<Adaptable> {
 
 	public FakeObjectSynchronizer(Adaptable object) {
 		super(object);
 	}
 
 	@Override
-	protected void renderInitialization(IClientObject clientObject, Object object) {
+	protected void renderInitialization(IClientObject clientObject, Adaptable object) {
 
 	}
 
 	@Override
-	protected void readData(Object object) {
+	protected void readData(Adaptable object) {
 
 	}
 
 	@Override
-	protected void preserveValues(Object object) {
+	protected void preserveValues(Adaptable object) {
 
 	}
 
 	@Override
-	protected void processAction(Object object) {
+	protected void processAction(Adaptable object) {
 
 	}
 
 	@Override
-	protected void renderChanges(Object object) {
+	protected void renderChanges(Adaptable object) {
 
 	}
 

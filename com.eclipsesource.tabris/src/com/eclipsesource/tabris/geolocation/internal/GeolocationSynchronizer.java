@@ -32,7 +32,7 @@ import com.eclipsesource.tabris.internal.AbstractObjectSynchronizer;
 
 
 @SuppressWarnings("restriction")
-public class GeolocationSynchronizer extends AbstractObjectSynchronizer {
+public class GeolocationSynchronizer extends AbstractObjectSynchronizer<Geolocation> {
 
   static final String TYPE = "tabris.Geolocation";
 
@@ -60,8 +60,7 @@ public class GeolocationSynchronizer extends AbstractObjectSynchronizer {
   }
 
   @Override
-  public void readData( Object object ) {
-    Geolocation geolocation = ( Geolocation )object;
+  public void readData( Geolocation geolocation ) {
     if( wasEventSent( getId(), LOCATION_UPDATE_EVENT ) ) {
       extractGeolocationProperties( geolocation );
     }
@@ -111,8 +110,7 @@ public class GeolocationSynchronizer extends AbstractObjectSynchronizer {
   }
 
   @Override
-  public void preserveValues( Object object ) {
-    Geolocation geolocation = ( Geolocation )object;
+  public void preserveValues( Geolocation geolocation ) {
     preserveProperty( PROP_NEEDS_POSITION, getNeedsPosition( geolocation ) );
     preserveOptions( geolocation );
   }
@@ -128,13 +126,12 @@ public class GeolocationSynchronizer extends AbstractObjectSynchronizer {
   }
   
   @Override
-  protected void renderInitialization( IClientObject clientObject, Object object ) {
+  protected void renderInitialization( IClientObject clientObject, Geolocation object ) {
     clientObject.create( TYPE );
   }
 
   @Override
-  public void renderChanges( Object object ) {
-    Geolocation geolocation = ( Geolocation )object;
+  public void renderChanges( Geolocation geolocation ) {
     renderProperty( PROP_NEEDS_POSITION, getNeedsPosition( geolocation ), NeedsPositionFlavor.NEVER );
     renderOptionsChanges( geolocation );
   }
@@ -158,8 +155,7 @@ public class GeolocationSynchronizer extends AbstractObjectSynchronizer {
   }
 
   @Override
-  protected void processAction( Object object ) {
-    Geolocation geolocation = ( Geolocation )object;
+  protected void processAction( Geolocation geolocation ) {
     GeolocationAdapter geolocationAdapter = geolocation.getAdapter( GeolocationAdapter.class );
     if( geolocationAdapter.getCallback() != null && geolocationAdapter.getFlavor() != NEVER ) {
       handleGeolocationResult( geolocationAdapter );

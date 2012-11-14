@@ -16,7 +16,6 @@ import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.wasEventSent;
 
 import java.io.ByteArrayInputStream;
 
-import org.eclipse.rap.rwt.Adaptable;
 import org.eclipse.rap.rwt.internal.protocol.IClientObject;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -27,7 +26,7 @@ import com.eclipsesource.tabris.internal.AbstractObjectSynchronizer;
 
 
 @SuppressWarnings("restriction")
-public class CameraSynchronizer extends AbstractObjectSynchronizer {
+public class CameraSynchronizer extends AbstractObjectSynchronizer<Camera> {
   
   static final String TYPE = "tabris.Camera";
   // write properties
@@ -42,14 +41,14 @@ public class CameraSynchronizer extends AbstractObjectSynchronizer {
   static final String CLOSE_METHOD = "close";
   private static final String INTERNAL_ERROR = "ERROR";
 
-  public CameraSynchronizer( Adaptable camera ) {
+  public CameraSynchronizer( Camera camera ) {
     super( camera );
   }
 
   @Override
-  protected void renderInitialization( IClientObject clientObject, Object camera ) {
+  protected void renderInitialization( IClientObject clientObject, Camera camera ) {
     clientObject.create( TYPE );
-    CameraAdapter adapter = ( ( Camera )camera ).getAdapter( CameraAdapter.class );
+    CameraAdapter adapter = camera.getAdapter( CameraAdapter.class );
     setResolution( clientObject, adapter );
     setSourceType( clientObject, adapter );
     setSaveToAlbum( clientObject, adapter );
@@ -76,8 +75,8 @@ public class CameraSynchronizer extends AbstractObjectSynchronizer {
   }
 
   @Override
-  protected void readData( Object camera ) {
-    CameraAdapter adapter = ( ( Camera )camera ).getAdapter( CameraAdapter.class );
+  protected void readData( Camera camera ) {
+    CameraAdapter adapter = camera.getAdapter( CameraAdapter.class );
     handleImageSelectionEvent( adapter );
     handleImageSelectionErrorEvent( adapter );
     handleClose( adapter );
@@ -103,8 +102,7 @@ public class CameraSynchronizer extends AbstractObjectSynchronizer {
   }
 
   @Override
-  protected void processAction( Object object ) {
-    Camera camera = ( Camera )object;
+  protected void processAction( Camera camera ) {
     CameraAdapter cameraAdapter = camera.getAdapter( CameraAdapter.class );
     if( cameraAdapter.getCallback() != null && cameraAdapter.getEncodedImage() != null ) {
       handleCameraResult( cameraAdapter, camera );
@@ -134,8 +132,8 @@ public class CameraSynchronizer extends AbstractObjectSynchronizer {
   }
 
   @Override
-  protected void renderChanges( Object camera ) {
-    CameraAdapter adapter = ( ( Camera )camera ).getAdapter( CameraAdapter.class );
+  protected void renderChanges( Camera camera ) {
+    CameraAdapter adapter = camera.getAdapter( CameraAdapter.class );
     if( adapter.isOpen() ) {
       getClientObject().call( OPEN_METHOD, null );
       adapter.close();
@@ -147,7 +145,7 @@ public class CameraSynchronizer extends AbstractObjectSynchronizer {
   }
 
   @Override
-  protected void preserveValues( Object camera ) {
+  protected void preserveValues( Camera camera ) {
     // no need to preserve any values
   }
 }
