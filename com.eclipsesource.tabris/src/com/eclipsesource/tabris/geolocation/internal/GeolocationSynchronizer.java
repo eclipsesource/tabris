@@ -20,7 +20,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.eclipse.rap.rwt.internal.protocol.IClientObject;
-import org.eclipse.rap.rwt.lifecycle.ProcessActionRunner;
 
 import com.eclipsesource.tabris.geolocation.Coordinates;
 import com.eclipsesource.tabris.geolocation.Geolocation;
@@ -77,20 +76,11 @@ public class GeolocationSynchronizer extends AbstractObjectSynchronizer {
       Date timestamp = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ" ).parse( timestampValue );
       Coordinates coordinates = getCoordinates( geolocation );
       Position position = new Position( coordinates, timestamp );
-      firePositionEvent( geolocation, position );
+      geolocation.getAdapter( GeolocationAdapter.class ).setPosition( position );
     } catch( ParseException e ) {
       throw new IllegalStateException( "Could not parse date from string: " +  timestampValue 
                                        + ", needs to be yyyy-MM-dd'T'HH:mm:ssZ" );
     }
-  }
-
-  private void firePositionEvent( final Geolocation geolocation, final Position position ) {
-    ProcessActionRunner.add( new Runnable() {
-      @Override
-      public void run() {
-        geolocation.getAdapter( GeolocationAdapter.class ).setPosition( position );
-      }
-    } );
   }
 
   private Coordinates getCoordinates( Geolocation geolocation ) {
@@ -117,16 +107,7 @@ public class GeolocationSynchronizer extends AbstractObjectSynchronizer {
     PositionErrorCode errorCode = PositionErrorCode.valueOf( code );
     String message = readEventPropertyValueAsString( getId(), LOCATION_UPDATE_ERROR_EVENT, PROP_ERROR_MESSAGE );
     PositionError positionError = new PositionError( errorCode, message );
-    firePositionError( geolocation, positionError );
-  }
-
-  private void firePositionError( final Geolocation geolocation, final PositionError positionError ) {
-    ProcessActionRunner.add( new Runnable() {
-      @Override
-      public void run() {
-        geolocation.getAdapter( GeolocationAdapter.class ).setError( positionError );
-      }
-    } );
+    geolocation.getAdapter( GeolocationAdapter.class ).setError( positionError );
   }
 
   @Override

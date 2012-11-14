@@ -10,6 +10,17 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.camera.internal;
 
+import static com.eclipsesource.tabris.camera.internal.CameraSynchronizer.CLOSE_METHOD;
+import static com.eclipsesource.tabris.camera.internal.CameraSynchronizer.IMAGE_SELECTION_ERROR_EVENT;
+import static com.eclipsesource.tabris.camera.internal.CameraSynchronizer.IMAGE_SELECTION_EVENT;
+import static com.eclipsesource.tabris.camera.internal.CameraSynchronizer.PROPERTY_RESOLUTION;
+import static com.eclipsesource.tabris.camera.internal.CameraSynchronizer.PROPERTY_SAVETOALBUM;
+import static com.eclipsesource.tabris.camera.internal.CameraSynchronizer.PROPERTY_SOURCETYPE;
+import static com.eclipsesource.tabris.camera.internal.CameraSynchronizer.TYPE;
+import static org.eclipse.rap.rwt.testfixture.Fixture.executeLifeCycleFromServerThread;
+import static org.eclipse.rap.rwt.testfixture.Fixture.fakeCallOperation;
+import static org.eclipse.rap.rwt.testfixture.Fixture.fakeNewRequest;
+import static org.eclipse.rap.rwt.testfixture.Fixture.fakeNotifyOperation;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -23,7 +34,10 @@ import static org.mockito.Mockito.when;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.eclipse.rap.rwt.internal.protocol.ClientMessageConst;
 import org.eclipse.rap.rwt.internal.protocol.ClientObjectAdapter;
 import org.eclipse.rap.rwt.internal.protocol.IClientObject;
 import org.eclipse.rap.rwt.internal.protocol.IClientObjectAdapter;
@@ -40,6 +54,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import com.eclipsesource.tabris.camera.Camera;
 import com.eclipsesource.tabris.camera.CameraCallback;
@@ -47,23 +64,26 @@ import com.eclipsesource.tabris.camera.CameraOptions;
 import com.eclipsesource.tabris.camera.CameraOptions.SourceType;
 
 
+@RunWith( MockitoJUnitRunner.class )
 @SuppressWarnings("restriction")
 public class CameraSynchronizerTest {
   
-  private Camera object;
-  private CameraAdapter adapter;
+  private static final String ID = "c42";
+  
+  @Mock private Camera object;
+  @Mock private CameraAdapter adapter;
   private CameraSynchronizer synchronizer;
 
   @Before
   public void setUp() {
     Fixture.setUp();
     new Display();
-    object = mock( Camera.class );
-    adapter = mock( CameraAdapter.class );
     when( object.getAdapter( CameraAdapter.class ) ).thenReturn( adapter );
-    when( object.getAdapter( IClientObjectAdapter.class ) ).thenReturn( new ClientObjectAdapter() );
-    CameraSynchronizer original = new CameraSynchronizer( object );
-    synchronizer = spy( original );
+    ClientObjectAdapter clientObjectAdapter = mock( ClientObjectAdapter.class );
+    when( clientObjectAdapter.getId() ).thenReturn( ID );
+    when( object.getAdapter( IClientObjectAdapter.class ) ).thenReturn( clientObjectAdapter );
+    synchronizer = spy( new CameraSynchronizer( object ) );
+    fakeNewRequest();
   }
   
   @After
@@ -73,8 +93,10 @@ public class CameraSynchronizerTest {
   
   @Test
   public void testReadData() {
-    String image = "image";
-    when( synchronizer.readPropertyValue( CameraSynchronizer.PROPERTY_IMAGE ) ).thenReturn( image );
+    String image = "fakeEncodedImage";
+    Map<String, Object> parameters = new HashMap<String, Object>();
+    parameters.put( CameraSynchronizer.PROPERTY_IMAGE, image );
+    fakeNotifyOperation( ID, IMAGE_SELECTION_EVENT, parameters );
     
     synchronizer.readData( object );
     
@@ -83,8 +105,7 @@ public class CameraSynchronizerTest {
   
   @Test
   public void testClose() {
-    String image = "true";
-    when( synchronizer.readPropertyValue( CameraSynchronizer.PROPERTY_CLOSE ) ).thenReturn( image );
+    fakeCallOperation( ID, CLOSE_METHOD, null );
     
     synchronizer.readData( object );
     
@@ -102,10 +123,10 @@ public class CameraSynchronizerTest {
     
     synchronizer.renderInitialization( clientObject, object );
     
-    verify( clientObject ).create( CameraSynchronizer.TYPE );
-    verify( clientObject ).set( CameraSynchronizer.PROPERTY_RESOLUTION, new int[]{ 100, 100 } );
-    verify( clientObject ).set( CameraSynchronizer.PROPERTY_SOURCETYPE, SourceType.PHOTO_LIBRARY.toString().toLowerCase() );
-    verify( clientObject ).set( CameraSynchronizer.PROPERTY_SAVETOALBUM, true );
+    verify( clientObject ).create( TYPE );
+    verify( clientObject ).set( PROPERTY_RESOLUTION, new int[]{ 100, 100 } );
+    verify( clientObject ).set( PROPERTY_SOURCETYPE, SourceType.PHOTO_LIBRARY.toString().toLowerCase() );
+    verify( clientObject ).set( PROPERTY_SAVETOALBUM, true );
   }
   
   @Test
@@ -179,15 +200,18 @@ public class CameraSynchronizerTest {
 
   @Test
   public void testProcessActionWithError() {
-    when( adapter.getEncodedImage() ).thenReturn( CameraSynchronizer.ERROR );
+    fakeNotifyOperation( ID, IMAGE_SELECTION_ERROR_EVENT, null );
     CameraCallback callback = mock( CameraCallback.class );
-    when( adapter.getCallback() ).thenReturn( callback );
+    CameraAdapter cameraAdapter = spy( new CameraAdapter() );
+    cameraAdapter.setCallback( callback );
+    when( object.getAdapter( CameraAdapter.class ) ).thenReturn( cameraAdapter );
     
+    synchronizer.readData( object );
     synchronizer.processAction( object );
     
     verify( callback ).onError();
-    verify( adapter ).setCallback( null );
-    verify( adapter ).setEncodedImage( null );
+    verify( cameraAdapter ).setCallback( null );
+    verify( cameraAdapter ).setEncodedImage( null );
   }
   
   @Test
@@ -207,9 +231,8 @@ public class CameraSynchronizerTest {
     Button button = new Button( shell, SWT.PUSH );
     button.addSelectionListener( cameraAdapter );
     String id = WidgetUtil.getId( button );
-    Fixture.fakeRequestParam( id + ".selection", String.valueOf( true ) );
-    Fixture.fakeRequestParam( "org.eclipse.swt.events.widgetSelected", id );
-    Fixture.executeLifeCycleFromServerThread();
+    fakeNotifyOperation( id, ClientMessageConst.EVENT_SELECTION, null );
+    executeLifeCycleFromServerThread();
   }
   
   @Test

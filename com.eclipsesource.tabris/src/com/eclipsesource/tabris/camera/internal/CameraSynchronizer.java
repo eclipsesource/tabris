@@ -10,6 +10,10 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.camera.internal;
 
+import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.readEventPropertyValueAsString;
+import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.wasCallSend;
+import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.wasEventSent;
+
 import java.io.ByteArrayInputStream;
 
 import org.eclipse.rap.rwt.Adaptable;
@@ -26,12 +30,17 @@ import com.eclipsesource.tabris.internal.AbstractObjectSynchronizer;
 public class CameraSynchronizer extends AbstractObjectSynchronizer {
   
   static final String TYPE = "tabris.Camera";
-  static final String ERROR = "ERROR";
-  static final String PROPERTY_IMAGE = "image";
+  // write properties
+  static final String OPEN_METHOD = "open";
   static final String PROPERTY_SOURCETYPE = "sourceType";
   static final String PROPERTY_RESOLUTION = "resolution";
   static final String PROPERTY_SAVETOALBUM = "saveToAlbum";
-  static final String PROPERTY_CLOSE = "close";
+  // read properties
+  static final String IMAGE_SELECTION_EVENT = "ImageSelection";
+  static final String IMAGE_SELECTION_ERROR_EVENT = "ImageSelectionError";
+  static final String PROPERTY_IMAGE = "image";
+  static final String CLOSE_METHOD = "close";
+  private static final String INTERNAL_ERROR = "ERROR";
 
   public CameraSynchronizer( Adaptable camera ) {
     super( camera );
@@ -69,12 +78,26 @@ public class CameraSynchronizer extends AbstractObjectSynchronizer {
   @Override
   protected void readData( Object camera ) {
     CameraAdapter adapter = ( ( Camera )camera ).getAdapter( CameraAdapter.class );
-    String image = readPropertyValue( PROPERTY_IMAGE );
-    if( image != null ) {
+    handleImageSelectionEvent( adapter );
+    handleImageSelectionErrorEvent( adapter );
+    handleClose( adapter );
+  }
+
+  private void handleImageSelectionEvent( CameraAdapter adapter ) {
+    if( wasEventSent( getId(), IMAGE_SELECTION_EVENT ) ) {
+      String image = readEventPropertyValueAsString( getId(), IMAGE_SELECTION_EVENT, PROPERTY_IMAGE );
       adapter.setEncodedImage( image );
     }
-    String close = readPropertyValue( PROPERTY_CLOSE );
-    if( close != null ) {
+  }
+
+  private void handleImageSelectionErrorEvent( CameraAdapter adapter ) {
+    if( wasEventSent( getId(), IMAGE_SELECTION_ERROR_EVENT ) ) {
+      adapter.setEncodedImage( INTERNAL_ERROR );
+    }
+  }
+
+  private void handleClose( CameraAdapter adapter ) {
+    if( wasCallSend( getId(), CLOSE_METHOD ) ) {
       adapter.close();
     }
   }
@@ -91,7 +114,7 @@ public class CameraSynchronizer extends AbstractObjectSynchronizer {
 
   private void handleCameraResult( CameraAdapter cameraAdapter, Camera camera ) {
     if( cameraAdapter.getCallback() != null && cameraAdapter.getEncodedImage() != null ) {
-      if( !cameraAdapter.getEncodedImage().equals( ERROR ) ) {
+      if( !cameraAdapter.getEncodedImage().equals( INTERNAL_ERROR ) ) {
         cameraAdapter.getCallback().onSuccess( decodeImage( cameraAdapter.getEncodedImage(), camera ) );
       } else {
         cameraAdapter.getCallback().onError();
@@ -114,7 +137,7 @@ public class CameraSynchronizer extends AbstractObjectSynchronizer {
   protected void renderChanges( Object camera ) {
     CameraAdapter adapter = ( ( Camera )camera ).getAdapter( CameraAdapter.class );
     if( adapter.isOpen() ) {
-      getClientObject().call( "open", null );
+      getClientObject().call( OPEN_METHOD, null );
       adapter.close();
     }
     if( adapter.isDisposed() && !adapter.isDestroyed() ) {
