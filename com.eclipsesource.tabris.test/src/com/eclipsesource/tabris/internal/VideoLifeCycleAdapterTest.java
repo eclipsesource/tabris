@@ -10,7 +10,9 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import static com.eclipsesource.tabris.internal.VideoLifeCycleAdapter.PROPERTY_MODE;
 import static com.eclipsesource.tabris.internal.VideoLifeCycleAdapter.keyForEnum;
+import static org.eclipse.rap.rwt.testfixture.Fixture.fakeNotifyOperation;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -18,6 +20,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.rap.rwt.lifecycle.AbstractWidgetLCA;
 import org.eclipse.rap.rwt.lifecycle.ILifeCycleAdapter;
@@ -34,6 +38,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import com.eclipsesource.tabris.internal.VideoLifeCycleAdapter.PlaybackOptions;
 import com.eclipsesource.tabris.test.ControlLCATestUtil;
@@ -43,11 +50,12 @@ import com.eclipsesource.tabris.widgets.Video.PresentationMode;
 import com.eclipsesource.tabris.widgets.VideoListener;
 
 
+@RunWith( MockitoJUnitRunner.class )
 public class VideoLifeCycleAdapterTest {
   
   private Video video;
   private Shell parent;
-  private VideoListener videoListener;
+  @Mock private VideoListener videoListener;
   private AbstractWidgetLCA lifeCycleAdapter;
 
   @Before
@@ -57,7 +65,6 @@ public class VideoLifeCycleAdapterTest {
     parent = new Shell( display );
     video = new Video( "http://test.com", parent );
     new Button( parent, SWT.PUSH );
-    videoListener = mock( VideoListener.class );
     lifeCycleAdapter = ( AbstractWidgetLCA )video.getAdapter( ILifeCycleAdapter.class );
     Fixture.fakeNewRequest( display );
   }
@@ -107,8 +114,9 @@ public class VideoLifeCycleAdapterTest {
   @Test
   public void testFiresPlaybackChange() {
     video.addVideoListener( videoListener );
-    Fixture.fakeRequestParam( WidgetUtil.getId( video ) + "." + keyForEnum( PlaybackOptions.PLAYBACK_MODE ), 
-                              PlaybackMode.ERROR.name() );
+    Map<String, Object> parameters = new HashMap<String, Object>();
+    parameters.put( PROPERTY_MODE, PlaybackMode.ERROR.name() );
+    fakeNotifyOperation( getId(), VideoLifeCycleAdapter.PLAYBACK_EVENT, parameters );
     
     Fixture.executeLifeCycleFromServerThread();
     
@@ -120,8 +128,9 @@ public class VideoLifeCycleAdapterTest {
     video.addVideoListener( videoListener );
     Fixture.executeLifeCycleFromServerThread();
     Fixture.fakeNewRequest( parent.getDisplay() );
-    Fixture.fakeRequestParam( WidgetUtil.getId( video ) + "." + keyForEnum( PlaybackOptions.PLAYBACK_MODE ), 
-                              PlaybackMode.READY.name().toLowerCase() );
+    Map<String, Object> parameters = new HashMap<String, Object>();
+    parameters.put( PROPERTY_MODE, PlaybackMode.READY.name() );
+    fakeNotifyOperation( getId(), VideoLifeCycleAdapter.PLAYBACK_EVENT, parameters );
     Fixture.executeLifeCycleFromServerThread();
     
     verify( videoListener ).playbackChanged( PlaybackMode.READY );
@@ -134,8 +143,9 @@ public class VideoLifeCycleAdapterTest {
     video.addVideoListener( videoListener );
     Fixture.executeLifeCycleFromServerThread();
     Fixture.fakeNewRequest( parent.getDisplay() );
-    Fixture.fakeRequestParam( WidgetUtil.getId( video ) + "." + keyForEnum( PlaybackOptions.PLAYBACK_MODE ), 
-                              PlaybackMode.PLAY.name().toLowerCase() );
+    Map<String, Object> parameters = new HashMap<String, Object>();
+    parameters.put( PROPERTY_MODE, PlaybackMode.PLAY.name() );
+    fakeNotifyOperation( getId(), VideoLifeCycleAdapter.PLAYBACK_EVENT, parameters );
     Fixture.executeLifeCycleFromServerThread();
     
     verify( videoListener ).playbackChanged( PlaybackMode.PLAY );
@@ -146,8 +156,9 @@ public class VideoLifeCycleAdapterTest {
   @Test
   public void testFiresPresentationChange() {
     video.addVideoListener( videoListener );
-    Fixture.fakeRequestParam( WidgetUtil.getId( video ) + "." + keyForEnum( PlaybackOptions.PRESENTATION_MODE ), 
-                              PresentationMode.FULL_SCREEN.name() );
+    Map<String, Object> parameters = new HashMap<String, Object>();
+    parameters.put( PROPERTY_MODE, PresentationMode.FULL_SCREEN.name() );
+    fakeNotifyOperation( getId(), VideoLifeCycleAdapter.PRESENTATION_EVENT, parameters );
    
     Fixture.executeLifeCycleFromServerThread();
     
@@ -157,8 +168,9 @@ public class VideoLifeCycleAdapterTest {
   @Test
   public void testFiresPresentationChangeToFullScreen() {
     video.addVideoListener( videoListener );
-    Fixture.fakeRequestParam( WidgetUtil.getId( video ) + "." + keyForEnum( PlaybackOptions.PRESENTATION_MODE ), 
-                              PresentationMode.FULL_SCREEN.name() );
+    Map<String, Object> parameters = new HashMap<String, Object>();
+    parameters.put( PROPERTY_MODE, PresentationMode.FULL_SCREEN.name() );
+    fakeNotifyOperation( getId(), VideoLifeCycleAdapter.PRESENTATION_EVENT, parameters );
     
     Fixture.executeLifeCycleFromServerThread();
     
@@ -170,8 +182,9 @@ public class VideoLifeCycleAdapterTest {
     video.addVideoListener( videoListener );
     Fixture.executeLifeCycleFromServerThread();
     Fixture.fakeNewRequest( parent.getDisplay() );
-    Fixture.fakeRequestParam( WidgetUtil.getId( video ) + "." + keyForEnum( PlaybackOptions.PRESENTATION_MODE ), 
-                              PresentationMode.FULL_SCREEN.name() );
+    Map<String, Object> parameters = new HashMap<String, Object>();
+    parameters.put( PROPERTY_MODE, PresentationMode.FULL_SCREEN.name() );
+    fakeNotifyOperation( getId(), VideoLifeCycleAdapter.PRESENTATION_EVENT, parameters );
     
     Fixture.executeLifeCycleFromServerThread();
     
@@ -304,6 +317,10 @@ public class VideoLifeCycleAdapterTest {
     
     Message message = Fixture.getProtocolMessage();
     assertNotNull( message.findDestroyOperation( video ) );
+  }
+  
+  private String getId() {
+    return WidgetUtil.getId( video );
   }
   
 }

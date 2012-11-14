@@ -120,11 +120,6 @@
                 <message_argument value="getPhaseId()"/>
             </message_arguments>
         </filter>
-        <filter id="338849923">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.widgets.ClientCanvas"/>
-            </message_arguments>
-        </filter>
         <filter id="1143996420">
             <message_arguments>
                 <message_argument value="afterPhase(PhaseEvent)"/>

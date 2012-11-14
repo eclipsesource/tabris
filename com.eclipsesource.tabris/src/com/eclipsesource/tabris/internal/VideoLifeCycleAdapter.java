@@ -10,10 +10,13 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.readEventPropertyValueAsString;
+import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.wasEventSent;
 import static org.eclipse.rap.rwt.lifecycle.WidgetLCAUtil.preserveListener;
 import static org.eclipse.rap.rwt.lifecycle.WidgetLCAUtil.preserveProperty;
 import static org.eclipse.rap.rwt.lifecycle.WidgetLCAUtil.renderListener;
 import static org.eclipse.rap.rwt.lifecycle.WidgetLCAUtil.renderProperty;
+import static org.eclipse.rap.rwt.lifecycle.WidgetUtil.getId;
 
 import java.io.IOException;
 import java.util.Map;
@@ -24,7 +27,6 @@ import org.eclipse.rap.rwt.internal.protocol.IClientObject;
 import org.eclipse.rap.rwt.lifecycle.AbstractWidgetLCA;
 import org.eclipse.rap.rwt.lifecycle.ControlLCAUtil;
 import org.eclipse.rap.rwt.lifecycle.ProcessActionRunner;
-import org.eclipse.rap.rwt.lifecycle.WidgetLCAUtil;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
@@ -37,15 +39,20 @@ import com.eclipsesource.tabris.widgets.Video.PresentationMode;
 
 @SuppressWarnings("restriction")
 public class VideoLifeCycleAdapter extends AbstractWidgetLCA {
-  
+
   public enum PlaybackOptions {
     SPEED, REPEAT, CONTROLS_VISIBLE, PLAYBACK_MODE, PRESENTATION_MODE, HEAD_POSITION
   }
 
   static final String TYPE = "tabris.widgets.Video";
+  // write properties
   static final String PARENT = "parent";
   static final String VIDEO_URL = "videoURL";
   static final String VIDEO_LISTENER_PROPERTY = "video";
+  // read properties
+  static final String PRESENTATION_EVENT = "PresentationChanged";
+  static final String PLAYBACK_EVENT = "PlaybackChanged";
+  static final String PROPERTY_MODE = "mode";
 
   @Override
   public void readData( Widget widget ) {
@@ -54,8 +61,8 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA {
   }
 
   private void readPlaybackMode( Widget widget ) {
-    String playbackMode = WidgetLCAUtil.readPropertyValue( widget, keyForEnum( PlaybackOptions.PLAYBACK_MODE ) );
-    if( playbackMode != null ) {
+    if( wasEventSent( getId( widget ), PLAYBACK_EVENT ) ) {
+      String playbackMode = readEventPropertyValueAsString( getId( widget ), PLAYBACK_EVENT, PROPERTY_MODE );
       PlaybackMode newMode = PlaybackMode.valueOf( playbackMode.toUpperCase() );
       Video video = ( Video )widget;
       video.getAdapter( PlaybackAdapter.class ).setPlaybackMode( newMode );
@@ -73,8 +80,8 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA {
   }
 
   private void readPresentationMode( Widget widget ) {
-    String presentationMode = WidgetLCAUtil.readPropertyValue( widget, keyForEnum( PlaybackOptions.PRESENTATION_MODE ) );
-    if( presentationMode != null ) {
+    if( wasEventSent( getId( widget ), PRESENTATION_EVENT ) ) {
+      String presentationMode = readEventPropertyValueAsString( getId( widget ), PRESENTATION_EVENT, PROPERTY_MODE );
       PresentationMode newMode = PresentationMode.valueOf( presentationMode.toUpperCase() );
       Video video = ( Video )widget;
       video.getAdapter( PlaybackAdapter.class ).getOptions().put( PlaybackOptions.PRESENTATION_MODE, newMode );
