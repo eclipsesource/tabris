@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets;
 
+import static org.eclipse.rap.rwt.lifecycle.WidgetUtil.getId;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -18,9 +19,10 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.rap.rwt.RWT;
-import org.eclipse.rap.rwt.internal.protocol.IClientObjectAdapter;
-import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -28,6 +30,7 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TypedListener;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +39,6 @@ import org.mockito.ArgumentCaptor;
 import com.eclipsesource.tabris.internal.ClientCanvasTestUtil;
 
 
-@SuppressWarnings("restriction")
 public class ClientCanvasTest {
   
   private ClientCanvas clientCanvas;
@@ -47,6 +49,7 @@ public class ClientCanvasTest {
     Display display = new Display();
     Shell shell = new Shell( display );
     clientCanvas = new ClientCanvas( shell, SWT.NONE );
+    Fixture.fakeNewRequest();
   }
   
   @After
@@ -65,12 +68,12 @@ public class ClientCanvasTest {
     
     private boolean wasCalled;
 
-    public boolean wasCalled() {
+    public synchronized boolean wasCalled() {
       return wasCalled;
     }
     
     @Override
-    public void paintControl( PaintEvent event ) {
+    public synchronized void paintControl( PaintEvent event ) {
       wasCalled = true;
     }
   }
@@ -80,9 +83,7 @@ public class ClientCanvasTest {
     CheckPaintListener listener = new CheckPaintListener();
     clientCanvas.addPaintListener( listener );
     
-    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
-    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 3 ) );
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION ); 
+    fakeDrawEvent();
     
     assertTrue( listener.wasCalled() );
   }
@@ -102,7 +103,7 @@ public class ClientCanvasTest {
     
     Listener[] listeners = clientCanvas.getListeners( SWT.Paint );
     
-    assertEquals( listener, listeners[ 0 ] );
+    assertEquals( listener, ( ( TypedListener )listeners[ 0 ] ).getEventListener() );
     assertEquals( 2, listeners.length );
   }
   
@@ -111,34 +112,31 @@ public class ClientCanvasTest {
     PaintListener paintListener = mock( PaintListener.class );
     clientCanvas.addPaintListener( paintListener );
     
-    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
-    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
+    fakeDrawEvent();
+    Map<String, Object> parameters = new HashMap<String, Object>();
+    parameters.put( ClientCanvas.DRAWINGS_PROPERTY, ClientCanvasTestUtil.createDrawingsWithoutLineWidth() );
+    Fixture.fakeNewRequest();
+    Fixture.fakeNotifyOperation( getId( clientCanvas ), ClientCanvas.DRAWING_EVENT, parameters );
     Fixture.executeLifeCycleFromServerThread();
-    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawingsWithoutLineWidth() );
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION ); 
     
     ArgumentCaptor<PaintEvent> captor = ArgumentCaptor.forClass( PaintEvent.class );
     verify( paintListener, times( 2 ) ).paintControl( captor.capture() );
   }
   
   @Test
-  public void testClear() {
+  public void testClearTriggersRedraw() {
     CheckPaintListener listener = new CheckPaintListener();
     clientCanvas.addPaintListener( listener );
     
     clientCanvas.clear();
-    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
-    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION ); 
+    fakeDrawEvent();
     
     assertTrue( listener.wasCalled() );
   }
   
   @Test
   public void testHasUndo() {
-    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
-    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION ); 
+    fakeDrawEvent();
     
     assertTrue( clientCanvas.hasUndo() );
     assertFalse( clientCanvas.hasRedo() );
@@ -146,23 +144,19 @@ public class ClientCanvasTest {
   
   @Test
   public void testUndo() {
-    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
-    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION ); 
+    fakeDrawEvent();
     
     clientCanvas.undo();
     
     assertFalse( clientCanvas.hasUndo() );
     assertTrue( clientCanvas.hasRedo() );
   }
-  
+
   @Test
   public void testUndoRedraws() {
     CheckPaintListener listener = new CheckPaintListener();
     clientCanvas.addPaintListener( listener );
-    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
-    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION ); 
+    fakeDrawEvent(); 
     
     clientCanvas.undo();
     
@@ -171,9 +165,7 @@ public class ClientCanvasTest {
   
   @Test
   public void testHasRedo() {
-    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
-    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION ); 
+    fakeDrawEvent();
     
     clientCanvas.undo();
 
@@ -182,9 +174,7 @@ public class ClientCanvasTest {
   
   @Test
   public void testRedo() {
-    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
-    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION ); 
+    fakeDrawEvent();
     clientCanvas.undo();
     
     clientCanvas.redo();
@@ -197,9 +187,7 @@ public class ClientCanvasTest {
   public void testRedoRedraws() {
     CheckPaintListener listener = new CheckPaintListener();
     clientCanvas.addPaintListener( listener );
-    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
-    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION ); 
+    fakeDrawEvent();
     clientCanvas.undo();
     
     clientCanvas.redo();
@@ -210,9 +198,7 @@ public class ClientCanvasTest {
   @Test
   public void testDrawDeletesRedoStack() {
     clientCanvas.undo();
-    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
-    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION ); 
+    fakeDrawEvent(); 
     
     assertFalse( clientCanvas.hasRedo() );
   }
@@ -222,9 +208,7 @@ public class ClientCanvasTest {
     ClientDrawListener listener = mock( ClientDrawListener.class );
     clientCanvas.addClientDrawListener( listener );
     
-    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
-    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION ); 
+    fakeDrawEvent();
     
     verify( listener ).receivedDrawing();
   }
@@ -234,9 +218,7 @@ public class ClientCanvasTest {
     ClientDrawListener listener = mock( ClientDrawListener.class );
     clientCanvas.addClientDrawListener( listener );
     
-    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
-    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION ); 
+    fakeDrawEvent();
     clientCanvas.undo();
     
     verify( listener, times( 2 ) ).receivedDrawing();
@@ -247,9 +229,7 @@ public class ClientCanvasTest {
     ClientDrawListener listener = mock( ClientDrawListener.class );
     clientCanvas.addClientDrawListener( listener );
     
-    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
-    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION ); 
+    fakeDrawEvent();
     clientCanvas.undo();
     clientCanvas.redo();
     
@@ -261,9 +241,7 @@ public class ClientCanvasTest {
     ClientDrawListener listener = mock( ClientDrawListener.class );
     clientCanvas.addClientDrawListener( listener );
     
-    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
-    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION ); 
+    fakeDrawEvent();
     clientCanvas.clear();
     
     verify( listener, times( 2 ) ).receivedDrawing();
@@ -274,9 +252,7 @@ public class ClientCanvasTest {
     ClientDrawListener listener = mock( ClientDrawListener.class );
     clientCanvas.addClientDrawListener( listener );
     
-    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
-    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION ); 
+    fakeDrawEvent();
     clientCanvas.undo();
     assertTrue( clientCanvas.hasRedo() );
     clientCanvas.clear();
@@ -289,10 +265,16 @@ public class ClientCanvasTest {
     clientCanvas.addClientDrawListener( listener );
     clientCanvas.removeClientDrawListener( listener );
     
-    IClientObjectAdapter adapter = clientCanvas.getAdapter( IClientObjectAdapter.class );
-    Fixture.fakeRequestParam( adapter.getId() + ".drawings", ClientCanvasTestUtil.createDrawings( 2 ) );
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION ); 
+    fakeDrawEvent();
     
     verify( listener, never() ).receivedDrawing();
+  }
+
+  private void fakeDrawEvent() {
+    Map<String, Object> parameters = new HashMap<String, Object>();
+    parameters.put( ClientCanvas.DRAWINGS_PROPERTY, ClientCanvasTestUtil.createDrawings( 2 ) );
+    Fixture.fakeNewRequest();
+    Fixture.fakeNotifyOperation( getId( clientCanvas ), ClientCanvas.DRAWING_EVENT, parameters );
+    Fixture.executeLifeCycleFromServerThread();
   }
 }

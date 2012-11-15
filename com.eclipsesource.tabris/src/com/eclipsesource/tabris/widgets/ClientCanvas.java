@@ -10,18 +10,19 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets;
 
+import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.readEventPropertyValueAsString;
+import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.wasEventSent;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.internal.application.RWTFactory;
 import org.eclipse.rap.rwt.internal.lifecycle.LifeCycleUtil;
-import org.eclipse.rap.rwt.internal.protocol.IClientObjectAdapter;
 import org.eclipse.rap.rwt.lifecycle.PhaseEvent;
 import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.lifecycle.PhaseListener;
+import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.service.SessionStoreEvent;
 import org.eclipse.rap.rwt.service.SessionStoreListener;
 import org.eclipse.swt.events.PaintEvent;
@@ -49,6 +50,8 @@ import com.eclipsesource.tabris.internal.GCOperationDispatcher;
 @SuppressWarnings("restriction")
 public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreListener {
   
+  static final String DRAWING_EVENT = "Drawing";
+  static final String DRAWINGS_PROPERTY = "drawings";
   static final String CLIENT_CANVAS = "CLIENT_CANVAS";
   
   private final List<ClientDrawListener> drawListeners;
@@ -74,7 +77,7 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
         gc.drawPoint( -1, -1 ); //TODO: This is a workaround to force updates, see RAP bug 377070
       }
     };
-    addPaintListener( paintListener );
+    super.addPaintListener( paintListener );
   }
   
   /**
@@ -168,7 +171,7 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
   }
   
   private void processClientDrawings( GC gc ) {
-    String drawings = getDrawings();
+    String drawings = readEventPropertyValueAsString( WidgetUtil.getId( this ), DRAWING_EVENT, DRAWINGS_PROPERTY );
     if( drawings != null ) {
       cacheDrawings( drawings );
       cache.clearRemoved();
@@ -202,17 +205,10 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
   public void beforePhase( PhaseEvent event ) {
     Display sessionDisplay = LifeCycleUtil.getSessionDisplay();
     if( getDisplay() == sessionDisplay ) {
-      if( getDrawings() != null ) {
+      if( wasEventSent( WidgetUtil.getId( this ), DRAWING_EVENT ) ) {
         redraw();
       }
     }
-  }
-
-  private String getDrawings() {
-    HttpServletRequest request = RWT.getRequest();
-    IClientObjectAdapter adapter = getAdapter( IClientObjectAdapter.class );
-    String drawings = request.getParameter( adapter.getId() + ".drawings" );
-    return drawings;
   }
 
   @Override
@@ -227,7 +223,6 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
 
   @Override
   public void beforeDestroy( SessionStoreEvent event ) {
-    // TODO: Check RAP bug #375356
     RWTFactory.getLifeCycleFactory().getLifeCycle().removePhaseListener( this );
     RWT.getSessionStore().removeSessionStoreListener( this );
   }

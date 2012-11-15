@@ -17,6 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 
+@SuppressWarnings("restriction")
 public class GCOperationDispatcher {
 
   static final String PROP_POLYLINE = "polyline";
