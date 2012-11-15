@@ -35,6 +35,7 @@
 		<jacocoagent>${basedir}/../com.eclipsesource.tabris.build/lib/jacocoagent.jar</jacocoagent>
 		<test-arguments>-Xms512m -Xmx512m
 			-javaagent:${jacocoagent}=destfile=${basedir}/../com.eclipsesource.tabris/target/jacoco.exec,append=true</test-arguments>
+		<baseline.repository>http://download.eclipsesource.com/technology/tabris/downloads/nightly/</baseline.repository>
 	</properties>
 
 	<licenses>
@@ -70,7 +71,7 @@
 		<repository>
 			<id>rap-milestone-repository</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/rt/rap/2.0/M1-20120821-1934</url>
+			<url>http://download.eclipse.org/rt/rap/2.0/M3-20121112-1148</url>
 		</repository>
 	</repositories>
 
