@@ -13,6 +13,7 @@ package com.eclipsesource.tabris.internal;
 import org.json.JSONArray;
 
 
+@SuppressWarnings("restriction")
 public class ClientCanvasTestUtil {
   
   public static final int LINE_WITH = 3;
