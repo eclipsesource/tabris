@@ -8,26 +8,27 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.widgets;
+package com.eclipsesource.tabris.widgets.enhancement;
 
 import static com.eclipsesource.tabris.internal.WidgetsUtil.setVariant;
 
-import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.swt.widgets.Label;
 
 
 /**
  * @since 0.8
  */
-public class ToolItemDecorator {
-  
-  private final ToolItem toolItem;
+public class LabelDecorator extends WidgetDecorator<LabelDecorator>{
 
-  ToolItemDecorator( ToolItem toolItem ) {
-    this.toolItem = toolItem;
+  private final Label label;
+
+  LabelDecorator( Label label ) {
+    super( label );
+    this.label = label;
   }
-  
-  public ToolItemDecorator useAsTitle() {
-    setVariant( toolItem, "TITLE" );
+
+  public LabelDecorator useZoom() {
+    setVariant( label, "ZOOM" );
     return this;
   }
 }

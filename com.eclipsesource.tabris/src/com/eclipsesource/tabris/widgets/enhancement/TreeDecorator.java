@@ -8,28 +8,25 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.widgets;
+package com.eclipsesource.tabris.widgets.enhancement;
 
-import static com.eclipsesource.tabris.internal.WidgetsUtil.setVariant;
-
-import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.widgets.Tree;
 
 
 /**
  * @since 0.8
  */
-public class ScrolledCompositeDecorator extends WidgetDecorator<ScrolledCompositeDecorator> {
+public class TreeDecorator extends WidgetDecorator<TreeDecorator> {
   
-  private final ScrolledComposite composite;
+  private final Tree tree;
 
-  ScrolledCompositeDecorator( ScrolledComposite composite ) {
-    super( composite );
-    this.composite = composite;
+  public TreeDecorator( Tree tree ) {
+    super( tree );
+    this.tree = tree;
   }
   
-  public ScrolledCompositeDecorator usePaging() {
-    setVariant( composite, "PAGINGENABLED" );
+  public TreeDecorator useTitle( String title ) {
+    tree.setToolTipText( title );
     return this;
   }
-  
 }

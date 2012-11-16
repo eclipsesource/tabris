@@ -8,7 +8,7 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.camera.internal;
+package com.eclipsesource.tabris.internal.camera;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -23,6 +23,7 @@ import org.junit.Test;
 import com.eclipsesource.tabris.camera.CameraCallback;
 import com.eclipsesource.tabris.camera.CameraOptions;
 import com.eclipsesource.tabris.camera.CameraOptions.SourceType;
+import com.eclipsesource.tabris.internal.camera.CameraAdapter;
 
 
 public class CameraAdapterTest {

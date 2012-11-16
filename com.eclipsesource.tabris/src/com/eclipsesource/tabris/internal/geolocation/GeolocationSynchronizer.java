@@ -8,10 +8,10 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.geolocation.internal;
+package com.eclipsesource.tabris.internal.geolocation;
 
-import static com.eclipsesource.tabris.geolocation.internal.GeolocationAdapter.NeedsPositionFlavor.NEVER;
-import static com.eclipsesource.tabris.geolocation.internal.GeolocationAdapter.NeedsPositionFlavor.ONCE;
+import static com.eclipsesource.tabris.internal.geolocation.GeolocationAdapter.NeedsPositionFlavor.NEVER;
+import static com.eclipsesource.tabris.internal.geolocation.GeolocationAdapter.NeedsPositionFlavor.ONCE;
 import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.readEventPropertyValueAsString;
 import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.wasEventSent;
 
@@ -27,8 +27,8 @@ import com.eclipsesource.tabris.geolocation.GeolocationOptions;
 import com.eclipsesource.tabris.geolocation.Position;
 import com.eclipsesource.tabris.geolocation.PositionError;
 import com.eclipsesource.tabris.geolocation.PositionError.PositionErrorCode;
-import com.eclipsesource.tabris.geolocation.internal.GeolocationAdapter.NeedsPositionFlavor;
 import com.eclipsesource.tabris.internal.AbstractObjectSynchronizer;
+import com.eclipsesource.tabris.internal.geolocation.GeolocationAdapter.NeedsPositionFlavor;
 
 
 @SuppressWarnings("restriction")

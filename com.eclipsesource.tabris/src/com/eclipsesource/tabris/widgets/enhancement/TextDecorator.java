@@ -8,7 +8,7 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.widgets;
+package com.eclipsesource.tabris.widgets.enhancement;
 
 
 import static com.eclipsesource.tabris.internal.WidgetsUtil.setVariant;

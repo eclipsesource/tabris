@@ -8,15 +8,15 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.camera.internal;
+package com.eclipsesource.tabris.internal.camera;
 
-import static com.eclipsesource.tabris.camera.internal.CameraSynchronizer.CLOSE_METHOD;
-import static com.eclipsesource.tabris.camera.internal.CameraSynchronizer.IMAGE_SELECTION_ERROR_EVENT;
-import static com.eclipsesource.tabris.camera.internal.CameraSynchronizer.IMAGE_SELECTION_EVENT;
-import static com.eclipsesource.tabris.camera.internal.CameraSynchronizer.PROPERTY_RESOLUTION;
-import static com.eclipsesource.tabris.camera.internal.CameraSynchronizer.PROPERTY_SAVETOALBUM;
-import static com.eclipsesource.tabris.camera.internal.CameraSynchronizer.PROPERTY_SOURCETYPE;
-import static com.eclipsesource.tabris.camera.internal.CameraSynchronizer.TYPE;
+import static com.eclipsesource.tabris.internal.camera.CameraSynchronizer.CLOSE_METHOD;
+import static com.eclipsesource.tabris.internal.camera.CameraSynchronizer.IMAGE_SELECTION_ERROR_EVENT;
+import static com.eclipsesource.tabris.internal.camera.CameraSynchronizer.IMAGE_SELECTION_EVENT;
+import static com.eclipsesource.tabris.internal.camera.CameraSynchronizer.PROPERTY_RESOLUTION;
+import static com.eclipsesource.tabris.internal.camera.CameraSynchronizer.PROPERTY_SAVETOALBUM;
+import static com.eclipsesource.tabris.internal.camera.CameraSynchronizer.PROPERTY_SOURCETYPE;
+import static com.eclipsesource.tabris.internal.camera.CameraSynchronizer.TYPE;
 import static org.eclipse.rap.rwt.testfixture.Fixture.executeLifeCycleFromServerThread;
 import static org.eclipse.rap.rwt.testfixture.Fixture.fakeCallOperation;
 import static org.eclipse.rap.rwt.testfixture.Fixture.fakeNewRequest;
@@ -62,6 +62,9 @@ import com.eclipsesource.tabris.camera.Camera;
 import com.eclipsesource.tabris.camera.CameraCallback;
 import com.eclipsesource.tabris.camera.CameraOptions;
 import com.eclipsesource.tabris.camera.CameraOptions.SourceType;
+import com.eclipsesource.tabris.internal.camera.Base64;
+import com.eclipsesource.tabris.internal.camera.CameraAdapter;
+import com.eclipsesource.tabris.internal.camera.CameraSynchronizer;
 
 
 @RunWith( MockitoJUnitRunner.class )

@@ -8,36 +8,39 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.widgets;
+package com.eclipsesource.tabris.widgets.enhancement;
 
-import static com.eclipsesource.tabris.internal.WidgetsUtil.TABRIS_VARIANT;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 
-import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.swt.widgets.Tree;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.eclipsesource.tabris.widgets.enhancement.TreeDecorator;
+import com.eclipsesource.tabris.widgets.enhancement.Widgets;
+
 
 @RunWith( MockitoJUnitRunner.class )
-public class ToolItemDecoratorTest {
+public class TreeDecoratorTest {
   
   @Mock
-  private ToolItem toolItem;
-  private ToolItemDecorator decorator;
+  private Tree tree;
+  private TreeDecorator decorator;
   
   @Before
   public void setUp() {
-    decorator = Widgets.onToolItem( toolItem );
+    decorator = Widgets.onTree( tree );
   }
   
   @Test
   public void testUseNumbersAndPunctuationKeyboard() {
-    decorator.useAsTitle();
+    decorator.useTitle( "test" );
     
-    verify( toolItem ).setData( TABRIS_VARIANT, "TITLE" );
+    verify( tree ).setToolTipText( eq( "test" ) );
   }
   
 }

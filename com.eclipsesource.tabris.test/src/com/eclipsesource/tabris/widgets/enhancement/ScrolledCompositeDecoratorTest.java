@@ -8,36 +8,39 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.widgets;
+package com.eclipsesource.tabris.widgets.enhancement;
 
 import static com.eclipsesource.tabris.internal.WidgetsUtil.TABRIS_VARIANT;
 import static org.mockito.Mockito.verify;
 
-import org.eclipse.swt.widgets.Widget;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.eclipsesource.tabris.widgets.enhancement.ScrolledCompositeDecorator;
+import com.eclipsesource.tabris.widgets.enhancement.Widgets;
+
 
 @RunWith( MockitoJUnitRunner.class )
-public class WidgetDecoratorTest {
+public class ScrolledCompositeDecoratorTest {
   
   @Mock
-  private Widget widget;
-  private WidgetDecorator decorator;
+  private ScrolledComposite composite;
+  private ScrolledCompositeDecorator decorator;
   
   @Before
   public void setUp() {
-    decorator = Widgets.onWidget( widget );
+    decorator = Widgets.onScrolledComposite( composite );
   }
   
   @Test
-  public void testUseUrlKeyboard() {
-    decorator.useAnimation();
+  public void testUseNumbersAndPunctuationKeyboard() {
+    decorator.usePaging();
     
-    verify( widget ).setData( TABRIS_VARIANT, "ANIMATED" );
+    verify( composite ).setData( TABRIS_VARIANT, "PAGINGENABLED" );
   }
   
 }

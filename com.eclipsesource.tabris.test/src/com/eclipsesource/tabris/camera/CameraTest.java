@@ -22,7 +22,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.camera.CameraOptions.SourceType;
-import com.eclipsesource.tabris.camera.internal.CameraAdapter;
+import com.eclipsesource.tabris.internal.camera.CameraAdapter;
 
 
 public class CameraTest {

@@ -8,7 +8,7 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.geolocation.internal;
+package com.eclipsesource.tabris.internal.geolocation;
 
 import com.eclipsesource.tabris.geolocation.GeolocationCallback;
 import com.eclipsesource.tabris.geolocation.GeolocationOptions;

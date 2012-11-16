@@ -8,7 +8,7 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.widgets;
+package com.eclipsesource.tabris.widgets.enhancement;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
@@ -21,6 +21,14 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.Widget;
 import org.junit.Test;
+
+import com.eclipsesource.tabris.widgets.enhancement.LabelDecorator;
+import com.eclipsesource.tabris.widgets.enhancement.ScrolledCompositeDecorator;
+import com.eclipsesource.tabris.widgets.enhancement.TextDecorator;
+import com.eclipsesource.tabris.widgets.enhancement.ToolItemDecorator;
+import com.eclipsesource.tabris.widgets.enhancement.TreeDecorator;
+import com.eclipsesource.tabris.widgets.enhancement.WidgetDecorator;
+import com.eclipsesource.tabris.widgets.enhancement.Widgets;
 
 
 public class WidgetsTest {

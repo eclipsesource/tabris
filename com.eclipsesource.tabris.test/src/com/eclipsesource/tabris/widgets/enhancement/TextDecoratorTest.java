@@ -8,7 +8,7 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.widgets;
+package com.eclipsesource.tabris.widgets.enhancement;
 
 import static com.eclipsesource.tabris.internal.WidgetsUtil.TABRIS_VARIANT;
 import static org.mockito.Matchers.eq;
@@ -20,6 +20,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import com.eclipsesource.tabris.widgets.enhancement.TextDecorator;
+import com.eclipsesource.tabris.widgets.enhancement.Widgets;
 
 
 @RunWith( MockitoJUnitRunner.class )

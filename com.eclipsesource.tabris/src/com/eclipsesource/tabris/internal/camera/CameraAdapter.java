@@ -8,7 +8,7 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.camera.internal;
+package com.eclipsesource.tabris.internal.camera;
 
 import org.eclipse.swt.graphics.Point;
 

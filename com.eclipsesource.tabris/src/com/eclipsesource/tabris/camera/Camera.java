@@ -14,8 +14,8 @@ import org.eclipse.rap.rwt.Adaptable;
 import org.eclipse.rap.rwt.internal.protocol.ClientObjectAdapter;
 import org.eclipse.rap.rwt.internal.protocol.IClientObjectAdapter;
 
-import com.eclipsesource.tabris.camera.internal.CameraAdapter;
-import com.eclipsesource.tabris.camera.internal.CameraSynchronizer;
+import com.eclipsesource.tabris.internal.camera.CameraAdapter;
+import com.eclipsesource.tabris.internal.camera.CameraSynchronizer;
 
 
 /**

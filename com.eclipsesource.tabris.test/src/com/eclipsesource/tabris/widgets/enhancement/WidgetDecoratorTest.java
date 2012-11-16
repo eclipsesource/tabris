@@ -8,36 +8,39 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.widgets;
+package com.eclipsesource.tabris.widgets.enhancement;
 
 import static com.eclipsesource.tabris.internal.WidgetsUtil.TABRIS_VARIANT;
 import static org.mockito.Mockito.verify;
 
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Widget;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.eclipsesource.tabris.widgets.enhancement.WidgetDecorator;
+import com.eclipsesource.tabris.widgets.enhancement.Widgets;
+
 
 @RunWith( MockitoJUnitRunner.class )
-public class LabelDecoratorTest {
+public class WidgetDecoratorTest {
   
   @Mock
-  private Label label;
-  private LabelDecorator decorator;
+  private Widget widget;
+  private WidgetDecorator decorator;
   
   @Before
   public void setUp() {
-    decorator = Widgets.onLabel( label );
+    decorator = Widgets.onWidget( widget );
   }
   
   @Test
-  public void testUseNumbersAndPunctuationKeyboard() {
-    decorator.useZoom();
+  public void testUseUrlKeyboard() {
+    decorator.useAnimation();
     
-    verify( label ).setData( TABRIS_VARIANT, "ZOOM" );
+    verify( widget ).setData( TABRIS_VARIANT, "ANIMATED" );
   }
   
 }

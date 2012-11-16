@@ -8,24 +8,24 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.geolocation.internal;
+package com.eclipsesource.tabris.internal.geolocation;
 
-import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.LOCATION_UPDATE_ERROR_EVENT;
-import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.LOCATION_UPDATE_EVENT;
-import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_ACCURACY;
-import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_ALTITUDE;
-import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_ALTITUDE_ACCURACY;
-import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_ENABLE_HIGH_ACCURACY;
-import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_ERROR_CODE;
-import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_ERROR_MESSAGE;
-import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_FREQUENCY;
-import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_HEADING;
-import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_LATITUDE;
-import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_LONGITUDE;
-import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_MAXIMUM_AGE;
-import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_NEEDS_POSITION;
-import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_SPEED;
-import static com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer.PROP_TIMESTAMP;
+import static com.eclipsesource.tabris.internal.geolocation.GeolocationSynchronizer.LOCATION_UPDATE_ERROR_EVENT;
+import static com.eclipsesource.tabris.internal.geolocation.GeolocationSynchronizer.LOCATION_UPDATE_EVENT;
+import static com.eclipsesource.tabris.internal.geolocation.GeolocationSynchronizer.PROP_ACCURACY;
+import static com.eclipsesource.tabris.internal.geolocation.GeolocationSynchronizer.PROP_ALTITUDE;
+import static com.eclipsesource.tabris.internal.geolocation.GeolocationSynchronizer.PROP_ALTITUDE_ACCURACY;
+import static com.eclipsesource.tabris.internal.geolocation.GeolocationSynchronizer.PROP_ENABLE_HIGH_ACCURACY;
+import static com.eclipsesource.tabris.internal.geolocation.GeolocationSynchronizer.PROP_ERROR_CODE;
+import static com.eclipsesource.tabris.internal.geolocation.GeolocationSynchronizer.PROP_ERROR_MESSAGE;
+import static com.eclipsesource.tabris.internal.geolocation.GeolocationSynchronizer.PROP_FREQUENCY;
+import static com.eclipsesource.tabris.internal.geolocation.GeolocationSynchronizer.PROP_HEADING;
+import static com.eclipsesource.tabris.internal.geolocation.GeolocationSynchronizer.PROP_LATITUDE;
+import static com.eclipsesource.tabris.internal.geolocation.GeolocationSynchronizer.PROP_LONGITUDE;
+import static com.eclipsesource.tabris.internal.geolocation.GeolocationSynchronizer.PROP_MAXIMUM_AGE;
+import static com.eclipsesource.tabris.internal.geolocation.GeolocationSynchronizer.PROP_NEEDS_POSITION;
+import static com.eclipsesource.tabris.internal.geolocation.GeolocationSynchronizer.PROP_SPEED;
+import static com.eclipsesource.tabris.internal.geolocation.GeolocationSynchronizer.PROP_TIMESTAMP;
 import static org.eclipse.rap.rwt.testfixture.Fixture.fakeNotifyOperation;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
@@ -58,7 +58,9 @@ import com.eclipsesource.tabris.geolocation.GeolocationCallback;
 import com.eclipsesource.tabris.geolocation.GeolocationOptions;
 import com.eclipsesource.tabris.geolocation.Position;
 import com.eclipsesource.tabris.geolocation.PositionError;
-import com.eclipsesource.tabris.geolocation.internal.GeolocationAdapter.NeedsPositionFlavor;
+import com.eclipsesource.tabris.internal.geolocation.GeolocationAdapter;
+import com.eclipsesource.tabris.internal.geolocation.GeolocationSynchronizer;
+import com.eclipsesource.tabris.internal.geolocation.GeolocationAdapter.NeedsPositionFlavor;
 
 
 @RunWith( MockitoJUnitRunner.class )

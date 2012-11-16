@@ -8,7 +8,7 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.geolocation.internal;
+package com.eclipsesource.tabris.internal.geolocation;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -21,7 +21,8 @@ import com.eclipsesource.tabris.geolocation.GeolocationCallback;
 import com.eclipsesource.tabris.geolocation.GeolocationOptions;
 import com.eclipsesource.tabris.geolocation.Position;
 import com.eclipsesource.tabris.geolocation.PositionError;
-import com.eclipsesource.tabris.geolocation.internal.GeolocationAdapter.NeedsPositionFlavor;
+import com.eclipsesource.tabris.internal.geolocation.GeolocationAdapter;
+import com.eclipsesource.tabris.internal.geolocation.GeolocationAdapter.NeedsPositionFlavor;
 
 
 public class GeolocationAdapterTest {

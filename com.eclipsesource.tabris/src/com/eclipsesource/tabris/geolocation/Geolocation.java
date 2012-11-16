@@ -1,15 +1,15 @@
 package com.eclipsesource.tabris.geolocation;
 
-import static com.eclipsesource.tabris.geolocation.internal.GeolocationAdapter.NeedsPositionFlavor.CONTINUOUS;
-import static com.eclipsesource.tabris.geolocation.internal.GeolocationAdapter.NeedsPositionFlavor.NEVER;
-import static com.eclipsesource.tabris.geolocation.internal.GeolocationAdapter.NeedsPositionFlavor.ONCE;
+import static com.eclipsesource.tabris.internal.geolocation.GeolocationAdapter.NeedsPositionFlavor.CONTINUOUS;
+import static com.eclipsesource.tabris.internal.geolocation.GeolocationAdapter.NeedsPositionFlavor.NEVER;
+import static com.eclipsesource.tabris.internal.geolocation.GeolocationAdapter.NeedsPositionFlavor.ONCE;
 
 import org.eclipse.rap.rwt.Adaptable;
 import org.eclipse.rap.rwt.internal.protocol.ClientObjectAdapter;
 import org.eclipse.rap.rwt.internal.protocol.IClientObjectAdapter;
 
-import com.eclipsesource.tabris.geolocation.internal.GeolocationAdapter;
-import com.eclipsesource.tabris.geolocation.internal.GeolocationSynchronizer;
+import com.eclipsesource.tabris.internal.geolocation.GeolocationAdapter;
+import com.eclipsesource.tabris.internal.geolocation.GeolocationSynchronizer;
 
 /**
  * <p>

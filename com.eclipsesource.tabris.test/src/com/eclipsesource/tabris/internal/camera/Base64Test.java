@@ -1,4 +1,4 @@
-package com.eclipsesource.tabris.camera.internal;
+package com.eclipsesource.tabris.internal.camera;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import junit.framework.TestCase;
 
-import com.eclipsesource.tabris.camera.internal.Base64;
+import com.eclipsesource.tabris.internal.camera.Base64;
 
 public class Base64Test extends TestCase {
 
