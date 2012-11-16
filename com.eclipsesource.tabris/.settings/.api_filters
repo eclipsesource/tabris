@@ -90,55 +90,6 @@
             </message_arguments>
         </filter>
     </resource>
-    <resource path="src/com/eclipsesource/tabris/internal/bootstrap/EntryPointLookupServlet.java" type="com.eclipsesource.tabris.internal.bootstrap.EntryPointLookupServlet">
-        <filter id="1110441988">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.internal.bootstrap.EntryPointLookupServlet"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="src/com/eclipsesource/tabris/internal/bootstrap/HttpServiceTracker.java" type="com.eclipsesource.tabris.internal.bootstrap.HttpServiceTracker">
-        <filter id="1110441988">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.internal.bootstrap.HttpServiceTracker"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="src/com/eclipsesource/tabris/internal/camera/Base64.java" type="com.eclipsesource.tabris.internal.camera.Base64">
-        <filter id="1110441988">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.internal.camera.Base64"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="src/com/eclipsesource/tabris/internal/camera/CameraAdapter.java" type="com.eclipsesource.tabris.internal.camera.CameraAdapter">
-        <filter id="1110441988">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.internal.camera.CameraAdapter"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="src/com/eclipsesource/tabris/internal/camera/CameraSynchronizer.java" type="com.eclipsesource.tabris.internal.camera.CameraSynchronizer">
-        <filter id="1110441988">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.internal.camera.CameraSynchronizer"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="src/com/eclipsesource/tabris/internal/geolocation/GeolocationAdapter.java" type="com.eclipsesource.tabris.internal.geolocation.GeolocationAdapter">
-        <filter id="1110441988">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.internal.geolocation.GeolocationAdapter"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="src/com/eclipsesource/tabris/internal/geolocation/GeolocationSynchronizer.java" type="com.eclipsesource.tabris.internal.geolocation.GeolocationSynchronizer">
-        <filter id="1110441988">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.internal.geolocation.GeolocationSynchronizer"/>
-            </message_arguments>
-        </filter>
-    </resource>
     <resource path="src/com/eclipsesource/tabris/widgets/ClientCanvas.java" type="com.eclipsesource.tabris.widgets.ClientCanvas">
         <filter id="337682486">
             <message_arguments>
