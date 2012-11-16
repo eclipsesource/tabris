@@ -24,5 +24,4 @@ Import-Package: javax.servlet;version="[2.3.0,4.0.0)",
  org.osgi.util.tracker;version="[1.5.0,1.6.0)"
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
-Bundle-ClassPath: libraries/org.json_1.0.0.v201011060100.jar,
- .
+Bundle-ClassPath: .
