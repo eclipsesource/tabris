@@ -1,17 +1,65 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <component id="com.eclipsesource.tabris" version="2">
-    <resource path="META-INF/MANIFEST.MF">
-        <filter id="923795461">
-            <message_arguments>
-                <message_argument value="0.9.0"/>
-                <message_argument value="0.8.0"/>
-            </message_arguments>
-        </filter>
-    </resource>
     <resource path="META-INF/MANIFEST.MF" type="com.eclipsesource.tabris.Platform">
         <filter id="305324134">
             <message_arguments>
                 <message_argument value="com.eclipsesource.tabris.Platform"/>
+                <message_argument value="com.eclipsesource.tabris_0.9.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="META-INF/MANIFEST.MF" type="com.eclipsesource.tabris.widgets.LabelDecorator">
+        <filter id="305324134">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.widgets.LabelDecorator"/>
+                <message_argument value="com.eclipsesource.tabris_0.9.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="META-INF/MANIFEST.MF" type="com.eclipsesource.tabris.widgets.ScrolledCompositeDecorator">
+        <filter id="305324134">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.widgets.ScrolledCompositeDecorator"/>
+                <message_argument value="com.eclipsesource.tabris_0.9.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="META-INF/MANIFEST.MF" type="com.eclipsesource.tabris.widgets.TextDecorator">
+        <filter id="305324134">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.widgets.TextDecorator"/>
+                <message_argument value="com.eclipsesource.tabris_0.9.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="META-INF/MANIFEST.MF" type="com.eclipsesource.tabris.widgets.ToolItemDecorator">
+        <filter id="305324134">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.widgets.ToolItemDecorator"/>
+                <message_argument value="com.eclipsesource.tabris_0.9.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="META-INF/MANIFEST.MF" type="com.eclipsesource.tabris.widgets.TreeDecorator">
+        <filter id="305324134">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.widgets.TreeDecorator"/>
+                <message_argument value="com.eclipsesource.tabris_0.9.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="META-INF/MANIFEST.MF" type="com.eclipsesource.tabris.widgets.WidgetDecorator">
+        <filter id="305324134">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.widgets.WidgetDecorator"/>
+                <message_argument value="com.eclipsesource.tabris_0.9.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="META-INF/MANIFEST.MF" type="com.eclipsesource.tabris.widgets.Widgets">
+        <filter id="305324134">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.widgets.Widgets"/>
                 <message_argument value="com.eclipsesource.tabris_0.9.0"/>
             </message_arguments>
         </filter>
@@ -33,139 +81,18 @@
         </filter>
     </resource>
     <resource path="src/com/eclipsesource/tabris/camera/Camera.java" type="com.eclipsesource.tabris.camera.Camera">
-        <filter id="337682486">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.camera.Camera"/>
-            </message_arguments>
-        </filter>
         <filter id="338792546">
             <message_arguments>
                 <message_argument value="com.eclipsesource.tabris.camera.Camera"/>
                 <message_argument value="getAdapter(Class&lt;T&gt;)"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="src/com/eclipsesource/tabris/camera/CameraCallback.java" type="com.eclipsesource.tabris.camera.CameraCallback">
-        <filter id="1108344834">
-            <message_arguments>
-                <message_argument value="0.8"/>
-                <message_argument value="0.9"/>
-                <message_argument value="com.eclipsesource.tabris.camera.CameraCallback"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="src/com/eclipsesource/tabris/camera/CameraOptions.java" type="com.eclipsesource.tabris.camera.CameraOptions">
-        <filter id="1108344834">
-            <message_arguments>
-                <message_argument value="0.8"/>
-                <message_argument value="0.9"/>
-                <message_argument value="com.eclipsesource.tabris.camera.CameraOptions"/>
             </message_arguments>
         </filter>
     </resource>
     <resource path="src/com/eclipsesource/tabris/geolocation/Geolocation.java" type="com.eclipsesource.tabris.geolocation.Geolocation">
-        <filter id="337682486">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.geolocation.Geolocation"/>
-            </message_arguments>
-        </filter>
         <filter id="338792546">
             <message_arguments>
                 <message_argument value="com.eclipsesource.tabris.geolocation.Geolocation"/>
                 <message_argument value="getAdapter(Class&lt;T&gt;)"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="src/com/eclipsesource/tabris/internal/Constants.java" type="com.eclipsesource.tabris.internal.Constants">
-        <filter id="305365105">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.internal.Constants"/>
-                <message_argument value="com.eclipsesource.tabris_0.9.0"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="src/com/eclipsesource/tabris/internal/DrawingsCache.java" type="com.eclipsesource.tabris.internal.DrawingsCache">
-        <filter id="305365105">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.internal.DrawingsCache"/>
-                <message_argument value="com.eclipsesource.tabris_0.9.0"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="src/com/eclipsesource/tabris/internal/GCOperationDispatcher.java" type="com.eclipsesource.tabris.internal.GCOperationDispatcher">
-        <filter id="305365105">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.internal.GCOperationDispatcher"/>
-                <message_argument value="com.eclipsesource.tabris_0.9.0"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="src/com/eclipsesource/tabris/widgets/ClientCanvas.java" type="com.eclipsesource.tabris.widgets.ClientCanvas">
-        <filter id="337682486">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.widgets.ClientCanvas"/>
-            </message_arguments>
-        </filter>
-        <filter id="338792546">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.widgets.ClientCanvas"/>
-                <message_argument value="afterPhase(PhaseEvent)"/>
-            </message_arguments>
-        </filter>
-        <filter id="338792546">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.widgets.ClientCanvas"/>
-                <message_argument value="beforeDestroy(SessionStoreEvent)"/>
-            </message_arguments>
-        </filter>
-        <filter id="338792546">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.widgets.ClientCanvas"/>
-                <message_argument value="beforePhase(PhaseEvent)"/>
-            </message_arguments>
-        </filter>
-        <filter id="338792546">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.widgets.ClientCanvas"/>
-                <message_argument value="getPhaseId()"/>
-            </message_arguments>
-        </filter>
-        <filter id="1143996420">
-            <message_arguments>
-                <message_argument value="afterPhase(PhaseEvent)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1143996420">
-            <message_arguments>
-                <message_argument value="beforeDestroy(SessionStoreEvent)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1143996420">
-            <message_arguments>
-                <message_argument value="beforePhase(PhaseEvent)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1143996420">
-            <message_arguments>
-                <message_argument value="getPhaseId()"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="src/com/eclipsesource/tabris/widgets/Video.java" type="com.eclipsesource.tabris.widgets.Video">
-        <filter id="1108344834">
-            <message_arguments>
-                <message_argument value="0.7"/>
-                <message_argument value="0.9"/>
-                <message_argument value="com.eclipsesource.tabris.widgets.Video"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="src/com/eclipsesource/tabris/widgets/VideoListener.java" type="com.eclipsesource.tabris.widgets.VideoListener">
-        <filter id="1108344834">
-            <message_arguments>
-                <message_argument value="0.7"/>
-                <message_argument value="0.9"/>
-                <message_argument value="com.eclipsesource.tabris.widgets.VideoListener"/>
             </message_arguments>
         </filter>
     </resource>
