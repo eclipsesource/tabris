@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <component id="com.eclipsesource.tabris" version="2">
+    <resource path="META-INF/MANIFEST.MF">
+        <filter id="923795461">
+            <message_arguments>
+                <message_argument value="0.9.0"/>
+                <message_argument value="0.8.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="META-INF/MANIFEST.MF" type="com.eclipsesource.tabris.Platform">
         <filter id="305324134">
             <message_arguments>
@@ -25,11 +33,15 @@
         </filter>
     </resource>
     <resource path="src/com/eclipsesource/tabris/camera/Camera.java" type="com.eclipsesource.tabris.camera.Camera">
-        <filter id="1108344834">
+        <filter id="337682486">
             <message_arguments>
-                <message_argument value="0.8"/>
-                <message_argument value="0.9"/>
                 <message_argument value="com.eclipsesource.tabris.camera.Camera"/>
+            </message_arguments>
+        </filter>
+        <filter id="338792546">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.camera.Camera"/>
+                <message_argument value="getAdapter(Class&lt;T&gt;)"/>
             </message_arguments>
         </filter>
     </resource>
@@ -57,12 +69,10 @@
                 <message_argument value="com.eclipsesource.tabris.geolocation.Geolocation"/>
             </message_arguments>
         </filter>
-    </resource>
-    <resource path="src/com/eclipsesource/tabris/internal/AbstractObjectSynchronizer.java" type="com.eclipsesource.tabris.internal.AbstractObjectSynchronizer">
-        <filter id="305365105">
+        <filter id="338792546">
             <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.internal.AbstractObjectSynchronizer"/>
-                <message_argument value="com.eclipsesource.tabris_0.9.0"/>
+                <message_argument value="com.eclipsesource.tabris.geolocation.Geolocation"/>
+                <message_argument value="getAdapter(Class&lt;T&gt;)"/>
             </message_arguments>
         </filter>
     </resource>

@@ -1,4 +1,4 @@
-package com.eclipsesource.tabris.internal.camera;
+package com.eclipsesource.tabris.internal;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;

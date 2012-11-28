@@ -10,12 +10,21 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.camera;
 
-import org.eclipse.rap.rwt.Adaptable;
-import org.eclipse.rap.rwt.internal.protocol.ClientObjectAdapter;
-import org.eclipse.rap.rwt.internal.protocol.IClientObjectAdapter;
+import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNull;
 
-import com.eclipsesource.tabris.internal.camera.CameraAdapter;
-import com.eclipsesource.tabris.internal.camera.CameraSynchronizer;
+import java.io.ByteArrayInputStream;
+import java.util.Map;
+
+import org.eclipse.rap.rwt.internal.remote.RemoteObject;
+import org.eclipse.rap.rwt.internal.remote.RemoteObjectFactory;
+import org.eclipse.rap.rwt.internal.remote.RemoteOperationHandler;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Display;
+
+import com.eclipsesource.tabris.camera.CameraOptions.SourceType;
+import com.eclipsesource.tabris.internal.Base64;
+import com.eclipsesource.tabris.internal.Preconditions;
 
 
 /**
@@ -32,11 +41,31 @@ import com.eclipsesource.tabris.internal.camera.CameraSynchronizer;
  * @see CameraOptions
  * @since 0.8
  */
-@SuppressWarnings("restriction")
-public class Camera implements Adaptable {
+@SuppressWarnings( "restriction" )
+public class Camera {
   
-  private final ClientObjectAdapter clientObjectAdapter;
-  private final CameraAdapter cameraAdapter;
+  private static final String TYPE = "tabris.Camera";
+  private static final String OPEN_METHOD = "open";
+  private static final String PROPERTY_SOURCETYPE = "sourceType";
+  private static final String PROPERTY_RESOLUTION = "resolution";
+  private static final String PROPERTY_SAVETOALBUM = "saveToAlbum";
+  private static final String IMAGE_SELECTION_EVENT = "ImageSelection";
+  private static final String IMAGE_SELECTION_ERROR_EVENT = "ImageSelectionError";
+  private static final String PROPERTY_IMAGE = "image";
+  
+  private final RemoteObject remoteObject;
+  private CameraCallback callback;
+  
+  private final RemoteOperationHandler cameraHandler = new RemoteOperationHandler() { 
+    @Override
+    public void handleNotify( String event, Map<String,Object> properties ) {
+      if( IMAGE_SELECTION_EVENT.equals( event ) ) {
+        callback.onSuccess( decodeImage( ( String )properties.get( PROPERTY_IMAGE ) ) );
+      } else if( IMAGE_SELECTION_ERROR_EVENT.equals( event ) ) {
+        callback.onError();
+      }
+    }
+  };
 
   /**
    * <p>
@@ -47,19 +76,44 @@ public class Camera implements Adaptable {
    * @see CameraOptions
    */
   public Camera( CameraOptions options ) {
-    checkOptions( options );
-    clientObjectAdapter = new ClientObjectAdapter( "c" );
-    new CameraSynchronizer( this );
-    cameraAdapter = new CameraAdapter();
-    cameraAdapter.setOptions( options );
+    Preconditions.argumentNotNull( options, "Camera Options" );
+    remoteObject = RemoteObjectFactory.getInstance().createRemoteObject( TYPE );
+    remoteObject.setHandler( cameraHandler );
+    setInitialValues( options );
   }
   
-  private void checkOptions( CameraOptions options ) {
-    if( options == null ) {
-      throw new IllegalArgumentException( "Camera Options must not be null, you can use CameraOptions.NONE." );
+  private Image decodeImage( String encodedImage ) {
+    byte[] bytes = Base64.decode( encodedImage );
+    ByteArrayInputStream stream = new ByteArrayInputStream( bytes );
+    return new Image( Display.getCurrent(), stream );
+  }
+
+  private void setInitialValues( CameraOptions options ) {
+    setResolution( options );
+    setSourceType( options );
+    setSaveToAlbum( options );
+  }
+
+  private void setResolution( CameraOptions options ) {
+    Point resolution = options.getResolution();
+    if( resolution != null ) {
+      remoteObject.set( PROPERTY_RESOLUTION, new int[] { resolution.x, resolution.y } );
     }
   }
 
+  private void setSourceType( CameraOptions options ) {
+    SourceType sourceType = options.getSourceType();
+    if( sourceType != null ) {
+      remoteObject.set( PROPERTY_SOURCETYPE, sourceType.toString().toLowerCase() );
+    }
+  }
+
+  private void setSaveToAlbum( CameraOptions options ) {
+    if( options.savesToAlbum() ) {
+      remoteObject.set( PROPERTY_SAVETOALBUM, true );
+    }
+  }
+  
   /**
    * <p>
    * Instructs the client to open the camera or photo album. The <code>CameraCallback</code> will be called when the 
@@ -70,8 +124,9 @@ public class Camera implements Adaptable {
    *  @see CameraCallback
    */
   public void takePicture( CameraCallback callback ) {
-    cameraAdapter.setCallback( callback );
-    cameraAdapter.open();
+    argumentNotNull( callback, "Callback" );
+    this.callback = callback;
+    remoteObject.call( OPEN_METHOD, null );
   }
   
   /**
@@ -80,19 +135,11 @@ public class Camera implements Adaptable {
    * </p>
    */
   public void dispose() {
-    cameraAdapter.dispose();
-  }
-
-  @Override
-  @SuppressWarnings("unchecked")
-  public <T> T getAdapter( Class<T> adapter ) {
-    T result = null;
-    if( adapter == CameraAdapter.class ) {
-      result = ( T )cameraAdapter;
-    } else if( adapter == IClientObjectAdapter.class ) {
-      result = ( T )clientObjectAdapter;
-    }
-    return result;
+    remoteObject.destroy();
   }
   
+  RemoteObject getRemoteObject() {
+    return remoteObject;
+  }
+
 }
