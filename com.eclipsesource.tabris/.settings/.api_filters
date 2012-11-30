@@ -81,6 +81,11 @@
         </filter>
     </resource>
     <resource path="src/com/eclipsesource/tabris/camera/Camera.java" type="com.eclipsesource.tabris.camera.Camera">
+        <filter id="337682486">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.camera.Camera"/>
+            </message_arguments>
+        </filter>
         <filter id="338792546">
             <message_arguments>
                 <message_argument value="com.eclipsesource.tabris.camera.Camera"/>
@@ -89,6 +94,11 @@
         </filter>
     </resource>
     <resource path="src/com/eclipsesource/tabris/geolocation/Geolocation.java" type="com.eclipsesource.tabris.geolocation.Geolocation">
+        <filter id="337682486">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.geolocation.Geolocation"/>
+            </message_arguments>
+        </filter>
         <filter id="338792546">
             <message_arguments>
                 <message_argument value="com.eclipsesource.tabris.geolocation.Geolocation"/>

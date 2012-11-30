@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.rap.rwt.internal.remote.RemoteObject;
+import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
@@ -45,6 +46,7 @@ public class CameraTest {
   @Before
   public void setUp() {
     Fixture.setUp();
+    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     new Display();
   }
 

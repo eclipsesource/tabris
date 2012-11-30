@@ -101,10 +101,12 @@ public class Geolocation {
   }
 
   private double getPropertyAsDouble( Map<String, Object> properties, String propertyName ) {
-    String value = ( String )properties.get( propertyName );
     double result = -1;
-    if( value != null ) {
-      result = Double.valueOf( value  ).doubleValue();
+    Object value = properties.get( propertyName );
+    if( value instanceof Double ) {
+      result = ( ( Double )value ).doubleValue();
+    } else if( value instanceof Integer ) {
+      result = ( ( Integer )value ).doubleValue();
     }
     return result;
   }
