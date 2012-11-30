@@ -15,12 +15,22 @@ import org.junit.Test;
 public class PreconditionsTest {
   
   @Test( expected = IllegalArgumentException.class )
-  public void testFailsWithNullArgument() {
+  public void testNotNullFailsWithNullArgument() {
     Preconditions.argumentNotNull( null, "" );
   }
   
   @Test
-  public void testDoesNotFailsWithNonNullArgument() {
+  public void testNotNullDoesNotFailsWithNonNullArgument() {
     Preconditions.argumentNotNull( "", "" );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testNotEmptyFailsWithNullArgument() {
+    Preconditions.argumentNotNullAndNotEmpty( null, "" );
+  }
+  
+  @Test( expected = IllegalArgumentException.class )
+  public void testNotEmptyFailsWithEmpty() {
+    Preconditions.argumentNotNullAndNotEmpty( "", "" );
   }
 }

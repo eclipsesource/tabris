@@ -10,17 +10,34 @@
  ******************************************************************************/
 package com.eclipsesource.tabris;
 
+import org.eclipse.rap.rwt.SingletonUtil;
 import org.eclipse.rap.rwt.client.Client;
 import org.eclipse.rap.rwt.client.service.ClientService;
 
+import com.eclipsesource.tabris.interaction.AppLauncher;
+import com.eclipsesource.tabris.internal.AppLauncherImpl;
+
 
 /**
+ * <p>
+ * Special Client implementation for Tabris. Current services are:
+ * <ul>
+ * <li>{@link AppLauncher}</li>
+ * </ul>
+ * They can be obtained using the getService( Class ) method.
+ * </p>
+ * 
  * @since 0.9
  */
 public class TabrisClient implements Client {
 
   @Override
+  @SuppressWarnings("unchecked")
   public <T extends ClientService> T getService( Class<T> type ) {
-    return null;
+    T result = null;
+    if( type == AppLauncher.class ) {
+      result = ( T )SingletonUtil.getSessionInstance( AppLauncherImpl.class );
+    }
+    return result;
   }
 }

@@ -18,4 +18,17 @@ public class Preconditions {
       throw new IllegalArgumentException( name + " must not be null" );
     }
   }
+  
+  public static void argumentNotNullAndNotEmpty( Object object, String name ) {
+    if( object == null ) {
+      throw new IllegalArgumentException( name + " must not be null" );
+    }
+    if( object instanceof String && ( ( String )object ).isEmpty() ) {
+      throw new IllegalArgumentException( name + " must not be empty" );
+    }
+  }
+  
+  private Preconditions() {
+    // prevent instantiation
+  }
 }
