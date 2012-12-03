@@ -56,4 +56,8 @@ public class MailOptions extends LaunchOptions {
     argumentNotNull( body, "Body" );
     add( BODY, body );
   }
+
+  public void setUseHtml( boolean useHtml ) {
+    add( "useHtml", String.valueOf( useHtml ) );
+  }
 }

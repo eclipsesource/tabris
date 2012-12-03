@@ -149,4 +149,32 @@ public class MailOptionsTest {
     
     mailOptions.setCC( null );
   }
+  
+  @Test
+  public void testSetUseHtml() {
+    MailOptions mailOptions = new MailOptions( "foo@bar.com" );
+    
+    mailOptions.setUseHtml( true );
+    
+    assertEquals( String.valueOf( true ), mailOptions.getOptions().get( "useHtml" ) );
+  }
+  
+  @Test
+  public void testSetUseNoHtml() {
+    MailOptions mailOptions = new MailOptions( "foo@bar.com" );
+    
+    mailOptions.setUseHtml( false );
+    
+    assertEquals( String.valueOf( false ), mailOptions.getOptions().get( "useHtml" ) );
+  }
+  
+  @Test
+  public void testSetUseNoHtmlOverridesUse() {
+    MailOptions mailOptions = new MailOptions( "foo@bar.com" );
+    
+    mailOptions.setUseHtml( true );
+    mailOptions.setUseHtml( false );
+    
+    assertEquals( String.valueOf( false ), mailOptions.getOptions().get( "useHtml" ) );
+  }
 }
