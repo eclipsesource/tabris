@@ -121,41 +121,4 @@ public class CameraOptions {
     return saveToAlbum;
   }
 
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ( ( resolution == null )
-                                                      ? 0
-                                                      : resolution.hashCode() );
-    result = prime * result + ( saveToAlbum
-                                           ? 1231
-                                           : 1237 );
-    result = prime * result + ( ( sourceType == null )
-                                                      ? 0
-                                                      : sourceType.hashCode() );
-    return result;
-  }
-
-  @Override
-  public boolean equals( Object obj ) {
-    if( this == obj )
-      return true;
-    if( obj == null )
-      return false;
-    if( getClass() != obj.getClass() )
-      return false;
-    CameraOptions other = ( CameraOptions )obj;
-    if( resolution == null ) {
-      if( other.resolution != null )
-        return false;
-    } else if( !resolution.equals( other.resolution ) )
-      return false;
-    if( saveToAlbum != other.saveToAlbum )
-      return false;
-    if( sourceType != other.sourceType )
-      return false;
-    return true;
-  }
-
 }
