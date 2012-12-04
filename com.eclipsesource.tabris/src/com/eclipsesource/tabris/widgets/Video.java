@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.rap.rwt.lifecycle.ILifeCycleAdapter;
+import org.eclipse.rap.rwt.lifecycle.WidgetLifeCycleAdapter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
@@ -368,7 +368,7 @@ public class Video extends Composite {
   @SuppressWarnings("unchecked")
   public <T> T getAdapter( Class<T> adapter ) {
     T result;
-    if( adapter == ILifeCycleAdapter.class ) {
+    if( adapter == WidgetLifeCycleAdapter.class ) {
       result = ( T )new VideoLifeCycleAdapter();
     } else if( adapter == PlaybackAdapter.class ) {
       result = ( T )new PlaybackAdapter();

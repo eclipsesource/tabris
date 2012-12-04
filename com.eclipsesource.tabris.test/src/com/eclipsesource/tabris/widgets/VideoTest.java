@@ -23,7 +23,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
-import org.eclipse.rap.rwt.lifecycle.ILifeCycleAdapter;
+import org.eclipse.rap.rwt.lifecycle.WidgetLifeCycleAdapter;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -67,7 +67,7 @@ public class VideoTest {
   
   @Test
   public void testGetVideoAdapter() {
-    ILifeCycleAdapter adapter = video.getAdapter( ILifeCycleAdapter.class );
+    WidgetLifeCycleAdapter adapter = video.getAdapter( WidgetLifeCycleAdapter.class );
     
     assertTrue( adapter instanceof VideoLifeCycleAdapter );
   }

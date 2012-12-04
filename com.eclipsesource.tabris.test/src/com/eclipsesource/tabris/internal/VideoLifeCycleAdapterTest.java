@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.rap.rwt.lifecycle.AbstractWidgetLCA;
-import org.eclipse.rap.rwt.lifecycle.ILifeCycleAdapter;
+import org.eclipse.rap.rwt.lifecycle.WidgetLifeCycleAdapter;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.rap.rwt.testfixture.Message;
@@ -65,7 +65,7 @@ public class VideoLifeCycleAdapterTest {
     parent = new Shell( display );
     video = new Video( "http://test.com", parent );
     new Button( parent, SWT.PUSH );
-    lifeCycleAdapter = ( AbstractWidgetLCA )video.getAdapter( ILifeCycleAdapter.class );
+    lifeCycleAdapter = ( AbstractWidgetLCA )video.getAdapter( WidgetLifeCycleAdapter.class );
     Fixture.fakeNewRequest( display );
   }
   
