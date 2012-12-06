@@ -14,8 +14,8 @@ package com.eclipsesource.tabris.internal;
 public class Constants {
   
   public static final String USER_AGENT = "User-Agent";
-  public static final String ID_ANDROID = "com.eclipsesource.rap.mobile.client.android";
-  public static final String ID_IOS = "com.eclipsesource.rap.mobile.client.ios";
+  public static final String ID_ANDROID = "com.eclipsesource.tabris.android";
+  public static final String ID_IOS = "com.eclipsesource.tabris.ios";
   
   private Constants() {
     // prevent instantiation

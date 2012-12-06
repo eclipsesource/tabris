@@ -39,7 +39,7 @@ public class ClientDeviceTest {
   @Test
   public void testIsAndroid() {
     TestRequest request = ( TestRequest )RWT.getRequest();
-    request.setHeader( Constants.USER_AGENT, Constants.ID_ANDROID );
+    request.setHeader( Constants.USER_AGENT, "com.eclipsesource.tabris.android" );
     
     ClientDevice device = ClientDevice.getCurrent();
     
@@ -49,7 +49,7 @@ public class ClientDeviceTest {
   @Test
   public void testIsIOS() {
     TestRequest request = ( TestRequest )RWT.getRequest();
-    request.setHeader( Constants.USER_AGENT, Constants.ID_IOS );
+    request.setHeader( Constants.USER_AGENT, "com.eclipsesource.tabris.ios" );
     
     ClientDevice device = ClientDevice.getCurrent();
     
@@ -69,7 +69,7 @@ public class ClientDeviceTest {
   @Test
   public void testGetPlatformIsAndroid() {
     TestRequest request = ( TestRequest )RWT.getRequest();
-    request.setHeader( Constants.USER_AGENT, Constants.ID_ANDROID );
+    request.setHeader( Constants.USER_AGENT, "com.eclipsesource.tabris.android" );
     ClientDevice device = ClientDevice.getCurrent();
     
     Platform platform = device.getPlatform();
@@ -80,7 +80,7 @@ public class ClientDeviceTest {
   @Test
   public void testGetPlatformIsIOS() {
     TestRequest request = ( TestRequest )RWT.getRequest();
-    request.setHeader( Constants.USER_AGENT, Constants.ID_IOS );
+    request.setHeader( Constants.USER_AGENT, "com.eclipsesource.tabris.ios" );
     ClientDevice device = ClientDevice.getCurrent();
 
     Platform platform = device.getPlatform();
