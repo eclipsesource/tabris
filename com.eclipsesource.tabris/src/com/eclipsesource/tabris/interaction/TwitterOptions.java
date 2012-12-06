@@ -12,38 +12,35 @@ package com.eclipsesource.tabris.interaction;
 
 import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNull;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 
 /**
  * @since 0.9
  */
-public class LaunchOptions {
-  
-  public enum App {
-    MAIL, BROWSER, MAPS, PHONE, SMS, TWITTER, FACEBOOK
+public class TwitterOptions extends LaunchOptions {
+
+  private static final String TEXT = "text";
+  private static final String URL = "url";
+
+  public TwitterOptions( String text ) {
+    super( App.TWITTER );
+    argumentNotNull( text, "Text" );
+    add( TEXT, text );
   }
 
-  private final Map<String, String> options;
-  private final App app;
-
-  LaunchOptions( App app ) {
-    argumentNotNull( app, "App" );
-    this.app = app;
-    this.options = new HashMap<String, String>();
+  public void setUrl( String url ) {
+    argumentNotNull( url, "URL" );
+    validateUrl( url );
+    add( URL, url );
   }
   
-  public App getApp() {
-    return app;
+  private void validateUrl( String url ) {
+    try {
+      new URL( url );
+    } catch( MalformedURLException mue ) {
+      throw new IllegalArgumentException( url + " is not a valid url", mue );
+    }
   }
-  
-  public void add( String name, String value ) {
-    options.put( name, value );
-  }
-  
-  public Map<String, String> getOptions() {
-    return new HashMap<String, String>( options );
-  }
-  
 }
