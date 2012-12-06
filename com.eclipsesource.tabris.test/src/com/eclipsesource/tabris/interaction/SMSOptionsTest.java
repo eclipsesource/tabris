@@ -25,8 +25,8 @@ public class SMSOptionsTest {
     new SMSOptions( null, "foo" );
   }
   
-  @Test( expected = IllegalArgumentException.class )
-  public void testFailsWithEmptyNumber() {
+  @Test
+  public void testFailsNotWithEmptyNumber() {
     new SMSOptions( "", "foo" );
   }
   
