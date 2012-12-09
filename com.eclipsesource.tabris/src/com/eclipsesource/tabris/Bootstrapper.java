@@ -16,7 +16,7 @@ import java.io.InputStream;
 import org.eclipse.rap.rwt.application.Application;
 import org.eclipse.rap.rwt.internal.application.ApplicationContext;
 import org.eclipse.rap.rwt.internal.application.ApplicationImpl;
-import org.eclipse.rap.rwt.resources.ResourceLoader;
+import org.eclipse.rap.rwt.service.ResourceLoader;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
