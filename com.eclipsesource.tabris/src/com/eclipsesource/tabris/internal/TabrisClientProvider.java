@@ -42,9 +42,9 @@ public class TabrisClientProvider implements ClientProvider {
 
   private void setThemeForPlatform( Platform platform ) {
     if( platform == IOS ) {
-      ThemeUtil.setCurrentThemeId( RWT.getSessionStore(), Bootstrapper.THEME_ID_IOS );
+      ThemeUtil.setCurrentThemeId( RWT.getUISession(), Bootstrapper.THEME_ID_IOS );
     } else if( platform == ANDROID ) {
-      ThemeUtil.setCurrentThemeId( RWT.getSessionStore(), Bootstrapper.THEME_ID_ANDROID );
+      ThemeUtil.setCurrentThemeId( RWT.getUISession(), Bootstrapper.THEME_ID_ANDROID );
     }
   }
 

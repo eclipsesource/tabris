@@ -23,8 +23,8 @@ import org.eclipse.rap.rwt.lifecycle.PhaseEvent;
 import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.lifecycle.PhaseListener;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
-import org.eclipse.rap.rwt.service.SessionStoreEvent;
-import org.eclipse.rap.rwt.service.SessionStoreListener;
+import org.eclipse.rap.rwt.service.UISessionEvent;
+import org.eclipse.rap.rwt.service.UISessionListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
@@ -48,7 +48,7 @@ import com.eclipsesource.tabris.internal.GCOperationDispatcher;
  * @since 0.6
  */
 @SuppressWarnings("restriction")
-public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreListener {
+public class ClientCanvas extends Canvas implements PhaseListener, UISessionListener {
   
   static final String DRAWING_EVENT = "Drawing";
   static final String DRAWINGS_PROPERTY = "drawings";
@@ -63,7 +63,7 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
     drawListeners = new ArrayList<ClientDrawListener>();
     cache = new DrawingsCache();
     RWT.getLifeCycle().addPhaseListener( this );
-    RWT.getSessionStore().addSessionStoreListener( this );
+    RWT.getUISession().addUISessionListener( this );
     addDispatchPaintListener();
     setData( RWT.CUSTOM_VARIANT, CLIENT_CANVAS );
   }
@@ -222,9 +222,9 @@ public class ClientCanvas extends Canvas implements PhaseListener, SessionStoreL
   }
 
   @Override
-  public void beforeDestroy( SessionStoreEvent event ) {
+  public void beforeDestroy( UISessionEvent event ) {
     RWTFactory.getLifeCycleFactory().getLifeCycle().removePhaseListener( this );
-    RWT.getSessionStore().removeSessionStoreListener( this );
+    RWT.getUISession().removeUISessionListener( this );
   }
   
   @SuppressWarnings("unchecked")
