@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.enhancement;
 
+import static com.eclipsesource.tabris.internal.WidgetsUtil.TABRIS_VARIANT;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 
@@ -20,8 +21,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.eclipsesource.tabris.widgets.enhancement.TreeDecorator;
-import com.eclipsesource.tabris.widgets.enhancement.Widgets;
+import com.eclipsesource.tabris.widgets.enhancement.TreeDecorator.TreePart;
 
 
 @RunWith( MockitoJUnitRunner.class )
@@ -37,10 +37,31 @@ public class TreeDecoratorTest {
   }
   
   @Test
-  public void testUseNumbersAndPunctuationKeyboard() {
+  public void testUseTitle() {
     decorator.useTitle( "test" );
     
     verify( tree ).setToolTipText( eq( "test" ) );
+  }
+  
+  @Test
+  public void testSetAlternativeLeafSelection() {
+    decorator.enableAlternativeSelection( TreePart.LEAF );
+    
+    verify( tree ).setData( eq( TABRIS_VARIANT ), eq( "ALT_SELECTION_LEAF" ) );
+  }
+  
+  @Test
+  public void testSetAlternativeBranchSelection() {
+    decorator.enableAlternativeSelection( TreePart.BRANCH );
+    
+    verify( tree ).setData( eq( TABRIS_VARIANT ), eq( "ALT_SELECTION_BRANCH" ) );
+  }
+  
+  @Test
+  public void testSetAlternativeSelectionForAll() {
+    decorator.enableAlternativeSelection( TreePart.ALL );
+    
+    verify( tree ).setData( eq( TABRIS_VARIANT ), eq( "ALT_SELECTION" ) );
   }
   
 }

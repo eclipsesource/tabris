@@ -23,7 +23,7 @@ import org.eclipse.rap.rwt.internal.application.ApplicationContext;
 import org.eclipse.rap.rwt.internal.application.ApplicationImpl;
 import org.eclipse.rap.rwt.internal.lifecycle.PhaseListenerRegistry;
 import org.eclipse.rap.rwt.internal.theme.ThemeManager;
-import org.eclipse.rap.rwt.resources.ResourceLoader;
+import org.eclipse.rap.rwt.service.ResourceLoader;
 import org.junit.Before;
 import org.junit.Test;
 import org.osgi.framework.Bundle;

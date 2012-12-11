@@ -16,19 +16,12 @@ import static org.mockito.Mockito.mock;
 
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.Widget;
 import org.junit.Test;
-
-import com.eclipsesource.tabris.widgets.enhancement.LabelDecorator;
-import com.eclipsesource.tabris.widgets.enhancement.ScrolledCompositeDecorator;
-import com.eclipsesource.tabris.widgets.enhancement.TextDecorator;
-import com.eclipsesource.tabris.widgets.enhancement.ToolItemDecorator;
-import com.eclipsesource.tabris.widgets.enhancement.TreeDecorator;
-import com.eclipsesource.tabris.widgets.enhancement.WidgetDecorator;
-import com.eclipsesource.tabris.widgets.enhancement.Widgets;
 
 
 public class WidgetsTest {
@@ -144,11 +137,31 @@ public class WidgetsTest {
   }
   
   @Test
-  public void tesOnToolItemDoesNotCache() {
+  public void testOnToolItemDoesNotCache() {
     ToolItem widget = mock( ToolItem.class );
     
     ToolItemDecorator decorator1 = Widgets.onToolItem( widget );
     ToolItemDecorator decorator2 = Widgets.onToolItem( widget );
+    
+    assertNotSame( decorator1, decorator2 );
+  }
+ 
+  @Test
+  public void testOnList() {
+    assertNotNull( Widgets.onList( mock( List.class ) ) );
+  }
+  
+  @Test( expected = IllegalArgumentException.class )
+  public void testOnListWithNull() {
+    Widgets.onList( null );
+  }
+  
+  @Test
+  public void testOnListDoesNotCache() {
+    List widget = mock( List.class );
+    
+    ListDecorator decorator1 = Widgets.onList( widget );
+    ListDecorator decorator2 = Widgets.onList( widget );
     
     assertNotSame( decorator1, decorator2 );
   }

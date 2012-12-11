@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.enhancement;
 
+import static com.eclipsesource.tabris.internal.WidgetsUtil.setVariant;
+
 import org.eclipse.swt.widgets.Tree;
 
 
@@ -17,6 +19,10 @@ import org.eclipse.swt.widgets.Tree;
  * @since 0.8
  */
 public class TreeDecorator extends WidgetDecorator<TreeDecorator> {
+  
+  public enum TreePart {
+    LEAF, BRANCH, ALL
+  }
   
   private final Tree tree;
 
@@ -27,6 +33,24 @@ public class TreeDecorator extends WidgetDecorator<TreeDecorator> {
   
   public TreeDecorator useTitle( String title ) {
     tree.setToolTipText( title );
+    return this;
+  }
+
+  /**
+   * @since 0.9
+   */
+  public TreeDecorator enableAlternativeSelection( TreePart part ) {
+    switch( part ) {
+      case LEAF:
+        setVariant( tree, "ALT_SELECTION_LEAF" );
+      break;
+      case BRANCH:
+        setVariant( tree, "ALT_SELECTION_BRANCH" );
+        break;
+      case ALL:
+        setVariant( tree, "ALT_SELECTION" );
+        break;
+    }
     return this;
   }
 }

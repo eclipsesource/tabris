@@ -10,37 +10,42 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.enhancement;
 
-import static com.eclipsesource.tabris.internal.WidgetsUtil.TABRIS_VARIANT;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 
-import org.eclipse.swt.widgets.Widget;
+import org.eclipse.swt.widgets.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import com.eclipsesource.tabris.widgets.enhancement.WidgetDecorator;
-import com.eclipsesource.tabris.widgets.enhancement.Widgets;
+import static com.eclipsesource.tabris.internal.WidgetsUtil.TABRIS_VARIANT;
 
 
 @RunWith( MockitoJUnitRunner.class )
-public class WidgetDecoratorTest {
+public class ListDecoratorTest {
   
   @Mock
-  private Widget widget;
-  private WidgetDecorator decorator;
+  private List list;
+  private ListDecorator decorator;
   
   @Before
   public void setUp() {
-    decorator = Widgets.onWidget( widget );
+    decorator = Widgets.onList( list );
   }
   
   @Test
-  public void testUseAnimation() {
-    decorator.useAnimation();
+  public void testUseTitle() {
+    decorator.useTitle( "test" );
     
-    verify( widget ).setData( TABRIS_VARIANT, "ANIMATED" );
+    verify( list ).setToolTipText( eq( "test" ) );
+  }
+  
+  @Test
+  public void testEnableAlternativeSelection() {
+    decorator.enableAlternativeSelection();
+    
+    verify( list ).setData( eq( TABRIS_VARIANT ), eq( "ALT_SELECTION" ) );
   }
   
 }

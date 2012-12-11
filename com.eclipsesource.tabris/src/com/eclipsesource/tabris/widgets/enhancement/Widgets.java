@@ -14,6 +14,7 @@ import static com.eclipsesource.tabris.internal.WidgetsUtil.checkComponent;
 
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Tree;
@@ -60,8 +61,13 @@ public class Widgets {
     return new LabelDecorator( label );
   }
 
+  public static ListDecorator onList( List list ) {
+    checkComponent( list );
+    return new ListDecorator( list );
+  }
+  
   private Widgets() {
     // prevent instantiation
   }
-  
+
 }
