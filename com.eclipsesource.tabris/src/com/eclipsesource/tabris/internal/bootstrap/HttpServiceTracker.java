@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.bootstrap;
 
-import org.eclipse.rap.rwt.internal.application.ApplicationContext;
+import org.eclipse.rap.rwt.internal.application.ApplicationContextImpl;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.http.HttpService;
@@ -21,19 +21,19 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 @SuppressWarnings("restriction")
 public class HttpServiceTracker implements ServiceTrackerCustomizer<HttpService, HttpService>{
-  
+
   private final ServiceTracker<HttpService, HttpService> httpServiceTracker;
   private final BundleContext bundleContext;
-  private final ApplicationContext context;
+  private final ApplicationContextImpl context;
 
   private final String path;
 
-  public HttpServiceTracker( BundleContext bundleContext, ApplicationContext context, String path ) {
+  public HttpServiceTracker( BundleContext bundleContext, ApplicationContextImpl context, String path ) {
     this.bundleContext = bundleContext;
     this.context = context;
     this.path = path;
-    httpServiceTracker = new ServiceTracker<HttpService, HttpService>( bundleContext, 
-                                                                       HttpService.class.getName(), 
+    httpServiceTracker = new ServiceTracker<HttpService, HttpService>( bundleContext,
+                                                                       HttpService.class.getName(),
                                                                        this );
   }
 
@@ -41,16 +41,16 @@ public class HttpServiceTracker implements ServiceTrackerCustomizer<HttpService,
   public HttpService addingService( ServiceReference<HttpService> reference ) {
     HttpService httpService = bundleContext.getService( reference );
     try {
-      httpService.registerServlet( path, 
-                                   new EntryPointLookupServlet( context ), 
-                                   null, 
+      httpService.registerServlet( path,
+                                   new EntryPointLookupServlet( context ),
+                                   null,
                                    null );
     } catch( Exception shouldNotHappen ) {
       throw new IllegalStateException( shouldNotHappen );
     }
     return httpService;
   }
-  
+
   public void open() {
     getTracker().open();
   }
@@ -58,7 +58,7 @@ public class HttpServiceTracker implements ServiceTrackerCustomizer<HttpService,
   void close() {
     getTracker().close();
   }
-  
+
   @Override
   public void modifiedService( ServiceReference<HttpService> reference, HttpService service ) {
     // do nothing
@@ -68,7 +68,7 @@ public class HttpServiceTracker implements ServiceTrackerCustomizer<HttpService,
   public void removedService( ServiceReference<HttpService> reference, HttpService service ) {
     service.unregister( path );
   }
-  
+
   public String getPath() {
     return path;
   }

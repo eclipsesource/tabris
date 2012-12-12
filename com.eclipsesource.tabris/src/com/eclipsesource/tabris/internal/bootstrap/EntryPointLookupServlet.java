@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.eclipse.rap.rwt.internal.application.ApplicationContext;
+import org.eclipse.rap.rwt.internal.application.ApplicationContextImpl;
 import org.eclipse.rap.rwt.internal.lifecycle.EntryPointManager;
 import org.eclipse.rap.rwt.internal.theme.JsonArray;
 import org.eclipse.rap.rwt.internal.theme.JsonObject;
@@ -26,13 +26,13 @@ import org.eclipse.rap.rwt.internal.theme.JsonObject;
 
 @SuppressWarnings("restriction")
 public class EntryPointLookupServlet extends HttpServlet {
-  
+
   static final String KEY_ENTRYPOINTS = "entrypoints";
   static final String KEY_PATH = "path";
   private final EntryPointManager manager;
-  private static final long serialVersionUID = 1L;  
+  private static final long serialVersionUID = 1L;
 
-  public EntryPointLookupServlet( ApplicationContext applicationContext ) {
+  public EntryPointLookupServlet( ApplicationContextImpl applicationContext ) {
     manager = applicationContext.getEntryPointManager();
   }
 
