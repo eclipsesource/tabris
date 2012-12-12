@@ -106,6 +106,33 @@
             </message_arguments>
         </filter>
     </resource>
+    <resource path="src/com/eclipsesource/tabris/internal/AppLauncherImpl.java" type="com.eclipsesource.tabris.internal.AppLauncherImpl">
+        <filter id="574660632">
+            <message_arguments>
+                <message_argument value="AppLauncher"/>
+                <message_argument value="ClientService"/>
+                <message_argument value="AppLauncherImpl"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/widgets/ClientCanvas.java" type="com.eclipsesource.tabris.widgets.ClientCanvas">
+        <filter id="337682486">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.widgets.ClientCanvas"/>
+            </message_arguments>
+        </filter>
+        <filter id="338792546">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.widgets.ClientCanvas"/>
+                <message_argument value="beforeDestroy(SessionStoreEvent)"/>
+            </message_arguments>
+        </filter>
+        <filter id="1143996420">
+            <message_arguments>
+                <message_argument value="beforeDestroy(UISessionEvent)"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="src/com/eclipsesource/tabris/widgets/enhancement/LabelDecorator.java" type="com.eclipsesource.tabris.widgets.enhancement.LabelDecorator">
         <filter id="1108344834">
             <message_arguments>

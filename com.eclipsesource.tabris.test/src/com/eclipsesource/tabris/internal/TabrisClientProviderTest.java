@@ -89,7 +89,7 @@ public class TabrisClientProviderTest {
     
     provider.accept( request );
     
-    String currentTheme = ( String )ContextProvider.getSessionStore().getAttribute( CURRENT_THEME_ID );
+    String currentTheme = ( String )RWT.getUISession().getAttribute( CURRENT_THEME_ID );
     assertEquals( Bootstrapper.THEME_ID_IOS, currentTheme );
   }
   
@@ -101,7 +101,7 @@ public class TabrisClientProviderTest {
     
     provider.accept( request );
     
-    String currentTheme = ( String )ContextProvider.getSessionStore().getAttribute( CURRENT_THEME_ID );
+    String currentTheme = ( String )RWT.getUISession().getAttribute( CURRENT_THEME_ID );
     assertEquals( Bootstrapper.THEME_ID_ANDROID, currentTheme );
   }
   
