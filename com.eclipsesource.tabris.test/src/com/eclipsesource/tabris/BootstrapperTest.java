@@ -18,8 +18,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.eclipse.rap.rwt.application.ApplicationConfiguration;
-import org.eclipse.rap.rwt.internal.application.ApplicationContext;
+import org.eclipse.rap.rwt.internal.application.ApplicationContextImpl;
 import org.eclipse.rap.rwt.internal.application.ApplicationImpl;
 import org.eclipse.rap.rwt.internal.lifecycle.PhaseListenerRegistry;
 import org.eclipse.rap.rwt.internal.theme.ThemeManager;
@@ -35,7 +34,6 @@ import com.eclipsesource.tabris.internal.bootstrap.HttpServiceTracker;
 @SuppressWarnings("restriction")
 public class BootstrapperTest {
   
-  private ApplicationConfiguration configuration;
   private ApplicationImpl application;
   private PhaseListenerRegistry registry;
   private ThemeManager themeManager;
@@ -49,13 +47,12 @@ public class BootstrapperTest {
   
   private ApplicationImpl mockConfiguration() {
     ApplicationImpl application = mock( ApplicationImpl.class );
-    ApplicationContext context = mock( ApplicationContext.class );
+    ApplicationContextImpl context = mock( ApplicationContextImpl.class );
     themeManager = mock( ThemeManager.class );
     when( context.getThemeManager() ).thenReturn( themeManager );
     registry = mock( PhaseListenerRegistry.class );
     when( context.getPhaseListenerRegistry() ).thenReturn( registry );
-    when( application.getAdapter( ApplicationContext.class ) ).thenReturn( context );
-    when( application.getAdapter( ApplicationConfiguration.class ) ).thenReturn( configuration );
+    when( application.getApplicationContext() ).thenReturn( context );
     return application;
   }
 

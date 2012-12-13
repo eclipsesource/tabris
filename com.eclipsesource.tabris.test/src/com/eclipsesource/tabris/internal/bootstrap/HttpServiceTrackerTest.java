@@ -24,7 +24,7 @@ import java.util.Dictionary;
 
 import javax.servlet.ServletException;
 
-import org.eclipse.rap.rwt.internal.application.ApplicationContext;
+import org.eclipse.rap.rwt.internal.application.ApplicationContextImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.osgi.framework.BundleContext;
@@ -45,7 +45,7 @@ public class HttpServiceTrackerTest {
   @Before
   public void setUp() {
     bundleContext = mock( BundleContext.class );
-    ApplicationContext context = mock( ApplicationContext.class );
+    ApplicationContextImpl context = mock( ApplicationContextImpl.class );
     tracker = new HttpServiceTracker( bundleContext, context, SERVLET_ALIAS );
   }
   

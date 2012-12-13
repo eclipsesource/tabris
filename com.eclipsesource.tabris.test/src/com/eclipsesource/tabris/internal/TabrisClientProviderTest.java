@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.eclipse.rap.rwt.RWT;
-import org.eclipse.rap.rwt.internal.application.ApplicationContext;
+import org.eclipse.rap.rwt.internal.application.ApplicationContextImpl;
 import org.eclipse.rap.rwt.internal.service.ContextProvider;
 import org.eclipse.rap.rwt.internal.theme.Theme;
 import org.eclipse.rap.rwt.internal.theme.ThemeManager;
@@ -115,7 +115,7 @@ public class TabrisClientProviderTest {
     };
     StyleSheet styleSheet = CssFileReader.readStyleSheet( "", resourceLoader );
     Theme theme = new Theme( themeId, "unknown", styleSheet );
-    ApplicationContext applicationContext = ContextProvider.getContext().getApplicationContext();
+    ApplicationContextImpl applicationContext = ContextProvider.getContext().getApplicationContext();
     ThemeManagerHelper.resetThemeManager();
     ThemeManager themeManager = applicationContext.getThemeManager();
     themeManager.registerTheme( theme );

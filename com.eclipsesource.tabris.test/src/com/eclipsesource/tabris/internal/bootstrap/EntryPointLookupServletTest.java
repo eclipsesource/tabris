@@ -24,7 +24,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.eclipse.rap.rwt.internal.application.ApplicationContext;
+import org.eclipse.rap.rwt.internal.application.ApplicationContextImpl;
 import org.eclipse.rap.rwt.internal.lifecycle.EntryPointManager;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,7 +46,7 @@ public class EntryPointLookupServletTest {
 
   @Before
   public void setUp() {
-    ApplicationContext applicationContext = mock( ApplicationContext.class );
+    ApplicationContextImpl applicationContext = mock( ApplicationContextImpl.class );
     when( applicationContext.getEntryPointManager() ).thenReturn( manager );
     lookupServlet = new EntryPointLookupServlet( applicationContext );
   }
