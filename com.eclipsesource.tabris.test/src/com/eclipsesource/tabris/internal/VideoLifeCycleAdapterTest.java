@@ -66,7 +66,7 @@ public class VideoLifeCycleAdapterTest {
     video = new Video( "http://test.com", parent );
     new Button( parent, SWT.PUSH );
     lifeCycleAdapter = ( AbstractWidgetLCA )video.getAdapter( WidgetLifeCycleAdapter.class );
-    Fixture.fakeNewRequest( display );
+    Fixture.fakeNewRequest();
   }
   
   @After
@@ -127,7 +127,7 @@ public class VideoLifeCycleAdapterTest {
   public void testRendersPlaybackReadyOnce() {
     video.addVideoListener( videoListener );
     Fixture.executeLifeCycleFromServerThread();
-    Fixture.fakeNewRequest( parent.getDisplay() );
+    Fixture.fakeNewRequest();
     Map<String, Object> parameters = new HashMap<String, Object>();
     parameters.put( PROPERTY_MODE, PlaybackMode.READY.name() );
     fakeNotifyOperation( getId(), VideoLifeCycleAdapter.PLAYBACK_EVENT, parameters );
@@ -142,7 +142,7 @@ public class VideoLifeCycleAdapterTest {
   public void testRendersPlaybackPlayOnce() {
     video.addVideoListener( videoListener );
     Fixture.executeLifeCycleFromServerThread();
-    Fixture.fakeNewRequest( parent.getDisplay() );
+    Fixture.fakeNewRequest();
     Map<String, Object> parameters = new HashMap<String, Object>();
     parameters.put( PROPERTY_MODE, PlaybackMode.PLAY.name() );
     fakeNotifyOperation( getId(), VideoLifeCycleAdapter.PLAYBACK_EVENT, parameters );
@@ -181,7 +181,7 @@ public class VideoLifeCycleAdapterTest {
   public void testFiresPresentationChangeToFullScreenOnce() {
     video.addVideoListener( videoListener );
     Fixture.executeLifeCycleFromServerThread();
-    Fixture.fakeNewRequest( parent.getDisplay() );
+    Fixture.fakeNewRequest();
     Map<String, Object> parameters = new HashMap<String, Object>();
     parameters.put( PROPERTY_MODE, PresentationMode.FULL_SCREEN.name() );
     fakeNotifyOperation( getId(), VideoLifeCycleAdapter.PRESENTATION_EVENT, parameters );

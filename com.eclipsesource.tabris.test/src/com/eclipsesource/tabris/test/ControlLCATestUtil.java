@@ -101,7 +101,7 @@ public class ControlLCATestUtil {
     throws IOException
   {
     Listener listener = mock( Listener.class );
-    Fixture.fakeNewRequest( control.getDisplay() );
+    Fixture.fakeNewRequest();
     Fixture.preserveWidgets();
 
     control.addListener( eventType, listener );
@@ -119,7 +119,7 @@ public class ControlLCATestUtil {
   {
     Listener listener = mock( Listener.class );
     control.addListener( eventType, listener );
-    Fixture.fakeNewRequest( control.getDisplay() );
+    Fixture.fakeNewRequest();
     Fixture.preserveWidgets();
 
     control.removeListener( eventType, listener );
@@ -134,7 +134,7 @@ public class ControlLCATestUtil {
     throws IOException
   {
     Listener listener = mock( Listener.class );
-    Fixture.fakeNewRequest( control.getDisplay() );
+    Fixture.fakeNewRequest();
     Fixture.preserveWidgets();
 
     control.addListener( eventType, listener );
