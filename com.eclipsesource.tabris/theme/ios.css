@@ -61,7 +61,6 @@ Button[PUSH],Button[FLAT],Button[TOGGLE] {
 
 Button[RADIO],Button[CHECK] {
   font: 20px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
-  spacing: 8px;
 }
 
 Button,
@@ -72,6 +71,7 @@ Button[PUSH][BORDER],
 Button[FLAT][BORDER],
 Button[PUSH][TOGGLE] { 
   padding: 8px 8px 8px 8px;
+  spacing: 8px;
 }
 
 Button[PUSH][BORDER], 
