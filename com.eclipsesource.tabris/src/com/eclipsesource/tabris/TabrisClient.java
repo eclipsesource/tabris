@@ -12,9 +12,12 @@ package com.eclipsesource.tabris;
 
 import org.eclipse.rap.rwt.SingletonUtil;
 import org.eclipse.rap.rwt.client.Client;
+import org.eclipse.rap.rwt.client.service.ClientInfo;
 import org.eclipse.rap.rwt.client.service.ClientService;
 
+import com.eclipsesource.tabris.event.App;
 import com.eclipsesource.tabris.interaction.AppLauncher;
+import com.eclipsesource.tabris.internal.AppImpl;
 import com.eclipsesource.tabris.internal.AppLauncherImpl;
 
 
@@ -37,6 +40,8 @@ public class TabrisClient implements Client {
     T result = null;
     if( type == AppLauncher.class ) {
       result = ( T )SingletonUtil.getSessionInstance( AppLauncherImpl.class );
+    } else if( type == App.class || type == ClientInfo.class ) {
+      result = ( T )SingletonUtil.getSessionInstance( AppImpl.class );
     }
     return result;
   }
