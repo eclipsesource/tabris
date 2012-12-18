@@ -20,7 +20,7 @@ import com.eclipsesource.tabris.internal.AppLauncherImpl;
 
 /**
  * <p>
- * Special Client implementation for Tabris. Current services are:
+ * Special Client implementation for Tabris. Can be obtained using RWT.getClient(). Current services are:
  * <ul>
  * <li>{@link AppLauncher}</li>
  * </ul>

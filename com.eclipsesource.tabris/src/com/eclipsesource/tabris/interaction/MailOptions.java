@@ -11,6 +11,10 @@ import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNull;
 import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNullAndNotEmpty;
 
 /**
+ * <p>
+ * Concrete launch option to create a Mail within the Mail App.
+ * <p>
+ * 
  * @since 0.9
  */
 public class MailOptions extends LaunchOptions {

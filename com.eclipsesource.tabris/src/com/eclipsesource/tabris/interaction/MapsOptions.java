@@ -14,6 +14,10 @@ import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNullAnd
 
 
 /**
+ * <p>
+ * Concrete launch option to open coordinates or address in the Maps App.
+ * <p>
+ *  
  * @since 0.9
  */
 public class MapsOptions extends LaunchOptions {

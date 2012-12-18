@@ -17,6 +17,18 @@ import java.util.Map;
 
 
 /**
+ * <p>
+ * Generic launch options. Not intended to be used directly.
+ * <p>
+ * 
+ * @see BrowserOptions
+ * @see MailOptions
+ * @see MapsOptions
+ * @see PhoneOptions
+ * @see SMSOptions
+ * @see TwitterOptions
+ * @see FacebookOptions
+ * 
  * @since 0.9
  */
 public class LaunchOptions {

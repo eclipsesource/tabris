@@ -17,6 +17,10 @@ import java.net.URL;
 
 
 /**
+ * <p>
+ * Concrete launch option to update the Facebook status.
+ * <p>
+ * 
  * @since 0.9
  */
 public class FacebookOptions extends LaunchOptions {

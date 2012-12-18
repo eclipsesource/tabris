@@ -17,6 +17,9 @@ import com.eclipsesource.tabris.internal.Preconditions;
 
 
 /**
+ * <p>
+ * Concrete launch option to open a URL in the Browser.
+ * </p>
  * @since 0.9
  */
 public class BrowserOptions extends LaunchOptions {

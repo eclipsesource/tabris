@@ -17,6 +17,10 @@ import java.net.URL;
 
 
 /**
+ * <p>
+ * Concrete launch option to post a tweet on Twitter.
+ * </p>
+ * 
  * @since 0.9
  */
 public class TwitterOptions extends LaunchOptions {

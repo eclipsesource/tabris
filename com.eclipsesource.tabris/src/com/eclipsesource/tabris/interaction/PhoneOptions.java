@@ -14,6 +14,9 @@ import com.eclipsesource.tabris.internal.Preconditions;
 
 
 /**
+ * <p>
+ * Concrete launch option to do a phone call.
+ * </p>
  * @since 0.9
  */
 public class PhoneOptions extends LaunchOptions {
