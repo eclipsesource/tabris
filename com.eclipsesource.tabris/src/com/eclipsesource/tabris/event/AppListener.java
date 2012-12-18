@@ -11,6 +11,9 @@
 package com.eclipsesource.tabris.event;
 
 
+/**
+ * @since 0.10
+ */
 public interface AppListener {
   
   void handleEvent( AppEvent event );

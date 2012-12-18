@@ -16,6 +16,9 @@ import java.util.Map;
 
 
 
+/**
+ * @since 0.10
+ */
 public class AppEvent {
   
   private final EventType type;

@@ -13,6 +13,7 @@ package com.eclipsesource.tabris.internal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.eclipse.rap.rwt.internal.remote.RemoteObject;
@@ -41,9 +42,14 @@ public class AppImpl implements App {
   public int getTimezoneOffset() {
     return 0; // TODO
   }
+  
+  @Override
+  public Locale getLocale() {
+    return null; // TODO
+  }
 
   @Override
-  public String getLocale() {
+  public Locale[] getLocales() {
     return null; // TODO
   }
 

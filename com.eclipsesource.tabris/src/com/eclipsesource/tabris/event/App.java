@@ -13,6 +13,9 @@ package com.eclipsesource.tabris.event;
 import org.eclipse.rap.rwt.client.service.ClientInfo;
 
 
+/**
+ * @since 0.10
+ */
 public interface App extends ClientInfo {
   
   void addListener( EventType type, AppListener listener );

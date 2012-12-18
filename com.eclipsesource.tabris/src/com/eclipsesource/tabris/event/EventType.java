@@ -10,6 +10,9 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.event;
 
+/**
+ * @since 0.10
+ */
 public enum EventType {
   
   PAUSE( "Pause" ), 
