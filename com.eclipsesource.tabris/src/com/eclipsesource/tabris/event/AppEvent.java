@@ -15,7 +15,6 @@ import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNull;
 import java.util.Map;
 
 
-
 /**
  * @since 0.10
  */
@@ -35,7 +34,11 @@ public class AppEvent {
   }
   
   public Object getProperty( String name ) {
-    return properties.get( name );
+    Object result = null;
+    if( properties != null ) {
+      result = properties.get( name );
+    }
+    return result;
   }
   
 }

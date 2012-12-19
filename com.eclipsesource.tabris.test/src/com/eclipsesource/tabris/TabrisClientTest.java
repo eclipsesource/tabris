@@ -13,12 +13,15 @@ package com.eclipsesource.tabris;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
+import org.eclipse.rap.rwt.client.service.ClientInfo;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.eclipsesource.tabris.event.App;
 import com.eclipsesource.tabris.interaction.AppLauncher;
+import com.eclipsesource.tabris.test.TabrisTestUtil;
 
 
 public class TabrisClientTest {
@@ -26,6 +29,7 @@ public class TabrisClientTest {
   @Before
   public void setUp() {
     Fixture.setUp();
+    TabrisTestUtil.mockRemoteObject();
   }
   
   @After
@@ -43,11 +47,47 @@ public class TabrisClientTest {
   }
   
   @Test
+  public void testHasAppService() {
+    TabrisClient client = new TabrisClient();
+    
+    App app = client.getService( App.class );
+    
+    assertNotNull( app );
+  }
+  
+  @Test
+  public void testHasClientInfoService() {
+    TabrisClient client = new TabrisClient();
+    
+    ClientInfo info = client.getService( ClientInfo.class );
+    
+    assertNotNull( info );
+  }
+  
+  @Test
   public void testAppLauncherIsSingleton() {
     TabrisClient client = new TabrisClient();
     
     AppLauncher launcher = client.getService( AppLauncher.class );
     
     assertSame( launcher, client.getService( AppLauncher.class ) );
+  }
+  
+  @Test
+  public void testAppIsSingleton() {
+    TabrisClient client = new TabrisClient();
+    
+    App app = client.getService( App.class );
+    
+    assertSame( app, client.getService( App.class ) );
+  }
+  
+  @Test
+  public void testClientInfoIsSingleton() {
+    TabrisClient client = new TabrisClient();
+    
+    ClientInfo info = client.getService( ClientInfo.class );
+    
+    assertSame( info, client.getService( ClientInfo.class ) );
   }
 }

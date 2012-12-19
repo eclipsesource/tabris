@@ -14,19 +14,43 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.Random;
+
 import org.eclipse.rap.rwt.internal.remote.RemoteObject;
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectFactory;
+import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 
 
 @SuppressWarnings("restriction")
 public class TabrisTestUtil {
+  
+  private static final Random random = new Random(); 
 
   public static RemoteObject mockRemoteObject() {
-    RemoteObject remoteObject = mock( RemoteObject.class );
+    RemoteObject serviceObject = createRemoteObject();
+    RemoteObject remoteObject = createRemoteObject();
     RemoteObjectFactory factory = mock( RemoteObjectFactory.class );
     when( factory.createRemoteObject( anyString() ) ).thenReturn( remoteObject );
+    when( factory.createServiceObject( anyString() ) ).thenReturn( serviceObject );
     Fixture.fakeRemoteObjectFactory( factory );
+    return remoteObject;
+  }
+  
+  public static RemoteObject mockServiceObject() {
+    RemoteObject serviceObject = createRemoteObject();
+    RemoteObject remoteObject = createRemoteObject();
+    RemoteObjectFactory factory = mock( RemoteObjectFactory.class );
+    when( factory.createRemoteObject( anyString() ) ).thenReturn( remoteObject );
+    when( factory.createServiceObject( anyString() ) ).thenReturn( serviceObject );
+    Fixture.fakeRemoteObjectFactory( factory );
+    return serviceObject;
+  }
+
+  private static RemoteObject createRemoteObject() {
+    RemoteObjectImpl remoteObject = mock( RemoteObjectImpl.class );
+    String id = "w" + random.nextInt();
+    when( remoteObject.getId() ).thenReturn( id );
     return remoteObject;
   }
   

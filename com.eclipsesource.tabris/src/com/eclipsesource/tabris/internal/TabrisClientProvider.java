@@ -36,8 +36,12 @@ public class TabrisClientProvider implements ClientProvider {
     boolean result = platform == ANDROID || platform == IOS;
     if( result ) {
       setThemeForPlatform( platform );
+      extractClientInfo( request );
     }
     return result;
+  }
+
+  private void extractClientInfo( HttpServletRequest request ) {
   }
 
   private void setThemeForPlatform( Platform platform ) {

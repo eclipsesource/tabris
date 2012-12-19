@@ -11,14 +11,19 @@
 package com.eclipsesource.tabris.internal;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.eclipse.rap.rwt.internal.remote.RemoteObject;
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectFactory;
 import org.eclipse.rap.rwt.internal.remote.RemoteOperationHandler;
+import org.eclipse.rap.rwt.internal.service.ContextProvider;
 
 import com.eclipsesource.tabris.event.App;
 import com.eclipsesource.tabris.event.AppEvent;
@@ -29,28 +34,27 @@ import com.eclipsesource.tabris.event.EventType;
 @SuppressWarnings("restriction")
 public class AppImpl implements App {
   
+  private static final String TYPE = "tabris.app";
+  private static final String TIMEZONE_OFFSET = "timezoneOffset";
+  
   private final RemoteObject remoteObject;
   private final Map<EventType, List<AppListener>> eventListeners;
+  private Locale[] locales;
+  private Integer timezoneOffset;
   
   public AppImpl() {
-    remoteObject = RemoteObjectFactory.getInstance().createRemoteObject( "tabris.app" );
-    remoteObject.setHandler( new AppEventHandler() );
+    remoteObject = RemoteObjectFactory.getInstance().createServiceObject( TYPE );
+    remoteObject.setHandler( new AppOperationHandler() );
     eventListeners = new HashMap<EventType, List<AppListener>>();
+    readLocales();
   }
 
-  @Override
-  public int getTimezoneOffset() {
-    return 0; // TODO
-  }
-  
-  @Override
-  public Locale getLocale() {
-    return null; // TODO
-  }
-
-  @Override
-  public Locale[] getLocales() {
-    return null; // TODO
+  private void readLocales() {
+    HttpServletRequest request = ContextProvider.getRequest();
+    if( request.getHeader( "Accept-Language" ) != null ) {
+      Enumeration<Locale> locales = request.getLocales();
+      this.locales = Collections.list( locales ).toArray( new Locale[ 1 ] );
+    }
   }
 
   @Override
@@ -74,8 +78,9 @@ public class AppImpl implements App {
     }
   }
 
-  private class AppEventHandler extends RemoteOperationHandler {
+  private class AppOperationHandler extends RemoteOperationHandler {
     
+
     @Override
     public void handleNotify( String event, Map<String, Object> properties ) {
       AppEvent appEvent = new AppEvent( EventType.fromName( event ), properties );
@@ -90,5 +95,34 @@ public class AppImpl implements App {
         }
       }
     }
+    
+    @Override
+    public void handleSet( Map<String, Object> properties ) {
+      if( properties.containsKey( TIMEZONE_OFFSET ) ) {
+        timezoneOffset = ( Integer )properties.get( TIMEZONE_OFFSET );
+      }
+    }
+  }
+
+  @Override
+  public int getTimezoneOffset() {
+    if( timezoneOffset == null ) {
+      throw new IllegalStateException( "timezoneOffset is not set" );
+    }
+    return timezoneOffset.intValue();
+  }
+
+  @Override
+  public Locale getLocale() {
+    return locales == null ? null : locales[ 0 ];
+  }
+
+  @Override
+  public Locale[] getLocales() {
+    return locales == null ? new Locale[ 0 ] : locales.clone();
+  }
+
+  RemoteObject getRemoteObject() {
+    return remoteObject;
   }
 }
