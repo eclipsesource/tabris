@@ -35,6 +35,14 @@ import com.eclipsesource.tabris.internal.AppLauncherImpl;
  * @since 0.9
  */
 public class TabrisClient implements Client {
+  
+  public TabrisClient() {
+    initializeServices();
+  }
+
+  private void initializeServices() {
+    getService( App.class );
+  }
 
   @Override
   @SuppressWarnings("unchecked")
