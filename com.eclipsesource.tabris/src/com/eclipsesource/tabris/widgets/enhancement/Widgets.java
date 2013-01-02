@@ -13,6 +13,7 @@ package com.eclipsesource.tabris.widgets.enhancement;
 import static com.eclipsesource.tabris.internal.WidgetsUtil.checkComponent;
 
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
@@ -34,6 +35,14 @@ public class Widgets {
   public static WidgetDecorator<WidgetDecorator> onWidget( Widget widget ) {
     checkComponent( widget );
     return new WidgetDecorator<WidgetDecorator>( widget );
+  }
+  
+  /**
+   * @since 0.10
+   */
+  public static CompositeDecorator onComposite( Composite composite ) {
+    checkComponent( composite );
+    return new CompositeDecorator( composite );
   }
   
   public static TextDecorator onText( Text text ) {

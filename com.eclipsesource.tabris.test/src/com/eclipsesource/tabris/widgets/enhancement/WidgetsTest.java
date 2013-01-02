@@ -15,6 +15,7 @@ import static org.junit.Assert.assertNotSame;
 import static org.mockito.Mockito.mock;
 
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
@@ -162,6 +163,26 @@ public class WidgetsTest {
     
     ListDecorator decorator1 = Widgets.onList( widget );
     ListDecorator decorator2 = Widgets.onList( widget );
+    
+    assertNotSame( decorator1, decorator2 );
+  }
+  
+  @Test
+  public void testOnComposite() {
+    assertNotNull( Widgets.onComposite( mock( Composite.class ) ) );
+  }
+  
+  @Test( expected = IllegalArgumentException.class )
+  public void testOnCompositeWithNull() {
+    Widgets.onComposite( null );
+  }
+  
+  @Test
+  public void testOnCompositeDoesNotCache() {
+    Composite widget = mock( Composite.class );
+    
+    CompositeDecorator decorator1 = Widgets.onComposite( widget );
+    CompositeDecorator decorator2 = Widgets.onComposite( widget );
     
     assertNotSame( decorator1, decorator2 );
   }
