@@ -30,8 +30,8 @@
 		<tycho-groupid>org.eclipse.tycho</tycho-groupid>
 		<findbugs-version>2.5.2</findbugs-version>
 		<surefire-version>2.12.4</surefire-version>
-		<junit-version>4.8.2</junit-version>
-		<mockito-version>1.8.4</mockito-version>
+		<junit-version>4.10</junit-version>
+		<mockito-version>1.9.0</mockito-version>
 		<jacocoagent>${basedir}/../com.eclipsesource.tabris.build/lib/jacocoagent.jar</jacocoagent>
 		<test-arguments>-Xms512m -Xmx512m
 			-javaagent:${jacocoagent}=destfile=${basedir}/../com.eclipsesource.tabris/target/jacoco.exec,append=true</test-arguments>
@@ -64,9 +64,9 @@
 
 	<repositories>
 		<repository>
-			<id>extra-dependencies-repository</id>
+			<id>osgi-additionals</id>
 			<layout>p2</layout>
-			<url>http://build.eclipse.org/rt/rap/base-platforms/1.5/extra-dependencies/</url>
+			<url>http://eclipsesource.github.com/osgi-additionals/</url>
 		</repository>
 		<repository>
 			<id>rap-milestone-repository</id>
@@ -113,6 +113,7 @@
 				<version>${tycho-version}</version>
 				<configuration>
 					<resolver>p2</resolver>
+					<pomDependencies>consider</pomDependencies>
 					<ignoreTychoRepositories>true</ignoreTychoRepositories>
 					<target>
 						<dependency-resolution>
