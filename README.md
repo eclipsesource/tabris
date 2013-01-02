@@ -11,6 +11,7 @@ Additional Features
 * Video, Video Widget to play videos on a client device.
 * Camera, Custom Widget to take pictures form the client's camera.
 * Widgets API, API to control keyboard styles, animations and so on.
+* AppLauncher, API to launch other Apps on the device like Mail, Browser or Maps.
 
 Demos
 -----
