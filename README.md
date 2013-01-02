@@ -11,6 +11,7 @@ Additional Features
 * Video, Video Widget to play videos on a client device.
 * Camera, Custom Widget to take pictures form the client's camera.
 * Widgets API, API to control keyboard styles, animations and so on.
+* Implementation of the ClientInfo Interface provided by RAP 2.0.
 
 Demos
 -----
