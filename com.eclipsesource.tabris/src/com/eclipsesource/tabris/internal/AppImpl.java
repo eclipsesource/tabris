@@ -1,12 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2012 EclipseSource and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    EclipseSource - initial API and implementation
+ * Copyright (c) 2012 EclipseSource and others. All rights reserved. This
+ * program and the accompanying materials are made available under the terms of
+ * the Eclipse Public License v1.0 which accompanies this distribution, and is
+ * available at http://www.eclipse.org/legal/epl-v10.html Contributors:
+ * EclipseSource - initial API and implementation
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
@@ -30,18 +27,16 @@ import com.eclipsesource.tabris.event.AppEvent;
 import com.eclipsesource.tabris.event.AppListener;
 import com.eclipsesource.tabris.event.EventType;
 
-
 @SuppressWarnings("restriction")
 public class AppImpl implements App {
-  
-  private static final String TYPE = "tabris.app";
+
+  private static final String TYPE = "tabris.App";
   private static final String TIMEZONE_OFFSET = "timezoneOffset";
-  
   private final RemoteObject remoteObject;
   private final Map<EventType, List<AppListener>> eventListeners;
   private Locale[] locales;
   private Integer timezoneOffset;
-  
+
   public AppImpl() {
     remoteObject = RemoteObjectFactory.getInstance().createServiceObject( TYPE );
     remoteObject.setHandler( new AppOperationHandler() );
@@ -77,16 +72,14 @@ public class AppImpl implements App {
       remoteObject.listen( type.getName(), false );
     }
   }
-
   private class AppOperationHandler extends RemoteOperationHandler {
-    
 
     @Override
     public void handleNotify( String event, Map<String, Object> properties ) {
       AppEvent appEvent = new AppEvent( EventType.fromName( event ), properties );
       notifyListeners( appEvent );
     }
-  
+
     private void notifyListeners( AppEvent appEvent ) {
       List<AppListener> listeners = eventListeners.get( appEvent.getType() );
       if( listeners != null ) {
@@ -95,7 +88,7 @@ public class AppImpl implements App {
         }
       }
     }
-    
+
     @Override
     public void handleSet( Map<String, Object> properties ) {
       if( properties.containsKey( TIMEZONE_OFFSET ) ) {
@@ -114,12 +107,16 @@ public class AppImpl implements App {
 
   @Override
   public Locale getLocale() {
-    return locales == null ? null : locales[ 0 ];
+    return locales == null
+                          ? null
+                          : locales[ 0 ];
   }
 
   @Override
   public Locale[] getLocales() {
-    return locales == null ? new Locale[ 0 ] : locales.clone();
+    return locales == null
+                          ? new Locale[ 0 ]
+                          : locales.clone();
   }
 
   RemoteObject getRemoteObject() {
