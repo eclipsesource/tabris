@@ -43,4 +43,11 @@ public class WidgetDecoratorTest {
     verify( widget ).setData( TABRIS_VARIANT, "ANIMATED" );
   }
   
+  @Test
+  public void testShowLocalTouch() {
+    decorator.showLocalTouch();
+    
+    verify( widget ).setData( TABRIS_VARIANT, "SHOW_TOUCH" );
+  }
+  
 }

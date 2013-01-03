@@ -38,7 +38,7 @@ public class WidgetsTest {
   }
   
   @Test
-  public void tesOnWidgetDoesNotCache() {
+  public void testOnWidgetDoesNotCache() {
     Widget widget = mock( Widget.class );
     
     WidgetDecorator<WidgetDecorator> decorator1 = Widgets.onWidget( widget );
@@ -58,7 +58,7 @@ public class WidgetsTest {
   }
   
   @Test
-  public void tesOnTextDoesNotCache() {
+  public void testOnTextDoesNotCache() {
     Text widget = mock( Text.class );
     
     WidgetDecorator<TextDecorator> decorator1 = Widgets.onText( widget );
@@ -78,7 +78,7 @@ public class WidgetsTest {
   }
   
   @Test
-  public void tesOnTreeDoesNotCache() {
+  public void testOnTreeDoesNotCache() {
     Tree widget = mock( Tree.class );
     
     WidgetDecorator<TreeDecorator> decorator1 = Widgets.onTree( widget );
@@ -98,7 +98,7 @@ public class WidgetsTest {
   }
   
   @Test
-  public void tesOnLabelDoesNotCache() {
+  public void testOnLabelDoesNotCache() {
     Label widget = mock( Label.class );
     
     WidgetDecorator<LabelDecorator> decorator1 = Widgets.onLabel( widget );
@@ -118,7 +118,7 @@ public class WidgetsTest {
   }
   
   @Test
-  public void tesOnScrolledCompositeDoesNotCache() {
+  public void testOnScrolledCompositeDoesNotCache() {
     ScrolledComposite widget = mock( ScrolledComposite.class );
     
     WidgetDecorator<ScrolledCompositeDecorator> decorator1 = Widgets.onScrolledComposite( widget );
