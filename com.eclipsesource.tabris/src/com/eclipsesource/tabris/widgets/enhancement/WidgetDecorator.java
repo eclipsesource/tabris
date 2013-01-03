@@ -32,6 +32,9 @@ public class WidgetDecorator<T extends WidgetDecorator> {
     return ( T )this;
   }
 
+  /**
+   * @since 0.10
+   */
   @SuppressWarnings("unchecked")
   public T showLocalTouch() {
     setVariant( widget, "SHOW_TOUCH" );
