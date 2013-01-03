@@ -1,0 +1,8 @@
+Change-Id: I9618a31601a7c1b961e86c822d72b489ab1c451d
+Code-Review+2: Holger Staudacher <hstaudacher@eclipsesource.com>
+Verified+1: Holger Staudacher <hstaudacher@eclipsesource.com>
+Submitted-by: Holger Staudacher <hstaudacher@eclipsesource.com>
+Submitted-at: Thu, 03 Jan 2013 09:08:08 +0100
+Reviewed-on: https://build.eclipsesource.com:1443/gerrit/179
+Project: tabris
+Branch: refs/heads/master
