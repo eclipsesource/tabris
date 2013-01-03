@@ -12,7 +12,7 @@ Additional Features
 * Camera, Custom Widget to take pictures form the client's camera.
 * Widgets API, API to control keyboard styles, animations and so on.
 * Implementation of the ClientInfo Interface provided by RAP 2.0.
-* AppLauncher, API to launch other Apps on the device like Mail, Browser or Maps.
+* AppLauncher, API to launch other Apps on the device like Mail, Browser or Maps and others.
 
 Demos
 -----
