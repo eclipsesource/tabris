@@ -1,0 +1,53 @@
+/*******************************************************************************
+ * Copyright (c) 2013 EclipseSource and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    EclipseSource - initial API and implementation
+ ******************************************************************************/
+package com.eclipsesource.tabris.internal;
+
+import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNull;
+
+import java.util.Map;
+
+import org.eclipse.rap.rwt.internal.remote.RemoteOperationHandler;
+
+import com.eclipsesource.tabris.widgets.swipe.Swipe;
+
+
+@SuppressWarnings("restriction")
+public class SwipeOperationHandler extends RemoteOperationHandler {
+
+  private static final String PROPERTY_ITEM = "item";
+  private static final String EVENT_SWIPED_TO_ITEM = "SwipedToItem";
+  
+  private final Swipe swipe;
+
+  public SwipeOperationHandler( Swipe swipe ) {
+    argumentNotNull( swipe, "Swipe" );
+    this.swipe = swipe;
+  }
+  
+  @Override
+  public void handleNotify( String event, Map<String, Object> properties ) {
+    if( EVENT_SWIPED_TO_ITEM.equals( event ) ) {
+      verifyHasItemProperty( properties );
+      Integer itemIndex = ( Integer )properties.get( PROPERTY_ITEM );
+      swipe.show( itemIndex.intValue() );
+    }
+  }
+
+  private void verifyHasItemProperty( Map<String, Object> properties ) {
+    argumentNotNull( properties, "Properties" );
+    if( !properties.containsKey( PROPERTY_ITEM ) ) {
+      throw new IllegalArgumentException( "Properties of " + EVENT_SWIPED_TO_ITEM + " do not contian an item." );
+    }
+    if( !( properties.get( PROPERTY_ITEM ) instanceof Integer ) ) {
+      throw new IllegalArgumentException( "Property item of " + EVENT_SWIPED_TO_ITEM + " is not an Integer." );
+    }
+  }
+}
