@@ -15,51 +15,30 @@ import java.util.List;
 
 
 public class SwipeItemIndexer {
-  
+
   private int currentIndex;
-  private int previousIndex;
-  private int nextIndex;
-  private final List<Integer> stashes;
-  
+  private int range;
+  private int oldCurrentIndex;
+  private boolean dirty;
+
   public SwipeItemIndexer() {
-    stashes = new ArrayList<Integer>();
-    previousIndex = -1;
     currentIndex = -1;
-    nextIndex = -1;
+    oldCurrentIndex = -1;
+    range = 1;
+  }
+
+  public void setRange( int range ) {
+    if( range < 0 ) {
+      throw new IllegalArgumentException( "Range must be 0 or positive." );
+    }
+    this.range = range;
   }
 
   public void setCurrent( int index ) {
+    dirty = true;
     verifyNewIndex( index );
-    if( isInRange( index ) ) {
-      setCurrentInRange( index );
-    } else {
-      setCurrentOutOfRange( index );
-    }
-  }
-
-  private void setCurrentInRange( int index ) {
-    previousIndex = computePreviousIndex( index );
-    nextIndex = computeNextIndex( index );
+    oldCurrentIndex = currentIndex;
     currentIndex = index;
-    stashBorderIndex();
-  }
-
-  private void setCurrentOutOfRange( int index ) {
-    stashOldValues();
-    previousIndex = index - 1;
-    nextIndex = index + 1;
-    currentIndex = index;
-  }
-  
-  private void stashBorderIndex() {
-    stashes.clear();
-    if( nextIndex > previousIndex ) {
-      if( previousIndex > 0 ) {
-        stashes.add( Integer.valueOf( previousIndex - 1 ) );
-      }
-    } else {
-      stashes.add( Integer.valueOf( previousIndex + 1 ) );
-    }
   }
 
   private void verifyNewIndex( int newIndex ) {
@@ -68,56 +47,136 @@ public class SwipeItemIndexer {
     }
   }
 
-  private void stashOldValues() {
-    stashes.clear();
-    stashes.add( Integer.valueOf( previousIndex ) );
-    stashes.add( Integer.valueOf( currentIndex ) );
-    stashes.add( Integer.valueOf( nextIndex ) );
-  }
-
-  private boolean isInRange( int newIndex ) {
-    return newIndex <= ( currentIndex + 1 ) && newIndex >= ( currentIndex - 1 ) || isDefaultState();
-  }
-
-  private boolean isDefaultState() {
-    return previousIndex == -1 && currentIndex == -1 && nextIndex == -1;
-  }
-
-  private int computePreviousIndex( int newIndex ) {
-    int result = newIndex - 1;
-    if( currentIndex > newIndex ) {
-      result = newIndex + 1;
-    } 
-    return result;
-  }
-  
-  private int computeNextIndex( int newIndex ) {
-    int result = newIndex + 1;
-    if( currentIndex > newIndex ) {
-      result = newIndex - 1;
-    } 
-    return result;
-  }
-  
   public int getCurrent() {
-   return currentIndex; 
+   return currentIndex;
   }
-  
-  public int getPrevious() {
-    return previousIndex; 
-  }
-  
-  public int getNext() {
-    return nextIndex; 
-  }
-  
-  public int[] popOutOfRangeIndexes() {
-    int[] result = new int[ stashes.size() ];
-    for( int i = 0; i < result.length; i++ ) {
-      result[ i ] = stashes.get( i ).intValue();
+
+  public int[] getPrevious() {
+    int[] result = getEmptyRange();
+    if( range > 0 ) {
+      int[] newRange = getRange( currentIndex );
+      result = computePreviousIndexes( newRange );
     }
-    stashes.clear();
     return result;
   }
-  
+
+  private int[] computePreviousIndexes( int[] newRange ) {
+    int[] result = new int[ range ];
+    if( currentIndex > 0 || oldCurrentIndex > 0) {
+      if( currentIndex > oldCurrentIndex || isAJump() ) {
+        result = computeFollowUps( newRange );
+      } else {
+        result = computeInvertedFollowUps( newRange );
+      }
+    } else {
+      result = getEmptyRange();
+    }
+    return result;
+  }
+
+  public int[] getNext() {
+    int[] result = getEmptyRange();
+    if( range > 0 ) {
+      int[] newRange = getRange( currentIndex );
+      result = computeNextIndexes( newRange );
+    }
+    return result;
+  }
+
+  private int[] getRange( int index ) {
+    List<Integer> rangeItems = new ArrayList<Integer>();
+    for( int i = ( index - range ); i <= ( index + range ); i++ ) {
+      if( i >= 0 ) {
+        rangeItems.add( Integer.valueOf( i ) );
+      }
+    }
+    return getAsArray( rangeItems );
+  }
+
+  private int[] computeNextIndexes( int[] newRange ) {
+    int[] result = new int[ range + 1 ];
+    if( currentIndex > oldCurrentIndex || isAJump() ) {
+      result = computeInvertedFollowUps( newRange );
+    } else {
+      if( currentIndex > 0 ) {
+        result = computeFollowUps( newRange );
+      } else {
+        result = getEmptyRange();
+      }
+    }
+    return result;
+  }
+
+  private boolean isAJump() {
+    return ( currentIndex - oldCurrentIndex ) > 1 || ( oldCurrentIndex - currentIndex ) > 1;
+  }
+
+  private int[] computeInvertedFollowUps( int[] indexes ) {
+    List<Integer> result = new ArrayList<Integer>();
+    for( int i = 0; i < indexes.length; i++ ) {
+      if( indexes[ i ] > currentIndex ) {
+        result.add( Integer.valueOf( indexes[ i ] ) );
+      }
+    }
+    return getAsArray( result );
+  }
+
+  private int[] computeFollowUps( int[] indexes ) {
+    List<Integer> result = new ArrayList<Integer>();
+    for( int i = 0; i < indexes.length; i++ ) {
+      if( indexes[ i ] < currentIndex ) {
+        result.add( Integer.valueOf( indexes[ i ] ) );
+      }
+    }
+    return getAsArray( result );
+  }
+
+  public int[] popOutOfRangeIndexes() {
+    int[] result = getEmptyRange();
+    if( dirty ) {
+      result = computeOutOfRangeIndexes();
+      dirty = false;
+    }
+    return result;
+  }
+
+  private int[] getEmptyRange() {
+    return new int[] {};
+  }
+
+  private int[] computeOutOfRangeIndexes() {
+    int[] newRange = getRange( currentIndex );
+    int[] oldRange = getRange( oldCurrentIndex );
+    return computeDelta( oldRange, newRange );
+  }
+
+  private int[] computeDelta( int[] oldRange, int[] newRange ) {
+    List<Integer> delta = new ArrayList<Integer>();
+    List<Integer> oldIndexes = getAsList( oldRange );
+    List<Integer> newIndexes = getAsList( newRange );
+    for( Integer index : oldIndexes ) {
+      if( !newIndexes.contains( index ) ) {
+        delta.add( index );
+      }
+    }
+    return getAsArray( delta );
+  }
+
+  private List<Integer> getAsList( int[] indexes ) {
+    ArrayList<Integer> result = new ArrayList<Integer>();
+    for( int index : indexes ) {
+      result.add( Integer.valueOf( index ) );
+    }
+    return result;
+  }
+
+  private int[] getAsArray( List<Integer> indexes ) {
+    int result[] = new int[ indexes.size() ];
+    for( int i = 0; i < indexes.size(); i++ ) {
+      Integer index = indexes.get( i );
+      result[ i ] = index.intValue();
+    }
+    return result;
+  }
+
 }

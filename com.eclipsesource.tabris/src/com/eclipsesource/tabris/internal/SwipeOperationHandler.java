@@ -11,6 +11,8 @@
 package com.eclipsesource.tabris.internal;
 
 import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNull;
+import static com.eclipsesource.tabris.internal.SwipeManager.EVENT_SWIPED_TO_ITEM;
+import static com.eclipsesource.tabris.internal.SwipeManager.PROPERTY_ITEM;
 
 import java.util.Map;
 
@@ -22,16 +24,13 @@ import com.eclipsesource.tabris.widgets.swipe.Swipe;
 @SuppressWarnings("restriction")
 public class SwipeOperationHandler extends RemoteOperationHandler {
 
-  private static final String PROPERTY_ITEM = "item";
-  private static final String EVENT_SWIPED_TO_ITEM = "SwipedToItem";
-  
   private final Swipe swipe;
 
   public SwipeOperationHandler( Swipe swipe ) {
     argumentNotNull( swipe, "Swipe" );
     this.swipe = swipe;
   }
-  
+
   @Override
   public void handleNotify( String event, Map<String, Object> properties ) {
     if( EVENT_SWIPED_TO_ITEM.equals( event ) ) {

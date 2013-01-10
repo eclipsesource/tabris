@@ -11,6 +11,18 @@
 package com.eclipsesource.tabris.widgets.swipe;
 
 import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNull;
+import static com.eclipsesource.tabris.internal.SwipeManager.METHOD_ITEM_LOADED;
+import static com.eclipsesource.tabris.internal.SwipeManager.METHOD_LOCK_ITEM;
+import static com.eclipsesource.tabris.internal.SwipeManager.METHOD_REMOVE_ITEMS;
+import static com.eclipsesource.tabris.internal.SwipeManager.METHOD_UNLOCK_ITEM;
+import static com.eclipsesource.tabris.internal.SwipeManager.PROPERTY_ACTIVE_ITEM;
+import static com.eclipsesource.tabris.internal.SwipeManager.PROPERTY_CONTENT;
+import static com.eclipsesource.tabris.internal.SwipeManager.PROPERTY_DIRECTION;
+import static com.eclipsesource.tabris.internal.SwipeManager.PROPERTY_INDEX;
+import static com.eclipsesource.tabris.internal.SwipeManager.PROPERTY_ITEM;
+import static com.eclipsesource.tabris.internal.SwipeManager.PROPERTY_ITEMS;
+import static com.eclipsesource.tabris.internal.SwipeManager.PROPERTY_PARENT;
+import static com.eclipsesource.tabris.internal.SwipeManager.TYPE;
 import static com.eclipsesource.tabris.internal.SwipeUtil.notifyDisposed;
 import static com.eclipsesource.tabris.internal.SwipeUtil.notifyItemActivated;
 import static com.eclipsesource.tabris.internal.SwipeUtil.notifyItemDeactivated;
@@ -21,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.internal.remote.RemoteObject;
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectFactory;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
@@ -39,15 +52,7 @@ import com.eclipsesource.tabris.internal.SwipeOperationHandler;
  */
 @SuppressWarnings("restriction")
 public class Swipe {
-  
-  private static final String TYPE = "tabris.Swipe";
-  private static final String METHOD_REMOVE_ITEMS = "removeItems";
-  private static final String PROPERTY_ITEMS = "items";
-  private static final String PROPERTY_ACTIVE_ITEM = "activeItem";
-  private static final String METHOD_ITEM_LOADED = "itemLoaded";
-  private static final String PROPERTY_CONTENT = "content";
-  private static final String PROPERTY_INDEX = "index";
-  
+
   private final Composite container;
   private final List<SwipeListener> listeners;
   private final RemoteObject remoteObject;
@@ -59,21 +64,30 @@ public class Swipe {
     this.manager = new SwipeManager( itemProvider );
     this.listeners = new ArrayList<SwipeListener>();
     this.container = new Composite( parent, SWT.NONE );
+    container.setData( RWT.CUSTOM_VARIANT, "swipe" );
     this.remoteObject = RemoteObjectFactory.getInstance().createRemoteObject( TYPE );
     initialize();
   }
 
   private void initialize() {
+    remoteObject.set( PROPERTY_PARENT, WidgetUtil.getId( container ) );
     remoteObject.setHandler( new SwipeOperationHandler( this ) );
     container.setLayout( new SwipeLayout() );
   }
 
-  public void show( int index ) throws IllegalArgumentException {
+  public void show( int index ) throws IllegalArgumentException, IllegalStateException {
     verifyIsNotDisposed();
+    verifyMove( index );
     if( isValidIndex( index ) ) {
       showItemAtIndex( index );
     } else {
       throw new IllegalArgumentException( "Item at index " + index + " does not exist." );
+    }
+  }
+
+  private void verifyMove( int index ) {
+    if( !manager.isMoveAllowed( manager.getIndexer().getCurrent(), index ) ) {
+      throw new IllegalStateException( "Move not allowed. Item " + index + " is locked." );
     }
   }
 
@@ -90,7 +104,7 @@ public class Swipe {
       initializeNextItem();
     }
   }
-  
+
   private void removeOutOfRangeItems() {
     int[] outOfRangeIndexes = manager.getIndexer().popOutOfRangeIndexes();
     for( int index : outOfRangeIndexes ) {
@@ -114,17 +128,21 @@ public class Swipe {
   }
 
   private void callRemoveItems( int[] outOfRangeIndexes ) {
-    Map<String, Object> properties = new HashMap<String, Object>();
-    properties.put( PROPERTY_ITEMS, outOfRangeIndexes );
-    remoteObject.call( METHOD_REMOVE_ITEMS, properties );
+    if( outOfRangeIndexes.length > 0 ) {
+      Map<String, Object> properties = new HashMap<String, Object>();
+      properties.put( PROPERTY_ITEMS, outOfRangeIndexes );
+      remoteObject.call( METHOD_REMOVE_ITEMS, properties );
+    }
   }
 
   private void handlePreviousItem() {
-    int previousItemIndex = manager.getIndexer().getPrevious();
-    if( manager.getProvider().getItemCount() > previousItemIndex && previousItemIndex >= 0 ) {
-      ensureItemExists( previousItemIndex );
-      preloadItem( previousItemIndex );
-      deactivateItem( previousItemIndex );
+    int[] previousItems = manager.getIndexer().getPrevious();
+    for( int previousItemIndex : previousItems ) {
+      if( manager.getProvider().getItemCount() > previousItemIndex && previousItemIndex >= 0 ) {
+        ensureItemExists( previousItemIndex );
+        preloadItem( previousItemIndex );
+        deactivateItem( previousItemIndex );
+      }
     }
   }
 
@@ -155,10 +173,12 @@ public class Swipe {
   }
 
   private void initializeNextItem() {
-    int nextItemIndex = manager.getIndexer().getNext();
-    if( manager.getProvider().getItemCount() > nextItemIndex && nextItemIndex >= 0 ) {
-      ensureItemExists( nextItemIndex );
-      preloadItem( nextItemIndex );
+    int[] nextItems = manager.getIndexer().getNext();
+    for( int nextItemIndex : nextItems ) {
+      if( manager.getProvider().getItemCount() > nextItemIndex && nextItemIndex >= 0 ) {
+        ensureItemExists( nextItemIndex );
+        preloadItem( nextItemIndex );
+      }
     }
   }
 
@@ -180,6 +200,7 @@ public class Swipe {
     if( !manager.getItemHolder().isLoaded( index ) ) {
       SwipeItem item = manager.getItemHolder().getItem( index );
       Control content = item.load( container );
+      container.layout( true );
       manager.getItemHolder().setContentForItem( index, content );
       remoteObject.call( METHOD_ITEM_LOADED, createLoadProperties( index, content ) );
       notifyItemLoaded( listeners, item, index );
@@ -197,12 +218,12 @@ public class Swipe {
     verifyIsNotDisposed();
     listeners.add( listener );
   }
-  
+
   public void removeSwipeListener( SwipeListener listener ) {
     verifyIsNotDisposed();
     listeners.remove( listener );
   }
-  
+
   public Control getControl() {
     return container;
   }
@@ -213,7 +234,32 @@ public class Swipe {
 
   public void setCacheSize( int size ) {
     verifyIsNotDisposed();
-    // TODO: Make cache size configurable.
+    manager.getIndexer().setRange( size );
+  }
+
+  public void lock( int direction, int index, boolean locked ) throws IllegalArgumentException {
+    verifyDirection( direction );
+    manager.lock( direction, index, locked );
+    Map<String, Object> properties = createLockProperties( direction, index );
+    String method = locked ? METHOD_LOCK_ITEM : METHOD_UNLOCK_ITEM;
+    remoteObject.call( method, properties );
+  }
+
+  private Map<String, Object> createLockProperties( int direction, int index ) {
+    Map<String, Object> properties = new HashMap<String, Object>();
+    if( direction == SWT.LEFT ) {
+      properties.put( PROPERTY_DIRECTION, "left" );
+    } else {
+      properties.put( PROPERTY_DIRECTION, "right" );
+    }
+    properties.put( PROPERTY_ITEM, Integer.valueOf( index ) );
+    return properties;
+  }
+
+  private void verifyDirection( int direction ) {
+    if( !( direction == SWT.LEFT || direction == SWT.RIGHT ) ) {
+      throw new IllegalArgumentException( "Invalid lock direction. Only SWT.LEFT and SWT.RIGHT are supported." );
+    }
   }
 
   private void verifyIsNotDisposed() {
@@ -227,9 +273,9 @@ public class Swipe {
     container.dispose();
     notifyDisposed( listeners, manager.getContext() );
   }
-  
+
   SwipeItemHolder getItemHolder() {
     return manager.getItemHolder();
   }
-  
+
 }
