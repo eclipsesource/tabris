@@ -22,9 +22,13 @@ public class SwipeItemIndexer {
   private boolean dirty;
 
   public SwipeItemIndexer() {
+    range = 1;
+    reset();
+  }
+
+  public void reset() {
     currentIndex = -1;
     oldCurrentIndex = -1;
-    range = 1;
   }
 
   public void setRange( int range ) {
@@ -63,7 +67,7 @@ public class SwipeItemIndexer {
   private int[] computePreviousIndexes( int[] newRange ) {
     int[] result = new int[ range ];
     if( currentIndex > 0 || oldCurrentIndex > 0) {
-      if( currentIndex > oldCurrentIndex || isAJump() ) {
+      if( currentIndex >= oldCurrentIndex || isAJump() ) {
         result = computeFollowUps( newRange );
       } else {
         result = computeInvertedFollowUps( newRange );
@@ -162,7 +166,7 @@ public class SwipeItemIndexer {
     return getAsArray( delta );
   }
 
-  private List<Integer> getAsList( int[] indexes ) {
+  public static List<Integer> getAsList( int[] indexes ) {
     ArrayList<Integer> result = new ArrayList<Integer>();
     for( int index : indexes ) {
       result.add( Integer.valueOf( index ) );
@@ -170,7 +174,7 @@ public class SwipeItemIndexer {
     return result;
   }
 
-  private int[] getAsArray( List<Integer> indexes ) {
+  public static int[] getAsArray( List<Integer> indexes ) {
     int result[] = new int[ indexes.size() ];
     for( int i = 0; i < indexes.size(); i++ ) {
       Integer index = indexes.get( i );

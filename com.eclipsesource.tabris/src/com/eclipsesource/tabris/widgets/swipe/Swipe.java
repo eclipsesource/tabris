@@ -11,6 +11,7 @@
 package com.eclipsesource.tabris.widgets.swipe;
 
 import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNull;
+import static com.eclipsesource.tabris.internal.SwipeItemIndexer.getAsArray;
 import static com.eclipsesource.tabris.internal.SwipeManager.METHOD_ITEM_LOADED;
 import static com.eclipsesource.tabris.internal.SwipeManager.METHOD_LOCK_LEFT;
 import static com.eclipsesource.tabris.internal.SwipeManager.METHOD_LOCK_RIGHT;
@@ -73,6 +74,15 @@ public class Swipe {
     remoteObject.set( PROPERTY_PARENT, WidgetUtil.getId( container ) );
     remoteObject.setHandler( new SwipeOperationHandler( this ) );
     container.setLayout( new SwipeLayout() );
+    if( manager.getProvider().getItemCount() > 0 ) {
+      show( 0 );
+    }
+  }
+
+  public void refresh() {
+    int current = manager.getIndexer().getCurrent();
+    manager.getIndexer().reset();
+    show( current );
   }
 
   public void show( int index ) throws IllegalArgumentException, IllegalStateException {
@@ -96,17 +106,26 @@ public class Swipe {
   }
 
   private void showItemAtIndex( int index ) {
-    if( index != manager.getIndexer().getCurrent() ) {
-      manager.getIndexer().setCurrent( index );
-      removeOutOfRangeItems();
-      handlePreviousItem();
+    boolean needsToShow = hasCurrentIndexChanged( index );
+    manager.getIndexer().setCurrent( index );
+    removeOutOfRangeItems();
+    handlePreviousItem();
+    if( needsToShow ) {
       showCurrentItem();
-      initializeNextItem();
     }
+    initializeNextItem();
+  }
+
+  private boolean hasCurrentIndexChanged( int index ) {
+    boolean needToShow = false;
+    if( index != manager.getIndexer().getCurrent() ) {
+      needToShow = true;
+    }
+    return needToShow;
   }
 
   private void removeOutOfRangeItems() {
-    int[] outOfRangeIndexes = manager.getIndexer().popOutOfRangeIndexes();
+    int[] outOfRangeIndexes = filterRespectingBorders( manager.getIndexer().popOutOfRangeIndexes() );
     for( int index : outOfRangeIndexes ) {
       if( wasActiveItem( index ) ) {
         manager.getItemHolder().getItem( index ).deactivate( manager.getContext() );
@@ -114,6 +133,16 @@ public class Swipe {
       manager.getItemHolder().removeItem( index );
     }
     callRemoveItems( outOfRangeIndexes );
+  }
+
+  private int[] filterRespectingBorders( int[] outOfRangeIndexes ) {
+    List<Integer> indexes = new ArrayList<Integer>();
+    for( int index : outOfRangeIndexes ) {
+      if( index < manager.getProvider().getItemCount() ) {
+        indexes.add( Integer.valueOf( index ) );
+      }
+    }
+    return getAsArray( indexes );
   }
 
   private boolean wasActiveItem( int index ) {

@@ -107,10 +107,23 @@ public class SwipeTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testShowWithNonExistingItemFails() {
-    SwipeItemProvider itemProvider = mockProvider( 3 );
+    SwipeItemProvider itemProvider = mockProvider( 0 );
     Swipe swipe = new Swipe( shell, itemProvider );
 
     swipe.show( 23 );
+  }
+
+  @Test
+  public void testShowsZeroByDefault() {
+    SwipeItemProvider itemProvider = mockProvider( 2 );
+    SwipeItem firstItem = mockSwipeItem( itemProvider, 0, true );
+    SwipeItem secondItem = mockSwipeItem( itemProvider, 1, true );
+    new Swipe( shell, itemProvider );
+
+    InOrder order = inOrder( firstItem, secondItem );
+    order.verify( firstItem ).load( any( Composite.class ) );
+    order.verify( firstItem ).activate( any( SwipeContext.class ) );
+    order.verify( secondItem ).load( any( Composite.class ) );
   }
 
   @Test
@@ -130,11 +143,12 @@ public class SwipeTest {
 
   @Test
   public void testInitializesWithFirstTwoItemsOnShowZeroWithBiggerCache() {
-    SwipeItemProvider itemProvider = mockProvider( 3 );
+    SwipeItemProvider itemProvider = mockProvider( 0 );
     SwipeItem firstItem = mockSwipeItem( itemProvider, 0, true );
     SwipeItem secondItem = mockSwipeItem( itemProvider, 1, true );
     SwipeItem thirdItem = mockSwipeItem( itemProvider, 2, true );
     Swipe swipe = new Swipe( shell, itemProvider );
+    mockProviderSize( itemProvider, 3 );
 
     swipe.setCacheSize( 2 );
     swipe.show( 0 );
@@ -148,10 +162,11 @@ public class SwipeTest {
 
   @Test
   public void testLoadsItemsOnlyOnce() {
-    SwipeItemProvider itemProvider = mockProvider( 2 );
+    SwipeItemProvider itemProvider = mockProvider( 0 );
     SwipeItem currentItem = mockSwipeItem( itemProvider, 0, true );
     SwipeItem nextItem = mockSwipeItem( itemProvider, 1, true );
     Swipe swipe = new Swipe( shell, itemProvider );
+    mockProviderSize( itemProvider, 2 );
 
     swipe.show( 0 );
     swipe.show( 0 );
@@ -177,11 +192,12 @@ public class SwipeTest {
 
   @Test
   public void testPreloadsNextItemsWithBiggerCache() {
-    SwipeItemProvider itemProvider = mockProvider( 3 );
+    SwipeItemProvider itemProvider = mockProvider( 0 );
     mockSwipeItem( itemProvider, 0, true );
     SwipeItem nextItem = mockSwipeItem( itemProvider, 1, true );
     SwipeItem thridItem = mockSwipeItem( itemProvider, 2, true );
     Swipe swipe = new Swipe( shell, itemProvider );
+    mockProviderSize( itemProvider, 3 );
 
     swipe.setCacheSize( 2 );
     swipe.show( 0 );
@@ -190,6 +206,21 @@ public class SwipeTest {
     verify( nextItem ).load( any( Composite.class ) );
     verify( thridItem ).isPreloadable();
     verify( thridItem ).load( any( Composite.class ) );
+  }
+
+  @Test
+  public void testRefreshLoadsNewItems() {
+    SwipeItemProvider itemProvider = mockProvider( 1 );
+    mockSwipeItem( itemProvider, 0, true );
+    SwipeItem nextItem = mockSwipeItem( itemProvider, 1, true );
+    Swipe swipe = new Swipe( shell, itemProvider );
+
+    swipe.show( 0 );
+    mockProviderSize( itemProvider, 2 );
+    swipe.refresh();
+
+    verify( nextItem ).isPreloadable();
+    verify( nextItem ).load( any( Composite.class ) );
   }
 
   @Test
@@ -232,11 +263,12 @@ public class SwipeTest {
 
   @Test
   public void testDeactivatesPreviousItemAndLoadsNextFromRight() {
-    SwipeItemProvider itemProvider = mockProvider( 3 );
+    SwipeItemProvider itemProvider = mockProvider( 0 );
     SwipeItem nextItem = mockSwipeItem( itemProvider, 0, true );
     SwipeItem currentItem = mockSwipeItem( itemProvider, 1, true );
     SwipeItem previousItem = mockSwipeItem( itemProvider, 2, true );
     Swipe swipe = new Swipe( shell, itemProvider );
+    mockProviderSize( itemProvider, 3 );
 
     swipe.show( 2 );
     swipe.show( 1 );
@@ -249,7 +281,7 @@ public class SwipeTest {
 
   @Test
   public void testDeactivatesPreviousItemAndLoadsNextFromRightWithBiggerCache() {
-    SwipeItemProvider itemProvider = mockProvider( 5 );
+    SwipeItemProvider itemProvider = mockProvider( 0 );
     SwipeItem zeroItem = mockSwipeItem( itemProvider, 0, true );
     SwipeItem firstItem = mockSwipeItem( itemProvider, 1, true );
     SwipeItem secondItem = mockSwipeItem( itemProvider, 2, true );
@@ -257,6 +289,7 @@ public class SwipeTest {
     SwipeItem fourthItem = mockSwipeItem( itemProvider, 4, true );
     Swipe swipe = new Swipe( shell, itemProvider );
     swipe.setCacheSize( 2 );
+    mockProviderSize( itemProvider, 5 );
 
     swipe.show( 3 );
     swipe.show( 2 );
@@ -321,11 +354,12 @@ public class SwipeTest {
 
   @Test
   public void testDoesNotPreLoadPreviousAndNextItemWhenForbidden() {
-    SwipeItemProvider itemProvider = mockProvider( 3 );
+    SwipeItemProvider itemProvider = mockProvider( 0 );
     SwipeItem previousItem = mockSwipeItem( itemProvider, 0, false );
     SwipeItem currentItem = mockSwipeItem( itemProvider, 1, true );
     SwipeItem nextItem = mockSwipeItem( itemProvider, 2, false );
     Swipe swipe = new Swipe( shell, itemProvider );
+    mockProviderSize( itemProvider, 3 );
 
     swipe.show( 1 );
 
@@ -351,6 +385,26 @@ public class SwipeTest {
     order.verify( currentItem ).load( any( Composite.class ) );
     order.verify( currentItem ).activate( any( SwipeContext.class ) );
     order.verify( itemProvider, never() ).getItem( 3 );
+  }
+
+  @Test
+  public void testDoesRespectItemsSizeWhenShiftingLeft() {
+    SwipeItemProvider itemProvider = mockProvider( 3 );
+    mockSwipeItem( itemProvider, 0, true );
+    SwipeItem previousItem = mockSwipeItem( itemProvider, 1, true );
+    SwipeItem currentItem = mockSwipeItem( itemProvider, 2, true );
+    Swipe swipe = new Swipe( shell, itemProvider );
+    swipe.setCacheSize( 2 );
+
+    swipe.show( 2 );
+    swipe.show( 1 );
+
+    InOrder order = inOrder( previousItem, currentItem, itemProvider );
+    order.verify( previousItem ).load( any( Composite.class ) );
+    order.verify( currentItem ).load( any( Composite.class ) );
+    order.verify( currentItem ).activate( any( SwipeContext.class ) );
+    order.verify( itemProvider, never() ).getItem( 3 );
+    order.verify( itemProvider, never() ).getItem( 4 );
   }
 
   @Test
@@ -612,13 +666,14 @@ public class SwipeTest {
 
   @Test
   public void testNotifiesListenerAboutLoadingAndActivation() {
-    SwipeItemProvider itemProvider = mockProvider( 3 );
+    SwipeItemProvider itemProvider = mockProvider( 0 );
     SwipeItem previousItem = mockSwipeItem( itemProvider, 0, true );
     SwipeItem currentItem = mockSwipeItem( itemProvider, 1, true );
     SwipeItem nextItem = mockSwipeItem( itemProvider, 2, true );
     Swipe swipe = new Swipe( shell, itemProvider );
     SwipeListener listener = mock( SwipeListener.class );
     swipe.addSwipeListener( listener );
+    mockProviderSize( itemProvider, 3 );
 
     swipe.show( 1 );
 
@@ -703,7 +758,7 @@ public class SwipeTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testLockFailsWIthInvalidDirection() {
-    SwipeItemProvider itemProvider = mockProvider( 2 );
+    SwipeItemProvider itemProvider = mockProvider( 0 );
     Swipe swipe = new Swipe( shell, itemProvider );
 
     swipe.lock( 0, SWT.ABORT );
@@ -711,7 +766,7 @@ public class SwipeTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testUnLockFailsWIthInvalidDirection() {
-    SwipeItemProvider itemProvider = mockProvider( 2 );
+    SwipeItemProvider itemProvider = mockProvider( 0 );
     Swipe swipe = new Swipe( shell, itemProvider );
 
     swipe.unlock( SWT.ABORT );
@@ -728,6 +783,10 @@ public class SwipeTest {
     SwipeItemProvider provider = mock( SwipeItemProvider.class );
     doReturn( Integer.valueOf( itemCount ) ).when( provider ).getItemCount();
     return provider;
+  }
+
+  public static void mockProviderSize( SwipeItemProvider provider, int itemCount ) {
+    doReturn( Integer.valueOf( itemCount ) ).when( provider ).getItemCount();
   }
 
   public static class TestItem implements SwipeItem {

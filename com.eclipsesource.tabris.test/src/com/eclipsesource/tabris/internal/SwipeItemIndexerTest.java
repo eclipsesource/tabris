@@ -44,6 +44,15 @@ public class SwipeItemIndexerTest {
   }
 
   @Test
+  public void testReset() {
+    indexer.setCurrent( 23 );
+
+    indexer.reset();
+
+    assertEquals( -1, indexer.getCurrent() );
+  }
+
+  @Test
   public void testSetCurrent() {
     indexer.setCurrent( 23 );
 

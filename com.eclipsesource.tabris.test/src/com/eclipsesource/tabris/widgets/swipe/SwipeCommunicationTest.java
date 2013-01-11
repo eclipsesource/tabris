@@ -130,7 +130,7 @@ public class SwipeCommunicationTest {
   @Test
   @SuppressWarnings("unchecked")
   public void testSendsLockLeft() {
-    SwipeItemProvider itemProvider = mockProvider( 2 );
+    SwipeItemProvider itemProvider = mockProvider( 1 );
     mockSwipeItem( itemProvider, 0, true );
     Swipe swipe = new Swipe( shell, itemProvider );
 
@@ -144,7 +144,7 @@ public class SwipeCommunicationTest {
   @Test
   @SuppressWarnings("unchecked")
   public void testSendsLockRight() {
-    SwipeItemProvider itemProvider = mockProvider( 2 );
+    SwipeItemProvider itemProvider = mockProvider( 1 );
     mockSwipeItem( itemProvider, 0, true );
     Swipe swipe = new Swipe( shell, itemProvider );
 
@@ -157,7 +157,7 @@ public class SwipeCommunicationTest {
 
   @Test
   public void testSendsUnlockLeft() {
-    SwipeItemProvider itemProvider = mockProvider( 2 );
+    SwipeItemProvider itemProvider = mockProvider( 1 );
     mockSwipeItem( itemProvider, 0, true );
     Swipe swipe = new Swipe( shell, itemProvider );
 
@@ -168,13 +168,29 @@ public class SwipeCommunicationTest {
 
   @Test
   public void testSendsUnlockRight() {
-    SwipeItemProvider itemProvider = mockProvider( 2 );
+    SwipeItemProvider itemProvider = mockProvider( 1 );
     mockSwipeItem( itemProvider, 0, true );
     Swipe swipe = new Swipe( shell, itemProvider );
 
     swipe.unlock( SWT.RIGHT );
 
     verify( remoteObject ).call( "unlockRight", null );
+  }
+
+  @Test
+  @SuppressWarnings("unchecked")
+  public void testDoesRespectItemsSizeWhenShiftingLeft() {
+    SwipeItemProvider itemProvider = mockProvider( 3 );
+    mockSwipeItem( itemProvider, 0, true );
+    mockSwipeItem( itemProvider, 1, true );
+    mockSwipeItem( itemProvider, 2, true );
+    Swipe swipe = new Swipe( shell, itemProvider );
+    swipe.setCacheSize( 2 );
+
+    swipe.show( 2 );
+    swipe.show( 1 );
+
+    verify( remoteObject, never() ).call( eq( "removeItems" ), anyMap() );
   }
 
 }
