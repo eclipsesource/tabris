@@ -12,9 +12,6 @@ package com.eclipsesource.tabris.internal;
 
 import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.swt.SWT;
 
 import com.eclipsesource.tabris.widgets.swipe.SwipeContext;
@@ -33,15 +30,17 @@ public class SwipeManager {
   public static final String METHOD_ITEM_LOADED = "itemLoaded";
   public static final String PROPERTY_CONTENT = "content";
   public static final String PROPERTY_INDEX = "index";
-  public static final String METHOD_LOCK_ITEM = "lockItem";
-  public static final String METHOD_UNLOCK_ITEM = "unlockItem";
-  public static final String PROPERTY_DIRECTION = "direction";
+  public static final String METHOD_LOCK_LEFT = "lockLeft";
+  public static final String METHOD_LOCK_RIGHT = "lockRight";
+  public static final String METHOD_UNLOCK_LEFT = "unlockLeft";
+  public static final String METHOD_UNLOCK_RIGHT = "unlockRight";
 
   private final SwipeItemProvider provider;
   private final SwipeContext context;
   private final SwipeItemHolder itemHolder;
   private final SwipeItemIndexer indexer;
-  private final List<LockedSwipeIndex> lockedIndexes;
+  private int leftLock;
+  private int rightLock;
 
   public SwipeManager( SwipeItemProvider provider ) {
     argumentNotNull( provider, "SwipeItemProvier" );
@@ -49,7 +48,8 @@ public class SwipeManager {
     this.context = new SwipeContext();
     this.itemHolder = new SwipeItemHolder();
     this.indexer = new SwipeItemIndexer();
-    this.lockedIndexes = new ArrayList<LockedSwipeIndex>();
+    this.leftLock = -1;
+    this.rightLock = -1;
   }
 
   public SwipeItemProvider getProvider() {
@@ -69,17 +69,26 @@ public class SwipeManager {
   }
 
   public void lock( int direction, int index, boolean locked ) {
-    LockedSwipeIndex lockedIndex = new LockedSwipeIndex( direction, index );
     if( locked ) {
-      addLockedIndex( lockedIndex );
+      lock( direction, index );
     } else {
-      lockedIndexes.remove( lockedIndex );
+      unlock( direction );
     }
   }
 
-  private void addLockedIndex( LockedSwipeIndex lockedIndex ) {
-    if( !lockedIndexes.contains( lockedIndex ) ) {
-      lockedIndexes.add( lockedIndex );
+  public void unlock( int direction ) {
+    if( direction == SWT.LEFT ) {
+      leftLock = -1;
+    } else {
+      rightLock = -1;
+    }
+  }
+
+  private void lock( int direction, int index ) {
+    if( direction == SWT.LEFT ) {
+      leftLock = index;
+    } else {
+      rightLock = index;
     }
   }
 
@@ -88,6 +97,16 @@ public class SwipeManager {
     if( toIndex > fromIndex ) {
       direction = SWT.RIGHT;
     }
-    return !lockedIndexes.contains( new LockedSwipeIndex( direction, fromIndex ) );
+    return isValidMove( fromIndex, direction );
+  }
+
+  private boolean isValidMove( int fromIndex, int direction ) {
+    boolean result;
+    if( direction == SWT.LEFT ) {
+      result = leftLock == -1 || fromIndex != leftLock;
+    } else {
+      result = rightLock == -1 || fromIndex != rightLock;
+    }
+    return result;
   }
 }

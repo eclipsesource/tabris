@@ -12,14 +12,14 @@ package com.eclipsesource.tabris.widgets.swipe;
 
 import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNull;
 import static com.eclipsesource.tabris.internal.SwipeManager.METHOD_ITEM_LOADED;
-import static com.eclipsesource.tabris.internal.SwipeManager.METHOD_LOCK_ITEM;
+import static com.eclipsesource.tabris.internal.SwipeManager.METHOD_LOCK_LEFT;
+import static com.eclipsesource.tabris.internal.SwipeManager.METHOD_LOCK_RIGHT;
 import static com.eclipsesource.tabris.internal.SwipeManager.METHOD_REMOVE_ITEMS;
-import static com.eclipsesource.tabris.internal.SwipeManager.METHOD_UNLOCK_ITEM;
+import static com.eclipsesource.tabris.internal.SwipeManager.METHOD_UNLOCK_LEFT;
+import static com.eclipsesource.tabris.internal.SwipeManager.METHOD_UNLOCK_RIGHT;
 import static com.eclipsesource.tabris.internal.SwipeManager.PROPERTY_ACTIVE_ITEM;
 import static com.eclipsesource.tabris.internal.SwipeManager.PROPERTY_CONTENT;
-import static com.eclipsesource.tabris.internal.SwipeManager.PROPERTY_DIRECTION;
 import static com.eclipsesource.tabris.internal.SwipeManager.PROPERTY_INDEX;
-import static com.eclipsesource.tabris.internal.SwipeManager.PROPERTY_ITEM;
 import static com.eclipsesource.tabris.internal.SwipeManager.PROPERTY_ITEMS;
 import static com.eclipsesource.tabris.internal.SwipeManager.PROPERTY_PARENT;
 import static com.eclipsesource.tabris.internal.SwipeManager.TYPE;
@@ -237,22 +237,23 @@ public class Swipe {
     manager.getIndexer().setRange( size );
   }
 
-  public void lock( int direction, int index, boolean locked ) throws IllegalArgumentException {
+  public void lock( int index, int direction ) throws IllegalArgumentException {
     verifyDirection( direction );
-    manager.lock( direction, index, locked );
-    Map<String, Object> properties = createLockProperties( direction, index );
-    String method = locked ? METHOD_LOCK_ITEM : METHOD_UNLOCK_ITEM;
-    remoteObject.call( method, properties );
+    manager.lock( direction, index, true );
+    String method = direction == SWT.LEFT ? METHOD_LOCK_LEFT : METHOD_LOCK_RIGHT;
+    remoteObject.call( method, createLockProperties( direction, index ) );
+  }
+
+  public void unlock( int direction ) throws IllegalArgumentException {
+    verifyDirection( direction );
+    manager.unlock( direction );
+    String method = direction == SWT.LEFT ? METHOD_UNLOCK_LEFT : METHOD_UNLOCK_RIGHT;
+    remoteObject.call( method, null );
   }
 
   private Map<String, Object> createLockProperties( int direction, int index ) {
     Map<String, Object> properties = new HashMap<String, Object>();
-    if( direction == SWT.LEFT ) {
-      properties.put( PROPERTY_DIRECTION, "left" );
-    } else {
-      properties.put( PROPERTY_DIRECTION, "right" );
-    }
-    properties.put( PROPERTY_ITEM, Integer.valueOf( index ) );
+    properties.put( PROPERTY_INDEX, Integer.valueOf( index ) );
     return properties;
   }
 

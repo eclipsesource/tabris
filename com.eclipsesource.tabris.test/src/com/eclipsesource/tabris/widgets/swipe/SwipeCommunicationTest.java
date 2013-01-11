@@ -134,12 +134,11 @@ public class SwipeCommunicationTest {
     mockSwipeItem( itemProvider, 0, true );
     Swipe swipe = new Swipe( shell, itemProvider );
 
-    swipe.lock( SWT.LEFT, 0, true );
+    swipe.lock( 0, SWT.LEFT );
 
     ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
-    verify( remoteObject ).call( eq( "lockItem" ), captor.capture() );
-    assertEquals( Integer.valueOf( 0 ), captor.getValue().get( "item" ) );
-    assertEquals( "left", captor.getValue().get( "direction" ) );
+    verify( remoteObject ).call( eq( "lockLeft" ), captor.capture() );
+    assertEquals( Integer.valueOf( 0 ), captor.getValue().get( "index" ) );
   }
 
   @Test
@@ -149,42 +148,33 @@ public class SwipeCommunicationTest {
     mockSwipeItem( itemProvider, 0, true );
     Swipe swipe = new Swipe( shell, itemProvider );
 
-    swipe.lock( SWT.RIGHT, 0, true );
+    swipe.lock( 0, SWT.RIGHT );
 
     ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
-    verify( remoteObject ).call( eq( "lockItem" ), captor.capture() );
-    assertEquals( Integer.valueOf( 0 ), captor.getValue().get( "item" ) );
-    assertEquals( "right", captor.getValue().get( "direction" ) );
+    verify( remoteObject ).call( eq( "lockRight" ), captor.capture() );
+    assertEquals( Integer.valueOf( 0 ), captor.getValue().get( "index" ) );
   }
 
   @Test
-  @SuppressWarnings("unchecked")
   public void testSendsUnlockLeft() {
     SwipeItemProvider itemProvider = mockProvider( 2 );
     mockSwipeItem( itemProvider, 0, true );
     Swipe swipe = new Swipe( shell, itemProvider );
 
-    swipe.lock( SWT.LEFT, 0, false );
+    swipe.unlock( SWT.LEFT );
 
-    ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
-    verify( remoteObject ).call( eq( "unlockItem" ), captor.capture() );
-    assertEquals( Integer.valueOf( 0 ), captor.getValue().get( "item" ) );
-    assertEquals( "left", captor.getValue().get( "direction" ) );
+    verify( remoteObject ).call( "unlockLeft", null );
   }
 
   @Test
-  @SuppressWarnings("unchecked")
   public void testSendsUnlockRight() {
     SwipeItemProvider itemProvider = mockProvider( 2 );
     mockSwipeItem( itemProvider, 0, true );
     Swipe swipe = new Swipe( shell, itemProvider );
 
-    swipe.lock( SWT.RIGHT, 0, false );
+    swipe.unlock( SWT.RIGHT );
 
-    ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
-    verify( remoteObject ).call( eq( "unlockItem" ), captor.capture() );
-    assertEquals( Integer.valueOf( 0 ), captor.getValue().get( "item" ) );
-    assertEquals( "right", captor.getValue().get( "direction" ) );
+    verify( remoteObject ).call( "unlockRight", null );
   }
 
 }

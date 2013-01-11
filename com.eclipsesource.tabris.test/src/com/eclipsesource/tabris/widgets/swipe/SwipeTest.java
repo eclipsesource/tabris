@@ -655,7 +655,21 @@ public class SwipeTest {
     Swipe swipe = new Swipe( shell, itemProvider );
     swipe.show( 0 );
 
-    swipe.lock( SWT.RIGHT, 0, true );
+    swipe.lock( 0, SWT.RIGHT );
+
+    swipe.show( 1 );
+  }
+
+  @Test
+  public void testShowRightUnlockedFailsNot() {
+    SwipeItemProvider itemProvider = mockProvider( 2 );
+    mockSwipeItem( itemProvider, 0, true );
+    mockSwipeItem( itemProvider, 1, true );
+    Swipe swipe = new Swipe( shell, itemProvider );
+    swipe.show( 0 );
+
+    swipe.lock( 0, SWT.RIGHT );
+    swipe.unlock( SWT.RIGHT );
 
     swipe.show( 1 );
   }
@@ -668,7 +682,21 @@ public class SwipeTest {
     Swipe swipe = new Swipe( shell, itemProvider );
     swipe.show( 1 );
 
-    swipe.lock( SWT.LEFT, 1, true );
+    swipe.lock( 1, SWT.LEFT );
+
+    swipe.show( 0 );
+  }
+
+  @Test
+  public void testShowLeftUnlockedFailsNot() {
+    SwipeItemProvider itemProvider = mockProvider( 2 );
+    mockSwipeItem( itemProvider, 0, true );
+    mockSwipeItem( itemProvider, 1, true );
+    Swipe swipe = new Swipe( shell, itemProvider );
+    swipe.show( 1 );
+
+    swipe.lock( 1, SWT.LEFT );
+    swipe.unlock( SWT.LEFT );
 
     swipe.show( 0 );
   }
@@ -678,7 +706,15 @@ public class SwipeTest {
     SwipeItemProvider itemProvider = mockProvider( 2 );
     Swipe swipe = new Swipe( shell, itemProvider );
 
-    swipe.lock( SWT.ABORT, 0, true );
+    swipe.lock( 0, SWT.ABORT );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testUnLockFailsWIthInvalidDirection() {
+    SwipeItemProvider itemProvider = mockProvider( 2 );
+    Swipe swipe = new Swipe( shell, itemProvider );
+
+    swipe.unlock( SWT.ABORT );
   }
 
   public static TestItem mockSwipeItem( SwipeItemProvider itemProvider, int itemIndex, boolean preloadable ) {
