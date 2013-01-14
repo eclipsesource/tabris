@@ -225,6 +225,20 @@ public class SwipeTest {
   }
 
   @Test
+  public void testSetCacheSizeTriggersRefresh() {
+    SwipeItemProvider itemProvider = mockProvider( 3 );
+    mockSwipeItem( itemProvider, 0, true );
+    mockSwipeItem( itemProvider, 1, true );
+    SwipeItem itemToLoad = mockSwipeItem( itemProvider, 2, true );
+    Swipe swipe = new Swipe( shell, itemProvider );
+
+    swipe.setCacheSize( 2 );
+
+    verify( itemToLoad ).isPreloadable();
+    verify( itemToLoad ).load( any( Composite.class ) );
+  }
+
+  @Test
   public void testDeactivatesPreviousItemAndLoadsNextFromLeft() {
     SwipeItemProvider itemProvider = mockProvider( 3 );
     SwipeItem previousItem = mockSwipeItem( itemProvider, 0, true );

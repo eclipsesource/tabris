@@ -79,6 +79,14 @@ public class Swipe {
     }
   }
 
+  public void setCacheSize( int size ) {
+    verifyIsNotDisposed();
+    manager.getIndexer().setRange( size );
+    if( isValidIndex( manager.getIndexer().getCurrent() ) ) {
+      refresh();
+    }
+  }
+
   public void refresh() throws IllegalStateException {
     int current = manager.getIndexer().getCurrent();
     if( isValidIndex( current ) ) {
@@ -267,11 +275,6 @@ public class Swipe {
 
   public SwipeContext getContext() {
     return manager.getContext();
-  }
-
-  public void setCacheSize( int size ) {
-    verifyIsNotDisposed();
-    manager.getIndexer().setRange( size );
   }
 
   public void lock( int index, int direction ) throws IllegalArgumentException {
