@@ -91,17 +91,21 @@ public class Swipe {
     int current = manager.getIndexer().getCurrent();
     if( isValidIndex( current ) ) {
       manager.getIndexer().reset();
-      show( current );
+      show( current, false );
     } else {
       throw new IllegalStateException( "Item at index " + current + " does not exist anymore." );
     }
   }
 
   public void show( int index ) throws IllegalArgumentException, IllegalStateException {
+    show( index, hasCurrentIndexChanged( index ) );
+  }
+
+  private void show( int index, boolean needsToShow ) {
     verifyIsNotDisposed();
     verifyMove( index );
     if( isValidIndex( index ) ) {
-      showItemAtIndex( index );
+      showItemAtIndex( index, needsToShow );
     } else {
       throw new IllegalArgumentException( "Item at index " + index + " does not exist." );
     }
@@ -117,8 +121,7 @@ public class Swipe {
     return index >= 0 && manager.getProvider().getItemCount() > index;
   }
 
-  private void showItemAtIndex( int index ) {
-    boolean needsToShow = hasCurrentIndexChanged( index );
+  private void showItemAtIndex( int index, boolean needsToShow ) {
     manager.getIndexer().setCurrent( index );
     removeOutOfRangeItems();
     handlePreviousItem();
@@ -154,7 +157,18 @@ public class Swipe {
         indexes.add( Integer.valueOf( index ) );
       }
     }
+    addLoadedOutOfBorderItems( indexes );
     return getAsArray( indexes );
+  }
+
+  private void addLoadedOutOfBorderItems( List<Integer> indexes ) {
+    List<Integer> loadedItems = manager.getItemHolder().getLoadedItems();
+    for( Integer item : loadedItems ) {
+      if( item.intValue() > ( manager.getProvider().getItemCount() -1 ) ) {
+        indexes.add( item );
+        manager.getItemHolder().removeItem( item.intValue() );
+      }
+    }
   }
 
   private boolean wasActiveItem( int index ) {

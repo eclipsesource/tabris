@@ -260,4 +260,46 @@ public class SwipeCommunicationTest {
     assertArrayEquals( new int[] { 0, 1 }, actualIndexes );
   }
 
+  @Test
+  @SuppressWarnings("unchecked")
+  public void testIncrementalDeleteSendsRemoveMessages() {
+    SwipeItemProvider itemProvider = mockProvider( 5 );
+    mockSwipeItem( itemProvider, 0, true );
+    mockSwipeItem( itemProvider, 1, true );
+    mockSwipeItem( itemProvider, 2, true );
+    mockSwipeItem( itemProvider, 3, true );
+    mockSwipeItem( itemProvider, 4, true );
+    Swipe swipe = new Swipe( shell, itemProvider );
+
+    swipe.show( 0 );
+    mockProviderSize( itemProvider, 2 );
+    swipe.refresh();
+    mockProviderSize( itemProvider, 1 );
+    swipe.refresh();
+
+    ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
+    verify( remoteObject, times( 1 ) ).call( eq( "removeItems" ), captor.capture() );
+    int[] actualIndexes = ( int[] )captor.getValue().get( "items" );
+    assertArrayEquals( new int[] { 1 }, actualIndexes );
+  }
+
+  @Test
+  public void testActivatesItemOnlyOnceOnRefresh() {
+    SwipeItemProvider itemProvider = mockProvider( 5 );
+    mockSwipeItem( itemProvider, 0, true );
+    mockSwipeItem( itemProvider, 1, true );
+    mockSwipeItem( itemProvider, 2, true );
+    mockSwipeItem( itemProvider, 3, true );
+    mockSwipeItem( itemProvider, 4, true );
+    Swipe swipe = new Swipe( shell, itemProvider );
+
+    swipe.show( 0 );
+    mockProviderSize( itemProvider, 2 );
+    swipe.refresh();
+    mockProviderSize( itemProvider, 1 );
+    swipe.refresh();
+
+    verify( remoteObject ).set( "activeItem", 0 );
+  }
+
 }

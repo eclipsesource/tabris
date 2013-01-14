@@ -10,9 +10,12 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -21,15 +24,15 @@ import com.eclipsesource.tabris.widgets.swipe.SwipeItem;
 
 
 public class SwipeItemHolder {
-  
+
   private final Map<Integer, SwipeItem> items;
   private final Map<Integer, Control> contentHolder;
-  
+
   public SwipeItemHolder() {
     items = new HashMap<Integer, SwipeItem>();
     contentHolder = new HashMap<Integer, Control>();
   }
-  
+
   public void addItem( int index, SwipeItem item, Composite content ) {
     addItem( index, item );
     setContentForItem( index, content );
@@ -41,12 +44,12 @@ public class SwipeItemHolder {
     }
     items.put( getKey( index ), item );
   }
-  
+
   public void removeItem( int index ) {
     items.remove( getKey( index ) );
     removeContentForItem( index );
   }
-  
+
   public void removeAllItems() {
     HashMap<Integer, SwipeItem> itemsCopy = new HashMap<Integer, SwipeItem>( items );
     for( Entry<Integer, SwipeItem> entry : itemsCopy.entrySet() ) {
@@ -57,7 +60,7 @@ public class SwipeItemHolder {
   public SwipeItem getItem( int index ) {
     return items.get( getKey( index ) );
   }
-  
+
   public boolean hasItem( int index ) {
     return items.containsKey( getKey( index ) );
   }
@@ -68,11 +71,16 @@ public class SwipeItemHolder {
     }
     contentHolder.put( getKey( index ), content );
   }
-  
+
   public boolean isLoaded( int index ) {
     return contentHolder.containsKey( getKey( index ) );
   }
-  
+
+  public List<Integer> getLoadedItems() {
+    Set<Integer> keySet = contentHolder.keySet();
+    return new ArrayList<Integer>( keySet );
+  }
+
   public Control getContentForItem( int index ) {
     return contentHolder.get( getKey( index ) );
   }
@@ -87,5 +95,5 @@ public class SwipeItemHolder {
   private Integer getKey( int index ) {
     return Integer.valueOf( index );
   }
-  
+
 }
