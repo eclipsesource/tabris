@@ -170,23 +170,27 @@ public class Swipe {
       if( manager.getProvider().getItemCount() > previousItemIndex && previousItemIndex >= 0 ) {
         ensureItemExists( previousItemIndex );
         preloadItem( previousItemIndex );
-        deactivateItem( previousItemIndex );
       }
     }
-  }
-
-  private void deactivateItem( int previousItemIndex ) {
-    SwipeItem item = manager.getItemHolder().getItem( previousItemIndex );
-    item.deactivate( manager.getContext() );
-    notifyItemDeactivated( listeners, item, previousItemIndex, manager.getContext() );
   }
 
   private void showCurrentItem() {
     int currentIndex = manager.getIndexer().getCurrent();
     ensureItemExists( currentIndex );
     ensureItemIsLoaded( currentIndex );
+    deactivateLastActiveItem();
     activateItem( currentIndex );
     setOnTopControl( manager.getItemHolder().getContentForItem( currentIndex ) );
+  }
+
+  private void deactivateLastActiveItem() {
+    int oldIndex = manager.getIndexer().getOld();
+    if( oldIndex != -1 ) {
+      ensureItemExists( oldIndex );
+      SwipeItem item = manager.getItemHolder().getItem( oldIndex );
+      item.deactivate( manager.getContext() );
+      notifyItemDeactivated( listeners, item, oldIndex, manager.getContext() );
+    }
   }
 
   private void activateItem( int currentIndex ) {

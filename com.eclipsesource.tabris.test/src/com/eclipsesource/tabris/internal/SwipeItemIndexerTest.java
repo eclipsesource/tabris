@@ -84,6 +84,7 @@ public class SwipeItemIndexerTest {
     assertEquals( 2, next[ 1 ] );
     assertEquals( 3, next[ 2 ] );
     assertEquals( 0, indexer.popOutOfRangeIndexes().length );
+    assertEquals( -1, indexer.getOld() );
   }
 
   @Test
@@ -150,6 +151,7 @@ public class SwipeItemIndexerTest {
     assertEquals( 0, previous );
     assertEquals( 2, next );
     assertEquals( 0, indexer.popOutOfRangeIndexes().length );
+    assertEquals( 0, indexer.getOld() );
   }
 
   @Test

@@ -18,7 +18,7 @@ public class SwipeItemIndexer {
 
   private int currentIndex;
   private int range;
-  private int oldCurrentIndex;
+  private int oldIndex;
   private boolean dirty;
 
   public SwipeItemIndexer() {
@@ -28,7 +28,7 @@ public class SwipeItemIndexer {
 
   public void reset() {
     currentIndex = -1;
-    oldCurrentIndex = -1;
+    oldIndex = -1;
   }
 
   public void setRange( int range ) {
@@ -41,7 +41,7 @@ public class SwipeItemIndexer {
   public void setCurrent( int index ) {
     dirty = true;
     verifyNewIndex( index );
-    oldCurrentIndex = currentIndex;
+    oldIndex = currentIndex;
     currentIndex = index;
   }
 
@@ -49,6 +49,10 @@ public class SwipeItemIndexer {
     if( newIndex < 0 ) {
       throw new IllegalArgumentException( "Index must be positive" );
     }
+  }
+
+  public int getOld() {
+    return oldIndex;
   }
 
   public int getCurrent() {
@@ -66,8 +70,8 @@ public class SwipeItemIndexer {
 
   private int[] computePreviousIndexes( int[] newRange ) {
     int[] result = new int[ range ];
-    if( currentIndex > 0 || oldCurrentIndex > 0) {
-      if( currentIndex >= oldCurrentIndex || isAJump() ) {
+    if( currentIndex > 0 || oldIndex > 0) {
+      if( currentIndex >= oldIndex || isAJump() ) {
         result = computeFollowUps( newRange );
       } else {
         result = computeInvertedFollowUps( newRange );
@@ -99,7 +103,7 @@ public class SwipeItemIndexer {
 
   private int[] computeNextIndexes( int[] newRange ) {
     int[] result = new int[ range + 1 ];
-    if( currentIndex > oldCurrentIndex || isAJump() ) {
+    if( currentIndex > oldIndex || isAJump() ) {
       result = computeInvertedFollowUps( newRange );
     } else {
       if( currentIndex > 0 ) {
@@ -112,7 +116,7 @@ public class SwipeItemIndexer {
   }
 
   private boolean isAJump() {
-    return ( currentIndex - oldCurrentIndex ) > 1 || ( oldCurrentIndex - currentIndex ) > 1;
+    return ( currentIndex - oldIndex ) > 1 || ( oldIndex - currentIndex ) > 1;
   }
 
   private int[] computeInvertedFollowUps( int[] indexes ) {
@@ -137,7 +141,7 @@ public class SwipeItemIndexer {
 
   public int[] popOutOfRangeIndexes() {
     int[] result = getEmptyRange();
-    if( dirty && oldCurrentIndex != -1 ) {
+    if( dirty && oldIndex != -1 ) {
       result = computeOutOfRangeIndexes();
       dirty = false;
     }
@@ -150,7 +154,7 @@ public class SwipeItemIndexer {
 
   private int[] computeOutOfRangeIndexes() {
     int[] newRange = getRange( currentIndex );
-    int[] oldRange = getRange( oldCurrentIndex );
+    int[] oldRange = getRange( oldIndex );
     return computeDelta( oldRange, newRange );
   }
 

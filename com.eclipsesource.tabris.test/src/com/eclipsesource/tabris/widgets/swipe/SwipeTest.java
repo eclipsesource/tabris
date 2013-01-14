@@ -16,6 +16,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.inOrder;
@@ -258,7 +259,7 @@ public class SwipeTest {
     order.verify( fourthItem ).load( any( Composite.class ) );
     order.verify( fourthItem ).activate( any( SwipeContext.class ) );
     order.verify( fifthItem ).load( any( Composite.class ) );
-    order.verify( thirdItem ).deactivate( any( SwipeContext.class ) );
+    order.verify( fourthItem ).deactivate( any( SwipeContext.class ) );
   }
 
   @Test
@@ -719,6 +720,26 @@ public class SwipeTest {
     order.verify( listener ).itemDeactivated( eq( previousItem ), eq( 0 ), any( SwipeContext.class ) );
     order.verify( listener ).itemActivated( eq( currentItem ), eq( 1 ), any( SwipeContext.class ) );
     order.verify( listener ).itemLoaded( nextItem, 2 );
+  }
+
+  @Test
+  public void testNotifiesListenerAboutDeactivationWithBiggerCacheSize() {
+    SwipeItemProvider itemProvider = mockProvider( 0 );
+    mockSwipeItem( itemProvider, 0, true );
+    mockSwipeItem( itemProvider, 1, true );
+    mockSwipeItem( itemProvider, 2, true );
+    mockSwipeItem( itemProvider, 3, true );
+    mockSwipeItem( itemProvider, 4, true );
+    Swipe swipe = new Swipe( shell, itemProvider );
+    SwipeListener listener = mock( SwipeListener.class );
+    swipe.addSwipeListener( listener );
+    swipe.setCacheSize( 2 );
+    mockProviderSize( itemProvider, 5 );
+
+    swipe.show( 2 );
+    swipe.show( 3 );
+
+    verify( listener, times( 1 ) ).itemDeactivated( any( SwipeItem.class ), anyInt(), any( SwipeContext.class ) );
   }
 
   @Test( expected = IllegalStateException.class )
