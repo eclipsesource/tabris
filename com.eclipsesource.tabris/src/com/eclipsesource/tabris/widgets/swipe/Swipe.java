@@ -291,11 +291,12 @@ public class Swipe {
     return manager.getContext();
   }
 
-  public void lock( int index, int direction ) throws IllegalArgumentException {
+  public void lock( int direction ) throws IllegalArgumentException {
     verifyDirection( direction );
-    manager.lock( direction, index, true );
+    int indexToLock = manager.getIndexer().getCurrent();
+    manager.lock( direction, indexToLock, true );
     String method = direction == SWT.LEFT ? METHOD_LOCK_LEFT : METHOD_LOCK_RIGHT;
-    remoteObject.call( method, createLockProperties( direction, index ) );
+    remoteObject.call( method, createLockProperties( direction, indexToLock ) );
   }
 
   public void unlock( int direction ) throws IllegalArgumentException {

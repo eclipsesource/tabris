@@ -764,7 +764,7 @@ public class SwipeTest {
     Swipe swipe = new Swipe( shell, itemProvider );
     swipe.show( 0 );
 
-    swipe.lock( 0, SWT.RIGHT );
+    swipe.lock( SWT.RIGHT );
 
     swipe.show( 1 );
   }
@@ -777,7 +777,7 @@ public class SwipeTest {
     Swipe swipe = new Swipe( shell, itemProvider );
     swipe.show( 0 );
 
-    swipe.lock( 0, SWT.RIGHT );
+    swipe.lock( SWT.RIGHT );
     swipe.unlock( SWT.RIGHT );
 
     swipe.show( 1 );
@@ -791,7 +791,7 @@ public class SwipeTest {
     Swipe swipe = new Swipe( shell, itemProvider );
     swipe.show( 1 );
 
-    swipe.lock( 1, SWT.LEFT );
+    swipe.lock( SWT.LEFT );
 
     swipe.show( 0 );
   }
@@ -804,7 +804,7 @@ public class SwipeTest {
     Swipe swipe = new Swipe( shell, itemProvider );
     swipe.show( 1 );
 
-    swipe.lock( 1, SWT.LEFT );
+    swipe.lock( SWT.LEFT );
     swipe.unlock( SWT.LEFT );
 
     swipe.show( 0 );
@@ -815,7 +815,7 @@ public class SwipeTest {
     SwipeItemProvider itemProvider = mockProvider( 0 );
     Swipe swipe = new Swipe( shell, itemProvider );
 
-    swipe.lock( 0, SWT.ABORT );
+    swipe.lock( SWT.ABORT );
   }
 
   @Test( expected = IllegalArgumentException.class )

@@ -136,7 +136,7 @@ public class SwipeCommunicationTest {
     mockSwipeItem( itemProvider, 0, true );
     Swipe swipe = new Swipe( shell, itemProvider );
 
-    swipe.lock( 0, SWT.LEFT );
+    swipe.lock( SWT.LEFT );
 
     ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
     verify( remoteObject ).call( eq( "lockLeft" ), captor.capture() );
@@ -150,7 +150,7 @@ public class SwipeCommunicationTest {
     mockSwipeItem( itemProvider, 0, true );
     Swipe swipe = new Swipe( shell, itemProvider );
 
-    swipe.lock( 0, SWT.RIGHT );
+    swipe.lock( SWT.RIGHT );
 
     ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
     verify( remoteObject ).call( eq( "lockRight" ), captor.capture() );
