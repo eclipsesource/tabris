@@ -88,6 +88,19 @@ public class SwipeItemIndexerTest {
   }
 
   @Test
+  public void testCurrentIs_0then4_RangeIs_1() {
+    indexer.setCurrent( 0 );
+    indexer.setCurrent( 4 );
+
+    int[] next = indexer.getNext();
+    int[] previous = indexer.getPrevious();
+
+    assertEquals( 5, next[ 0 ] );
+    assertEquals( 3, previous[ 0 ] );
+    assertArrayEquals( new int[] { 0, 1 }, indexer.popOutOfRangeIndexes() );
+  }
+
+  @Test
   public void testCurrentIs_0_RangeIs_0() {
     indexer.setRange( 0 );
     indexer.setCurrent( 0 );

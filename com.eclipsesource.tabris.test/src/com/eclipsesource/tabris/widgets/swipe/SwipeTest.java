@@ -812,6 +812,20 @@ public class SwipeTest {
     swipe.unlock( SWT.ABORT );
   }
 
+  @Test( expected = IllegalStateException.class )
+  public void testFailsWhenRemovingActiveItem() {
+    SwipeItemProvider itemProvider = mockProvider( 0 );
+    mockSwipeItem( itemProvider, 0, true );
+    mockSwipeItem( itemProvider, 1, true );
+    mockSwipeItem( itemProvider, 2, true );
+    Swipe swipe = new Swipe( shell, itemProvider );
+    mockProviderSize( itemProvider, 3 );
+
+    swipe.show( 1 );
+    mockProviderSize( itemProvider, 1 );
+    swipe.refresh();
+  }
+
   public static TestItem mockSwipeItem( SwipeItemProvider itemProvider, int itemIndex, boolean preloadable ) {
     TestItem swipeItem = spy( new TestItem() );
     when( itemProvider.getItem( itemIndex ) ).thenReturn( swipeItem );

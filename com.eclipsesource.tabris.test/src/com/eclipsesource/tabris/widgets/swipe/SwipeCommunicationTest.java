@@ -218,4 +218,46 @@ public class SwipeCommunicationTest {
     assertEquals( Integer.valueOf( 5 ), captor.getAllValues().get( 2 ).get( "index" ) );
   }
 
+  @Test
+  @SuppressWarnings("unchecked")
+  public void testJumpSkipsLoadingOfUnneededItem() {
+    SwipeItemProvider itemProvider = mockProvider( 5 );
+    mockSwipeItem( itemProvider, 0, true );
+    mockSwipeItem( itemProvider, 1, true );
+    mockSwipeItem( itemProvider, 2, true );
+    mockSwipeItem( itemProvider, 3, true );
+    mockSwipeItem( itemProvider, 4, true );
+    Swipe swipe = new Swipe( shell, itemProvider );
+
+    swipe.show( 0 );
+    swipe.show( 4 );
+
+    ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
+    verify( remoteObject, times( 4 ) ).call( eq( "itemLoaded" ), captor.capture() );
+    assertEquals( Integer.valueOf( 0 ), captor.getAllValues().get( 0 ).get( "index" ) );
+    assertEquals( Integer.valueOf( 1 ), captor.getAllValues().get( 1 ).get( "index" ) );
+    assertEquals( Integer.valueOf( 3 ), captor.getAllValues().get( 2 ).get( "index" ) );
+    assertEquals( Integer.valueOf( 4 ), captor.getAllValues().get( 3 ).get( "index" ) );
+  }
+
+  @Test
+  @SuppressWarnings("unchecked")
+  public void testJumpRemovesOutOfRangeItem() {
+    SwipeItemProvider itemProvider = mockProvider( 5 );
+    mockSwipeItem( itemProvider, 0, true );
+    mockSwipeItem( itemProvider, 1, true );
+    mockSwipeItem( itemProvider, 2, true );
+    mockSwipeItem( itemProvider, 3, true );
+    mockSwipeItem( itemProvider, 4, true );
+    Swipe swipe = new Swipe( shell, itemProvider );
+
+    swipe.show( 0 );
+    swipe.show( 4 );
+
+    ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
+    verify( remoteObject, times( 1 ) ).call( eq( "removeItems" ), captor.capture() );
+    int[] actualIndexes = ( int[] )captor.getValue().get( "items" );
+    assertArrayEquals( new int[] { 0, 1 }, actualIndexes );
+  }
+
 }

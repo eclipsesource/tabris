@@ -79,10 +79,14 @@ public class Swipe {
     }
   }
 
-  public void refresh() {
+  public void refresh() throws IllegalStateException {
     int current = manager.getIndexer().getCurrent();
-    manager.getIndexer().reset();
-    show( current );
+    if( isValidIndex( current ) ) {
+      manager.getIndexer().reset();
+      show( current );
+    } else {
+      throw new IllegalStateException( "Item at index " + current + " does not exist anymore." );
+    }
   }
 
   public void show( int index ) throws IllegalArgumentException, IllegalStateException {
