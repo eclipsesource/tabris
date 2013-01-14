@@ -337,4 +337,13 @@ public class SwipeItemIndexerTest {
     assertEquals( 0, outOfRangeIndexes.length );
   }
 
+  @Test
+  public void testDoesNotPopOutOfRangeWithFirstSetCurrent() {
+    indexer.setCurrent( 5 );
+
+    int[] outOfRangeIndexes = indexer.popOutOfRangeIndexes();
+
+    assertEquals( 0, outOfRangeIndexes.length );
+  }
+
 }

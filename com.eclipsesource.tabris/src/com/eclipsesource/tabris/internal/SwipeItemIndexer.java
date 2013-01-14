@@ -137,7 +137,7 @@ public class SwipeItemIndexer {
 
   public int[] popOutOfRangeIndexes() {
     int[] result = getEmptyRange();
-    if( dirty ) {
+    if( dirty && oldCurrentIndex != -1 ) {
       result = computeOutOfRangeIndexes();
       dirty = false;
     }

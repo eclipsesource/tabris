@@ -11,6 +11,7 @@
 package com.eclipsesource.tabris.widgets.swipe;
 
 import static com.eclipsesource.tabris.widgets.swipe.SwipeTest.mockProvider;
+import static com.eclipsesource.tabris.widgets.swipe.SwipeTest.mockProviderSize;
 import static com.eclipsesource.tabris.widgets.swipe.SwipeTest.mockSwipeItem;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -18,6 +19,7 @@ import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.List;
@@ -191,6 +193,29 @@ public class SwipeCommunicationTest {
     swipe.show( 1 );
 
     verify( remoteObject, never() ).call( eq( "removeItems" ), anyMap() );
+  }
+
+  @Test
+  @SuppressWarnings("unchecked")
+  public void testDoesNotRemoveUnrelatedItemAndLoadsNext() {
+    SwipeItemProvider itemProvider = mockProvider( 0 );
+    mockSwipeItem( itemProvider, 0, true );
+    mockSwipeItem( itemProvider, 1, true );
+    mockSwipeItem( itemProvider, 2, true );
+    mockSwipeItem( itemProvider, 3, true );
+    mockSwipeItem( itemProvider, 4, true );
+    Swipe swipe = new Swipe( shell, itemProvider );
+    mockProviderSize( itemProvider, 5 );
+    swipe.show( 4 );
+
+    mockSwipeItem( itemProvider, 5, true );
+    mockProviderSize( itemProvider, 6 );
+    swipe.refresh();
+
+    verify( remoteObject, never() ).call( eq( "removeItems" ), anyMap() );
+    ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
+    verify( remoteObject, times( 3 ) ).call( eq( "itemLoaded" ), captor.capture() );
+    assertEquals( Integer.valueOf( 5 ), captor.getAllValues().get( 2 ).get( "index" ) );
   }
 
 }

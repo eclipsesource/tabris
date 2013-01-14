@@ -684,6 +684,25 @@ public class SwipeTest {
   }
 
   @Test
+  public void testNotifiesListenerAboutActivationFromLeft() {
+    SwipeItemProvider itemProvider = mockProvider( 0 );
+    SwipeItem previousItem = mockSwipeItem( itemProvider, 0, true );
+    SwipeItem currentItem = mockSwipeItem( itemProvider, 1, true );
+    mockSwipeItem( itemProvider, 2, true );
+    Swipe swipe = new Swipe( shell, itemProvider );
+    SwipeListener listener = mock( SwipeListener.class );
+    swipe.addSwipeListener( listener );
+    mockProviderSize( itemProvider, 3 );
+
+    swipe.show( 1 );
+    swipe.show( 0 );
+
+    InOrder order = inOrder( listener );
+    order.verify( listener ).itemActivated( eq( currentItem ), eq( 1 ), any( SwipeContext.class ) );
+    order.verify( listener ).itemActivated( eq( previousItem ), eq( 0 ), any( SwipeContext.class ) );
+  }
+
+  @Test
   public void testNotifiesListenerAboutDeactivation() {
     SwipeItemProvider itemProvider = mockProvider( 3 );
     SwipeItem previousItem = mockSwipeItem( itemProvider, 0, true );
