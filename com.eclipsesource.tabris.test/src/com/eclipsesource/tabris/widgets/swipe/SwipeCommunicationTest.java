@@ -180,6 +180,23 @@ public class SwipeCommunicationTest {
   }
 
   @Test
+  public void testSendsUnlockRightWhenItemRemoved() {
+    SwipeItemProvider itemProvider = mockProvider( 3 );
+    mockSwipeItem( itemProvider, 0, true );
+    mockSwipeItem( itemProvider, 1, true );
+    mockSwipeItem( itemProvider, 2, true );
+    Swipe swipe = new Swipe( shell, itemProvider );
+
+    swipe.show( 2 );
+    swipe.lock( SWT.RIGHT );
+    swipe.show( 1 );
+    mockProviderSize( itemProvider, 2 );
+    swipe.refresh();
+
+    verify( remoteObject ).call( "unlockRight", null );
+  }
+
+  @Test
   @SuppressWarnings("unchecked")
   public void testDoesRespectItemsSizeWhenShiftingLeft() {
     SwipeItemProvider itemProvider = mockProvider( 3 );

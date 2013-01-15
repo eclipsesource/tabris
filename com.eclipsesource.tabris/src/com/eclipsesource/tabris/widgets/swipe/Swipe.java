@@ -105,6 +105,7 @@ public class Swipe {
     verifyIsNotDisposed();
     verifyMove( index );
     if( isValidIndex( index ) ) {
+      verifyLocks();
       showItemAtIndex( index, needsToShow );
     } else {
       throw new IllegalArgumentException( "Item at index " + index + " does not exist." );
@@ -114,6 +115,17 @@ public class Swipe {
   private void verifyMove( int index ) {
     if( !manager.isMoveAllowed( manager.getIndexer().getCurrent(), index ) ) {
       throw new IllegalStateException( "Move not allowed. Item " + index + " is locked." );
+    }
+  }
+
+  private void verifyLocks() {
+    removeLockIfOutOfBounds( manager.getLeftLock(), SWT.LEFT );
+    removeLockIfOutOfBounds( manager.getRightLock(), SWT.RIGHT );
+  }
+
+  private void removeLockIfOutOfBounds( int lock, int direction ) {
+    if( lock != -1 && !isValidIndex( lock ) ) {
+      unlock( direction );
     }
   }
 

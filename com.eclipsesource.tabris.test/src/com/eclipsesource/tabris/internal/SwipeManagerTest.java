@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
@@ -137,5 +138,25 @@ public class SwipeManagerTest {
     boolean allowed = manager.isMoveAllowed( 1, 0 );
 
     assertTrue( allowed );
+  }
+
+  @Test
+  public void testGetLeftLock() {
+    SwipeManager manager = new SwipeManager( mock( SwipeItemProvider.class ) );
+    manager.lock( SWT.LEFT, 1, true );
+
+    int leftLock = manager.getLeftLock();
+
+    assertEquals( 1, leftLock );
+  }
+
+  @Test
+  public void testGetRightLock() {
+    SwipeManager manager = new SwipeManager( mock( SwipeItemProvider.class ) );
+    manager.lock( SWT.RIGHT, 1, true );
+
+    int rightLock = manager.getRightLock();
+
+    assertEquals( 1, rightLock );
   }
 }

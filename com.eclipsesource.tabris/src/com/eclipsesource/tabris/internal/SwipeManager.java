@@ -109,4 +109,12 @@ public class SwipeManager {
     }
     return result;
   }
+
+  public int getLeftLock() {
+    return leftLock;
+  }
+
+  public int getRightLock() {
+    return rightLock;
+  }
 }
