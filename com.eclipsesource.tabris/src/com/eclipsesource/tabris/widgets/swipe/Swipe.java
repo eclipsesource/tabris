@@ -152,7 +152,7 @@ public class Swipe {
   }
 
   private void removeOutOfRangeItems() {
-    int[] outOfRangeIndexes = filterRespectingBorders( manager.getIndexer().popOutOfRangeIndexes() );
+    int[] outOfRangeIndexes = filterRespectingBounds( manager.getIndexer().popOutOfRangeIndexes() );
     for( int index : outOfRangeIndexes ) {
       if( wasActiveItem( index ) ) {
         manager.getItemHolder().getItem( index ).deactivate( manager.getContext() );
@@ -162,25 +162,29 @@ public class Swipe {
     callRemoveItems( outOfRangeIndexes );
   }
 
-  private int[] filterRespectingBorders( int[] outOfRangeIndexes ) {
+  private int[] filterRespectingBounds( int[] outOfRangeIndexes ) {
     List<Integer> indexes = new ArrayList<Integer>();
     for( int index : outOfRangeIndexes ) {
       if( index < manager.getProvider().getItemCount() ) {
         indexes.add( Integer.valueOf( index ) );
       }
     }
-    addLoadedOutOfBorderItems( indexes );
+    addLoadedOutOfBoundsItems( indexes );
     return getAsArray( indexes );
   }
 
-  private void addLoadedOutOfBorderItems( List<Integer> indexes ) {
+  private void addLoadedOutOfBoundsItems( List<Integer> indexes ) {
     List<Integer> loadedItems = manager.getItemHolder().getLoadedItems();
     for( Integer item : loadedItems ) {
-      if( item.intValue() > ( manager.getProvider().getItemCount() -1 ) ) {
+      if( item.intValue() > ( manager.getProvider().getItemCount() -1 ) || isOutOfRange( item ) ) {
         indexes.add( item );
         manager.getItemHolder().removeItem( item.intValue() );
       }
     }
+  }
+
+  private boolean isOutOfRange( Integer item ) {
+    return manager.getIndexer().getRange() == 0 && item.intValue() != manager.getIndexer().getCurrent();
   }
 
   private boolean wasActiveItem( int index ) {

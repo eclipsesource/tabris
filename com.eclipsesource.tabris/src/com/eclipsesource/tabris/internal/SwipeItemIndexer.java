@@ -38,6 +38,10 @@ public class SwipeItemIndexer {
     this.range = range;
   }
 
+  public int getRange() {
+    return range;
+  }
+
   public void setCurrent( int index ) {
     dirty = true;
     verifyNewIndex( index );

@@ -60,6 +60,13 @@ public class SwipeItemIndexerTest {
   }
 
   @Test
+  public void testSetRange() {
+    indexer.setRange( 23 );
+
+    assertEquals( 23, indexer.getRange() );
+  }
+
+  @Test
   public void testCurrentIs_0() {
     indexer.setCurrent( 0 );
 
