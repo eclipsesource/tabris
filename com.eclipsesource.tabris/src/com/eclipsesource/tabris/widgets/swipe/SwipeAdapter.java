@@ -12,6 +12,12 @@ package com.eclipsesource.tabris.widgets.swipe;
 
 
 /**
+ * <p>
+ * An empty implementation for {@link SwipeListener} to be able to just override separate methods.
+ * </p>
+ *
+ * @see SwipeListener
+ *
  * @since 0.10
  */
 public class SwipeAdapter implements SwipeListener {

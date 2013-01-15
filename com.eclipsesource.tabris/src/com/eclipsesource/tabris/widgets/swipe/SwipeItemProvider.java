@@ -12,12 +12,31 @@ package com.eclipsesource.tabris.widgets.swipe;
 
 
 /**
+ * <p>
+ * A <code>SwipeItemProvider</code> acts a the data source for a {@link Swipe} object. It's responsible for creating
+ * the {@link SwipeItem}s for the <code>Swipe</code> object. It's comparable with a JFace Viewer.
+ * </p>
+ *
+ * @see Swipe
+ * @see SwipeItem
+ *
  * @since 0.10
  */
 public interface SwipeItemProvider {
-  
+
+  /**
+   * <p>
+   * Should return the item for the given index.
+   * </p>
+   */
   SwipeItem getItem( int index );
-  
+
+  /**
+   * <p>
+   * Should return the amount of items of the {@link Swipe} object. Can change during runtime to grow/shrink
+   * dynamically.
+   * </p>
+   */
   int getItemCount();
-  
+
 }

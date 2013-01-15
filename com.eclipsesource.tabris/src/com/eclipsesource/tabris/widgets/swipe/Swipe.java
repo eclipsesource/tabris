@@ -49,6 +49,24 @@ import com.eclipsesource.tabris.internal.SwipeOperationHandler;
 
 
 /**
+ * <p>
+ * A <code>Swipe</code> object can be used to navigate through a stack of {@link Composite} objects (represented by a
+ * {@link SwipeItem}using a swipe gesture. The content of a <code>Swipe</code> can be modified in a dynamic way using
+ * a {@link SwipeItemProvider}. To increase the user experience the content of each item can be pre-loaded.
+ * </p>
+ * <p>
+ * E.g. the default size of pre loaded items is 1. This means when you show item 1, item 0 an 2 will be pre loaded. The
+ * size of this pre loading cache is configurable and can change during runtime.
+ * </p>
+ * <p>
+ * It's also possible to lock item in two directions. This means when a item 1 is locked with <code>SWT.LEFT</code> a
+ * user is not able to swipe to item 0.
+ * </p>
+ *
+ * @see SwipeItemProvider
+ * @see SwipeListener
+ * @see SwipeContext
+ *
  * @since 0.10
  */
 @SuppressWarnings("restriction")
@@ -79,6 +97,14 @@ public class Swipe {
     }
   }
 
+  /**
+   * <p>
+   * Configures the amount of pre loaded items. A size of 2 means that when showing item 3, item 1, 2, 4 and 5 will
+   * be loaded. Setting the cache size to 0 means there will be no pre loading at all.
+   * </p>
+   *
+   * @param size The amount of item to pre loa din each direction.
+   */
   public void setCacheSize( int size ) {
     verifyIsNotDisposed();
     manager.getIndexer().setRange( size );
@@ -87,6 +113,14 @@ public class Swipe {
     }
   }
 
+  /**
+   * <p>
+   * Triggers a refresh to get new input from the {@link SwipeItemProvider}. This is like calling the show method with
+   * the current index.
+   * </p>
+   *
+   * @throws IllegalStateException when the current item was removed in the {@link SwipeItemProvider}.
+   */
   public void refresh() throws IllegalStateException {
     int current = manager.getIndexer().getCurrent();
     if( isValidIndex( current ) ) {
@@ -97,6 +131,17 @@ public class Swipe {
     }
   }
 
+  /**
+   * <p>
+   * Shows the item at the given index. Calling this method is comparable with a programmatic swiping to a given item.
+   * </p>
+   *
+   * @param index the index of the item to swipe to.
+   *
+   * @throws IllegalArgumentException when the passed index is negative or does not exist in the
+   *                                  {@link SwipeItemProvider}.
+   * @throws IllegalStateException when already disposed or the move is not valid e.g. when a item is locked.
+   */
   public void show( int index ) throws IllegalArgumentException, IllegalStateException {
     show( index, hasCurrentIndexChanged( index ) );
   }
@@ -289,24 +334,52 @@ public class Swipe {
     return result;
   }
 
+  /**
+   * <p>
+   * Adds a {@link SwipeListener} to get notified about swipping events.
+   * </p>
+   */
   public void addSwipeListener( SwipeListener listener ) {
     verifyIsNotDisposed();
     listeners.add( listener );
   }
 
+  /**
+   * <p>
+   * Removes the given {@link SwipeListener}.
+   * </p>
+   */
   public void removeSwipeListener( SwipeListener listener ) {
     verifyIsNotDisposed();
     listeners.remove( listener );
   }
 
+  /**
+   * <p>
+   * Returns the underlying control. This control is the parent of all {@link SwipeItem}s. Should only be used to do
+   * layouting stuff.
+   * </p>
+   */
   public Control getControl() {
     return container;
   }
 
+  /**
+   * <p>
+   * Returns the {@link SwipeContext} that is shared during all swipping events.
+   * </p>
+   */
   public SwipeContext getContext() {
     return manager.getContext();
   }
 
+  /**
+   * <p>
+   * Locks the current item in the given direction. Allowed directions are SWT.LEFT and SWT.RIGHT.
+   * <p>
+   *
+   * @throws IllegalArgumentException when not SWT.LEFT or SWT.RIGHT
+   */
   public void lock( int direction ) throws IllegalArgumentException {
     verifyDirection( direction );
     int indexToLock = manager.getIndexer().getCurrent();
@@ -315,6 +388,13 @@ public class Swipe {
     remoteObject.call( method, createLockProperties( direction, indexToLock ) );
   }
 
+  /**
+   * <p>
+   * Unlocks the current item in the given direction. Allowed directions are SWT.LEFT and SWT.RIGHT.
+   * <p>
+   *
+   * @throws IllegalArgumentException when not SWT.LEFT or SWT.RIGHT
+   */
   public void unlock( int direction ) throws IllegalArgumentException {
     verifyDirection( direction );
     manager.unlock( direction );
@@ -340,6 +420,11 @@ public class Swipe {
     }
   }
 
+  /**
+   * <p>
+   * Disposes the complete {@link Swipe} object and all it's children.
+   * </p>
+   */
   public void dispose() {
     manager.getItemHolder().removeAllItems();
     container.dispose();

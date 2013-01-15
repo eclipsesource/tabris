@@ -15,20 +15,27 @@ import java.util.Map;
 
 
 /**
+ * <p>
+ * A <code>SwipeContet</p> is a shared store that exists only once per {@link Swipe} object. The context will be shared
+ * during all swiping events.
+ * </p>
+ *
+ * @see SwipeListener
+ *
  * @since 0.10
  */
 public class SwipeContext {
-  
+
   private final Map<String, Object> store;
 
   public SwipeContext() {
     store = new HashMap<String, Object>();
   }
-  
+
   public void add( String key, Object value ) {
     store.put( key, value );
   }
-  
+
   @SuppressWarnings("unchecked")
   public <T> T get( String key, Class<T> type ) {
     T result = null;
