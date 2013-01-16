@@ -107,31 +107,9 @@ public class SwipeItemIndexerTest {
     assertArrayEquals( new int[] { 0, 1 }, indexer.popOutOfRangeIndexes() );
   }
 
-  @Test
-  public void testCurrentIs_0_RangeIs_0() {
+  @Test( expected = IllegalArgumentException.class )
+  public void testFailsWithCacheSize0() {
     indexer.setRange( 0 );
-    indexer.setCurrent( 0 );
-
-    int[] next = indexer.getNext();
-    int[] previous = indexer.getPrevious();
-
-    assertEquals( 0, previous.length );
-    assertEquals( 0, next.length );
-    assertEquals( 0, indexer.popOutOfRangeIndexes().length );
-  }
-
-  @Test
-  public void testCurrentIs_0_then1_RangeIs_0() {
-    indexer.setRange( 0 );
-    indexer.setCurrent( 0 );
-    indexer.setCurrent( 1 );
-
-    int[] next = indexer.getNext();
-    int[] previous = indexer.getPrevious();
-
-    assertEquals( 0, previous.length );
-    assertEquals( 0, next.length );
-    assertArrayEquals( new int[] { 0 }, indexer.popOutOfRangeIndexes() );
   }
 
   @Test

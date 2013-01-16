@@ -100,12 +100,13 @@ public class Swipe {
   /**
    * <p>
    * Configures the amount of pre loaded items. A size of 2 means that when showing item 3, item 1, 2, 4 and 5 will
-   * be loaded. Setting the cache size to 0 means there will be no pre loading at all.
+   * be loaded. The cache size must be > 0.
    * </p>
    *
-   * @param size The amount of item to pre loa din each direction.
+   * @param size The amount of item to pre loading each direction.
+   * @throws IllegalArgumentException when cache size is < 0
    */
-  public void setCacheSize( int size ) {
+  public void setCacheSize( int size ) throws IllegalArgumentException {
     verifyIsNotDisposed();
     manager.getIndexer().setRange( size );
     if( isValidIndex( manager.getIndexer().getCurrent() ) ) {

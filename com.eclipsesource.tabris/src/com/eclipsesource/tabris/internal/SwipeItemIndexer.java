@@ -32,7 +32,7 @@ public class SwipeItemIndexer {
   }
 
   public void setRange( int range ) {
-    if( range < 0 ) {
+    if( range <= 0 ) {
       throw new IllegalArgumentException( "Range must be 0 or positive." );
     }
     this.range = range;

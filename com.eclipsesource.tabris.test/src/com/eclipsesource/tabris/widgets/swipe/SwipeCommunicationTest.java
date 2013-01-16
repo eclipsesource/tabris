@@ -319,21 +319,4 @@ public class SwipeCommunicationTest {
     verify( remoteObject ).set( "activeItem", 0 );
   }
 
-  @Test
-  @SuppressWarnings("unchecked")
-  public void testSetCachSizeToZeroRemovesOutOfRangeItem() {
-    SwipeItemProvider itemProvider = mockProvider( 3 );
-    mockSwipeItem( itemProvider, 0, true );
-    mockSwipeItem( itemProvider, 1, true );
-    mockSwipeItem( itemProvider, 2, true );
-    Swipe swipe = new Swipe( shell, itemProvider );
-
-    swipe.setCacheSize( 0 );
-
-    ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
-    verify( remoteObject, times( 1 ) ).call( eq( "removeItems" ), captor.capture() );
-    int[] actualIndexes = ( int[] )captor.getValue().get( "items" );
-    assertArrayEquals( new int[] { 1 }, actualIndexes );
-  }
-
 }
