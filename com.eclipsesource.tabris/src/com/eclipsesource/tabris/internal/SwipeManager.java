@@ -103,9 +103,9 @@ public class SwipeManager {
   private boolean isValidMove( int toIndex, int direction ) {
     boolean result;
     if( direction == SWT.LEFT ) {
-      result = leftLock == -1 || toIndex > leftLock;
+      result = leftLock == -1 || toIndex >= leftLock;
     } else {
-      result = rightLock == -1 || toIndex < rightLock;
+      result = rightLock == -1 || toIndex <= rightLock;
     }
     return result;
   }

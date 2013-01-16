@@ -813,6 +813,23 @@ public class SwipeTest {
   }
 
   @Test
+  public void testShowLeftLockedFailsNotWhenJumpToLockedItem() {
+    SwipeItemProvider itemProvider = mockProvider( 4 );
+    mockSwipeItem( itemProvider, 0, true );
+    mockSwipeItem( itemProvider, 1, true );
+    mockSwipeItem( itemProvider, 2, true );
+    mockSwipeItem( itemProvider, 3, true );
+    Swipe swipe = new Swipe( shell, itemProvider );
+
+    swipe.show( 1 );
+    swipe.lock( SWT.LEFT );
+    swipe.show( 2 );
+    swipe.show( 3 );
+    swipe.lock( SWT.RIGHT );
+    swipe.show( 1 );
+  }
+
+  @Test
   public void testShowLeftUnlockedFailsNot() {
     SwipeItemProvider itemProvider = mockProvider( 2 );
     mockSwipeItem( itemProvider, 0, true );
