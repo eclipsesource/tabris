@@ -796,6 +796,22 @@ public class SwipeTest {
     swipe.show( 0 );
   }
 
+  @Test( expected = IllegalStateException.class )
+  public void testShowLeftLockedFailsWithJump() {
+    SwipeItemProvider itemProvider = mockProvider( 4 );
+    mockSwipeItem( itemProvider, 0, true );
+    mockSwipeItem( itemProvider, 1, true );
+    mockSwipeItem( itemProvider, 2, true );
+    mockSwipeItem( itemProvider, 3, true );
+    Swipe swipe = new Swipe( shell, itemProvider );
+    swipe.show( 2 );
+
+    swipe.lock( SWT.LEFT );
+    swipe.show( 3 );
+
+    swipe.show( 0 );
+  }
+
   @Test
   public void testShowLeftUnlockedFailsNot() {
     SwipeItemProvider itemProvider = mockProvider( 2 );
