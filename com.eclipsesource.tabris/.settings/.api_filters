@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <component id="com.eclipsesource.tabris" version="2">
+    <resource path="src/com/eclipsesource/tabris/camera/CameraCallback.java" type="com.eclipsesource.tabris.camera.CameraCallback">
+        <filter id="643846161">
+            <message_arguments>
+                <message_argument value="Image"/>
+                <message_argument value="CameraCallback"/>
+                <message_argument value="onSuccess(Image)"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/camera/CameraOptions.java" type="com.eclipsesource.tabris.camera.CameraOptions">
+        <filter id="643842064">
+            <message_arguments>
+                <message_argument value="Point"/>
+                <message_argument value="CameraOptions"/>
+                <message_argument value="getResolution()"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="src/com/eclipsesource/tabris/internal/AppImpl.java" type="com.eclipsesource.tabris.internal.AppImpl">
         <filter id="574660632">
             <message_arguments>
@@ -15,6 +33,20 @@
                 <message_argument value="AppLauncher"/>
                 <message_argument value="ClientService"/>
                 <message_argument value="AppLauncherImpl"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/widgets/ClientCanvas.java" type="com.eclipsesource.tabris.widgets.ClientCanvas">
+        <filter id="337682486">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.widgets.ClientCanvas"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/widgets/Video.java" type="com.eclipsesource.tabris.widgets.Video">
+        <filter id="337682486">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.widgets.Video"/>
             </message_arguments>
         </filter>
     </resource>

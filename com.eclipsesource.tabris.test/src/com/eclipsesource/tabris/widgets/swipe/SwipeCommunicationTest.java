@@ -25,9 +25,9 @@ import static org.mockito.Mockito.verify;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.rap.rwt.internal.remote.RemoteObject;
 import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
+import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
@@ -42,7 +42,6 @@ import com.eclipsesource.tabris.test.TabrisTestUtil;
 import com.eclipsesource.tabris.widgets.swipe.SwipeTest.TestItem;
 
 
-@SuppressWarnings("restriction")
 public class SwipeCommunicationTest {
 
   private RemoteObject remoteObject;

@@ -17,10 +17,11 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.eclipse.rap.rwt.internal.remote.RemoteObject;
-import org.eclipse.rap.rwt.internal.remote.RemoteObjectFactory;
-import org.eclipse.rap.rwt.internal.remote.RemoteOperationHandler;
+import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.internal.remote.ConnectionImpl;
 import org.eclipse.rap.rwt.internal.service.ContextProvider;
+import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
+import org.eclipse.rap.rwt.remote.RemoteObject;
 
 import com.eclipsesource.tabris.event.App;
 import com.eclipsesource.tabris.event.AppEvent;
@@ -38,7 +39,7 @@ public class AppImpl implements App {
   private Integer timezoneOffset;
 
   public AppImpl() {
-    remoteObject = RemoteObjectFactory.getInstance().createServiceObject( TYPE );
+    remoteObject = ( ( ConnectionImpl )RWT.getUISession().getConnection() ).createServiceObject( TYPE );
     remoteObject.setHandler( new AppOperationHandler() );
     eventListeners = new HashMap<EventType, List<AppListener>>();
     readLocales();
@@ -72,7 +73,7 @@ public class AppImpl implements App {
       remoteObject.listen( type.getName(), false );
     }
   }
-  private class AppOperationHandler extends RemoteOperationHandler {
+  private class AppOperationHandler extends AbstractOperationHandler {
 
     @Override
     public void handleNotify( String event, Map<String, Object> properties ) {

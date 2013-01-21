@@ -16,13 +16,12 @@ import static com.eclipsesource.tabris.internal.SwipeManager.PROPERTY_ITEM;
 
 import java.util.Map;
 
-import org.eclipse.rap.rwt.internal.remote.RemoteOperationHandler;
+import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
 
 import com.eclipsesource.tabris.widgets.swipe.Swipe;
 
 
-@SuppressWarnings("restriction")
-public class SwipeOperationHandler extends RemoteOperationHandler {
+public class SwipeOperationHandler extends AbstractOperationHandler {
 
   private final Swipe swipe;
 

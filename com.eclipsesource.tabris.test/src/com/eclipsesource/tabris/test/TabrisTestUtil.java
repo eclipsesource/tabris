@@ -16,34 +16,34 @@ import static org.mockito.Mockito.when;
 
 import java.util.Random;
 
-import org.eclipse.rap.rwt.internal.remote.RemoteObject;
-import org.eclipse.rap.rwt.internal.remote.RemoteObjectFactory;
+import org.eclipse.rap.rwt.internal.remote.ConnectionImpl;
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
+import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 
 
 @SuppressWarnings("restriction")
 public class TabrisTestUtil {
-  
-  private static final Random random = new Random(); 
+
+  private static final Random random = new Random();
 
   public static RemoteObject mockRemoteObject() {
     RemoteObject serviceObject = createRemoteObject();
     RemoteObject remoteObject = createRemoteObject();
-    RemoteObjectFactory factory = mock( RemoteObjectFactory.class );
-    when( factory.createRemoteObject( anyString() ) ).thenReturn( remoteObject );
-    when( factory.createServiceObject( anyString() ) ).thenReturn( serviceObject );
-    Fixture.fakeRemoteObjectFactory( factory );
+    ConnectionImpl connection = mock( ConnectionImpl.class );
+    when( connection.createRemoteObject( anyString() ) ).thenReturn( remoteObject );
+    when( connection.createServiceObject( anyString() ) ).thenReturn( serviceObject );
+    Fixture.fakeConnection( connection );
     return remoteObject;
   }
-  
+
   public static RemoteObject mockServiceObject() {
     RemoteObject serviceObject = createRemoteObject();
     RemoteObject remoteObject = createRemoteObject();
-    RemoteObjectFactory factory = mock( RemoteObjectFactory.class );
-    when( factory.createRemoteObject( anyString() ) ).thenReturn( remoteObject );
-    when( factory.createServiceObject( anyString() ) ).thenReturn( serviceObject );
-    Fixture.fakeRemoteObjectFactory( factory );
+    ConnectionImpl connection = mock( ConnectionImpl.class );
+    when( connection.createRemoteObject( anyString() ) ).thenReturn( remoteObject );
+    when( connection.createServiceObject( anyString() ) ).thenReturn( serviceObject );
+    Fixture.fakeConnection( connection );
     return serviceObject;
   }
 
@@ -53,7 +53,7 @@ public class TabrisTestUtil {
     when( remoteObject.getId() ).thenReturn( id );
     return remoteObject;
   }
-  
+
   private TabrisTestUtil() {
     // prevent instantiation
   }

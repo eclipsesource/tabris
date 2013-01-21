@@ -7,9 +7,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-import org.eclipse.rap.rwt.internal.remote.RemoteObject;
-import org.eclipse.rap.rwt.internal.remote.RemoteObjectFactory;
-import org.eclipse.rap.rwt.internal.remote.RemoteOperationHandler;
+import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
+import org.eclipse.rap.rwt.remote.OperationHandler;
+import org.eclipse.rap.rwt.remote.RemoteObject;
 
 import com.eclipsesource.tabris.geolocation.PositionError.PositionErrorCode;
 
@@ -18,14 +19,13 @@ import com.eclipsesource.tabris.geolocation.PositionError.PositionErrorCode;
  * the <code>Geolocation</code> can be used to determine a client's geographical location. Location updates
  * can be received once or periodically. The clients needs to allow location services in the app.
  * </p>
- * 
+ *
  * @see GeolocationCallback
  * @see GeolocationOptions
  * @since 0.6
  */
-@SuppressWarnings("restriction")
 public class Geolocation {
-  
+
   private static final String TYPE = "tabris.Geolocation";
   private static final String PROP_ENABLE_HIGH_ACCURACY = "enableHighAccuracy";
   private static final String PROP_MAXIMUM_AGE = "maximumAge";
@@ -43,22 +43,22 @@ public class Geolocation {
   private static final String PROP_LATITUDE = "latitude";
   private static final String PROP_ERROR_MESSAGE = "errorMessage";
   private static final String PROP_ERROR_CODE = "errorCode";
-  
+
   private enum NeedsPositionFlavor {
     NEVER, ONCE, CONTINUOUS
   }
-  
+
   private final RemoteObject remoteObject;
   private GeolocationCallback callback;
 
   public Geolocation() {
-    remoteObject = RemoteObjectFactory.getInstance().createRemoteObject( TYPE );
+    remoteObject = RWT.getUISession().getConnection().createRemoteObject( TYPE );
     remoteObject.setHandler( createGeolocationHandler() );
     remoteObject.set( PROP_NEEDS_POSITION, NeedsPositionFlavor.NEVER.toString() );
   }
-  
-  private RemoteOperationHandler createGeolocationHandler() {
-    return new RemoteOperationHandler() { 
+
+  private OperationHandler createGeolocationHandler() {
+    return new AbstractOperationHandler() {
       @Override
       public void handleNotify( String event, Map<String,Object> properties ) {
         checkCallback();
@@ -85,18 +85,18 @@ public class Geolocation {
       Position position = new Position( coordinates, timestamp );
       return position;
     } catch( ParseException e ) {
-      throw new IllegalStateException( "Could not parse date from string: " +  timestampValue 
+      throw new IllegalStateException( "Could not parse date from string: " +  timestampValue
                                        + ", needs to be yyyy-MM-dd'T'HH:mm:ssZ" );
     }
   }
 
   private Coordinates getCoordinates( Map<String, Object> properties ) {
-    return new Coordinates( getPropertyAsDouble( properties, PROP_LATITUDE ), 
-                            getPropertyAsDouble( properties, PROP_LONGITUDE ), 
-                            getPropertyAsDouble( properties, PROP_ALTITUDE ), 
-                            getPropertyAsDouble( properties, PROP_ACCURACY ), 
-                            getPropertyAsDouble( properties, PROP_ALTITUDE_ACCURACY ), 
-                            getPropertyAsDouble( properties, PROP_HEADING ), 
+    return new Coordinates( getPropertyAsDouble( properties, PROP_LATITUDE ),
+                            getPropertyAsDouble( properties, PROP_LONGITUDE ),
+                            getPropertyAsDouble( properties, PROP_ALTITUDE ),
+                            getPropertyAsDouble( properties, PROP_ACCURACY ),
+                            getPropertyAsDouble( properties, PROP_ALTITUDE_ACCURACY ),
+                            getPropertyAsDouble( properties, PROP_HEADING ),
                             getPropertyAsDouble( properties, PROP_SPEED ) );
   }
 
@@ -110,7 +110,7 @@ public class Geolocation {
     }
     return result;
   }
-  
+
   private PositionError getPositionError( Map<String, Object> properties ) {
     String code = ( String )properties.get( PROP_ERROR_CODE );
     PositionErrorCode errorCode = PositionErrorCode.valueOf( code );
@@ -118,14 +118,14 @@ public class Geolocation {
     PositionError positionError = new PositionError( errorCode, message );
     return positionError;
   }
-  
+
   /**
    * <p>
    * Determines the client's location once. The callback will be called when the server recieves an answer from
-   * the mobile device. Determining locations is coupled with a configuration passed in as 
+   * the mobile device. Determining locations is coupled with a configuration passed in as
    * <code>GeolocationOptions</code>.
    * </p>
-   * 
+   *
    * @param callback The callback to call when the client answers. Must not be <code>null</code>.
    * @param options The configuration for determining the location. Must not be <code>null</code>.
    */
@@ -138,7 +138,7 @@ public class Geolocation {
    * Instructs the client to determine and send the location periodically. The update interval needs to be configured in
    * the <code>GeolocationOptions</code> parameter.
    * </p>
-   * 
+   *
    * @param callback The callback to call when the client answers. Must not be <code>null</code>.
    * @param options The configuration for determining the location. Must not be <code>null</code>.
    */
@@ -146,9 +146,9 @@ public class Geolocation {
     startUpdatePosition( NeedsPositionFlavor.CONTINUOUS, callback, options );
   }
 
-  private void startUpdatePosition( NeedsPositionFlavor flavor, 
-                                    GeolocationCallback callback, 
-                                    GeolocationOptions options ) 
+  private void startUpdatePosition( NeedsPositionFlavor flavor,
+                                    GeolocationCallback callback,
+                                    GeolocationOptions options )
   {
     argumentNotNull( callback, "Callback" );
     argumentNotNull( options, "Options" );
@@ -172,7 +172,7 @@ public class Geolocation {
     remoteObject.set( PROP_NEEDS_POSITION, NeedsPositionFlavor.NEVER.toString() );
     this.callback = null;
   }
-  
+
   /**
    * <p>
    * Destroys the camera object. Behaves the same like other SWT Widgets.
@@ -181,9 +181,9 @@ public class Geolocation {
   public void dispose() {
     remoteObject.destroy();
   }
-  
+
   RemoteObject getRemoteObject() {
     return remoteObject;
   }
 
-} 
+}

@@ -17,25 +17,24 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.rap.rwt.internal.remote.RemoteObject;
-import org.eclipse.rap.rwt.internal.remote.RemoteObjectFactory;
+import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.remote.RemoteObject;
 
 import com.eclipsesource.tabris.interaction.AppLauncher;
 import com.eclipsesource.tabris.interaction.LaunchOptions;
 
 
-@SuppressWarnings("restriction")
 public class AppLauncherImpl implements AppLauncher {
 
   private static final String APP_PROPERTY = "app";
   private static final String URL_PROPERTY = "url";
   private static final String METHOD_OPEN = "open";
   private static final String METHOD_OPEN_URL = "openUrl";
-  
+
   private final RemoteObject remoteObject;
 
   public AppLauncherImpl() {
-    remoteObject = RemoteObjectFactory.getInstance().createRemoteObject( "tabris.AppLauncher" );
+    remoteObject = RWT.getUISession().getConnection().createRemoteObject( "tabris.AppLauncher" );
   }
 
   @Override

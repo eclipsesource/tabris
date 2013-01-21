@@ -35,9 +35,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.rap.rwt.RWT;
-import org.eclipse.rap.rwt.internal.remote.RemoteObject;
-import org.eclipse.rap.rwt.internal.remote.RemoteObjectFactory;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
+import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -69,7 +68,6 @@ import com.eclipsesource.tabris.internal.SwipeOperationHandler;
  *
  * @since 0.10
  */
-@SuppressWarnings("restriction")
 public class Swipe {
 
   private final Composite container;
@@ -84,7 +82,7 @@ public class Swipe {
     this.listeners = new ArrayList<SwipeListener>();
     this.container = new Composite( parent, SWT.NONE );
     container.setData( RWT.CUSTOM_VARIANT, "swipe" );
-    this.remoteObject = RemoteObjectFactory.getInstance().createRemoteObject( TYPE );
+    this.remoteObject = RWT.getUISession().getConnection().createRemoteObject( TYPE );
     initialize();
   }
 

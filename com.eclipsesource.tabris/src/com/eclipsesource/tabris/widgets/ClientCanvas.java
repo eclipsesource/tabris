@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.rap.rwt.RWT;
-import org.eclipse.rap.rwt.internal.application.RWTFactory;
 import org.eclipse.rap.rwt.internal.lifecycle.LifeCycleUtil;
+import org.eclipse.rap.rwt.internal.service.ContextProvider;
 import org.eclipse.rap.rwt.lifecycle.PhaseEvent;
 import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.lifecycle.PhaseListener;
@@ -39,21 +39,21 @@ import com.eclipsesource.tabris.internal.GCOperationDispatcher;
 /**
  * <i>Provisional API, may change in future versions. Use it at your own risk.</i>
  * <p>
- * A <code>ClientCanvas</code> can be used like a SWT <code>Canvas</code> with the difference that a client can draw on 
+ * A <code>ClientCanvas</code> can be used like a SWT <code>Canvas</code> with the difference that a client can draw on
  * it's area, too. Client side drawing will be sent back to the server and registered <code>ClientDrawListeners</code>
  * will be notified.</code>
  * </p>
- * 
+ *
  * @see ClientDrawListener
  * @since 0.6
  */
 @SuppressWarnings("restriction")
 public class ClientCanvas extends Canvas implements PhaseListener, UISessionListener {
-  
+
   static final String DRAWING_EVENT = "Drawing";
   static final String DRAWINGS_PROPERTY = "drawings";
   static final String CLIENT_CANVAS = "CLIENT_CANVAS";
-  
+
   private final List<ClientDrawListener> drawListeners;
   private final DrawingsCache cache;
   private PaintListener paintListener;
@@ -62,7 +62,7 @@ public class ClientCanvas extends Canvas implements PhaseListener, UISessionList
     super( parent, style );
     drawListeners = new ArrayList<ClientDrawListener>();
     cache = new DrawingsCache();
-    RWT.getLifeCycle().addPhaseListener( this );
+    ContextProvider.getApplicationContext().getLifeCycleFactory().getLifeCycle().addPhaseListener( this );
     RWT.getUISession().addUISessionListener( this );
     addDispatchPaintListener();
     setData( RWT.CUSTOM_VARIANT, CLIENT_CANVAS );
@@ -79,29 +79,29 @@ public class ClientCanvas extends Canvas implements PhaseListener, UISessionList
     };
     super.addPaintListener( paintListener );
   }
-  
+
   /**
    * <p>
    * Adds a <code>ClientDrawListener</code> that gets called when a client draws.
    * </p>
-   * 
+   *
    * @see ClientDrawListener
    */
   public void addClientDrawListener( ClientDrawListener listener ) {
     drawListeners.add( listener );
   }
-  
+
   /**
    * <p>
    * Removes a <code>ClientDrawListener</code>.
    * </p>
-   * 
+   *
    * @see ClientDrawListener
    */
   public void removeClientDrawListener( ClientDrawListener listener ) {
     drawListeners.remove( listener );
   }
-  
+
   /**
    * <p>
    * Clears all client side drawings.
@@ -114,7 +114,7 @@ public class ClientCanvas extends Canvas implements PhaseListener, UISessionList
       fireDrawEvent();
     }
   }
-  
+
   /**
    * <p>
    * Undo the most recent client side drawing.
@@ -129,7 +129,7 @@ public class ClientCanvas extends Canvas implements PhaseListener, UISessionList
       }
     }
   }
-  
+
   /**
    * <p>
    * returns if a undo can be performed.
@@ -138,7 +138,7 @@ public class ClientCanvas extends Canvas implements PhaseListener, UISessionList
   public boolean hasUndo() {
     return cache.hasUndo();
   }
-  
+
   /**
    * <p>
    * Redo the most recent undo.
@@ -153,7 +153,7 @@ public class ClientCanvas extends Canvas implements PhaseListener, UISessionList
       }
     }
   }
-  
+
   /**
    * <p>
    * Returns if a redo can be performed.
@@ -169,7 +169,7 @@ public class ClientCanvas extends Canvas implements PhaseListener, UISessionList
     super.addPaintListener( listener );
     super.addPaintListener( paintListener );
   }
-  
+
   private void processClientDrawings( GC gc ) {
     String drawings = readEventPropertyValueAsString( WidgetUtil.getId( this ), DRAWING_EVENT, DRAWINGS_PROPERTY );
     if( drawings != null ) {
@@ -223,10 +223,10 @@ public class ClientCanvas extends Canvas implements PhaseListener, UISessionList
 
   @Override
   public void beforeDestroy( UISessionEvent event ) {
-    RWTFactory.getLifeCycleFactory().getLifeCycle().removePhaseListener( this );
+    ContextProvider.getApplicationContext().getLifeCycleFactory().getLifeCycle().removePhaseListener( this );
     RWT.getUISession().removeUISessionListener( this );
   }
-  
+
   @SuppressWarnings("unchecked")
   @Override
   public <T> T getAdapter( Class<T> adapter ) {
