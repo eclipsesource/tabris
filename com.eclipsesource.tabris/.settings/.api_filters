@@ -70,6 +70,38 @@
             </message_arguments>
         </filter>
     </resource>
+    <resource path="src/com/eclipsesource/tabris/ui/ActionConfiguration.java" type="com.eclipsesource.tabris.ui.ActionConfiguration">
+        <filter id="627060751">
+            <message_arguments>
+                <message_argument value="Image"/>
+                <message_argument value="ActionConfiguration"/>
+                <message_argument value="image"/>
+            </message_arguments>
+        </filter>
+        <filter id="643846161">
+            <message_arguments>
+                <message_argument value="Image"/>
+                <message_argument value="ActionConfiguration"/>
+                <message_argument value="setImage(Image)"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/ui/PageConfiguration.java" type="com.eclipsesource.tabris.ui.PageConfiguration">
+        <filter id="627060751">
+            <message_arguments>
+                <message_argument value="Image"/>
+                <message_argument value="PageConfiguration"/>
+                <message_argument value="image"/>
+            </message_arguments>
+        </filter>
+        <filter id="643846161">
+            <message_arguments>
+                <message_argument value="Image"/>
+                <message_argument value="PageConfiguration"/>
+                <message_argument value="setImage(Image)"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="src/com/eclipsesource/tabris/widgets/ClientCanvas.java" type="com.eclipsesource.tabris.widgets.ClientCanvas">
         <filter id="337682486">
             <message_arguments>

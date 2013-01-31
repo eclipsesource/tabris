@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.swipe;
 
-import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNull;
+import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 import static com.eclipsesource.tabris.internal.SwipeItemIndexer.getAsArray;
 import static com.eclipsesource.tabris.internal.SwipeManager.METHOD_ITEM_LOADED;
 import static com.eclipsesource.tabris.internal.SwipeManager.METHOD_LOCK_LEFT;
@@ -42,7 +42,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import com.eclipsesource.tabris.internal.SwipeItemHolder;
-import com.eclipsesource.tabris.internal.SwipeLayout;
+import com.eclipsesource.tabris.internal.ZIndexStackLayout;
 import com.eclipsesource.tabris.internal.SwipeManager;
 import com.eclipsesource.tabris.internal.SwipeOperationHandler;
 
@@ -76,8 +76,8 @@ public class Swipe {
   private final SwipeManager manager;
 
   public Swipe( Composite parent, SwipeItemProvider itemProvider ) {
-    argumentNotNull( parent, "Parent" );
-    argumentNotNull( itemProvider, "SwipeItemProvider" );
+    checkArgumentNotNull( parent, "Parent" );
+    checkArgumentNotNull( itemProvider, "SwipeItemProvider" );
     this.manager = new SwipeManager( itemProvider );
     this.listeners = new ArrayList<SwipeListener>();
     this.container = new Composite( parent, SWT.NONE );
@@ -89,7 +89,7 @@ public class Swipe {
   private void initialize() {
     remoteObject.set( PROPERTY_PARENT, WidgetUtil.getId( container ) );
     remoteObject.setHandler( new SwipeOperationHandler( this ) );
-    container.setLayout( new SwipeLayout() );
+    container.setLayout( new ZIndexStackLayout() );
     if( manager.getProvider().getItemCount() > 0 ) {
       show( 0 );
     }
@@ -233,7 +233,7 @@ public class Swipe {
 
   private boolean wasActiveItem( int index ) {
     boolean result = false;
-    Control topControl = ( ( SwipeLayout ) container.getLayout() ).getOnTopControl();
+    Control topControl = ( ( ZIndexStackLayout ) container.getLayout() ).getOnTopControl();
     if( manager.getItemHolder().isLoaded( index ) ) {
       if( manager.getItemHolder().getContentForItem( index ).equals( topControl ) ) {
         result = true;
@@ -287,7 +287,7 @@ public class Swipe {
   }
 
   private void setOnTopControl( Control control ) {
-    SwipeLayout layout = ( SwipeLayout )container.getLayout();
+    ZIndexStackLayout layout = ( ZIndexStackLayout )container.getLayout();
     layout.setOnTopControl( control );
   }
 

@@ -16,22 +16,27 @@ public class PreconditionsTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testNotNullFailsWithNullArgument() {
-    Preconditions.argumentNotNull( null, "" );
+    Preconditions.checkArgumentNotNull( null, "" );
+  }
+
+  @Test( expected = IllegalStateException.class )
+  public void testNotNullFailsWithNullState() {
+    Preconditions.checkState( null, "" );
   }
 
   @Test
   public void testNotNullDoesNotFailsWithNonNullArgument() {
-    Preconditions.argumentNotNull( "", "" );
+    Preconditions.checkArgumentNotNull( "", "" );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testNotEmptyFailsWithNullArgument() {
-    Preconditions.argumentNotNullAndNotEmpty( null, "" );
+    Preconditions.checkArgumentNotNullAndNotEmpty( null, "" );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testNotEmptyFailsWithEmpty() {
-    Preconditions.argumentNotNullAndNotEmpty( "", "" );
+    Preconditions.checkArgumentNotNullAndNotEmpty( "", "" );
   }
 
   @Test( expected = IllegalStateException.class )

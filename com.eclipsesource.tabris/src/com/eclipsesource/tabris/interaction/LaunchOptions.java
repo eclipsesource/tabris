@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.interaction;
 
-import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNull;
+import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +41,7 @@ public class LaunchOptions {
   private final App app;
 
   LaunchOptions( App app ) {
-    argumentNotNull( app, "App" );
+    checkArgumentNotNull( app, "App" );
     this.app = app;
     this.options = new HashMap<String, String>();
   }

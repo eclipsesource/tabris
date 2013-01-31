@@ -39,7 +39,7 @@ import org.junit.Test;
 import org.mockito.InOrder;
 
 import com.eclipsesource.tabris.internal.SwipeItemHolder;
-import com.eclipsesource.tabris.internal.SwipeLayout;
+import com.eclipsesource.tabris.internal.ZIndexStackLayout;
 
 
 public class SwipeTest {
@@ -84,7 +84,7 @@ public class SwipeTest {
     Swipe swipe = new Swipe( shell, itemProvider );
     Composite control = ( Composite )swipe.getControl();
 
-    assertTrue( control.getLayout() instanceof SwipeLayout );
+    assertTrue( control.getLayout() instanceof ZIndexStackLayout );
   }
 
   @Test
@@ -501,7 +501,7 @@ public class SwipeTest {
     swipe.show( 0 );
 
     Composite control = ( Composite )swipe.getControl();
-    SwipeLayout layout = ( SwipeLayout )control.getLayout();
+    ZIndexStackLayout layout = ( ZIndexStackLayout )control.getLayout();
     assertSame( item.getLoadedComposite(), layout.getOnTopControl() );
   }
 
@@ -512,7 +512,7 @@ public class SwipeTest {
     TestItem item2 = mockSwipeItem( itemProvider, 1, true );
     Swipe swipe = new Swipe( shell, itemProvider );
     Composite control = ( Composite )swipe.getControl();
-    SwipeLayout layout = ( SwipeLayout )control.getLayout();
+    ZIndexStackLayout layout = ( ZIndexStackLayout )control.getLayout();
 
     swipe.show( 0 );
     assertSame( item.getLoadedComposite(), layout.getOnTopControl() );

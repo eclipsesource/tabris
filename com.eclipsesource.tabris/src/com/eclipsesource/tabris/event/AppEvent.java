@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.event;
 
-import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNull;
+import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
 import java.util.Map;
 
@@ -24,7 +24,7 @@ public class AppEvent {
   private final Map<String, Object> properties;
 
   public AppEvent( EventType type, Map<String, Object> properties ) {
-    argumentNotNull( type, "EventType" );
+    checkArgumentNotNull( type, "EventType" );
     this.type = type;
     this.properties = properties;
   }

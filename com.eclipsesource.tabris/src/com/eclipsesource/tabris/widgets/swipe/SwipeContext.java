@@ -10,8 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.swipe;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.eclipsesource.tabris.Store;
 
 
 /**
@@ -26,27 +25,17 @@ import java.util.Map;
  */
 public class SwipeContext {
 
-  private final Map<String, Object> store;
+  private final Store store;
 
   public SwipeContext() {
-    store = new HashMap<String, Object>();
+    store = new Store();
   }
 
   public void add( String key, Object value ) {
-    store.put( key, value );
+    store.add( key, value );
   }
 
-  @SuppressWarnings("unchecked")
   public <T> T get( String key, Class<T> type ) {
-    T result = null;
-    Object value = store.get( key );
-    if( value != null ) {
-      if( value.getClass().isAssignableFrom( type ) ) {
-        result = ( T )value;
-      } else {
-        throw new IllegalArgumentException( "Value with key " + key + " is not of type " + type.getName() );
-      }
-    }
-    return result;
+    return store.get( key, type );
   }
 }

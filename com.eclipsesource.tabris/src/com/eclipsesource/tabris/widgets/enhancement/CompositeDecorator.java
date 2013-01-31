@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.enhancement;
 
-import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNull;
+import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.swt.SWT;
@@ -44,7 +44,7 @@ public class CompositeDecorator extends WidgetDecorator<CompositeDecorator>  {
   public void addGroupedListener( int eventType, Listener listener ) 
     throws IllegalArgumentException, IllegalStateException 
   {
-    argumentNotNull( listener, "Listener" );
+    checkArgumentNotNull( listener, "Listener" );
     Composite facade = getFacade();
     facade.addListener( eventType, listener );
   }
@@ -52,7 +52,7 @@ public class CompositeDecorator extends WidgetDecorator<CompositeDecorator>  {
   public void removeGroupedListener( int eventType, Listener listener ) 
     throws IllegalArgumentException, IllegalStateException 
   {
-    argumentNotNull( listener, "Listener" );
+    checkArgumentNotNull( listener, "Listener" );
     Composite facade = findFacade();
     if( facade != null ) {
       facade.removeListener( eventType, listener );

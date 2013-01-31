@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.camera;
 
-import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNull;
+import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
 import java.io.ByteArrayInputStream;
 import java.util.Map;
@@ -76,7 +76,7 @@ public class Camera {
    * @see CameraOptions
    */
   public Camera( CameraOptions options ) {
-    Preconditions.argumentNotNull( options, "Camera Options" );
+    Preconditions.checkArgumentNotNull( options, "Camera Options" );
     remoteObject = RWT.getUISession().getConnection().createRemoteObject( TYPE );
     remoteObject.setHandler( cameraHandler );
     setInitialValues( options );
@@ -124,7 +124,7 @@ public class Camera {
    *  @see CameraCallback
    */
   public void takePicture( CameraCallback callback ) {
-    argumentNotNull( callback, "Callback" );
+    checkArgumentNotNull( callback, "Callback" );
     this.callback = callback;
     remoteObject.call( OPEN_METHOD, null );
   }

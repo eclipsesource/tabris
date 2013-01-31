@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
-import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNull;
+import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -39,7 +39,7 @@ public class AppLauncherImpl implements AppLauncher {
 
   @Override
   public void open( LaunchOptions launchOptions ) {
-    argumentNotNull( launchOptions, "LaunchOptions" );
+    checkArgumentNotNull( launchOptions, "LaunchOptions" );
     createOpenCall( launchOptions );
   }
 
@@ -51,7 +51,7 @@ public class AppLauncherImpl implements AppLauncher {
 
   @Override
   public void openUrl( String url ) {
-    argumentNotNull( url, "URL" );
+    checkArgumentNotNull( url, "URL" );
     validateUrl( url );
     createOpenUrlCall( url );
   }

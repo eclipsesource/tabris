@@ -28,7 +28,7 @@ public class BrowserOptions extends LaunchOptions {
 
   public BrowserOptions( String url ) {
     super( App.BROWSER );
-    Preconditions.argumentNotNull( url, "URL" );
+    Preconditions.checkArgumentNotNull( url, "URL" );
     validateUrl( url );
     add( URL, url );
   }

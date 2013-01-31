@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Layout;
 
-public class SwipeLayout extends Layout {
+public class ZIndexStackLayout extends Layout {
 
   private Control onTopControl;
 

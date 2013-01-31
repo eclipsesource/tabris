@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
-import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNull;
+import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
 import org.eclipse.swt.SWT;
 
@@ -43,7 +43,7 @@ public class SwipeManager {
   private int rightLock;
 
   public SwipeManager( SwipeItemProvider provider ) {
-    argumentNotNull( provider, "SwipeItemProvier" );
+    checkArgumentNotNull( provider, "SwipeItemProvier" );
     this.provider = provider;
     this.context = new SwipeContext();
     this.itemHolder = new SwipeItemHolder();

@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.interaction;
 
-import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNull;
+import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -30,12 +30,12 @@ public class TwitterOptions extends LaunchOptions {
 
   public TwitterOptions( String text ) {
     super( App.TWITTER );
-    argumentNotNull( text, "Text" );
+    checkArgumentNotNull( text, "Text" );
     add( TEXT, text );
   }
 
   public void setUrl( String url ) {
-    argumentNotNull( url, "URL" );
+    checkArgumentNotNull( url, "URL" );
     validateUrl( url );
     add( URL, url );
   }

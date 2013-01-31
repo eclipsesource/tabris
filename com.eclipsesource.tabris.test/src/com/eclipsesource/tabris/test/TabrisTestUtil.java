@@ -47,7 +47,7 @@ public class TabrisTestUtil {
     return serviceObject;
   }
 
-  private static RemoteObject createRemoteObject() {
+  private static RemoteObjectImpl createRemoteObject() {
     RemoteObjectImpl remoteObject = mock( RemoteObjectImpl.class );
     String id = "w" + random.nextInt();
     when( remoteObject.getId() ).thenReturn( id );

@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
-import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNull;
+import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 import static com.eclipsesource.tabris.internal.SwipeManager.EVENT_SWIPED_TO_ITEM;
 import static com.eclipsesource.tabris.internal.SwipeManager.PROPERTY_ITEM;
 
@@ -26,7 +26,7 @@ public class SwipeOperationHandler extends AbstractOperationHandler {
   private final Swipe swipe;
 
   public SwipeOperationHandler( Swipe swipe ) {
-    argumentNotNull( swipe, "Swipe" );
+    checkArgumentNotNull( swipe, "Swipe" );
     this.swipe = swipe;
   }
 
@@ -40,7 +40,7 @@ public class SwipeOperationHandler extends AbstractOperationHandler {
   }
 
   private void verifyHasItemProperty( Map<String, Object> properties ) {
-    argumentNotNull( properties, "Properties" );
+    checkArgumentNotNull( properties, "Properties" );
     if( !properties.containsKey( PROPERTY_ITEM ) ) {
       throw new IllegalArgumentException( "Properties of " + EVENT_SWIPED_TO_ITEM + " do not contian an item." );
     }

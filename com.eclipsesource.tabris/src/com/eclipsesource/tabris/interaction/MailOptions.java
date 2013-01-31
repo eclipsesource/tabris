@@ -7,8 +7,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.interaction;
 
-import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNull;
-import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNullAndNotEmpty;
+import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
+import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNullAndNotEmpty;
 
 /**
  * <p>
@@ -27,34 +27,34 @@ public class MailOptions extends LaunchOptions {
 
   public MailOptions( String to ) {
     super( App.MAIL );
-    argumentNotNullAndNotEmpty( to, "To" );
+    checkArgumentNotNullAndNotEmpty( to, "To" );
     add( TO, to );
   }
 
   public MailOptions( String to, String subject ) {
     this( to );
-    argumentNotNull( subject, "Subject" );
+    checkArgumentNotNull( subject, "Subject" );
     add( SUBJECT, subject );
   }
 
   public MailOptions( String to, String subject, String body ) {
     this( to, subject );
-    argumentNotNull( body, "Body" );
+    checkArgumentNotNull( body, "Body" );
     add( BODY, body );
   }
 
   public void setSubject( String subject ) {
-    argumentNotNull( subject, "Subject" );
+    checkArgumentNotNull( subject, "Subject" );
     add( SUBJECT, subject );
   }
 
   public void setCC( String cc ) {
-    argumentNotNullAndNotEmpty( cc, "CC" );
+    checkArgumentNotNullAndNotEmpty( cc, "CC" );
     add( CC, cc );
   }
 
   public void setBody( String body ) {
-    argumentNotNull( body, "Body" );
+    checkArgumentNotNull( body, "Body" );
     add( BODY, body );
   }
 

@@ -10,8 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
-import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNull;
-import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNullAndNotEmpty;
+import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
+import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNullAndNotEmpty;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,8 +48,8 @@ public class ClientStoreImpl extends AbstractOperationHandler implements ClientS
 
   @Override
   public void add( String key, String value ) {
-    argumentNotNullAndNotEmpty( key, "Key" );
-    argumentNotNull( value, "Value" );
+    checkArgumentNotNullAndNotEmpty( key, "Key" );
+    checkArgumentNotNull( value, "Value" );
     store.put( key, value );
     sendAdd( key, value );
   }

@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.interaction;
 
-import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNull;
+import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
 
 /**
@@ -26,8 +26,8 @@ public class SMSOptions extends LaunchOptions {
 
   public SMSOptions( String phoneNumber, String text ) {
     super( App.SMS );
-    argumentNotNull( phoneNumber, "Number" );
-    argumentNotNull( text, "Text" );
+    checkArgumentNotNull( phoneNumber, "Number" );
+    checkArgumentNotNull( text, "Text" );
     add( NUMBER, phoneNumber );
     add( TEXT, text );
   }

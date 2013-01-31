@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.interaction;
 
-import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNullAndNotEmpty;
+import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNullAndNotEmpty;
 
 
 /**
@@ -41,7 +41,7 @@ public class MapsOptions extends LaunchOptions {
   
   public MapsOptions( String query ) {
     super( App.MAPS );
-    argumentNotNullAndNotEmpty( query, "Query" );
+    checkArgumentNotNullAndNotEmpty( query, "Query" );
     add( QUERY, query );
   }
   

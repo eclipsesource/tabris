@@ -25,7 +25,7 @@ public class PhoneOptions extends LaunchOptions {
 
   public PhoneOptions( String phoneNumber ) {
     super( App.PHONE );
-    Preconditions.argumentNotNullAndNotEmpty( phoneNumber, "Number" );
+    Preconditions.checkArgumentNotNullAndNotEmpty( phoneNumber, "Number" );
     add( NUMBER, phoneNumber );
   }
 }

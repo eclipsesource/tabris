@@ -13,7 +13,6 @@ package com.eclipsesource.tabris.event;
 import org.eclipse.rap.rwt.client.service.ClientService;
 
 
-
 /**
  * @since 0.10
  */

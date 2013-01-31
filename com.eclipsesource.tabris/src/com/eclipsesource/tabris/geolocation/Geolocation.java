@@ -1,6 +1,6 @@
 package com.eclipsesource.tabris.geolocation;
 
-import static com.eclipsesource.tabris.internal.Preconditions.argumentNotNull;
+import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -150,8 +150,8 @@ public class Geolocation {
                                     GeolocationCallback callback,
                                     GeolocationOptions options )
   {
-    argumentNotNull( callback, "Callback" );
-    argumentNotNull( options, "Options" );
+    checkArgumentNotNull( callback, "Callback" );
+    checkArgumentNotNull( options, "Options" );
     this.callback = callback;
     remoteObject.set( PROP_NEEDS_POSITION, flavor.toString() );
     setOptions( options );

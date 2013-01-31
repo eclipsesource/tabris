@@ -27,7 +27,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class SwipeLayoutTest {
+public class ZIndexStackLayoutTest {
   
   private Shell shell;
 
@@ -47,7 +47,7 @@ public class SwipeLayoutTest {
   @Test
   public void testUsesWholeClientAreaForLayout() {
     Composite parent = new Composite( shell, SWT.NONE );
-    parent.setLayout( new SwipeLayout() );
+    parent.setLayout( new ZIndexStackLayout() );
     Composite child = new Composite( parent, SWT.NONE );
     shell.layout( true, true );
     
@@ -60,7 +60,7 @@ public class SwipeLayoutTest {
   @Test
   public void testUsesHints() {
     Composite parent = new Composite( shell, SWT.NONE );
-    parent.setLayout( new SwipeLayout() );
+    parent.setLayout( new ZIndexStackLayout() );
     Composite child = new Composite( parent, SWT.NONE );
     shell.layout( true, true );
     
@@ -73,7 +73,7 @@ public class SwipeLayoutTest {
   @Test
   public void testModifiesZIndexOnLayout() {
     Composite parent = new Composite( shell, SWT.NONE );
-    SwipeLayout layout = new SwipeLayout();
+    ZIndexStackLayout layout = new ZIndexStackLayout();
     parent.setLayout( layout );
     new Composite( parent, SWT.NONE );
     Composite child2 = new Composite( parent, SWT.NONE );
@@ -87,7 +87,7 @@ public class SwipeLayoutTest {
   @Test
   public void testModifiesZIndexOnLayoutWhenTopControlChangedTwice() {
     Composite parent = new Composite( shell, SWT.NONE );
-    SwipeLayout layout = new SwipeLayout();
+    ZIndexStackLayout layout = new ZIndexStackLayout();
     parent.setLayout( layout );
     Composite child1 = new Composite( parent, SWT.NONE );
     Composite child2 = new Composite( parent, SWT.NONE );
@@ -103,7 +103,7 @@ public class SwipeLayoutTest {
   
   @Test
   public void testGetOnTopControl() {
-    SwipeLayout swipeLayout = new SwipeLayout();
+    ZIndexStackLayout swipeLayout = new ZIndexStackLayout();
     Control control = mock( Control.class );
     
     swipeLayout.setOnTopControl( control);
