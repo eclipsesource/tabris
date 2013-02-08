@@ -25,69 +25,87 @@ import com.eclipsesource.tabris.test.TabrisTestUtil;
 
 
 public class TabrisClientTest {
-  
+
   @Before
   public void setUp() {
     Fixture.setUp();
     TabrisTestUtil.mockRemoteObject();
   }
-  
+
   @After
   public void tearDown() {
     Fixture.tearDown();
   }
-  
+
   @Test
   public void testHasAppLauncherService() {
     TabrisClient client = new TabrisClient();
-    
+
     AppLauncher launcher = client.getService( AppLauncher.class );
-    
+
     assertNotNull( launcher );
   }
-  
+
   @Test
   public void testHasAppService() {
     TabrisClient client = new TabrisClient();
-    
+
     App app = client.getService( App.class );
-    
+
     assertNotNull( app );
   }
-  
+
   @Test
   public void testHasClientInfoService() {
     TabrisClient client = new TabrisClient();
-    
+
     ClientInfo info = client.getService( ClientInfo.class );
-    
+
     assertNotNull( info );
   }
-  
+
+  @Test
+  public void testHasClientStoreService() {
+    TabrisClient client = new TabrisClient();
+
+    ClientStore store = client.getService( ClientStore.class );
+
+    assertNotNull( store );
+  }
+
   @Test
   public void testAppLauncherIsSingleton() {
     TabrisClient client = new TabrisClient();
-    
+
     AppLauncher launcher = client.getService( AppLauncher.class );
-    
+
     assertSame( launcher, client.getService( AppLauncher.class ) );
   }
-  
+
   @Test
   public void testAppIsSingleton() {
     TabrisClient client = new TabrisClient();
-    
+
     App app = client.getService( App.class );
-    
+
     assertSame( app, client.getService( App.class ) );
   }
-  
+
   @Test
   public void testClientInfoIsSingleton() {
     TabrisClient client = new TabrisClient();
-    
+
     ClientInfo info = client.getService( ClientInfo.class );
-    
+
     assertSame( info, client.getService( ClientInfo.class ) );
+  }
+
+  @Test
+  public void testClientStoreIsSingleton() {
+    TabrisClient client = new TabrisClient();
+
+    ClientStore store = client.getService( ClientStore.class );
+
+    assertSame( store, client.getService( ClientStore.class ) );
   }
 }

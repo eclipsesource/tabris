@@ -36,6 +36,15 @@
             </message_arguments>
         </filter>
     </resource>
+    <resource path="src/com/eclipsesource/tabris/internal/ClientStoreImpl.java" type="com.eclipsesource.tabris.internal.ClientStoreImpl">
+        <filter id="574660632">
+            <message_arguments>
+                <message_argument value="ClientStore"/>
+                <message_argument value="ClientService"/>
+                <message_argument value="ClientStoreImpl"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="src/com/eclipsesource/tabris/widgets/ClientCanvas.java" type="com.eclipsesource.tabris.widgets.ClientCanvas">
         <filter id="337682486">
             <message_arguments>
