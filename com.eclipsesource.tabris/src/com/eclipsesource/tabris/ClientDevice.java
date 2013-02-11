@@ -10,58 +10,73 @@
  ******************************************************************************/
 package com.eclipsesource.tabris;
 
-import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.client.Client;
+import org.eclipse.rap.rwt.client.service.ClientInfo;
 
-import com.eclipsesource.tabris.internal.Constants;
 
 /**
  * <p>
- * The <code>ClientDevice</code> provides service method to distinguish the requesting client. See <code>Platform</code>
- * for the available clients.
+ * The <code>ClientDevice</code> provides service methods to gain information regarding the requesting client device
+ * like the platform, the orientation, the locale and so on. An instance of ClientDevice can be accessed using
+ * RWT.getClient().getService( ClientDevice.class ).
  * <p>
- * 
+ *
  * @see Platform
- * @since 0.6
+ * @see Client
+ * @since 0.11
  */
-public class ClientDevice {
-  
+public interface ClientDevice extends ClientInfo {
+
   /**
    * <p>
    * Enumeration to make the identification of a requesting client easier.
    * </p>
-   * 
-   * @since 0.9
+   *
+   * @since 0.11
    */
   public enum Platform {
     IOS, ANDROID, WEB
   }
-  
+
   /**
-   * @since 0.9
+   * @since 0.11
    */
-  public Platform getPlatform() {
-    String userAgent = RWT.getRequest().getHeader( Constants.USER_AGENT );
-    Platform result = Platform.WEB;
-    if( userAgent != null && userAgent.contains( Constants.ID_IOS ) ) {
-      result = Platform.IOS;
-    } else if( userAgent != null && userAgent.contains( Constants.ID_ANDROID ) ) {
-      result = Platform.ANDROID;
-    }
-    return result;
+  Platform getPlatform();
+
+  /**
+   * @since 0.11
+   */
+  public enum Orientation {
+    PORTRAIT, LANDSCAPE
   }
 
   /**
-   * <p>
-   * Return true when the current requesting client matches with the <code>Platform</code> passed as a parameter.
-   * </p>
-   * 
-   * @since 0.9
+   * @since 0.11
    */
-  public boolean isPlatform( Platform platform ) {
-    return getPlatform() == platform;
+  Orientation getOrientation();
+
+  /**
+   * @since 0.11
+   */
+  public enum Capability {
+    LOCATION, MESSAGE, PHONE, CAMERA, MAPS
   }
 
-  public static ClientDevice getCurrent() {
-    return new ClientDevice(); 
+  /**
+   * @since 0.11
+   */
+  boolean hasCapability( Capability capability );
+
+  /**
+   * @since 0.11
+   */
+  public enum ConnectionType {
+    WIFI, CELULAR
   }
+
+  /**
+   * @since 0.11
+   */
+  ConnectionType getConnectionType();
+
 }

@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <component id="com.eclipsesource.tabris" version="2">
+    <resource path="src/com/eclipsesource/tabris/ClientDevice.java" type="com.eclipsesource.tabris.ClientDevice">
+        <filter id="337809484">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.ClientDevice"/>
+                <message_argument value="4"/>
+                <message_argument value="8"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="src/com/eclipsesource/tabris/camera/CameraCallback.java" type="com.eclipsesource.tabris.camera.CameraCallback">
         <filter id="643846161">
             <message_arguments>
@@ -18,11 +27,18 @@
             </message_arguments>
         </filter>
     </resource>
+    <resource path="src/com/eclipsesource/tabris/event/App.java" type="com.eclipsesource.tabris.event.App">
+        <filter id="404791350">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.event.App"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="src/com/eclipsesource/tabris/internal/AppImpl.java" type="com.eclipsesource.tabris.internal.AppImpl">
         <filter id="574660632">
             <message_arguments>
                 <message_argument value="App"/>
-                <message_argument value="ClientInfo"/>
+                <message_argument value="ClientService"/>
                 <message_argument value="AppImpl"/>
             </message_arguments>
         </filter>
@@ -33,6 +49,15 @@
                 <message_argument value="AppLauncher"/>
                 <message_argument value="ClientService"/>
                 <message_argument value="AppLauncherImpl"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/internal/ClientDeviceImpl.java" type="com.eclipsesource.tabris.internal.ClientDeviceImpl">
+        <filter id="574660632">
+            <message_arguments>
+                <message_argument value="ClientDevice"/>
+                <message_argument value="ClientInfo"/>
+                <message_argument value="ClientDeviceImpl"/>
             </message_arguments>
         </filter>
     </resource>

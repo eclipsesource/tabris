@@ -21,7 +21,6 @@ import org.eclipse.rap.rwt.internal.client.ClientProvider;
 import org.eclipse.rap.rwt.internal.theme.ThemeUtil;
 
 import com.eclipsesource.tabris.Bootstrapper;
-import com.eclipsesource.tabris.ClientDevice;
 import com.eclipsesource.tabris.ClientDevice.Platform;
 import com.eclipsesource.tabris.TabrisClient;
 
@@ -31,17 +30,12 @@ public class TabrisClientProvider implements ClientProvider {
 
   @Override
   public boolean accept( HttpServletRequest request ) {
-    ClientDevice clientDevice = ClientDevice.getCurrent();
-    Platform platform = clientDevice.getPlatform();
+    Platform platform = DeviceUtil.getPlatform();
     boolean result = platform == ANDROID || platform == IOS;
     if( result ) {
       setThemeForPlatform( platform );
-      extractClientInfo( request );
     }
     return result;
-  }
-
-  private void extractClientInfo( HttpServletRequest request ) {
   }
 
   private void setThemeForPlatform( Platform platform ) {

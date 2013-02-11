@@ -12,13 +12,13 @@ package com.eclipsesource.tabris.internal;
 
 
 public class Preconditions {
-  
+
   public static void argumentNotNull( Object object, String name ) {
     if( object == null ) {
       throw new IllegalArgumentException( name + " must not be null" );
     }
   }
-  
+
   public static void argumentNotNullAndNotEmpty( Object object, String name ) {
     if( object == null ) {
       throw new IllegalArgumentException( name + " must not be null" );
@@ -27,7 +27,13 @@ public class Preconditions {
       throw new IllegalArgumentException( name + " must not be empty" );
     }
   }
-  
+
+  public static void checkState( Object object, String message ) {
+    if( object == null ) {
+      throw new IllegalStateException( message );
+    }
+  }
+
   private Preconditions() {
     // prevent instantiation
   }

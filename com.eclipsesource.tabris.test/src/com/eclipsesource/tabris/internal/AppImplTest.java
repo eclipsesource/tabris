@@ -11,9 +11,7 @@
 package com.eclipsesource.tabris.internal;
 
 import static com.eclipsesource.tabris.event.EventType.PAUSE;
-import static com.eclipsesource.tabris.test.TabrisTestUtil.mockServiceObject;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
@@ -22,13 +20,11 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.eclipse.rap.rwt.testfixture.TestRequest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -169,84 +165,6 @@ public class AppImplTest {
     verify( listener ).handleEvent( captor.capture() );
     assertSame( PAUSE, captor.getValue().getType() );
     assertEquals( "bar", captor.getValue().getProperty( "foo" ) );
-  }
-
-  @Test
-  public void testGetLocaleReturnsNullWhenLocaleNotSet() {
-    Fixture.fakeNewGetRequest();
-    mockServiceObject();
-
-    AppImpl appImpl = new AppImpl();
-
-    assertNull( appImpl.getLocale() );
-  }
-
-  @Test
-  public void testGetLocalesReturnsEmptyArrayWhenLocaleNotSet() {
-    Fixture.fakeNewGetRequest();
-    mockServiceObject();
-
-    AppImpl appImpl = new AppImpl();
-
-    assertEquals( 0, appImpl.getLocales().length );
-  }
-
-  @Test
-  public void testGetLocaleReadsLocaleFromRequest() {
-    TestRequest request = Fixture.fakeNewGetRequest();
-    mockServiceObject();
-
-    request.setHeader( "Accept-Language", "anything" );
-    request.setLocales( new Locale( "en-US" ) );
-    AppImpl appImpl = new AppImpl();
-
-    assertEquals( new Locale( "en-US" ), appImpl.getLocale() );
-  }
-
-  @Test
-  public void testGetLocalesReadsLocalesFromRequest() {
-    TestRequest request = Fixture.fakeNewGetRequest();
-    mockServiceObject();
-
-    request.setHeader( "Accept-Language", "anything" );
-    request.setLocales( new Locale( "en-US" ), new Locale( "de-DE" ) );
-    AppImpl appImpl = new AppImpl();
-
-    assertEquals( 2, appImpl.getLocales().length );
-    assertEquals( new Locale( "en-US" ), appImpl.getLocales()[ 0 ] );
-    assertEquals( new Locale( "de-DE" ), appImpl.getLocales()[ 1 ] );
-  }
-
-  @Test
-  public void testReturnsSaveLocalesCopy() {
-    TestRequest request = Fixture.fakeNewGetRequest();
-    mockServiceObject();
-
-    request.setHeader( "Accept-Language", "anything" );
-    request.setLocales( new Locale( "en-US" ) );
-    AppImpl appImpl = new AppImpl();
-    appImpl.getLocales()[ 0 ] = new Locale( "de-DE" );
-
-    assertEquals( new Locale( "en-US" ), appImpl.getLocales()[ 0 ] );
-  }
-
-  @Test( expected = IllegalStateException.class )
-  public void testGetTimezoneOffsetFailsWhenTimezoneOffsetNotSet() {
-    mockServiceObject();
-    AppImpl appImpl = new AppImpl();
-
-    appImpl.getTimezoneOffset();
-  }
-
-  @Test
-  public void testGetTimezoneOffset_readsTimezoneOffsetFromHandler() {
-    AppImpl appImpl = new AppImpl();
-
-    Map<String, Object> parameters = new HashMap<String, Object>();
-    parameters.put( "timezoneOffset", new Integer( -90 ) );
-    Fixture.dispatchSet( appImpl.getRemoteObject(), parameters );
-
-    assertEquals( -90, appImpl.getTimezoneOffset() );
   }
 
 }

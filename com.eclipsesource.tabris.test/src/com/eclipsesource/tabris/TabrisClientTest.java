@@ -56,6 +56,15 @@ public class TabrisClientTest {
   }
 
   @Test
+  public void testHasClientDeviceService() {
+    TabrisClient client = new TabrisClient();
+
+    ClientDevice device = client.getService( ClientDevice.class );
+
+    assertNotNull( device );
+  }
+
+  @Test
   public void testHasClientInfoService() {
     TabrisClient client = new TabrisClient();
 
@@ -89,6 +98,15 @@ public class TabrisClientTest {
     App app = client.getService( App.class );
 
     assertSame( app, client.getService( App.class ) );
+  }
+
+  @Test
+  public void testClientDeviceIsSingleton() {
+    TabrisClient client = new TabrisClient();
+
+    ClientDevice device = client.getService( ClientDevice.class );
+
+    assertSame( device, client.getService( ClientDevice.class ) );
   }
 
   @Test

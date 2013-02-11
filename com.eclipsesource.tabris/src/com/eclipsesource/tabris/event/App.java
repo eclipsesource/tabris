@@ -10,16 +10,17 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.event;
 
-import org.eclipse.rap.rwt.client.service.ClientInfo;
+import org.eclipse.rap.rwt.client.service.ClientService;
+
 
 
 /**
  * @since 0.10
  */
-public interface App extends ClientInfo {
-  
+public interface App extends ClientService {
+
   void addListener( EventType type, AppListener listener );
 
   void removeListener( EventType type, AppListener listener );
-  
+
 }
