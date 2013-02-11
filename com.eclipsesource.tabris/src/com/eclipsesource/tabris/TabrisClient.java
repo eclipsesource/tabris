@@ -19,6 +19,7 @@ import com.eclipsesource.tabris.event.App;
 import com.eclipsesource.tabris.interaction.AppLauncher;
 import com.eclipsesource.tabris.internal.AppImpl;
 import com.eclipsesource.tabris.internal.AppLauncherImpl;
+import com.eclipsesource.tabris.internal.ClientStoreImpl;
 
 
 /**
@@ -31,17 +32,18 @@ import com.eclipsesource.tabris.internal.AppLauncherImpl;
  * </ul>
  * They can be obtained using the getService( Class ) method.
  * </p>
- * 
+ *
  * @since 0.9
  */
 public class TabrisClient implements Client {
-  
+
   public TabrisClient() {
     initializeServices();
   }
 
   private void initializeServices() {
     getService( App.class );
+    getService( ClientStore.class );
   }
 
   @Override
@@ -52,6 +54,8 @@ public class TabrisClient implements Client {
       result = ( T )SingletonUtil.getSessionInstance( AppLauncherImpl.class );
     } else if( type == App.class || type == ClientInfo.class ) {
       result = ( T )SingletonUtil.getSessionInstance( AppImpl.class );
+    } else if( type == ClientStore.class ) {
+      result = ( T )SingletonUtil.getSessionInstance( ClientStoreImpl.class );
     }
     return result;
   }
