@@ -197,14 +197,14 @@ public class ClientStoreImplTest {
   }
 
   @Test
-  public void testSynchronizeEventAddsValues() {
+  public void testSynchronizeCallAddsValues() {
     ClientStoreImpl store = new ClientStoreImpl();
     when( ( ( RemoteObjectImpl )serviceObject ).getHandler() ).thenReturn( store );
     Map<String, Object> properties = new HashMap<String, Object>();
     properties.put( "foo", "bar" );
     properties.put( "foo1", "bar1" );
 
-    Fixture.dispatchNotify( serviceObject, "SynchronizeStore", properties  );
+    Fixture.dispatchCall( serviceObject, "synchronizeStore", properties  );
 
     assertEquals( "bar", store.get( "foo" ) );
     assertEquals( "bar1", store.get( "foo1" ) );

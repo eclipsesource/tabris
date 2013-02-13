@@ -28,7 +28,7 @@ import com.eclipsesource.tabris.ClientStore;
 @SuppressWarnings("restriction")
 public class ClientStoreImpl extends AbstractOperationHandler implements ClientStore {
 
-  private static final String EVENT_SYNCHRONIZE_STORE = "SynchronizeStore";
+  private static final String METHOD_SYNCHRONIZE_STORE = "synchronizeStore";
   private static final String METHOD_CLEAR = "clear";
   private static final String METHOD_REMOVE = "remove";
   private static final String METHOD_ADD = "add";
@@ -89,11 +89,12 @@ public class ClientStoreImpl extends AbstractOperationHandler implements ClientS
   }
 
   @Override
-  public void handleNotify( String event, Map<String, Object> properties ) {
-    if( event.equals( EVENT_SYNCHRONIZE_STORE ) ) {
-      for( Entry<String, Object> entry : properties.entrySet() ) {
+  public void handleCall( String method, Map<String, Object> parameters ) {
+    if( method.equals( METHOD_SYNCHRONIZE_STORE ) ) {
+      for( Entry<String, Object> entry : parameters.entrySet() ) {
         store.put( entry.getKey(), ( String )entry.getValue() );
       }
     }
   }
+
 }
