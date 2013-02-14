@@ -15,7 +15,9 @@ import static org.eclipse.rap.rwt.internal.service.ContextProvider.getApplicatio
 import static org.eclipse.rap.rwt.internal.service.ContextProvider.getContext;
 
 import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.application.ApplicationConfiguration;
 import org.eclipse.rap.rwt.application.EntryPoint;
+import org.eclipse.rap.rwt.application.EntryPointFactory;
 import org.eclipse.rap.rwt.internal.lifecycle.RWTLifeCycle;
 import org.eclipse.rap.rwt.internal.theme.JsonValue;
 import org.eclipse.rap.rwt.widgets.DialogUtil;
@@ -33,6 +35,21 @@ import com.eclipsesource.tabris.internal.ui.UIImpl;
 
 
 /**
+ * <p>
+ * The {@link TabrisUI} class should be used as the EntryPoint for TabrisUI based applications. As you may have seen
+ * it's an implementation of the RWT interface {@link EntryPoint}. This means it should be registered within an
+ * {@link ApplicationConfiguration}. It has no no-argument constructor. This means it can't be registered as a normal
+ * {@link EntryPoint}. Instead it should be registered with a {@link EntryPointFactory}.
+ * </p>
+ * <p>
+ * For more details on what's a Tabris UI please see {@link UIConfiguration}.
+ * </p>
+ *
+ * @see ApplicationConfiguration
+ * @see EntryPoint
+ * @see EntryPointFactory
+ * @see UIConfiguration
+ *
  * @since 0.11
  */
 @SuppressWarnings("restriction")
@@ -40,6 +57,15 @@ public class TabrisUI implements EntryPoint {
 
   private final UIConfiguration configuration;
 
+  /**
+   * <p>
+   * Creates an instance of a TabrisUI {@link EntryPoint}. Should be called within a {@link EntryPointFactory}.
+   * <p>
+   *
+   * @param configuration the configuration of the UI. Must not be <code>null</code>.
+   *
+   * @see UIConfiguration
+   */
   public TabrisUI( UIConfiguration configuration ) throws IllegalArgumentException {
     checkArgumentNotNull( configuration, UIConfiguration.class.getSimpleName() );
     this.configuration = configuration;
@@ -59,6 +85,16 @@ public class TabrisUI implements EntryPoint {
     return 0;
   }
 
+  /**
+   * <p>
+   * Will be called when the client accesses the application. The default implementation creates the Tabrsi UI when
+   * the application is accessed from a Tabris Client. When a Browser accesses the application a Dialog will pop up
+   * saying that this is an application for mobile devices only. Subclasses may override this method to change the
+   * behavior for browsers.<br/>
+   * <b>Please note:</b> When overriding this method it's necessary to call {@link TabrisUI#createTabrisUI(Shell)}
+   *                     within it for Tabris Clients.
+   * </p>
+   */
   protected void createContent( Shell shell ) {
     if( RWT.getClient() instanceof TabrisClient ) {
       createTabrisUI( shell );
@@ -70,6 +106,11 @@ public class TabrisUI implements EntryPoint {
     }
   }
 
+  /**
+   * <p>
+   * Will create the Tabris UI. Needs to be called from within {@link TabrisUI#createContent(Shell)}.
+   * </p>
+   */
   protected void createTabrisUI( Shell shell ) {
     RemoteUI remoteUI = new RemoteUI( shell );
     shell.setLayout( new ZIndexStackLayout() );

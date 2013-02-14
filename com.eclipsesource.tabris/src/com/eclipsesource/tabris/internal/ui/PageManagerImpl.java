@@ -31,12 +31,12 @@ public class PageManagerImpl implements PageManager {
   }
 
   @Override
-  public void showPage( String pageId ) {
+  public void showPage( String pageId ) throws IllegalStateException {
     showPage( pageId, new Store() );
   }
 
   @Override
-  public void showPage( String pageId, Store store ) {
+  public void showPage( String pageId, Store store ) throws IllegalStateException {
     checkArgumentNotNull( store, Store.class.getSimpleName() );
     PageDescriptor descriptor = context.getUI().getDescriptorHolder().getPageDescriptor( pageId );
     checkState( descriptor, "Page with id " + pageId + " does not exist." );

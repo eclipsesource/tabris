@@ -471,7 +471,7 @@ public class ControllerTest {
     verify( remoteObject ).set( "visibility", true );
   }
 
-  @Test( expected = IllegalArgumentException.class )
+  @Test( expected = IllegalStateException.class )
   public void testSetVisibleGlobalActionFailsWithoutAction() {
     ActionDescriptor descriptor = mock( ActionDescriptor.class );
     when( descriptor.getId() ).thenReturn( "foo" );
@@ -497,7 +497,7 @@ public class ControllerTest {
     verify( remoteObject ).set( "enabled", true );
   }
 
-  @Test( expected = IllegalArgumentException.class )
+  @Test( expected = IllegalStateException.class )
   public void testSetEnabledGlobalActionFailsWithoutAction() {
     ActionDescriptor descriptor = mock( ActionDescriptor.class );
     when( descriptor.getId() ).thenReturn( "foo" );

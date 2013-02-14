@@ -12,17 +12,53 @@ package com.eclipsesource.tabris.ui;
 
 
 /**
+ * <p>
+ * The single purpose of the {@link ActionManager} is to modify and get the state of {@link Action} objects at runtime.
+ * this means you can influence the visibility or the enabled state of an {@link Action}.
+ * </p>
+ *
  * @since 0.11
  */
 public interface ActionManager {
 
-  void setActionEnabled( String id, boolean enabled );
+  /**
+   * <p>
+   * Sets the enabled state of an {@link Action}.
+   * </p>
+   *
+   * @param id the id of the {@link Action}. Must not be empty or <code>null</code>.
+   *
+   * @throws IllegalStateException when no {@link Action} for the given id exist.
+   */
+  void setActionEnabled( String id, boolean enabled ) throws IllegalStateException;
 
+  /**
+   * <p>
+   * Gets the enabled state of an {@link Action}.
+   * </p>
+   *
+   * @param id the id of the {@link Action}. Must not be empty or <code>null</code>.
+   */
   boolean isActionEnabled( String id );
 
-  void setActionVisible( String id, boolean visible );
+  /**
+   * <p>
+   * Sets the visibility of an {@link Action}.
+   * </p>
+   *
+   * @param id the id of the {@link Action}. Must not be empty or <code>null</code>.
+   *
+   * @throws IllegalStateException when no {@link Action} for the given id exist.
+   */
+  void setActionVisible( String id, boolean visible ) throws IllegalStateException;
 
+  /**
+   * <p>
+   * Gets the visibility of an {@link Action}.
+   * </p>
+   *
+   * @param id the id of the {@link Action}. Must not be empty or <code>null</code>.
+   */
   boolean isActionVisible( String id );
-
 
 }

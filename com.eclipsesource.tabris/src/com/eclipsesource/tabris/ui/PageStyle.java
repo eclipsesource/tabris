@@ -12,10 +12,29 @@ package com.eclipsesource.tabris.ui;
 
 
 /**
+ * <p>
+ * A {@link PageStyle} defines the style of a {@link Page}. E.g. if a page should be rendered full screen than a
+ * {@link PageStyle} needs to be used within a {@link PageConfiguration}.
+ * </p>
+ *
+ * @see PageConfiguration#setStyle(PageStyle...)
+ *
  * @since 0.11
  */
 public enum PageStyle {
 
-  DEFAULT, FULLSCREEN
+  /**
+   * <p>
+   * Default page style. Renders a {@link Page} without any special behavior.
+   * </p>
+   */
+  DEFAULT,
+
+  /**
+   * <p>
+   * When used a {@link Page} will be rendered full screen.
+   * </p>
+   */
+  FULLSCREEN
 
 }

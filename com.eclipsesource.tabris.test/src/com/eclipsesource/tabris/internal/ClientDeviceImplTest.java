@@ -214,12 +214,12 @@ public class ClientDeviceImplTest {
     ClientDeviceImpl deviceImpl = new ClientDeviceImpl();
     when( serviceObject.getHandler() ).thenReturn( deviceImpl );
     Map<String, Object> properties = new HashMap<String, Object>();
-    properties.put( "connectionType", "CELULAR" );
+    properties.put( "connectionType", "CELLULAR" );
 
     Fixture.dispatchSet( serviceObject, properties );
     ConnectionType connectionType = deviceImpl.getConnectionType();
 
-    assertSame( ConnectionType.CELULAR, connectionType );
+    assertSame( ConnectionType.CELLULAR, connectionType );
   }
 
   @Test( expected = IllegalStateException.class )
@@ -235,7 +235,7 @@ public class ClientDeviceImplTest {
     ClientDeviceImpl deviceImpl = new ClientDeviceImpl();
     when( serviceObject.getHandler() ).thenReturn( deviceImpl );
     Map<String, Object> properties = new HashMap<String, Object>();
-    properties.put( "capabilities", new String[] { "CAMERA", "LOCATION" } );
+    properties.put( "capabilities", new Object[] { "CAMERA", "LOCATION" } );
 
     Fixture.dispatchSet( serviceObject, properties );
 
@@ -251,7 +251,7 @@ public class ClientDeviceImplTest {
     ClientDeviceImpl deviceImpl = new ClientDeviceImpl();
     when( serviceObject.getHandler() ).thenReturn( deviceImpl );
     Map<String, Object> properties = new HashMap<String, Object>();
-    properties.put( "capabilities", new String[] { "CAMERA", "LOCATION", "MAPS", "MESSAGE", "PHONE" } );
+    properties.put( "capabilities", new Object[] { "CAMERA", "LOCATION", "MAPS", "MESSAGE", "PHONE" } );
 
     Fixture.dispatchSet( serviceObject, properties );
 

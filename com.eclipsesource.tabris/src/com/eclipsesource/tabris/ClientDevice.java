@@ -22,7 +22,11 @@ import org.eclipse.rap.rwt.client.service.ClientInfo;
  * <p>
  *
  * @see Platform
+ * @see Orientation
+ * @see Capability
+ * @see ConnectionType
  * @see Client
+ *
  * @since 0.11
  */
 public interface ClientDevice extends ClientInfo {
@@ -39,11 +43,19 @@ public interface ClientDevice extends ClientInfo {
   }
 
   /**
+   * <p>
+   * Returns the platform of the accessing client.
+   * </p>
+   *
    * @since 0.11
    */
   Platform getPlatform();
 
   /**
+   * <p>
+   * Enumeration to distinguish the device orientation.
+   * </p>
+   *
    * @since 0.11
    */
   public enum Orientation {
@@ -51,11 +63,20 @@ public interface ClientDevice extends ClientInfo {
   }
 
   /**
+   * <p>
+   * Returns the orientation of the accessing client. Can change during runtime.
+   * </p>
+   *
    * @since 0.11
    */
   Orientation getOrientation();
 
   /**
+   * <p>
+   * Each accessing device has different capabilities like the capability to access the device location or make phone
+   * calls. This enumeration maps those devices.
+   * </p>
+   *
    * @since 0.11
    */
   public enum Capability {
@@ -63,18 +84,32 @@ public interface ClientDevice extends ClientInfo {
   }
 
   /**
+   * <p>
+   * Returns a boolean value to indicate if the accessing device has the defined capability.
+   * </p>
+   *
    * @since 0.11
    */
   boolean hasCapability( Capability capability );
 
   /**
+   * <p>
+   * An accessing device can use different kinds of connection types like wifi or 3G. Here two different kinds are
+   * defined. Wifi should be self explaining. Cellular means basically any Wide Area Network connection like 3G, GSM
+   * and so on.
+   * <p>
+   *
    * @since 0.11
    */
   public enum ConnectionType {
-    WIFI, CELULAR
+    WIFI, CELLULAR
   }
 
   /**
+   * <p>
+   * Returns the use connection type of the accessing device. Can change durign runtime.
+   * </p>
+   *
    * @since 0.11
    */
   ConnectionType getConnectionType();

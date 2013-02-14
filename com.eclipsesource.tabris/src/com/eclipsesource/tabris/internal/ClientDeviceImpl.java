@@ -76,14 +76,14 @@ public class ClientDeviceImpl extends AbstractOperationHandler implements Client
       connectionType = ConnectionType.valueOf( ( String )properties.get( CONNECTION_TYPE ) );
     }
     if( properties.containsKey( CAPABILITIES ) ) {
-      setCapabilities( ( String[] )properties.get( CAPABILITIES ) );
+      setCapabilities( ( Object[] )properties.get( CAPABILITIES ) );
     }
   }
 
-  private void setCapabilities( String[] rawCapabilities ) {
+  private void setCapabilities( Object[] objects ) {
     capabilities = new ArrayList<Capability>();
-    for( String capability : rawCapabilities ) {
-      capabilities.add( Capability.valueOf( capability ) );
+    for( Object capability : objects ) {
+      capabilities.add( Capability.valueOf( ( String )capability ) );
     }
   }
 

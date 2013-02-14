@@ -12,6 +12,13 @@ package com.eclipsesource.tabris.ui;
 
 
 /**
+ * <p>
+ * A {@link Prominence} is a characteristic of an {@link Action}. It define show the {@link Action} should be rendered
+ * on the client device. Currently only one {@link Prominence} is defined. More will follow.
+ * </p>
+ *
+ * @see ActionConfiguration#setProminence(Prominence...)
+ *
  * @since 0.11
  */
 public enum Prominence {

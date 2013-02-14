@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
+import static com.eclipsesource.tabris.internal.Preconditions.checkState;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -225,7 +225,7 @@ public class Controller {
     if( result == null ) {
       result = findActionInPageActions( id );
     }
-    checkArgumentNotNull( result, "Action with id " + id + " does not exist." );
+    checkState( result, "Action with id " + id + " does not exist." );
     return result;
   }
 

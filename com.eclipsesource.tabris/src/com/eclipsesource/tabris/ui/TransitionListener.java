@@ -12,12 +12,31 @@ package com.eclipsesource.tabris.ui;
 
 
 /**
+ * <p>
+ * A {@link TransitionListener} can be used to get notified when the user navigates from one {@link Page} to another.
+ * {@link TransitionListener} object are usually registered within the {@link UIConfiguration#configure(UI, UIContext)}
+ * method.
+ * </p>
+ *
+ * @see Page
+ * @see UIConfiguration
+ *
  * @since 0.11
  */
 public interface TransitionListener {
 
+  /**
+   * <p>
+   * Will be called before the new {@link Page} will be activated.
+   * </p>
+   */
   void before( UIContext context, Page from, Page to );
 
+  /**
+   * <p>
+   * Will be called after the new {@link Page} will was activated.
+   * </p>
+   */
   void after( UIContext context, Page from, Page to );
 
 }
