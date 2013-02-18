@@ -20,11 +20,9 @@ Export-Package: com.eclipsesource.tabris;version="0.11.0",
  com.eclipsesource.tabris.widgets.swipe;version="0.11.0"
 Import-Package: javax.servlet;version="[2.3.0,4.0.0)",
  javax.servlet.http;version="[2.3.0,4.0.0)",
- org.eclipse.rap.rwt.osgi;version="[1.5.0,2.1.0)",
- org.osgi.framework;version="[1.6.0,2.0.0)",
- org.osgi.framework.hooks.service;version="[1.1.0,1.2.0)",
- org.osgi.service.http;version="[1.2.0,1.3.0)",
- org.osgi.util.tracker;version="[1.5.0,1.6.0)"
+ org.osgi.framework;version="[1.3.0,2.0.0)",
+ org.osgi.service.http;version="[1.2.0,2.0.0)",
+ org.osgi.util.tracker;version="[1.2.0,2.0.0)"
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
