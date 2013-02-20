@@ -114,7 +114,7 @@ public class TabrisUI implements EntryPoint {
   protected void createTabrisUI( Shell shell ) {
     RemoteUI remoteUI = new RemoteUI( shell );
     shell.setLayout( new ZIndexStackLayout() );
-    UIImpl ui = new UIImpl();
+    UIImpl ui = new UIImpl( remoteUI );
     Controller controller = new Controller( shell, remoteUI, ui.getDescriptorHolder() );
     UIContextImpl context = new UIContextImpl( shell.getDisplay(), controller, ui );
     remoteUI.setContext( context );

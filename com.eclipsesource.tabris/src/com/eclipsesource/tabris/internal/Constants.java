@@ -33,6 +33,8 @@ public class Constants {
   public static final String PROPERTY_ENABLED = "enabled";
   public static final String PROPERTY_PROMINENCE = "prominence";
   public static final String PROPERTY_SHELL = "shell";
+  public static final String PROPERTY_FOREGROUND = "foreground";
+  public static final String PROPERTY_BACKGROUND = "background";
 
   private Constants() {
     // prevent instantiation

@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.ui;
 
+import org.eclipse.swt.graphics.Color;
+
 
 /**
  * <p>
@@ -40,6 +42,24 @@ public interface UI {
    * </p>
    */
   UI addAction( ActionConfiguration configuration );
+
+  /**
+   * <p>
+   * Sets the foreground color for navigation controls and the area where those controls are located on.
+   * </p>
+   *
+   * @since 1.0
+   */
+  void setForeground( Color foreground );
+
+  /**
+   * <p>
+   * Sets the background color for navigation controls and the area where those controls are located on.
+   * </p>
+   *
+   * @since 1.0
+   */
+  void setBackground( Color background );
 
   /**
    * <p>

@@ -15,6 +15,8 @@ import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNu
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.graphics.Color;
+
 import com.eclipsesource.tabris.ui.ActionConfiguration;
 import com.eclipsesource.tabris.ui.PageConfiguration;
 import com.eclipsesource.tabris.ui.TransitionListener;
@@ -25,10 +27,13 @@ public class UIImpl implements UI {
 
   private final DescriptorHolder descriptorHolder;
   private final List<TransitionListener> transitionListeners;
+  private final RemoteUI remoteUI;
 
-  public UIImpl() {
-    descriptorHolder = new DescriptorHolder();
-    transitionListeners = new ArrayList<TransitionListener>();
+  public UIImpl( RemoteUI remoteUI ) {
+    checkArgumentNotNull( remoteUI, RemoteUI.class.getSimpleName() );
+    this.remoteUI = remoteUI;
+    this.descriptorHolder = new DescriptorHolder();
+    this.transitionListeners = new ArrayList<TransitionListener>();
   }
 
   public DescriptorHolder getDescriptorHolder() {
@@ -49,6 +54,18 @@ public class UIImpl implements UI {
     ActionDescriptor descriptor = ( ( InternalActionConfiguration )configuration ).createDescriptor();
     descriptorHolder.add( descriptor );
     return this;
+  }
+
+  @Override
+  public void setForeground( Color foreground ) {
+    checkArgumentNotNull( foreground, "Foreground" );
+    remoteUI.setForeground( foreground );
+  }
+
+  @Override
+  public void setBackground( Color background ) {
+    checkArgumentNotNull( background, "Background" );
+    remoteUI.setBackground( background );
   }
 
   @Override
