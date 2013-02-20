@@ -21,6 +21,7 @@ import java.util.Map;
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.testfixture.Fixture;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
@@ -114,6 +115,24 @@ public class RemoteUITest {
     Fixture.dispatchNotify( remoteObject, "ShowPreviousPage", null );
 
     verify( pageManager ).showPreviousPage();
+  }
+
+  @Test
+  public void testSendsForeground() {
+    RemoteUI remoteUI = createRemoteUI( mock( UIContext.class ) );
+
+    remoteUI.setForeground( new Color( shell.getDisplay(), 100, 200, 150 ) );
+
+    verify( remoteObject ).set( "foreground", new int[] { 100, 200, 150 } );
+  }
+
+  @Test
+  public void testSendsBackground() {
+    RemoteUI remoteUI = createRemoteUI( mock( UIContext.class ) );
+
+    remoteUI.setBackground( new Color( shell.getDisplay(), 100, 120, 150 ) );
+
+    verify( remoteObject ).set( "background", new int[] { 100, 120, 150 } );
   }
 
   private RemoteUI createRemoteUI( UIContext context ) {

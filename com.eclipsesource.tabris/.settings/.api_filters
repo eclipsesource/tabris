@@ -191,6 +191,20 @@
         </filter>
     </resource>
     <resource path="src/com/eclipsesource/tabris/ui/UI.java" type="com.eclipsesource.tabris.ui.UI">
+        <filter id="643846161">
+            <message_arguments>
+                <message_argument value="Color"/>
+                <message_argument value="UI"/>
+                <message_argument value="setBackground(Color)"/>
+            </message_arguments>
+        </filter>
+        <filter id="643846161">
+            <message_arguments>
+                <message_argument value="Color"/>
+                <message_argument value="UI"/>
+                <message_argument value="setForeground(Color)"/>
+            </message_arguments>
+        </filter>
         <filter id="1108344834">
             <message_arguments>
                 <message_argument value="0.11"/>

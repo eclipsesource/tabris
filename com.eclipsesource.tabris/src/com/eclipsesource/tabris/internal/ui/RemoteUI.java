@@ -13,6 +13,8 @@ package com.eclipsesource.tabris.internal.ui;
 import static com.eclipsesource.tabris.internal.Constants.EVENT_SHOW_PAGE;
 import static com.eclipsesource.tabris.internal.Constants.EVENT_SHOW_PREVIOUS_PAGE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ACTIVE_PAGE;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_BACKGROUND;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_FOREGROUND;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PAGE_ID;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SHELL;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNullAndNotEmpty;
@@ -23,6 +25,7 @@ import java.util.Map;
 
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
 import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Shell;
 
 import com.eclipsesource.tabris.ui.UIContext;
@@ -68,6 +71,18 @@ public class RemoteUI extends AbstractOperationHandler {
     } else if( event.equals( EVENT_SHOW_PREVIOUS_PAGE ) ) {
       context.getPageManager().showPreviousPage();
     }
+  }
+
+  public void setForeground( Color color ) {
+    setColor( PROPERTY_FOREGROUND, color );
+  }
+
+  public void setBackground( Color color ) {
+    setColor( PROPERTY_BACKGROUND, color );
+  }
+
+  private void setColor( String name, Color color ) {
+    remoteObject.set( name, new int[] { color.getRed(), color.getGreen(), color.getBlue() } );
   }
 
 }

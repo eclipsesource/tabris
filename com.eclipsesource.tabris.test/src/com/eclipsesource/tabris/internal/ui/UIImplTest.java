@@ -15,10 +15,13 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import java.util.List;
 
 import org.eclipse.rap.rwt.testfixture.Fixture;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Display;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,9 +44,14 @@ public class UIImplTest {
     Fixture.tearDown();
   }
 
+  @Test( expected = IllegalArgumentException.class )
+  public void testFailsWithNullRemoteUI() {
+    new UIImpl( null );
+  }
+
   @Test( expected = IllegalStateException.class )
   public void testAddPageFailsWithDuplicateId() {
-    UIImpl ui = new UIImpl();
+    UIImpl ui = new UIImpl( mock( RemoteUI.class ) );
     PageConfiguration configuration1 = PageConfiguration.newPage( "foo", TestPage.class );
     PageConfiguration configuration2 = PageConfiguration.newPage( "foo", TestPage.class );
 
@@ -54,21 +62,21 @@ public class UIImplTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testAddPageFailsWithNullConfiguration() {
-    UIImpl ui = new UIImpl();
+    UIImpl ui = new UIImpl( mock( RemoteUI.class ) );
 
     ui.addPage( null );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testAddActionFailsWithNullConfiguration() {
-    UIImpl ui = new UIImpl();
+    UIImpl ui = new UIImpl( mock( RemoteUI.class ) );
 
     ui.addAction( null );
   }
 
   @Test( expected = IllegalStateException.class )
   public void testAddActionFailsWithDuplicateId() {
-    UIImpl ui = new UIImpl();
+    UIImpl ui = new UIImpl( mock( RemoteUI.class ) );
     ActionConfiguration configuration1 = ActionConfiguration.newAction( "foo", TestAction.class );
     ActionConfiguration configuration2 = ActionConfiguration.newAction( "foo", TestAction.class );
 
@@ -78,21 +86,21 @@ public class UIImplTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testAddTransitionListenerFailsWithNullListener() {
-    UIImpl ui = new UIImpl();
+    UIImpl ui = new UIImpl( mock( RemoteUI.class ) );
 
     ui.addTransitionListener( null );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testremoveTransitionListenerFailsWithNullListener() {
-    UIImpl ui = new UIImpl();
+    UIImpl ui = new UIImpl( mock( RemoteUI.class ) );
 
     ui.removeTransitionListener( null );
   }
 
   @Test
   public void testAddActionReturnsSameUiInstance() {
-    UIImpl ui = new UIImpl();
+    UIImpl ui = new UIImpl( mock( RemoteUI.class ) );
 
     UI actualUI = ui.addAction( ActionConfiguration.newAction( "foo", TestAction.class ) );
 
@@ -101,7 +109,7 @@ public class UIImplTest {
 
   @Test
   public void testAddActionWithProminenceReturnsSameUiInstance() {
-    UIImpl ui = new UIImpl();
+    UIImpl ui = new UIImpl( mock( RemoteUI.class ) );
 
     UI actualUI = ui.addAction( ActionConfiguration.newAction( "foo", TestAction.class ) );
 
@@ -110,7 +118,7 @@ public class UIImplTest {
 
   @Test
   public void testAddPageDoesNotReturnNull() {
-    UIImpl ui = new UIImpl();
+    UIImpl ui = new UIImpl( mock( RemoteUI.class ) );
     PageConfiguration configuration = PageConfiguration.newPage( "foo", TestPage.class ).setTopLevel( true );
 
     UI actualUI = ui.addPage( configuration );
@@ -120,18 +128,18 @@ public class UIImplTest {
 
   @Test
     public void testGetDescriptorHolderIsNotSafeCopy() {
-      UIImpl ui = new UIImpl();
-  
+      UIImpl ui = new UIImpl( mock( RemoteUI.class ) );
+
       DescriptorHolder contentHolder1 = ui.getDescriptorHolder();
       DescriptorHolder contentHolder2 = ui.getDescriptorHolder();
-  
+
       assertSame( contentHolder1, contentHolder2 );
       assertNotNull( contentHolder1 );
     }
 
   @Test
   public void testAddsPageToHolder() {
-    UIImpl ui = new UIImpl();
+    UIImpl ui = new UIImpl( mock( RemoteUI.class ) );
     PageConfiguration configuration = PageConfiguration.newPage( "foo", TestPage.class ).setTopLevel( true );
 
     ui.addPage( configuration );
@@ -142,7 +150,7 @@ public class UIImplTest {
 
   @Test
   public void testAddsActionToHolder() {
-    UIImpl ui = new UIImpl();
+    UIImpl ui = new UIImpl( mock( RemoteUI.class ) );
 
     ui.addAction( ActionConfiguration.newAction( "foo", TestAction.class ) );
 
@@ -151,7 +159,7 @@ public class UIImplTest {
 
   @Test
   public void testAddsActionWitProminenceToHolder() {
-    UIImpl ui = new UIImpl();
+    UIImpl ui = new UIImpl( mock( RemoteUI.class ) );
 
     ui.addAction( ActionConfiguration.newAction( "foo", TestAction.class ) );
 
@@ -160,7 +168,7 @@ public class UIImplTest {
 
   @Test
   public void testAddsTransitionListener() {
-    UIImpl ui = new UIImpl();
+    UIImpl ui = new UIImpl( mock( RemoteUI.class ) );
     TransitionListener listener = mock( TransitionListener.class );
 
     ui.addTransitionListener( listener );
@@ -172,7 +180,7 @@ public class UIImplTest {
 
   @Test
   public void testAddsTransitionListenerReturnsUI() {
-    UIImpl ui = new UIImpl();
+    UIImpl ui = new UIImpl( mock( RemoteUI.class ) );
     TransitionListener listener = mock( TransitionListener.class );
 
     UI actualUI = ui.addTransitionListener( listener );
@@ -182,7 +190,7 @@ public class UIImplTest {
 
   @Test
   public void testRemovesTransitionListener() {
-    UIImpl ui = new UIImpl();
+    UIImpl ui = new UIImpl( mock( RemoteUI.class ) );
     TransitionListener listener = mock( TransitionListener.class );
     ui.addTransitionListener( listener );
 
@@ -190,6 +198,46 @@ public class UIImplTest {
 
     List<TransitionListener> listeners = ui.getTransitionListeners();
     assertTrue( listeners.isEmpty() );
+  }
+
+  @Test
+  public void testSetsForeground() {
+    Display display = new Display();
+    RemoteUI remoteUI = mock( RemoteUI.class );
+    UIImpl ui = new UIImpl( remoteUI );
+    Color color = new Color( display, 233, 233, 233 );
+
+    ui.setForeground( color );
+
+    verify( remoteUI ).setForeground( color );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testSetForegroundFailsWithNull() {
+    RemoteUI remoteUI = mock( RemoteUI.class );
+    UIImpl ui = new UIImpl( remoteUI );
+
+    ui.setForeground( null );
+  }
+
+  @Test
+  public void testSetsBackground() {
+    Display display = new Display();
+    RemoteUI remoteUI = mock( RemoteUI.class );
+    UIImpl ui = new UIImpl( remoteUI );
+    Color color = new Color( display, 233, 233, 233 );
+
+    ui.setBackground( color );
+
+    verify( remoteUI ).setBackground( color );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testSetBackgroundFailsWithNull() {
+    RemoteUI remoteUI = mock( RemoteUI.class );
+    UIImpl ui = new UIImpl( remoteUI );
+
+    ui.setBackground( null );
   }
 
 }
