@@ -35,7 +35,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.eclipsesource.tabris.camera.CameraOptions.SourceType;
 import com.eclipsesource.tabris.internal.Base64;
 
 
@@ -77,7 +76,6 @@ public class CameraTest {
 
     verify( remoteObject ).set( eq( "resolution" ), eq( new int[] { 100, 100 } ) );
     verify( remoteObject ).set( "saveToAlbum", true );
-    verify( remoteObject ).set( "sourceType", SourceType.CAMERA.toString().toLowerCase() );
   }
 
   @Test
@@ -153,7 +151,6 @@ public class CameraTest {
     CameraOptions options = new CameraOptions();
     options.setResolution( 100, 100 );
     options.setSaveToAlbum( true );
-    options.setSourceType( SourceType.CAMERA );
     return new Camera( options );
   }
 

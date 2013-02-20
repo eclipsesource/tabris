@@ -23,7 +23,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 
-import com.eclipsesource.tabris.camera.CameraOptions.SourceType;
 import com.eclipsesource.tabris.internal.Base64;
 import com.eclipsesource.tabris.internal.Preconditions;
 
@@ -46,7 +45,6 @@ public class Camera {
 
   private static final String TYPE = "tabris.Camera";
   private static final String OPEN_METHOD = "open";
-  private static final String PROPERTY_SOURCETYPE = "sourceType";
   private static final String PROPERTY_RESOLUTION = "resolution";
   private static final String PROPERTY_SAVETOALBUM = "saveToAlbum";
   private static final String IMAGE_SELECTION_EVENT = "ImageSelection";
@@ -90,7 +88,6 @@ public class Camera {
 
   private void setInitialValues( CameraOptions options ) {
     setResolution( options );
-    setSourceType( options );
     setSaveToAlbum( options );
   }
 
@@ -98,13 +95,6 @@ public class Camera {
     Point resolution = options.getResolution();
     if( resolution != null ) {
       remoteObject.set( PROPERTY_RESOLUTION, new int[] { resolution.x, resolution.y } );
-    }
-  }
-
-  private void setSourceType( CameraOptions options ) {
-    SourceType sourceType = options.getSourceType();
-    if( sourceType != null ) {
-      remoteObject.set( PROPERTY_SOURCETYPE, sourceType.toString().toLowerCase() );
     }
   }
 
