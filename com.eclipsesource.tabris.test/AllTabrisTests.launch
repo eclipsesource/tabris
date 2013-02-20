@@ -4,6 +4,9 @@
 <listAttribute key="com.mountainminds.eclemma.core.INSTRUMENTATION_PATHS">
 <listEntry value="/com.eclipsesource.rap.mobile/bin"/>
 </listAttribute>
+<listAttribute key="com.mountainminds.eclemma.core.SCOPE_IDS">
+<listEntry value="=com.eclipsesource.tabris/src"/>
+</listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
 <listEntry value="/com.eclipsesource.tabris.test"/>
 </listAttribute>
@@ -11,13 +14,14 @@
 <listEntry value="4"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.ui.favoriteGroups">
-<listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
 <listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
+<listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value="=com.eclipsesource.tabris.test"/>
 <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
 <stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
 <stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit4"/>
+<booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value=""/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="com.eclipsesource.tabris.test"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-DusePerformanceOptimizations=true -DsleepTime=20 -DtimerExecDelay=20 -Xmx128m"/>
