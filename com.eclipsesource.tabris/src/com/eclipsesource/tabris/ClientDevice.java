@@ -114,4 +114,26 @@ public interface ClientDevice extends ClientInfo {
    */
   ConnectionType getConnectionType();
 
+  /**
+   * <p>
+   * Attaches a listener that will be notified when a property has changed.
+   * </p>
+   *
+   * @param listener the listener to be attached. Must not be <code>null</code>.
+   *
+   * @since 1.0
+   */
+  void addClientDeviceListener( ClientDeviceListener listener );
+
+  /**
+   * <p>
+   * Removes a previously attached listener.
+   * </p>
+   *
+   * @param listener the listener to be removed. Must not be <code>null</code>.
+   *
+   * @since 1.0
+   */
+  void removeClientDeviceListener( ClientDeviceListener listener );
+
 }

@@ -10,8 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
-import static com.eclipsesource.tabris.ClientDevice.Orientation.LANDSCAPE;
-import static com.eclipsesource.tabris.ClientDevice.Orientation.PORTRAIT;
+import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 import static com.eclipsesource.tabris.internal.Preconditions.checkState;
 
 import java.util.ArrayList;
@@ -26,31 +25,36 @@ import javax.servlet.http.HttpServletRequest;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.internal.remote.ConnectionImpl;
 import org.eclipse.rap.rwt.internal.service.ContextProvider;
+import org.eclipse.rap.rwt.lifecycle.ProcessActionRunner;
 import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
 import org.eclipse.rap.rwt.remote.RemoteObject;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Display;
 
 import com.eclipsesource.tabris.ClientDevice;
+import com.eclipsesource.tabris.ClientDeviceListener;
 
 
 @SuppressWarnings("restriction")
 public class ClientDeviceImpl extends AbstractOperationHandler implements ClientDevice {
 
+  private static final String EVENT_DEVICE_CHANGE = "ClientDeviceChange";
   private static final String TYPE = "tabris.Device";
   private static final String TIMEZONE_OFFSET = "timezoneOffset";
   private static final String CONNECTION_TYPE = "connectionType";
   private static final String CAPABILITIES = "capabilities";
+  private static final Object ORIENTATION = "orientation";
 
   private final RemoteObject remoteObject;
+  private final List<ClientDeviceListener> clientDeviceListeners;
   private Locale[] locales;
   private Integer timezoneOffset;
   private ConnectionType connectionType;
+  private Orientation orientation;
   private List<Capability> capabilities;
 
   public ClientDeviceImpl() {
     remoteObject = ( ( ConnectionImpl )RWT.getUISession().getConnection() ).createServiceObject( TYPE );
     remoteObject.setHandler( this );
+    clientDeviceListeners = new ArrayList<ClientDeviceListener>();
     readLocales();
   }
 
@@ -74,9 +78,14 @@ public class ClientDeviceImpl extends AbstractOperationHandler implements Client
     }
     if( properties.containsKey( CONNECTION_TYPE ) ) {
       connectionType = ConnectionType.valueOf( ( String )properties.get( CONNECTION_TYPE ) );
+      fireConnectionTypeChange();
     }
     if( properties.containsKey( CAPABILITIES ) ) {
       setCapabilities( ( Object[] )properties.get( CAPABILITIES ) );
+    }
+    if( properties.containsKey( ORIENTATION ) ) {
+      orientation = Orientation.valueOf( ( String )properties.get( ORIENTATION ) );
+      fireOrientationChange();
     }
   }
 
@@ -105,13 +114,8 @@ public class ClientDeviceImpl extends AbstractOperationHandler implements Client
 
   @Override
   public Orientation getOrientation() {
-    Orientation result = PORTRAIT;
-    Display display = Display.getCurrent();
-    Rectangle bounds = display.getBounds();
-    if( bounds.width > bounds.height ) {
-      result = LANDSCAPE;
-    }
-    return result;
+    checkState( orientation, "orientation is not set." );
+    return orientation;
   }
 
   @Override
@@ -124,6 +128,46 @@ public class ClientDeviceImpl extends AbstractOperationHandler implements Client
   public ConnectionType getConnectionType() {
     checkState( connectionType, "connectionType is not set." );
     return connectionType;
+  }
+
+  @Override
+  public void addClientDeviceListener( ClientDeviceListener listener ) {
+    checkArgumentNotNull( listener, ClientDeviceListener.class.getSimpleName() );
+    if( clientDeviceListeners.isEmpty() ) {
+      remoteObject.listen( EVENT_DEVICE_CHANGE, true );
+    }
+    clientDeviceListeners.add( listener );
+  }
+
+  @Override
+  public void removeClientDeviceListener( ClientDeviceListener listener ) {
+    checkArgumentNotNull( listener, ClientDeviceListener.class.getSimpleName() );
+    clientDeviceListeners.remove( listener );
+    if( clientDeviceListeners.isEmpty() ) {
+      remoteObject.listen( EVENT_DEVICE_CHANGE, false );
+    }
+  }
+
+  private void fireOrientationChange() {
+    ProcessActionRunner.add( new Runnable() {
+      @Override
+      public void run() {
+        for( ClientDeviceListener listener : clientDeviceListeners ) {
+          listener.orientationChange( orientation );
+        }
+      }
+    } );
+  }
+
+  private void fireConnectionTypeChange() {
+    ProcessActionRunner.add( new Runnable() {
+      @Override
+      public void run() {
+        for( ClientDeviceListener listener : clientDeviceListeners ) {
+          listener.connectionTypeChanged( connectionType );
+        }
+      }
+    } );
   }
 
 }

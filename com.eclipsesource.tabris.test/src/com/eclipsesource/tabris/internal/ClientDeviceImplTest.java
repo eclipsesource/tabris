@@ -16,6 +16,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
@@ -24,9 +26,9 @@ import java.util.Map;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
+import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.rap.rwt.testfixture.TestRequest;
-import org.eclipse.swt.widgets.Display;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,6 +38,7 @@ import com.eclipsesource.tabris.ClientDevice.Capability;
 import com.eclipsesource.tabris.ClientDevice.ConnectionType;
 import com.eclipsesource.tabris.ClientDevice.Orientation;
 import com.eclipsesource.tabris.ClientDevice.Platform;
+import com.eclipsesource.tabris.ClientDeviceListener;
 
 
 @SuppressWarnings("restriction")
@@ -46,6 +49,7 @@ public class ClientDeviceImplTest {
   @Before
   public void setUp() {
     Fixture.setUp();
+    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     serviceObject = ( RemoteObjectImpl )mockServiceObject();
   }
 
@@ -168,9 +172,11 @@ public class ClientDeviceImplTest {
 
   @Test
   public void testDetectsPortraitMode() {
-    Fixture.fakeSetParameter( "w1", "bounds", new int[] { 0, 0, 200, 400 } );
-    new Display();
     ClientDeviceImpl deviceImpl = new ClientDeviceImpl();
+    when( serviceObject.getHandler() ).thenReturn( deviceImpl );
+    Map<String, Object> properties = new HashMap<String, Object>();
+    properties.put( "orientation", "PORTRAIT" );
+    Fixture.dispatchSet( serviceObject, properties );
 
     Orientation orientation = deviceImpl.getOrientation();
 
@@ -179,9 +185,11 @@ public class ClientDeviceImplTest {
 
   @Test
   public void testDetectsLandscapeMode() {
-    Fixture.fakeSetParameter( "w1", "bounds", new int[] { 0, 0, 400, 200 } );
-    new Display();
     ClientDeviceImpl deviceImpl = new ClientDeviceImpl();
+    when( serviceObject.getHandler() ).thenReturn( deviceImpl );
+    Map<String, Object> properties = new HashMap<String, Object>();
+    properties.put( "orientation", "LANDSCAPE" );
+    Fixture.dispatchSet( serviceObject, properties );
 
     Orientation orientation = deviceImpl.getOrientation();
 
@@ -260,5 +268,66 @@ public class ClientDeviceImplTest {
     assertTrue( deviceImpl.hasCapability( Capability.MAPS ) );
     assertTrue( deviceImpl.hasCapability( Capability.MESSAGE ) );
     assertTrue( deviceImpl.hasCapability( Capability.PHONE ) );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testAddListenerFailsWithNull() {
+    ClientDevice device = new ClientDeviceImpl();
+
+    device.addClientDeviceListener( null );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testRemoveListenerFailsWithNull() {
+    ClientDevice device = new ClientDeviceImpl();
+
+    device.removeClientDeviceListener( null );
+  }
+
+  @Test
+  public void testAddListenerAddsListen() {
+    ClientDevice device = new ClientDeviceImpl();
+    device.addClientDeviceListener( mock( ClientDeviceListener.class ) );
+
+    verify( serviceObject ).listen( "ClientDeviceChange", true );
+  }
+
+  @Test
+  public void testRemoveListenerRemovesListen() {
+    ClientDevice device = new ClientDeviceImpl();
+    ClientDeviceListener listener = mock( ClientDeviceListener.class );
+    device.addClientDeviceListener( listener );
+
+    device.removeClientDeviceListener( listener );
+
+    verify( serviceObject ).listen( "ClientDeviceChange", false );
+  }
+
+  @Test
+  public void testOrientationChangeNotifiesListener() {
+    ClientDeviceImpl device = new ClientDeviceImpl();
+    when( serviceObject.getHandler() ).thenReturn( device );
+    ClientDeviceListener listener = mock( ClientDeviceListener.class );
+    device.addClientDeviceListener( listener );
+    Map<String, Object> properties = new HashMap<String, Object>();
+    properties.put( "orientation", "PORTRAIT" );
+
+    Fixture.dispatchSet( serviceObject, properties );
+
+    verify( listener ).orientationChange( Orientation.PORTRAIT );
+  }
+
+  @Test
+  public void testConnectionTypeChangeNotifiesListener() {
+    ClientDeviceImpl device = new ClientDeviceImpl();
+    when( serviceObject.getHandler() ).thenReturn( device );
+    ClientDeviceListener listener = mock( ClientDeviceListener.class );
+    device.addClientDeviceListener( listener );
+    Map<String, Object> properties = new HashMap<String, Object>();
+    properties.put( "connectionType", "WIFI" );
+
+    Fixture.dispatchSet( serviceObject, properties );
+
+    verify( listener ).connectionTypeChanged( ConnectionType.WIFI );
   }
 }

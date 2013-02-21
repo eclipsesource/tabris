@@ -1,0 +1,36 @@
+/*******************************************************************************
+ * Copyright (c) 2013 EclipseSource and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    EclipseSource - initial API and implementation
+ ******************************************************************************/
+package com.eclipsesource.tabris;
+
+import com.eclipsesource.tabris.ClientDevice.ConnectionType;
+import com.eclipsesource.tabris.ClientDevice.Orientation;
+
+
+/**
+ * <p>
+ * This adapter provides an empty default implementation of {@link ClientDeviceListener}.
+ * </p>
+ *
+ * @see ClientDeviceListener
+ * @since 1.0
+ */
+public class ClientDeviceAdapter implements ClientDeviceListener {
+
+  @Override
+  public void orientationChange( Orientation newOrientation ) {
+    // intended to be implemented by subclasses.
+  }
+
+  @Override
+  public void connectionTypeChanged( ConnectionType newConnectionType ) {
+    // intended to be implemented by subclasses.
+  }
+}
