@@ -11,33 +11,39 @@
 package com.eclipsesource.tabris.widgets.enhancement;
 
 import static com.eclipsesource.tabris.internal.WidgetsUtil.TABRIS_VARIANT;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.widgets.Composite;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.eclipsesource.tabris.widgets.ScrollingComposite;
+
 
 @RunWith( MockitoJUnitRunner.class )
-public class ScrolledCompositeDecoratorTest {
+public class ScrollingCompositeDecoratorTest {
 
   @Mock
-  private ScrolledComposite composite;
-  private ScrolledCompositeDecorator decorator;
+  private ScrollingComposite composite;
+  private ScrollingCompositeDecorator decorator;
 
   @Before
   public void setUp() {
-    decorator = Widgets.onScrolledComposite( composite );
+    decorator = Widgets.onScrollingComposite( composite );
   }
 
   @Test
   public void testUsesPaging() {
+    Composite parent = mock( Composite.class );
+    when( composite.getParent() ).thenReturn( parent );
     decorator.usePaging();
 
-    verify( composite ).setData( TABRIS_VARIANT, "PAGINGENABLED" );
+    verify( parent ).setData( TABRIS_VARIANT, "PAGINGENABLED" );
   }
 
 }
