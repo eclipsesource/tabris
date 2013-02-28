@@ -21,22 +21,24 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.Widget;
 
+import com.eclipsesource.tabris.widgets.ScrollingComposite;
+
 
 /**
  * <p>
- * The <code>Widgets</code> class provides static methods to enhance Widgets with features limited to mobile devices 
+ * The <code>Widgets</code> class provides static methods to enhance Widgets with features limited to mobile devices
  * like a number keyboard on <code>Text</code> widgets and so on.
  * </p>
- * 
+ *
  * @since 0.8
  */
 public class Widgets {
-  
+
   public static WidgetDecorator<WidgetDecorator> onWidget( Widget widget ) {
     checkComponent( widget );
     return new WidgetDecorator<WidgetDecorator>( widget );
   }
-  
+
   /**
    * @since 0.10
    */
@@ -44,27 +46,35 @@ public class Widgets {
     checkComponent( composite );
     return new CompositeDecorator( composite );
   }
-  
+
   public static TextDecorator onText( Text text ) {
     checkComponent( text );
     return new TextDecorator( text );
   }
-  
+
   public static ToolItemDecorator onToolItem( ToolItem toolItem ) {
     checkComponent( toolItem );
     return new ToolItemDecorator( toolItem );
   }
-  
+
   public static TreeDecorator onTree( Tree tree ) {
     checkComponent( tree );
     return new TreeDecorator( tree );
   }
-  
+
   public static ScrolledCompositeDecorator onScrolledComposite( ScrolledComposite composite ) {
     checkComponent( composite );
     return new ScrolledCompositeDecorator( composite );
   }
-  
+
+  /**
+   * @since 1.0
+   */
+  public static ScrollingCompositeDecorator onScrollingComposite( ScrollingComposite composite ) {
+    checkComponent( composite );
+    return new ScrollingCompositeDecorator( composite );
+  }
+
   public static LabelDecorator onLabel( Label label ) {
     checkComponent( label );
     return new LabelDecorator( label );
@@ -74,7 +84,7 @@ public class Widgets {
     checkComponent( list );
     return new ListDecorator( list );
   }
-  
+
   private Widgets() {
     // prevent instantiation
   }
