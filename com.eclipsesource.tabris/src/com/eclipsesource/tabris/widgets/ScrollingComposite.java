@@ -37,6 +37,16 @@ import org.eclipse.swt.widgets.Shell;
  * </p>
  *
  * <p>
+ * Please note: A {@link ScrollingComposite} uses a {@link ScrolledComposite} as it's parent. So, if you need to get the
+ * {@link ScrolledComposite} use the {@link ScrollingComposite#getParent()} method.
+ * </p>
+ *
+ * <p>
+ * Please note: if you face the situation where you expect a scrollbar and there is no, please trigger a layout on the
+ * {@link ScrollingComposite}.
+ * </p>
+ *
+ * <p>
  * <b>Styles:</b> H_SCROLL, V_SCROLL
  * </p>
  *
@@ -160,16 +170,6 @@ public class ScrollingComposite extends Composite {
     checkArgumentNotNull( control, "Child to Reveal." );
     checkContains( control );
     checkWidget();
-  }
-
-  /**
-   * <p>
-   * Returns the underlying {@link ScrolledComposite} for advanced use cases.
-   * </p>
-   */
-  public ScrolledComposite getScrolledComposite() {
-    checkWidget();
-    return ( ScrolledComposite )getParent();
   }
 
   private void checkContains( Control control ) {

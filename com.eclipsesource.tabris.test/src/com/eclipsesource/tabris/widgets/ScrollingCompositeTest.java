@@ -67,7 +67,7 @@ public class ScrollingCompositeTest {
   @Test
   public void testExpandsHorizontal() {
     ScrollingComposite composite = new ScrollingComposite( shell, SWT.H_SCROLL );
-    ScrolledComposite scrolledComposite = composite.getScrolledComposite();
+    ScrolledComposite scrolledComposite = ( ScrolledComposite )composite.getParent();
 
     boolean expandHorizontal = scrolledComposite.getExpandHorizontal();
 
@@ -77,7 +77,7 @@ public class ScrollingCompositeTest {
   @Test
   public void testExpandsVertical() {
     ScrollingComposite composite = new ScrollingComposite( shell, SWT.H_SCROLL );
-    ScrolledComposite scrolledComposite = composite.getScrolledComposite();
+    ScrolledComposite scrolledComposite = ( ScrolledComposite )composite.getParent();
 
     boolean expandVertical = scrolledComposite.getExpandVertical();
 
@@ -87,7 +87,7 @@ public class ScrollingCompositeTest {
   @Test
   public void testDelegatesLayoutData() {
     ScrollingComposite composite = new ScrollingComposite( shell, SWT.H_SCROLL );
-    ScrolledComposite scrolledComposite = composite.getScrolledComposite();
+    ScrolledComposite scrolledComposite = ( ScrolledComposite )composite.getParent();
     GridData data = new GridData();
 
     composite.setLayoutData( data );
@@ -98,7 +98,7 @@ public class ScrollingCompositeTest {
   @Test
   public void testSetsMinsize() {
     ScrollingComposite composite = new ScrollingComposite( shell, SWT.H_SCROLL );
-    ScrolledComposite scrolledComposite = composite.getScrolledComposite();
+    ScrolledComposite scrolledComposite = ( ScrolledComposite )composite.getParent();
     Point size = composite.computeSize( SWT.DEFAULT, SWT.DEFAULT );
 
     int minWidth = scrolledComposite.getMinWidth();
@@ -111,7 +111,7 @@ public class ScrollingCompositeTest {
   @Test
   public void testSetsMinsizeOnResize() {
     ScrollingComposite composite = new ScrollingComposite( shell, SWT.H_SCROLL );
-    ScrolledComposite scrolledComposite = composite.getScrolledComposite();
+    ScrolledComposite scrolledComposite = ( ScrolledComposite )composite.getParent();
     scrolledComposite.setSize( 100, 100 );
     Point size = composite.computeSize( SWT.DEFAULT, SWT.DEFAULT );
 
@@ -191,7 +191,7 @@ public class ScrollingCompositeTest {
   @Test
   public void testDisposesScrolledComposite() {
     ScrollingComposite composite = new ScrollingComposite( shell, SWT.V_SCROLL );
-    ScrolledComposite scrolledComposite = composite.getScrolledComposite();
+    ScrolledComposite scrolledComposite = ( ScrolledComposite )composite.getParent();
 
     composite.dispose();
 
