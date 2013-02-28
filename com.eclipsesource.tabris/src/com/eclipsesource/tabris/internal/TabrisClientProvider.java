@@ -10,8 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
-import static com.eclipsesource.tabris.ClientDevice.Platform.ANDROID;
-import static com.eclipsesource.tabris.ClientDevice.Platform.IOS;
+import static com.eclipsesource.tabris.device.ClientDevice.Platform.ANDROID;
+import static com.eclipsesource.tabris.device.ClientDevice.Platform.IOS;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,7 +21,7 @@ import org.eclipse.rap.rwt.internal.client.ClientProvider;
 import org.eclipse.rap.rwt.internal.theme.ThemeUtil;
 
 import com.eclipsesource.tabris.Bootstrapper;
-import com.eclipsesource.tabris.ClientDevice.Platform;
+import com.eclipsesource.tabris.device.ClientDevice.Platform;
 import com.eclipsesource.tabris.TabrisClient;
 
 

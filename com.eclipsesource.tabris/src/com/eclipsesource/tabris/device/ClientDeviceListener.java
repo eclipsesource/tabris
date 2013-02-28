@@ -8,10 +8,10 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris;
+package com.eclipsesource.tabris.device;
 
-import com.eclipsesource.tabris.ClientDevice.ConnectionType;
-import com.eclipsesource.tabris.ClientDevice.Orientation;
+import com.eclipsesource.tabris.device.ClientDevice.ConnectionType;
+import com.eclipsesource.tabris.device.ClientDevice.Orientation;
 
 
 /**

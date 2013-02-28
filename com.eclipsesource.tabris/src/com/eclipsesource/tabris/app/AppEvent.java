@@ -8,7 +8,7 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.event;
+package com.eclipsesource.tabris.app;
 
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 

@@ -1,5 +1,50 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <component id="com.eclipsesource.tabris" version="2">
+    <resource path="src/com/eclipsesource/tabris/app/App.java" type="com.eclipsesource.tabris.app.App">
+        <filter id="1108344834">
+            <message_arguments>
+                <message_argument value="0.10"/>
+                <message_argument value="1.0"/>
+                <message_argument value="com.eclipsesource.tabris.app.App"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/app/AppEvent.java" type="com.eclipsesource.tabris.app.AppEvent">
+        <filter id="1108344834">
+            <message_arguments>
+                <message_argument value="0.10"/>
+                <message_argument value="1.0"/>
+                <message_argument value="com.eclipsesource.tabris.app.AppEvent"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/app/AppListener.java" type="com.eclipsesource.tabris.app.AppListener">
+        <filter id="1108344834">
+            <message_arguments>
+                <message_argument value="0.10"/>
+                <message_argument value="1.0"/>
+                <message_argument value="com.eclipsesource.tabris.app.AppListener"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/app/EventType.java" type="com.eclipsesource.tabris.app.EventType">
+        <filter id="1108344834">
+            <message_arguments>
+                <message_argument value="0.10"/>
+                <message_argument value="1.0"/>
+                <message_argument value="com.eclipsesource.tabris.app.EventType"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/device/ClientDevice.java" type="com.eclipsesource.tabris.device.ClientDevice">
+        <filter id="1108344834">
+            <message_arguments>
+                <message_argument value="0.11"/>
+                <message_argument value="1.0"/>
+                <message_argument value="com.eclipsesource.tabris.device.ClientDevice"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="src/com/eclipsesource/tabris/internal/AppImpl.java" type="com.eclipsesource.tabris.internal.AppImpl">
         <filter id="574660632">
             <message_arguments>

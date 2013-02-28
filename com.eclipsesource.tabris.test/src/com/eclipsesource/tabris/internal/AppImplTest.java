@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
-import static com.eclipsesource.tabris.event.EventType.PAUSE;
+import static com.eclipsesource.tabris.app.EventType.PAUSE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.inOrder;
@@ -31,9 +31,10 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 
-import com.eclipsesource.tabris.event.App;
-import com.eclipsesource.tabris.event.AppEvent;
-import com.eclipsesource.tabris.event.AppListener;
+import com.eclipsesource.tabris.app.App;
+import com.eclipsesource.tabris.app.AppEvent;
+import com.eclipsesource.tabris.app.AppListener;
+import com.eclipsesource.tabris.app.BackNavigationListener;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 
 
@@ -56,20 +57,20 @@ public class AppImplTest {
     App app = new AppImpl();
     AppListener listener = mock( AppListener.class );
 
-    app.addListener( PAUSE, listener );
+    app.addEventListener( PAUSE, listener );
 
     verify( remoteObject ).listen( "Pause", true );
   }
 
   @Test
-  public void testAddListenersTransportsListenOperationOnce() {
+  public void testAddEventListenersTransportsListenOperationOnce() {
     RemoteObject remoteObject = TabrisTestUtil.mockServiceObject();
     App app = new AppImpl();
     AppListener listener = mock( AppListener.class );
     AppListener listener2 = mock( AppListener.class );
 
-    app.addListener( PAUSE, listener );
-    app.addListener( PAUSE, listener2 );
+    app.addEventListener( PAUSE, listener );
+    app.addEventListener( PAUSE, listener2 );
 
     verify( remoteObject, times( 1 ) ).listen( "Pause", true );
   }
@@ -79,9 +80,9 @@ public class AppImplTest {
     RemoteObject remoteObject = TabrisTestUtil.mockServiceObject();
     App app = new AppImpl();
     AppListener listener = mock( AppListener.class );
-    app.addListener( PAUSE, listener );
+    app.addEventListener( PAUSE, listener );
 
-    app.removeListener( PAUSE, listener );
+    app.removeEventListener( PAUSE, listener );
 
     InOrder order = inOrder( remoteObject );
     order.verify( remoteObject ).listen( "Pause", true );
@@ -89,16 +90,16 @@ public class AppImplTest {
   }
 
   @Test
-  public void testRemoveListenersTransportsListenOperationOnce() {
+  public void testRemoveEventListenersTransportsListenOperationOnce() {
     RemoteObject remoteObject = TabrisTestUtil.mockServiceObject();
     App app = new AppImpl();
     AppListener listener = mock( AppListener.class );
     AppListener listener2 = mock( AppListener.class );
-    app.addListener( PAUSE, listener );
-    app.addListener( PAUSE, listener2 );
+    app.addEventListener( PAUSE, listener );
+    app.addEventListener( PAUSE, listener2 );
 
-    app.removeListener( PAUSE, listener );
-    app.removeListener( PAUSE, listener2 );
+    app.removeEventListener( PAUSE, listener );
+    app.removeEventListener( PAUSE, listener2 );
 
     InOrder order = inOrder( remoteObject );
     order.verify( remoteObject, times( 1 ) ).listen( "Pause", true );
@@ -111,10 +112,10 @@ public class AppImplTest {
     App app = new AppImpl();
     AppListener listener = mock( AppListener.class );
     AppListener listener2 = mock( AppListener.class );
-    app.addListener( PAUSE, listener );
-    app.addListener( PAUSE, listener2 );
+    app.addEventListener( PAUSE, listener );
+    app.addEventListener( PAUSE, listener2 );
 
-    app.removeListener( PAUSE, listener );
+    app.removeEventListener( PAUSE, listener );
 
     InOrder order = inOrder( remoteObject );
     order.verify( remoteObject, times( 1 ) ).listen( "Pause", true );
@@ -125,7 +126,7 @@ public class AppImplTest {
   public void testDelegatesNotify() {
     AppImpl app = new AppImpl();
     AppListener listener = mock( AppListener.class );
-    app.addListener( PAUSE, listener );
+    app.addEventListener( PAUSE, listener );
 
     Fixture.dispatchNotify( app.getRemoteObject(), "Pause", null );
 
@@ -139,8 +140,8 @@ public class AppImplTest {
     AppImpl app = new AppImpl();
     AppListener listener = mock( AppListener.class );
     AppListener listener2 = mock( AppListener.class );
-    app.addListener( PAUSE, listener );
-    app.addListener( PAUSE, listener2 );
+    app.addEventListener( PAUSE, listener );
+    app.addEventListener( PAUSE, listener2 );
 
     Fixture.dispatchNotify( app.getRemoteObject(), "Pause", null );
 
@@ -155,7 +156,7 @@ public class AppImplTest {
   public void testDelegatesNotifyWithProperties() {
     AppImpl app = new AppImpl();
     AppListener listener = mock( AppListener.class );
-    app.addListener( PAUSE, listener );
+    app.addEventListener( PAUSE, listener );
     Map<String, Object> properties = new HashMap<String, Object>();
     properties.put( "foo", "bar" );
 
@@ -165,6 +166,102 @@ public class AppImplTest {
     verify( listener ).handleEvent( captor.capture() );
     assertSame( PAUSE, captor.getValue().getType() );
     assertEquals( "bar", captor.getValue().getProperty( "foo" ) );
+  }
+
+  @Test
+  public void testAddBackNavigationListensTransportsListenOperation() {
+    RemoteObject remoteObject = TabrisTestUtil.mockServiceObject();
+    App app = new AppImpl();
+    BackNavigationListener listener = mock( BackNavigationListener.class );
+
+    app.addBackNavigationListener( listener );
+
+    verify( remoteObject ).listen( "BackNavigation", true );
+  }
+
+  @Test
+  public void testAddBackNavigationListenersTransportsListenOperationOnce() {
+    RemoteObject remoteObject = TabrisTestUtil.mockServiceObject();
+    App app = new AppImpl();
+    BackNavigationListener listener = mock( BackNavigationListener.class );
+    BackNavigationListener listener2 = mock( BackNavigationListener.class );
+
+    app.addBackNavigationListener( listener );
+    app.addBackNavigationListener( listener2 );
+
+    verify( remoteObject, times( 1 ) ).listen( "BackNavigation", true );
+  }
+
+  @Test
+  public void testRemoveBackNavigationListensTransportsListenOperation() {
+    RemoteObject remoteObject = TabrisTestUtil.mockServiceObject();
+    App app = new AppImpl();
+    BackNavigationListener listener = mock( BackNavigationListener.class );
+    app.addBackNavigationListener( listener );
+
+    app.removeBackNavigationListener( listener );
+
+    InOrder order = inOrder( remoteObject );
+    order.verify( remoteObject ).listen( "BackNavigation", true );
+    order.verify( remoteObject ).listen( "BackNavigation", false );
+  }
+
+  @Test
+  public void testRemoveBackNavigationListenersTransportsListenOperationOnce() {
+    RemoteObject remoteObject = TabrisTestUtil.mockServiceObject();
+    App app = new AppImpl();
+    BackNavigationListener listener = mock( BackNavigationListener.class );
+    BackNavigationListener listener2 = mock( BackNavigationListener.class );
+    app.addBackNavigationListener( listener );
+    app.addBackNavigationListener( listener2 );
+
+    app.removeBackNavigationListener( listener );
+    app.removeBackNavigationListener( listener2 );
+
+    InOrder order = inOrder( remoteObject );
+    order.verify( remoteObject, times( 1 ) ).listen( "BackNavigation", true );
+    order.verify( remoteObject, times( 1 ) ).listen( "BackNavigation", false );
+  }
+
+  @Test
+  public void testRemoveOneBackNavigationListenerDoesNotTransportsListenOperation() {
+    RemoteObject remoteObject = TabrisTestUtil.mockServiceObject();
+    App app = new AppImpl();
+    BackNavigationListener listener = mock( BackNavigationListener.class );
+    BackNavigationListener listener2 = mock( BackNavigationListener.class );
+    app.addBackNavigationListener( listener );
+    app.addBackNavigationListener( listener2 );
+
+    app.removeBackNavigationListener( listener );
+
+    InOrder order = inOrder( remoteObject );
+    order.verify( remoteObject, times( 1 ) ).listen( "BackNavigation", true );
+    order.verify( remoteObject, never() ).listen( "BackNavigation", false );
+  }
+
+  @Test
+  public void testDelegatesBackNavigationNotify() {
+    AppImpl app = new AppImpl();
+    BackNavigationListener listener = mock( BackNavigationListener.class );
+    app.addBackNavigationListener( listener );
+
+    Fixture.dispatchNotify( app.getRemoteObject(), "BackNavigation", null );
+
+    verify( listener ).navigatedBack();
+  }
+
+  @Test
+  public void testDelegatesBackNavigationNotifyToAllListeners() {
+    AppImpl app = new AppImpl();
+    BackNavigationListener listener = mock( BackNavigationListener.class );
+    BackNavigationListener listener2 = mock( BackNavigationListener.class );
+    app.addBackNavigationListener( listener );
+    app.addBackNavigationListener( listener2 );
+
+    Fixture.dispatchNotify( app.getRemoteObject(), "BackNavigation", null );
+
+    verify( listener ).navigatedBack();
+    verify( listener2 ).navigatedBack();
   }
 
 }

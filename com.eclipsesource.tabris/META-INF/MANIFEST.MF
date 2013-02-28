@@ -7,8 +7,9 @@ Bundle-Vendor: %Bundle-Vendor
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.rap.rwt;bundle-version="[2.0.0,2.1.0)"
 Export-Package: com.eclipsesource.tabris;version="1.0.0",
+ com.eclipsesource.tabris.app;version="1.0.0",
  com.eclipsesource.tabris.camera;version="1.0.0",
- com.eclipsesource.tabris.event;version="1.0.0",
+ com.eclipsesource.tabris.device;version="1.0.0",
  com.eclipsesource.tabris.geolocation;version="1.0.0",
  com.eclipsesource.tabris.interaction;version="1.0.0",
  com.eclipsesource.tabris.internal;version="1.0.0";x-internal:=true,

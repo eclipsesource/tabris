@@ -12,7 +12,7 @@ package com.eclipsesource.tabris.internal;
 
 import org.eclipse.rap.rwt.RWT;
 
-import com.eclipsesource.tabris.ClientDevice.Platform;
+import com.eclipsesource.tabris.device.ClientDevice.Platform;
 
 
 public class DeviceUtil {

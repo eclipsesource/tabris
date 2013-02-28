@@ -17,27 +17,31 @@ import org.eclipse.rap.rwt.internal.remote.ConnectionImpl;
 import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 
-import com.eclipsesource.tabris.event.App;
-import com.eclipsesource.tabris.event.AppEvent;
-import com.eclipsesource.tabris.event.AppListener;
-import com.eclipsesource.tabris.event.EventType;
+import com.eclipsesource.tabris.app.App;
+import com.eclipsesource.tabris.app.AppEvent;
+import com.eclipsesource.tabris.app.AppListener;
+import com.eclipsesource.tabris.app.BackNavigationListener;
+import com.eclipsesource.tabris.app.EventType;
 
 @SuppressWarnings("restriction")
-public class AppImpl implements App {
+public class AppImpl extends AbstractOperationHandler implements App {
 
+  private static final String BACK_NAVIGATION_EVENT = "BackNavigation";
   private static final String TYPE = "tabris.App";
+
   private final RemoteObject remoteObject;
   private final Map<EventType, List<AppListener>> eventListeners;
-
+  private final List<BackNavigationListener> backNavigationListeners;
 
   public AppImpl() {
     remoteObject = ( ( ConnectionImpl )RWT.getUISession().getConnection() ).createServiceObject( TYPE );
-    remoteObject.setHandler( new AppOperationHandler() );
+    remoteObject.setHandler( this );
     eventListeners = new HashMap<EventType, List<AppListener>>();
+    backNavigationListeners = new ArrayList<BackNavigationListener>();
   }
 
   @Override
-  public void addListener( EventType type, AppListener listener ) {
+  public void addEventListener( EventType type, AppListener listener ) {
     List<AppListener> listeners = eventListeners.get( type );
     if( listeners == null ) {
       listeners = new ArrayList<AppListener>();
@@ -48,7 +52,7 @@ public class AppImpl implements App {
   }
 
   @Override
-  public void removeListener( EventType type, AppListener listener ) {
+  public void removeEventListener( EventType type, AppListener listener ) {
     List<AppListener> listeners = eventListeners.get( type );
     listeners.remove( listener );
     if( listeners.isEmpty() ) {
@@ -57,23 +61,45 @@ public class AppImpl implements App {
     }
   }
 
-  private class AppOperationHandler extends AbstractOperationHandler {
-
-    @Override
-    public void handleNotify( String event, Map<String, Object> properties ) {
-      AppEvent appEvent = new AppEvent( EventType.fromName( event ), properties );
-      notifyListeners( appEvent );
+  @Override
+  public void addBackNavigationListener( BackNavigationListener listener ) {
+    if( backNavigationListeners.isEmpty() ) {
+      remoteObject.listen( BACK_NAVIGATION_EVENT, true );
     }
+    backNavigationListeners.add( listener );
+  }
 
-    private void notifyListeners( AppEvent appEvent ) {
-      List<AppListener> listeners = eventListeners.get( appEvent.getType() );
-      if( listeners != null ) {
-        for( AppListener appListener : listeners ) {
-          appListener.handleEvent( appEvent );
-        }
+  @Override
+  public void removeBackNavigationListener( BackNavigationListener listener ) {
+    backNavigationListeners.remove( listener );
+    if( backNavigationListeners.isEmpty() ) {
+      remoteObject.listen( BACK_NAVIGATION_EVENT, false );
+    }
+  }
+
+  @Override
+  public void handleNotify( String event, Map<String, Object> properties ) {
+    if( event.equals( BACK_NAVIGATION_EVENT ) ) {
+      notifyBackNavigationListeners();
+    } else {
+      AppEvent appEvent = new AppEvent( EventType.fromName( event ), properties );
+      notifyEventListeners( appEvent );
+    }
+  }
+
+  private void notifyBackNavigationListeners() {
+    for( BackNavigationListener listener : backNavigationListeners ) {
+      listener.navigatedBack();
+    }
+  }
+
+  private void notifyEventListeners( AppEvent appEvent ) {
+    List<AppListener> listeners = eventListeners.get( appEvent.getType() );
+    if( listeners != null ) {
+      for( AppListener appListener : listeners ) {
+        appListener.handleEvent( appEvent );
       }
     }
-
   }
 
   RemoteObject getRemoteObject() {

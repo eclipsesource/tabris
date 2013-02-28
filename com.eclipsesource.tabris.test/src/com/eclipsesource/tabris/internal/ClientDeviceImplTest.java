@@ -33,12 +33,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.eclipsesource.tabris.ClientDevice;
-import com.eclipsesource.tabris.ClientDevice.Capability;
-import com.eclipsesource.tabris.ClientDevice.ConnectionType;
-import com.eclipsesource.tabris.ClientDevice.Orientation;
-import com.eclipsesource.tabris.ClientDevice.Platform;
-import com.eclipsesource.tabris.ClientDeviceListener;
+import com.eclipsesource.tabris.device.ClientDevice;
+import com.eclipsesource.tabris.device.ClientDeviceListener;
+import com.eclipsesource.tabris.device.ClientDevice.Capability;
+import com.eclipsesource.tabris.device.ClientDevice.ConnectionType;
+import com.eclipsesource.tabris.device.ClientDevice.Orientation;
+import com.eclipsesource.tabris.device.ClientDevice.Platform;
 
 
 @SuppressWarnings("restriction")

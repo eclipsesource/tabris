@@ -8,34 +8,22 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.event;
+package com.eclipsesource.tabris.app;
+
+import org.eclipse.rap.rwt.client.service.ClientService;
+
 
 /**
  * @since 0.10
  */
-public enum EventType {
-  
-  PAUSE( "Pause" ), 
-  RESUME( "Resume" );
-  
-  private final String name;
+public interface App extends ClientService {
 
-  EventType( String name ) {
-    this.name = name;
-  }
-  
-  public String getName() {
-    return name;
-  }
-  
-  public static EventType fromName( String name ) {
-    EventType[] values = values();
-    for( EventType eventType : values ) {
-      if( eventType.getName().equals( name ) ) {
-        return eventType;
-      }
-    }
-    return null;
-  }
-  
+  void addEventListener( EventType type, AppListener listener );
+
+  void removeEventListener( EventType type, AppListener listener );
+
+  void addBackNavigationListener( BackNavigationListener listener );
+
+  void removeBackNavigationListener( BackNavigationListener listener );
+
 }

@@ -19,7 +19,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.eclipsesource.tabris.event.App;
+import com.eclipsesource.tabris.app.App;
+import com.eclipsesource.tabris.device.ClientDevice;
 import com.eclipsesource.tabris.interaction.AppLauncher;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 

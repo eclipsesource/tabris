@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 EclipseSource and others.
+ * Copyright (c) 2013 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,18 +8,13 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.event;
-
-import org.eclipse.rap.rwt.client.service.ClientService;
+package com.eclipsesource.tabris.app;
 
 
 /**
- * @since 0.10
+ * @since 1.0
  */
-public interface App extends ClientService {
+public interface BackNavigationListener {
 
-  void addListener( EventType type, AppListener listener );
-
-  void removeListener( EventType type, AppListener listener );
-
+  void navigatedBack();
 }

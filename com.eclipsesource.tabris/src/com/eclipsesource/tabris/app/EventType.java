@@ -8,13 +8,34 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.event;
-
+package com.eclipsesource.tabris.app;
 
 /**
  * @since 0.10
  */
-public interface AppListener {
+public enum EventType {
   
-  void handleEvent( AppEvent event );
+  PAUSE( "Pause" ), 
+  RESUME( "Resume" );
+  
+  private final String name;
+
+  EventType( String name ) {
+    this.name = name;
+  }
+  
+  public String getName() {
+    return name;
+  }
+  
+  public static EventType fromName( String name ) {
+    EventType[] values = values();
+    for( EventType eventType : values ) {
+      if( eventType.getName().equals( name ) ) {
+        return eventType;
+      }
+    }
+    return null;
+  }
+  
 }

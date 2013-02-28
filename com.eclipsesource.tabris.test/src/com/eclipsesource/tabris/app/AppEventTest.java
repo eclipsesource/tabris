@@ -8,7 +8,7 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.event;
+package com.eclipsesource.tabris.app;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -18,6 +18,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
+
+import com.eclipsesource.tabris.app.AppEvent;
+import com.eclipsesource.tabris.app.EventType;
 
 
 public class AppEventTest {

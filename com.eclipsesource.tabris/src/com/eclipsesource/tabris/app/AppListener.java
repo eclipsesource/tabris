@@ -8,28 +8,13 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.event;
-
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-
-import org.junit.Test;
+package com.eclipsesource.tabris.app;
 
 
-public class EventTypeTest {
+/**
+ * @since 0.10
+ */
+public interface AppListener {
   
-  @Test
-  public void testNonExsitingFromString() {
-    assertNull( EventType.fromName( "hmpf" ) );
-  }
-  
-  @Test
-  public void testPauseFromString() {
-    assertSame( EventType.PAUSE, EventType.fromName( "Pause" ) );
-  }
-  
-  @Test
-  public void testResumeFromString() {
-    assertSame( EventType.RESUME, EventType.fromName( "Resume" ) );
-  }
+  void handleEvent( AppEvent event );
 }
