@@ -42,11 +42,6 @@ import org.eclipse.swt.widgets.Shell;
  * </p>
  *
  * <p>
- * Please note: if you face the situation where you expect a scrollbar and there is no, please trigger a layout on the
- * {@link ScrollingComposite}.
- * </p>
- *
- * <p>
  * <b>Styles:</b> H_SCROLL, V_SCROLL
  * </p>
  *
@@ -101,6 +96,7 @@ public class ScrollingComposite extends Composite {
       @Override
       public void controlResized( ControlEvent event ) {
         handleScrollbars();
+        scrolledComposite.layout( true, true );
       }
     } );
   }
