@@ -11,6 +11,7 @@
 package com.eclipsesource.tabris;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 
 import org.eclipse.rap.rwt.client.service.ClientInfo;
@@ -20,7 +21,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.app.App;
+import com.eclipsesource.tabris.camera.Camera;
 import com.eclipsesource.tabris.device.ClientDevice;
+import com.eclipsesource.tabris.geolocation.Geolocation;
 import com.eclipsesource.tabris.interaction.AppLauncher;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 
@@ -84,6 +87,24 @@ public class TabrisClientTest {
   }
 
   @Test
+  public void testHasCameraService() {
+    TabrisClient client = new TabrisClient();
+
+    Camera camera = client.getService( Camera.class );
+
+    assertNotNull( camera );
+  }
+
+  @Test
+  public void testHasGeolocationService() {
+    TabrisClient client = new TabrisClient();
+
+    Geolocation geolocation = client.getService( Geolocation.class );
+
+    assertNotNull( geolocation );
+  }
+
+  @Test
   public void testAppLauncherIsSingleton() {
     TabrisClient client = new TabrisClient();
 
@@ -126,5 +147,25 @@ public class TabrisClientTest {
     ClientStore store = client.getService( ClientStore.class );
 
     assertSame( store, client.getService( ClientStore.class ) );
+  }
+
+  @Test
+  public void testCameraIsNoSingleton() {
+    TabrisClient client = new TabrisClient();
+
+    Camera camera = client.getService( Camera.class );
+    Camera camera2 = client.getService( Camera.class );
+
+    assertNotSame( camera, camera2 );
+  }
+
+  @Test
+  public void testGeolocationIsNoSingleton() {
+    TabrisClient client = new TabrisClient();
+
+    Geolocation geolocation = client.getService( Geolocation.class );
+    Geolocation geolocation2 = client.getService( Geolocation.class );
+
+    assertNotSame( geolocation, geolocation2 );
   }
 }

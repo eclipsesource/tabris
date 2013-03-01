@@ -8,9 +8,9 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.geolocation;
+package com.eclipsesource.tabris.internal;
 
-import static com.eclipsesource.tabris.test.TabrisTestUtil.mockRemoteObject;
+import static com.eclipsesource.tabris.test.TabrisTestUtil.mockServiceObject;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -30,10 +30,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
+import com.eclipsesource.tabris.geolocation.GeolocationCallback;
+import com.eclipsesource.tabris.geolocation.GeolocationOptions;
+import com.eclipsesource.tabris.geolocation.Position;
+import com.eclipsesource.tabris.geolocation.PositionError;
 import com.eclipsesource.tabris.geolocation.PositionError.PositionErrorCode;
 
 
-public class GeolocationTest {
+public class GeolocationImplTest {
 
   @Before
   public void setUp() {
@@ -48,17 +52,17 @@ public class GeolocationTest {
 
   @Test
   public void testInitialFlavor() {
-    RemoteObject remoteObject = mockRemoteObject();
+    RemoteObject remoteObject = mockServiceObject();
 
-    new Geolocation();
+    new GeolocationImpl();
 
     verify( remoteObject ).set( "needsPosition", "NEVER" );
   }
 
   @Test
   public void testSetsOptionsWhenGetLocation() {
-    RemoteObject remoteObject = mockRemoteObject();
-    Geolocation geolocation = new Geolocation();
+    RemoteObject remoteObject = mockServiceObject();
+    GeolocationImpl geolocation = new GeolocationImpl();
     GeolocationCallback callback = mock( GeolocationCallback.class );
     GeolocationOptions options = new GeolocationOptions();
 
@@ -72,22 +76,22 @@ public class GeolocationTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testGetLocationFailsWithNullOptions() {
-    Geolocation geolocation = new Geolocation();
+    GeolocationImpl geolocation = new GeolocationImpl();
 
     geolocation.getCurrentPosition( mock( GeolocationCallback.class ), null );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testGetLocationFailsWithNullCallback() {
-    Geolocation geolocation = new Geolocation();
+    GeolocationImpl geolocation = new GeolocationImpl();
 
     geolocation.getCurrentPosition( null, new GeolocationOptions() );
   }
 
   @Test
   public void testSetsOptionsWhenWatch() {
-    RemoteObject remoteObject = mockRemoteObject();
-    Geolocation geolocation = new Geolocation();
+    RemoteObject remoteObject = mockServiceObject();
+    GeolocationImpl geolocation = new GeolocationImpl();
     GeolocationCallback callback = mock( GeolocationCallback.class );
     GeolocationOptions options = new GeolocationOptions();
 
@@ -102,22 +106,22 @@ public class GeolocationTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testWatchFailsWithNullOptions() {
-    Geolocation geolocation = new Geolocation();
+    GeolocationImpl geolocation = new GeolocationImpl();
 
     geolocation.watchPosition( mock( GeolocationCallback.class ), null );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testWatchFailsWithNullCallback() {
-    Geolocation geolocation = new Geolocation();
+    GeolocationImpl geolocation = new GeolocationImpl();
 
     geolocation.watchPosition( null, new GeolocationOptions() );
   }
 
   @Test
   public void testSetsNeverWhenClearWatch() {
-    RemoteObject remoteObject = mockRemoteObject();
-    Geolocation geolocation = new Geolocation();
+    RemoteObject remoteObject = mockServiceObject();
+    GeolocationImpl geolocation = new GeolocationImpl();
 
     geolocation.clearWatch();
 
@@ -125,19 +129,9 @@ public class GeolocationTest {
   }
 
   @Test
-  public void testDisposeRendersDestroy() {
-    RemoteObject remoteObject = mockRemoteObject();
-    Geolocation geolocation = new Geolocation();
-
-    geolocation.dispose();
-
-    verify( remoteObject ).destroy();
-  }
-
-  @Test
   public void testDelegatesPositionWhenGetPosition() throws ParseException {
     GeolocationCallback callback = mock( GeolocationCallback.class );
-    Geolocation geolocation = new Geolocation();
+    GeolocationImpl geolocation = new GeolocationImpl();
     geolocation.getCurrentPosition( callback, new GeolocationOptions() );
     Map<String, Object> properties = createPositionData();
 
@@ -151,7 +145,7 @@ public class GeolocationTest {
   @Test
   public void testDelegatesPositionWhenWatch() throws ParseException {
     GeolocationCallback callback = mock( GeolocationCallback.class );
-    Geolocation geolocation = new Geolocation();
+    GeolocationImpl geolocation = new GeolocationImpl();
     geolocation.watchPosition( callback, new GeolocationOptions() );
     Map<String, Object> properties = createPositionData();
 
@@ -193,7 +187,7 @@ public class GeolocationTest {
   @Test
   public void testDelegatesPositionErrorWhenGetPosition() {
     GeolocationCallback callback = mock( GeolocationCallback.class );
-    Geolocation geolocation = new Geolocation();
+    GeolocationImpl geolocation = new GeolocationImpl();
     geolocation.getCurrentPosition( callback, new GeolocationOptions() );
     Map<String, Object> properties = new HashMap<String, Object>();
     properties.put( "errorCode", "UNKNOWN" );
@@ -210,7 +204,7 @@ public class GeolocationTest {
   @Test
   public void testDelegatesPositionErrorWhenWatch() {
     GeolocationCallback callback = mock( GeolocationCallback.class );
-    Geolocation geolocation = new Geolocation();
+    GeolocationImpl geolocation = new GeolocationImpl();
     geolocation.watchPosition( callback, new GeolocationOptions() );
     Map<String, Object> properties = new HashMap<String, Object>();
     properties.put( "errorCode", "UNKNOWN" );
@@ -226,14 +220,14 @@ public class GeolocationTest {
 
   @Test( expected = IllegalStateException.class )
   public void testLocationEventFailsWithoutCallback() {
-    Geolocation geolocation = new Geolocation();
+    GeolocationImpl geolocation = new GeolocationImpl();
 
     Fixture.dispatchNotify( geolocation.getRemoteObject(), "LocationUpdate", null );
   }
 
   @Test( expected = IllegalStateException.class )
   public void testErrorEventFailsWithoutCallback() {
-    Geolocation geolocation = new Geolocation();
+    GeolocationImpl geolocation = new GeolocationImpl();
     Map<String, Object> properties = new HashMap<String, Object>();
     properties.put( "errorCode", "UNKNOWN" );
     properties.put( "errorMessage", "A Message" );

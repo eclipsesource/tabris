@@ -10,99 +10,25 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.camera;
 
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
-
-import java.io.ByteArrayInputStream;
-import java.util.Map;
-
-import org.eclipse.rap.rwt.RWT;
-import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
-import org.eclipse.rap.rwt.remote.OperationHandler;
-import org.eclipse.rap.rwt.remote.RemoteObject;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Display;
-
-import com.eclipsesource.tabris.internal.Base64;
-import com.eclipsesource.tabris.internal.Preconditions;
+import org.eclipse.rap.rwt.client.Client;
+import org.eclipse.rap.rwt.client.service.ClientService;
 
 
 /**
  * <p>
  * The <code>Camera</code> component can be used to take and receive pictures from a mobile client's camera or photo
  * album. The taken picture will be sent to the server side and a callback will be called. See
- * <code>CameraCallback</code>.
- * </p>
- * <p>
- * To configure the client's camera an options object needs to be passed as a constructor argument.
+ * <code>CameraCallback</code>. An instance of {@link Camera} can be accessed using
+ * RWT.getClient().getService( Camera.class ).
  * </p>
  *
  * @see CameraCallback
  * @see CameraOptions
+ * @see Client
+ *
  * @since 0.8
  */
-public class Camera {
-
-  private static final String TYPE = "tabris.Camera";
-  private static final String OPEN_METHOD = "open";
-  private static final String PROPERTY_RESOLUTION = "resolution";
-  private static final String PROPERTY_SAVETOALBUM = "saveToAlbum";
-  private static final String IMAGE_SELECTION_EVENT = "ImageSelection";
-  private static final String IMAGE_SELECTION_ERROR_EVENT = "ImageSelectionError";
-  private static final String PROPERTY_IMAGE = "image";
-
-  private final RemoteObject remoteObject;
-  private CameraCallback callback;
-
-  private final OperationHandler cameraHandler = new AbstractOperationHandler() {
-    @Override
-    public void handleNotify( String event, Map<String,Object> properties ) {
-      if( IMAGE_SELECTION_EVENT.equals( event ) ) {
-        callback.onSuccess( decodeImage( ( String )properties.get( PROPERTY_IMAGE ) ) );
-      } else if( IMAGE_SELECTION_ERROR_EVENT.equals( event ) ) {
-        callback.onError();
-      }
-    }
-  };
-
-  /**
-   * <p>
-   * Creates a new camera object with the configuration passed as argument.
-   * </p>
-   *
-   * @param options the configuration for the camera. Must not be <code>null</code>.
-   * @see CameraOptions
-   */
-  public Camera( CameraOptions options ) {
-    Preconditions.checkArgumentNotNull( options, "Camera Options" );
-    remoteObject = RWT.getUISession().getConnection().createRemoteObject( TYPE );
-    remoteObject.setHandler( cameraHandler );
-    setInitialValues( options );
-  }
-
-  private Image decodeImage( String encodedImage ) {
-    byte[] bytes = Base64.decode( encodedImage );
-    ByteArrayInputStream stream = new ByteArrayInputStream( bytes );
-    return new Image( Display.getCurrent(), stream );
-  }
-
-  private void setInitialValues( CameraOptions options ) {
-    setResolution( options );
-    setSaveToAlbum( options );
-  }
-
-  private void setResolution( CameraOptions options ) {
-    Point resolution = options.getResolution();
-    if( resolution != null ) {
-      remoteObject.set( PROPERTY_RESOLUTION, new int[] { resolution.x, resolution.y } );
-    }
-  }
-
-  private void setSaveToAlbum( CameraOptions options ) {
-    if( options.savesToAlbum() ) {
-      remoteObject.set( PROPERTY_SAVETOALBUM, true );
-    }
-  }
+public interface Camera extends ClientService {
 
   /**
    * <p>
@@ -111,25 +37,11 @@ public class Camera {
    * </p>
    *
    *  @param callback The callback to call. Must not be <code>null</code>.
+   *  @param options The options that should be used as the configuration for taking a picture. Must not
+   *                 be <code>null</code>.
+   *
    *  @see CameraCallback
    */
-  public void takePicture( CameraCallback callback ) {
-    checkArgumentNotNull( callback, "Callback" );
-    this.callback = callback;
-    remoteObject.call( OPEN_METHOD, null );
-  }
-
-  /**
-   * <p>
-   * Destroys the camera object. Behaves the same like other SWT Widgets.
-   * </p>
-   */
-  public void dispose() {
-    remoteObject.destroy();
-  }
-
-  RemoteObject getRemoteObject() {
-    return remoteObject;
-  }
+  void takePicture( CameraOptions options, CameraCallback callback );
 
 }

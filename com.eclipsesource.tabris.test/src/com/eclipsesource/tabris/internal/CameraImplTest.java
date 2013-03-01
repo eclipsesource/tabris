@@ -8,9 +8,11 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.camera;
+package com.eclipsesource.tabris.internal;
 
-import static com.eclipsesource.tabris.test.TabrisTestUtil.mockRemoteObject;
+import static com.eclipsesource.tabris.test.TabrisTestUtil.mockServiceObject;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.eq;
@@ -33,13 +35,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.eclipsesource.tabris.internal.Base64;
+import com.eclipsesource.tabris.camera.Camera;
+import com.eclipsesource.tabris.camera.CameraCallback;
+import com.eclipsesource.tabris.camera.CameraOptions;
 
 
 @RunWith( MockitoJUnitRunner.class )
-public class CameraTest {
+public class CameraImplTest {
 
   @Before
   public void setUp() {
@@ -53,16 +58,11 @@ public class CameraTest {
     Fixture.tearDown();
   }
 
-  @Test( expected = IllegalArgumentException.class )
-  public void testFailsWithNullOptions() {
-    new Camera( null );
-  }
-
   @Test
   public void testSetsNoInitialCameraOptionsWithDefaultOptions() {
-    RemoteObject remoteObject = mockRemoteObject();
+    RemoteObject remoteObject = mockServiceObject();
 
-    new Camera( new CameraOptions() );
+    new CameraImpl();
 
     verify( remoteObject, never() ).set( eq( "resolution" ), anyObject() );
     verify( remoteObject, never() ).set( eq( "saveToAlbum" ), anyObject() );
@@ -70,47 +70,40 @@ public class CameraTest {
   }
 
   @Test
-  public void testSetsInitialCameraOptions() {
-    RemoteObject remoteObject = mockRemoteObject();
-    createCamera();
-
-    verify( remoteObject ).set( eq( "resolution" ), eq( new int[] { 100, 100 } ) );
-    verify( remoteObject ).set( "saveToAlbum", true );
-  }
-
-  @Test
+  @SuppressWarnings("unchecked")
   public void testSendsOpenWithTakePhotoCall() {
-    RemoteObject remoteObject = mockRemoteObject();
-    Camera camera = createCamera();
+    RemoteObject remoteObject = mockServiceObject();
+    Camera camera = new CameraImpl();
 
-    camera.takePicture( mock( CameraCallback.class ) );
+    camera.takePicture( createOptions(), mock( CameraCallback.class ) );
 
-    verify( remoteObject ).call( "open", null );
-  }
-
-  @Test
-  public void testDisposeSendsDestroy() {
-    RemoteObject remoteObject = mockRemoteObject();
-    Camera camera = createCamera();
-
-    camera.dispose();
-
-    verify( remoteObject ).destroy();
+    ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
+    verify( remoteObject ).call( eq( "open" ), captor.capture() );
+    int[] resolution = ( int[] )captor.getValue().get( "resolution" );
+    assertArrayEquals( new int[] { 100, 100 }, resolution );
+    assertEquals( Boolean.TRUE, captor.getValue().get( "saveToAlbum" ) );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithNullCallback() {
-    Camera camera = createCamera();
+    Camera camera = new CameraImpl();
 
-    camera.takePicture( null );
+    camera.takePicture( createOptions(), null );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testFailsWithNullOptions() {
+    Camera camera = new CameraImpl();
+
+    camera.takePicture( null, mock( CameraCallback.class ) );
   }
 
   @Test
   public void testDelegatesError() {
-    Camera camera = createCamera();
+    CameraImpl camera = new CameraImpl();
     CameraCallback callback = mock( CameraCallback.class );
 
-    camera.takePicture( callback );
+    camera.takePicture( createOptions(), callback );
     Fixture.dispatchNotify( camera.getRemoteObject(), "ImageSelectionError", null );
 
     verify( callback ).onError();
@@ -119,13 +112,13 @@ public class CameraTest {
   @Test
   public void testDelegatesImage() throws IOException {
     String encodedImage = getEncodedImage();
-    Camera camera = createCamera();
+    CameraImpl camera = new CameraImpl();
+    RemoteObject remoteObject = camera.getRemoteObject();
     CameraCallback callback = mock( CameraCallback.class );
 
-    camera.takePicture( callback );
+    camera.takePicture( createOptions(), callback );
     Map<String, Object> properties = new HashMap<String, Object>();
     properties.put( "image", encodedImage );
-    RemoteObject remoteObject = camera.getRemoteObject();
     Fixture.dispatchNotify( remoteObject, "ImageSelection", properties );
 
     verify( callback ).onSuccess( any( Image.class ) );
@@ -147,11 +140,11 @@ public class CameraTest {
     return buffer.toByteArray();
   }
 
-  private Camera createCamera() {
+  private CameraOptions createOptions() {
     CameraOptions options = new CameraOptions();
     options.setResolution( 100, 100 );
     options.setSaveToAlbum( true );
-    return new Camera( options );
+    return options;
   }
 
 }
