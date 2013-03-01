@@ -10,7 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.enhancement;
 
-import static com.eclipsesource.tabris.internal.WidgetsUtil.TABRIS_VARIANT;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.ALT_SELECTION;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.BACK_FOCUS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.eq;
@@ -32,81 +33,77 @@ import com.eclipsesource.tabris.widgets.enhancement.TreeDecorator.TreePart;
 
 @RunWith( MockitoJUnitRunner.class )
 public class TreeDecoratorTest {
-  
-  private static final String VARIANT_BACK_FOCUS = "BACK_FOCUS";
-  
+
   @Mock
   private Tree tree;
   private TreeDecorator decorator;
   private Display display;
 
-  
+
   @Before
   public void setUp() {
     Fixture.setUp();
     display = new Display();
     decorator = Widgets.onTree( tree );
   }
-  
+
   @After
   public void tearDown() {
     Fixture.tearDown();
   }
-  
+
   @Test
   public void testUseTitle() {
     decorator.useTitle( "test" );
-    
+
     verify( tree ).setToolTipText( eq( "test" ) );
   }
-  
+
   @Test
   public void testSetAlternativeLeafSelection() {
     decorator.enableAlternativeSelection( TreePart.LEAF );
-    
-    verify( tree ).setData( eq( TABRIS_VARIANT ), eq( "ALT_SELECTION_LEAF" ) );
+
+    verify( tree ).setData( ALT_SELECTION.getKey(), "leaf" );
   }
-  
+
   @Test
   public void testSetAlternativeBranchSelection() {
     decorator.enableAlternativeSelection( TreePart.BRANCH );
-    
-    verify( tree ).setData( eq( TABRIS_VARIANT ), eq( "ALT_SELECTION_BRANCH" ) );
+
+    verify( tree ).setData( ALT_SELECTION.getKey(), "branch" );
   }
-  
+
   @Test
   public void testSetAlternativeSelectionForAll() {
     decorator.enableAlternativeSelection( TreePart.ALL );
-    
-    verify( tree ).setData( eq( TABRIS_VARIANT ), eq( "ALT_SELECTION" ) );
+
+    verify( tree ).setData( ALT_SELECTION.getKey(), "all" );
   }
-  
+
   @Test
   public void testSetBackButtonFocusShouldSetBackFocusVariant() {
     Shell shell = new Shell( display );
     Tree focusTree = new Tree( shell, SWT.NONE );
-    TreeDecorator treeDecorator = Widgets.onTree( focusTree );
-    
-    treeDecorator.enableBackButtonNavigation();
-        
-    assertEquals( VARIANT_BACK_FOCUS, focusTree.getData( TABRIS_VARIANT ) );
+
+    Widgets.onTree( focusTree ).enableBackButtonNavigation();
+
+    assertEquals( Boolean.TRUE, focusTree.getData( BACK_FOCUS.getKey() ) );
   }
-  
+
   @Test
   public void testSetBackButtonFocusShouldSetNullVariantOnOtherTreesWithBackFocusVariant() {
     Shell shell = new Shell( display );
     Tree tree1 = new Tree( shell, SWT.NONE );
     Tree tree2 = new Tree( shell, SWT.NONE );
     Tree tree3 = new Tree( shell, SWT.NONE );
-    tree2.setData( TABRIS_VARIANT, VARIANT_BACK_FOCUS );
-    tree3.setData( TABRIS_VARIANT, "anyVariant" );
-    TreeDecorator treeDecorator = Widgets.onTree( tree1 );
-    
-    treeDecorator.enableBackButtonNavigation();
-    
-    assertEquals( VARIANT_BACK_FOCUS, tree1.getData( TABRIS_VARIANT ) );
-    assertNull( VARIANT_BACK_FOCUS, tree2.getData( TABRIS_VARIANT ) );
-    assertEquals( "anyVariant", tree3.getData( TABRIS_VARIANT ) );
+    tree2.setData( BACK_FOCUS.getKey(), Boolean.TRUE );
+    tree3.setData( BACK_FOCUS.getKey(), "anyVariant" );
+
+    Widgets.onTree( tree1 ).enableBackButtonNavigation();
+
+    assertEquals( Boolean.TRUE, tree1.getData( BACK_FOCUS.getKey() ) );
+    assertNull( tree2.getData( BACK_FOCUS.getKey() ) );
+    assertEquals( "anyVariant", tree3.getData( BACK_FOCUS.getKey() ) );
   }
 
 }

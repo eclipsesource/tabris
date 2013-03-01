@@ -10,7 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.enhancement;
 
-import static com.eclipsesource.tabris.internal.WidgetsUtil.setVariant;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.TITLE;
+import static com.eclipsesource.tabris.internal.WidgetsUtil.setData;
 
 import org.eclipse.swt.widgets.ToolItem;
 
@@ -19,15 +20,15 @@ import org.eclipse.swt.widgets.ToolItem;
  * @since 0.8
  */
 public class ToolItemDecorator {
-  
+
   private final ToolItem toolItem;
 
   ToolItemDecorator( ToolItem toolItem ) {
     this.toolItem = toolItem;
   }
-  
+
   public ToolItemDecorator useAsTitle() {
-    setVariant( toolItem, "TITLE" );
+    setData( toolItem, TITLE, Boolean.TRUE );
     return this;
   }
 }

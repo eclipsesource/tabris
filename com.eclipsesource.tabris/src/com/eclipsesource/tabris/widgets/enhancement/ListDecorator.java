@@ -10,7 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.enhancement;
 
-import static com.eclipsesource.tabris.internal.WidgetsUtil.setVariant;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.ALT_SELECTION;
+import static com.eclipsesource.tabris.internal.WidgetsUtil.setData;
 
 import org.eclipse.swt.widgets.List;
 
@@ -19,21 +20,21 @@ import org.eclipse.swt.widgets.List;
  * @since 0.9
  */
 public class ListDecorator extends WidgetDecorator<ListDecorator> {
-  
+
   private final List list;
 
   public ListDecorator( List list ) {
     super( list );
     this.list = list;
   }
-  
+
   public ListDecorator useTitle( String title ) {
     list.setToolTipText( title );
     return this;
   }
 
   public ListDecorator enableAlternativeSelection() {
-    setVariant( list, "ALT_SELECTION" );
+    setData( list, ALT_SELECTION, "all" );
     return this;
   }
 

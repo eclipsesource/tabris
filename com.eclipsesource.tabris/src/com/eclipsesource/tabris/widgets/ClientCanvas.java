@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets;
 
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.CLIENT_CANVAS;
 import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.readEventPropertyValueAsString;
 import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.wasEventSent;
 
@@ -52,7 +53,6 @@ public class ClientCanvas extends Canvas implements PhaseListener, UISessionList
 
   static final String DRAWING_EVENT = "Drawing";
   static final String DRAWINGS_PROPERTY = "drawings";
-  static final String CLIENT_CANVAS = "CLIENT_CANVAS";
 
   private final List<ClientDrawListener> drawListeners;
   private final DrawingsCache cache;
@@ -65,7 +65,7 @@ public class ClientCanvas extends Canvas implements PhaseListener, UISessionList
     ContextProvider.getApplicationContext().getLifeCycleFactory().getLifeCycle().addPhaseListener( this );
     RWT.getUISession().addUISessionListener( this );
     addDispatchPaintListener();
-    setData( RWT.CUSTOM_VARIANT, CLIENT_CANVAS );
+    setData( CLIENT_CANVAS.getKey(), Boolean.TRUE );
   }
 
   private void addDispatchPaintListener() {

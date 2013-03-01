@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.swipe;
 
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.SWIPE;
 import static com.eclipsesource.tabris.test.TabrisTestUtil.mockRemoteObject;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -66,6 +67,17 @@ public class SwipeTest {
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithNullProvider() {
     new Swipe( mock( Composite.class ), null );
+  }
+
+  @Test
+  public void testSetsSwipeData() {
+    SwipeItemProvider itemProvider = mockProvider( 0 );
+    Swipe swipe = new Swipe( shell, itemProvider );
+    Composite container = swipe.getContainer();
+
+    Object data = container.getData( SWIPE.getKey() );
+
+    assertEquals( Boolean.TRUE, data );
   }
 
   @Test

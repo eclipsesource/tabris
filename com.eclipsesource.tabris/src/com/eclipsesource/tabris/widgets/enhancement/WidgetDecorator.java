@@ -10,7 +10,9 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.enhancement;
 
-import static com.eclipsesource.tabris.internal.WidgetsUtil.setVariant;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.ANIMATED;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.SHOW_TOUCH;
+import static com.eclipsesource.tabris.internal.WidgetsUtil.setData;
 
 import org.eclipse.swt.widgets.Widget;
 
@@ -19,16 +21,16 @@ import org.eclipse.swt.widgets.Widget;
  * @since 0.8
  */
 public class WidgetDecorator<T extends WidgetDecorator> {
-  
+
   private final Widget widget;
 
   WidgetDecorator( Widget widget ) {
     this.widget = widget;
   }
-  
+
   @SuppressWarnings("unchecked")
   public T useAnimation() {
-    setVariant( widget, "ANIMATED" );
+    setData( widget, ANIMATED, Boolean.TRUE );
     return ( T )this;
   }
 
@@ -37,7 +39,7 @@ public class WidgetDecorator<T extends WidgetDecorator> {
    */
   @SuppressWarnings("unchecked")
   public T showLocalTouch() {
-    setVariant( widget, "SHOW_TOUCH" );
+    setData( widget, SHOW_TOUCH, Boolean.TRUE );
     return ( T )this;
   }
 

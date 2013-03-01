@@ -90,6 +90,15 @@
             </message_arguments>
         </filter>
     </resource>
+    <resource path="src/com/eclipsesource/tabris/internal/DataWhitelist.java" type="com.eclipsesource.tabris.internal.DataWhitelist">
+        <filter id="574660632">
+            <message_arguments>
+                <message_argument value="WidgetDataWhiteList"/>
+                <message_argument value="ClientService"/>
+                <message_argument value="DataWhitelist"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="src/com/eclipsesource/tabris/internal/GeolocationImpl.java" type="com.eclipsesource.tabris.internal.GeolocationImpl">
         <filter id="574660632">
             <message_arguments>

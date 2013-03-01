@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.enhancement;
 
-import static com.eclipsesource.tabris.internal.WidgetsUtil.TABRIS_VARIANT;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.KEYBOARD;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 
@@ -21,76 +21,73 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.eclipsesource.tabris.widgets.enhancement.TextDecorator;
-import com.eclipsesource.tabris.widgets.enhancement.Widgets;
-
 
 @RunWith( MockitoJUnitRunner.class )
 public class TextDecoratorTest {
-  
+
   @Mock
   private Text text;
   private TextDecorator decorator;
-  
+
   @Before
   public void setUp() {
     decorator = Widgets.onText( text );
   }
-  
+
   @Test
   public void testUseHintText() {
     decorator.useHintText( "test" );
-    
+
     verify( text ).setMessage( eq( "test" ) );
   }
-  
+
   @Test
   public void testUseAsciiKeyboard() {
     decorator.useAsciiKeyboard();
-    
-    verify( text ).setData( TABRIS_VARIANT, "KEYBOARD_ASCII" );
+
+    verify( text ).setData( KEYBOARD.getKey(), "ascii" );
   }
-  
+
   @Test
   public void testUseNumbersAndPunctuationKeyboard() {
     decorator.useNumbersAndPunctuationKeyboard();
-    
-    verify( text ).setData( TABRIS_VARIANT, "KEYBOARD_NUMBERSANDPUNCTUATION" );
+
+    verify( text ).setData( KEYBOARD.getKey(), "numbersAndPunctuation" );
   }
-  
+
   @Test
   public void testUseUrlKeyboard() {
     decorator.useUrlKeyboard();
-    
-    verify( text ).setData( TABRIS_VARIANT, "KEYBOARD_URL" );
+
+    verify( text ).setData( KEYBOARD.getKey(), "url" );
   }
-  
+
   @Test
   public void testUseNumberKeyboard() {
     decorator.useNumberKeyboard();
-    
-    verify( text ).setData( TABRIS_VARIANT, "KEYBOARD_NUMBER" );
+
+    verify( text ).setData( KEYBOARD.getKey(), "number" );
   }
-  
+
   @Test
   public void testUsePhoneKeyboard() {
     decorator.usePhoneKeyboard();
-    
-    verify( text ).setData( TABRIS_VARIANT, "KEYBOARD_PHONE" );
+
+    verify( text ).setData( KEYBOARD.getKey(), "phone" );
   }
-  
+
   @Test
   public void testUseEmailKeyboard() {
     decorator.useEmailKeyboard();
-    
-    verify( text ).setData( TABRIS_VARIANT, "KEYBOARD_EMAIL" );
+
+    verify( text ).setData( KEYBOARD.getKey(), "email" );
   }
-  
+
   @Test
   public void testUseDecimalKeyboard() {
     decorator.useDecimalKeyboard();
-    
-    verify( text ).setData( TABRIS_VARIANT, "KEYBOARD_DECIMAL" );
+
+    verify( text ).setData( KEYBOARD.getKey(), "decimal" );
   }
-  
+
 }

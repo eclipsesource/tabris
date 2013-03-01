@@ -7,8 +7,9 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.enhancement;
 
-import static com.eclipsesource.tabris.internal.WidgetsUtil.TABRIS_VARIANT;
-import static com.eclipsesource.tabris.internal.WidgetsUtil.setVariant;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.ALT_SELECTION;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.BACK_FOCUS;
+import static com.eclipsesource.tabris.internal.WidgetsUtil.setData;
 
 import org.eclipse.swt.internal.widgets.IDisplayAdapter;
 import org.eclipse.swt.internal.widgets.WidgetTreeVisitor;
@@ -23,8 +24,6 @@ import org.eclipse.swt.widgets.Widget;
 @SuppressWarnings("restriction")
 public class TreeDecorator extends WidgetDecorator<TreeDecorator> {
 
-  private static final String VARIANT_BACK_FOCUS = "BACK_FOCUS";
-
   private class BackButtonVariantTreeVisistor extends AllWidgetTreeVisitor {
 
     @Override
@@ -36,9 +35,9 @@ public class TreeDecorator extends WidgetDecorator<TreeDecorator> {
     }
 
     private boolean removeVariantBackFocus( Widget widget ) {
-      Object variant = widget.getData( TABRIS_VARIANT );
-      if (variant != null && variant.equals( VARIANT_BACK_FOCUS )) {
-        setVariant( widget, null );
+      Object data = widget.getData( BACK_FOCUS.getKey() );
+      if( data != null && data.equals( Boolean.TRUE ) ) {
+        setData( widget, BACK_FOCUS, null );
         return false;
       }
       return true;
@@ -48,6 +47,7 @@ public class TreeDecorator extends WidgetDecorator<TreeDecorator> {
   public enum TreePart {
     LEAF, BRANCH, ALL
   }
+
   private final Tree tree;
 
   public TreeDecorator( Tree tree ) {
@@ -66,13 +66,13 @@ public class TreeDecorator extends WidgetDecorator<TreeDecorator> {
   public TreeDecorator enableAlternativeSelection( TreePart part ) {
     switch( part ) {
       case LEAF:
-        setVariant( tree, "ALT_SELECTION_LEAF" );
+        setData( tree, ALT_SELECTION, "leaf" );
       break;
       case BRANCH:
-        setVariant( tree, "ALT_SELECTION_BRANCH" );
+        setData( tree, ALT_SELECTION, "branch" );
       break;
       case ALL:
-        setVariant( tree, "ALT_SELECTION" );
+        setData( tree, ALT_SELECTION, "all" );
       break;
     }
     return this;
@@ -82,7 +82,7 @@ public class TreeDecorator extends WidgetDecorator<TreeDecorator> {
    * @since 0.10
    */
   public void enableBackButtonNavigation() {
-    setVariant( tree, VARIANT_BACK_FOCUS );
+    setData( tree, BACK_FOCUS, Boolean.TRUE );
     setVariantToNullOnOtherTrees();
   }
 

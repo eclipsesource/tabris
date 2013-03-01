@@ -10,7 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.enhancement;
 
-import static com.eclipsesource.tabris.internal.WidgetsUtil.setVariant;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.ZOOM;
+import static com.eclipsesource.tabris.internal.WidgetsUtil.setData;
 
 import org.eclipse.swt.widgets.Label;
 
@@ -28,7 +29,7 @@ public class LabelDecorator extends WidgetDecorator<LabelDecorator>{
   }
 
   public LabelDecorator useZoom() {
-    setVariant( label, "ZOOM" );
+    setData( label, ZOOM, Boolean.TRUE );
     return this;
   }
 }

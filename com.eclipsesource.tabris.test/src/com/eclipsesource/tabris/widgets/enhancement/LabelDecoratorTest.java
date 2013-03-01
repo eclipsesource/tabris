@@ -10,7 +10,6 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.enhancement;
 
-import static com.eclipsesource.tabris.internal.WidgetsUtil.TABRIS_VARIANT;
 import static org.mockito.Mockito.verify;
 
 import org.eclipse.swt.widgets.Label;
@@ -20,27 +19,26 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.eclipsesource.tabris.widgets.enhancement.LabelDecorator;
-import com.eclipsesource.tabris.widgets.enhancement.Widgets;
+import com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry;
 
 
 @RunWith( MockitoJUnitRunner.class )
 public class LabelDecoratorTest {
-  
+
   @Mock
   private Label label;
   private LabelDecorator decorator;
-  
+
   @Before
   public void setUp() {
     decorator = Widgets.onLabel( label );
   }
-  
+
   @Test
   public void testUseNumbersAndPunctuationKeyboard() {
     decorator.useZoom();
-    
-    verify( label ).setData( TABRIS_VARIANT, "ZOOM" );
+
+    verify( label ).setData( WhiteListEntry.ZOOM.getKey(), Boolean.TRUE );
   }
-  
+
 }

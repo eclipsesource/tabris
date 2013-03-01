@@ -10,7 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.enhancement;
 
-import static com.eclipsesource.tabris.internal.WidgetsUtil.setVariant;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.PAGING;
+import static com.eclipsesource.tabris.internal.WidgetsUtil.setData;
 
 import org.eclipse.swt.custom.ScrolledComposite;
 
@@ -19,17 +20,17 @@ import org.eclipse.swt.custom.ScrolledComposite;
  * @since 0.8
  */
 public class ScrolledCompositeDecorator extends WidgetDecorator<ScrolledCompositeDecorator> {
-  
+
   private final ScrolledComposite composite;
 
   ScrolledCompositeDecorator( ScrolledComposite composite ) {
     super( composite );
     this.composite = composite;
   }
-  
+
   public ScrolledCompositeDecorator usePaging() {
-    setVariant( composite, "PAGINGENABLED" );
+    setData( composite, PAGING, Boolean.TRUE );
     return this;
   }
-  
+
 }

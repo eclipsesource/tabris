@@ -28,6 +28,7 @@ import static com.eclipsesource.tabris.internal.SwipeUtil.notifyDisposed;
 import static com.eclipsesource.tabris.internal.SwipeUtil.notifyItemActivated;
 import static com.eclipsesource.tabris.internal.SwipeUtil.notifyItemDeactivated;
 import static com.eclipsesource.tabris.internal.SwipeUtil.notifyItemLoaded;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.SWIPE;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,9 +43,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import com.eclipsesource.tabris.internal.SwipeItemHolder;
-import com.eclipsesource.tabris.internal.ZIndexStackLayout;
 import com.eclipsesource.tabris.internal.SwipeManager;
 import com.eclipsesource.tabris.internal.SwipeOperationHandler;
+import com.eclipsesource.tabris.internal.ZIndexStackLayout;
 
 
 /**
@@ -81,7 +82,7 @@ public class Swipe {
     this.manager = new SwipeManager( itemProvider );
     this.listeners = new ArrayList<SwipeListener>();
     this.container = new Composite( parent, SWT.NONE );
-    container.setData( RWT.CUSTOM_VARIANT, "swipe" );
+    container.setData( SWIPE.getKey(), Boolean.TRUE );
     this.remoteObject = RWT.getUISession().getConnection().createRemoteObject( TYPE );
     initialize();
   }
@@ -432,6 +433,10 @@ public class Swipe {
 
   SwipeItemHolder getItemHolder() {
     return manager.getItemHolder();
+  }
+
+  Composite getContainer() {
+    return container;
   }
 
 }

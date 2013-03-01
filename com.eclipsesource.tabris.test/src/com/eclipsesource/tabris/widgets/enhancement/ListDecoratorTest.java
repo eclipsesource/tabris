@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.enhancement;
 
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.ALT_SELECTION;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 
@@ -19,33 +20,32 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import static com.eclipsesource.tabris.internal.WidgetsUtil.TABRIS_VARIANT;
 
 
 @RunWith( MockitoJUnitRunner.class )
 public class ListDecoratorTest {
-  
+
   @Mock
   private List list;
   private ListDecorator decorator;
-  
+
   @Before
   public void setUp() {
     decorator = Widgets.onList( list );
   }
-  
+
   @Test
   public void testUseTitle() {
     decorator.useTitle( "test" );
-    
+
     verify( list ).setToolTipText( eq( "test" ) );
   }
-  
+
   @Test
   public void testEnableAlternativeSelection() {
     decorator.enableAlternativeSelection();
-    
-    verify( list ).setData( eq( TABRIS_VARIANT ), eq( "ALT_SELECTION" ) );
+
+    verify( list ).setData( ALT_SELECTION.getKey(), "all" );
   }
-  
+
 }

@@ -10,7 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.enhancement;
 
-import static com.eclipsesource.tabris.internal.WidgetsUtil.TABRIS_VARIANT;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.ANIMATED;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.SHOW_TOUCH;
 import static org.mockito.Mockito.verify;
 
 import org.eclipse.swt.widgets.Widget;
@@ -20,34 +21,31 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.eclipsesource.tabris.widgets.enhancement.WidgetDecorator;
-import com.eclipsesource.tabris.widgets.enhancement.Widgets;
-
 
 @RunWith( MockitoJUnitRunner.class )
 public class WidgetDecoratorTest {
-  
+
   @Mock
   private Widget widget;
   private WidgetDecorator decorator;
-  
+
   @Before
   public void setUp() {
     decorator = Widgets.onWidget( widget );
   }
-  
+
   @Test
   public void testUseAnimation() {
     decorator.useAnimation();
-    
-    verify( widget ).setData( TABRIS_VARIANT, "ANIMATED" );
+
+    verify( widget ).setData( ANIMATED.getKey(), Boolean.TRUE );
   }
-  
+
   @Test
   public void testShowLocalTouch() {
     decorator.showLocalTouch();
-    
-    verify( widget ).setData( TABRIS_VARIANT, "SHOW_TOUCH" );
+
+    verify( widget ).setData( SHOW_TOUCH.getKey(), Boolean.TRUE );
   }
-  
+
 }

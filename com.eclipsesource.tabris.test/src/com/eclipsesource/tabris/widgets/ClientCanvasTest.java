@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets;
 
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.CLIENT_CANVAS;
 import static org.eclipse.rap.rwt.lifecycle.WidgetUtil.getId;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -22,7 +23,6 @@ import static org.mockito.Mockito.verify;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -40,7 +40,7 @@ import com.eclipsesource.tabris.internal.ClientCanvasTestUtil;
 
 
 public class ClientCanvasTest {
-  
+
   private ClientCanvas clientCanvas;
 
   @Before
@@ -51,103 +51,103 @@ public class ClientCanvasTest {
     clientCanvas = new ClientCanvas( shell, SWT.NONE );
     Fixture.fakeNewRequest();
   }
-  
+
   @After
   public void tearDown() {
     Fixture.tearDown();
   }
-  
+
   @Test
   public void testHasCustomVariant() {
-    Object data = clientCanvas.getData( RWT.CUSTOM_VARIANT );
-    
-    assertEquals( ClientCanvas.CLIENT_CANVAS, data );
+    Object data = clientCanvas.getData( CLIENT_CANVAS.getKey() );
+
+    assertEquals( Boolean.TRUE, data );
   }
-  
+
   private class CheckPaintListener implements PaintListener {
-    
+
     private boolean wasCalled;
 
     public synchronized boolean wasCalled() {
       return wasCalled;
     }
-    
+
     @Override
     public synchronized void paintControl( PaintEvent event ) {
       wasCalled = true;
     }
   }
-  
+
   @Test
   public void testRedraws() {
     CheckPaintListener listener = new CheckPaintListener();
     clientCanvas.addPaintListener( listener );
-    
+
     fakeDrawEvent();
-    
+
     assertTrue( listener.wasCalled() );
   }
-  
+
   @Test
   public void testAddDispatchListener() {
     Listener[] listeners = clientCanvas.getListeners( SWT.Paint );
-    
+
     assertEquals( 1, listeners.length );
   }
-  
+
   @Test
   public void testAddsDispatchListenerLast() {
     PaintListener listener = mock( PaintListener.class );
-    
+
     clientCanvas.addPaintListener( listener );
-    
+
     Listener[] listeners = clientCanvas.getListeners( SWT.Paint );
-    
+
     assertEquals( listener, ( ( TypedListener )listeners[ 0 ] ).getEventListener() );
     assertEquals( 2, listeners.length );
   }
-  
+
   @Test
   public void testCachesDrawings() {
     PaintListener paintListener = mock( PaintListener.class );
     clientCanvas.addPaintListener( paintListener );
-    
+
     fakeDrawEvent();
     Map<String, Object> parameters = new HashMap<String, Object>();
     parameters.put( ClientCanvas.DRAWINGS_PROPERTY, ClientCanvasTestUtil.createDrawingsWithoutLineWidth() );
     Fixture.fakeNewRequest();
     Fixture.fakeNotifyOperation( getId( clientCanvas ), ClientCanvas.DRAWING_EVENT, parameters );
     Fixture.executeLifeCycleFromServerThread();
-    
+
     ArgumentCaptor<PaintEvent> captor = ArgumentCaptor.forClass( PaintEvent.class );
     verify( paintListener, times( 2 ) ).paintControl( captor.capture() );
   }
-  
+
   @Test
   public void testClearTriggersRedraw() {
     CheckPaintListener listener = new CheckPaintListener();
     clientCanvas.addPaintListener( listener );
-    
+
     clientCanvas.clear();
     fakeDrawEvent();
-    
+
     assertTrue( listener.wasCalled() );
   }
-  
+
   @Test
   public void testHasUndo() {
     fakeDrawEvent();
-    
+
     assertTrue( clientCanvas.hasUndo() );
     assertFalse( clientCanvas.hasRedo() );
   }
-  
+
   @Test
   public void testUndo() {
     fakeDrawEvent();
-    
+
     clientCanvas.undo();
-    
+
     assertFalse( clientCanvas.hasUndo() );
     assertTrue( clientCanvas.hasRedo() );
   }
@@ -156,117 +156,117 @@ public class ClientCanvasTest {
   public void testUndoRedraws() {
     CheckPaintListener listener = new CheckPaintListener();
     clientCanvas.addPaintListener( listener );
-    fakeDrawEvent(); 
-    
+    fakeDrawEvent();
+
     clientCanvas.undo();
-    
+
     assertTrue( listener.wasCalled() );
   }
-  
+
   @Test
   public void testHasRedo() {
     fakeDrawEvent();
-    
+
     clientCanvas.undo();
 
     assertTrue( clientCanvas.hasRedo() );
   }
-  
+
   @Test
   public void testRedo() {
     fakeDrawEvent();
     clientCanvas.undo();
-    
+
     clientCanvas.redo();
-    
+
     assertTrue( clientCanvas.hasUndo() );
     assertFalse( clientCanvas.hasRedo() );
   }
-  
+
   @Test
   public void testRedoRedraws() {
     CheckPaintListener listener = new CheckPaintListener();
     clientCanvas.addPaintListener( listener );
     fakeDrawEvent();
     clientCanvas.undo();
-    
+
     clientCanvas.redo();
-    
+
     assertTrue( listener.wasCalled() );
   }
-  
+
   @Test
   public void testDrawDeletesRedoStack() {
     clientCanvas.undo();
-    fakeDrawEvent(); 
-    
+    fakeDrawEvent();
+
     assertFalse( clientCanvas.hasRedo() );
   }
-  
+
   @Test
   public void testFiresDrawingReceived() {
     ClientDrawListener listener = mock( ClientDrawListener.class );
     clientCanvas.addClientDrawListener( listener );
-    
+
     fakeDrawEvent();
-    
+
     verify( listener ).receivedDrawing();
   }
-  
+
   @Test
   public void testFiresDrawingReceivedOnUndo() {
     ClientDrawListener listener = mock( ClientDrawListener.class );
     clientCanvas.addClientDrawListener( listener );
-    
+
     fakeDrawEvent();
     clientCanvas.undo();
-    
+
     verify( listener, times( 2 ) ).receivedDrawing();
   }
-  
+
   @Test
   public void testFiresDrawingReceivedOnRedo() {
     ClientDrawListener listener = mock( ClientDrawListener.class );
     clientCanvas.addClientDrawListener( listener );
-    
+
     fakeDrawEvent();
     clientCanvas.undo();
     clientCanvas.redo();
-    
+
     verify( listener, times( 3 ) ).receivedDrawing();
   }
-  
+
   @Test
   public void testFiresDrawingReceivedOnClear() {
     ClientDrawListener listener = mock( ClientDrawListener.class );
     clientCanvas.addClientDrawListener( listener );
-    
+
     fakeDrawEvent();
     clientCanvas.clear();
-    
+
     verify( listener, times( 2 ) ).receivedDrawing();
   }
-  
+
   @Test
   public void testClearDeletsRedo() {
     ClientDrawListener listener = mock( ClientDrawListener.class );
     clientCanvas.addClientDrawListener( listener );
-    
+
     fakeDrawEvent();
     clientCanvas.undo();
     assertTrue( clientCanvas.hasRedo() );
     clientCanvas.clear();
     assertFalse( clientCanvas.hasRedo() );
   }
-  
+
   @Test
   public void testFiresDrawingReceivedOnRemoved() {
     ClientDrawListener listener = mock( ClientDrawListener.class );
     clientCanvas.addClientDrawListener( listener );
     clientCanvas.removeClientDrawListener( listener );
-    
+
     fakeDrawEvent();
-    
+
     verify( listener, never() ).receivedDrawing();
   }
 

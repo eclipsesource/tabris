@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.enhancement;
 
-import static com.eclipsesource.tabris.internal.WidgetsUtil.TABRIS_VARIANT;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.PAGING;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -43,7 +43,7 @@ public class ScrollingCompositeDecoratorTest {
     when( composite.getParent() ).thenReturn( parent );
     decorator.usePaging();
 
-    verify( parent ).setData( TABRIS_VARIANT, "PAGINGENABLED" );
+    verify( parent ).setData( PAGING.getKey(), Boolean.TRUE );
   }
 
 }

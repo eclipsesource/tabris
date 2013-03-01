@@ -11,7 +11,8 @@
 package com.eclipsesource.tabris.widgets.enhancement;
 
 
-import static com.eclipsesource.tabris.internal.WidgetsUtil.setVariant;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.KEYBOARD;
+import static com.eclipsesource.tabris.internal.WidgetsUtil.setData;
 
 import org.eclipse.swt.widgets.Text;
 
@@ -20,52 +21,52 @@ import org.eclipse.swt.widgets.Text;
  * @since 0.8
  */
 public class TextDecorator extends WidgetDecorator<TextDecorator> {
-  
+
   private final Text text;
-  
+
   TextDecorator( Text text ) {
     super( text );
     this.text = text;
   }
-  
+
   public TextDecorator useHintText( String hint ) {
     text.setMessage( hint );
     return this;
   }
 
   public TextDecorator useAsciiKeyboard() {
-    setVariant( text, "KEYBOARD_ASCII" );
+    setData( text, KEYBOARD, "ascii" );
     return this;
   }
 
   public TextDecorator useNumbersAndPunctuationKeyboard() {
-    setVariant( text, "KEYBOARD_NUMBERSANDPUNCTUATION" );
+    setData( text, KEYBOARD, "numbersAndPunctuation" );
     return this;
   }
-  
+
   public TextDecorator useUrlKeyboard() {
-    setVariant( text, "KEYBOARD_URL" );
+    setData( text, KEYBOARD, "url" );
     return this;
   }
-  
+
   public TextDecorator useNumberKeyboard() {
-    setVariant( text, "KEYBOARD_NUMBER" );
+    setData( text, KEYBOARD, "number" );
     return this;
   }
-  
+
   public TextDecorator usePhoneKeyboard() {
-    setVariant( text, "KEYBOARD_PHONE" );
+    setData( text, KEYBOARD, "phone" );
     return this;
   }
-  
+
   public TextDecorator useEmailKeyboard() {
-    setVariant( text, "KEYBOARD_EMAIL" );
+    setData( text, KEYBOARD, "email" );
     return this;
   }
-  
+
   public TextDecorator useDecimalKeyboard() {
-    setVariant( text, "KEYBOARD_DECIMAL" );
+    setData( text, KEYBOARD, "decimal" );
     return this;
   }
-  
+
 }
