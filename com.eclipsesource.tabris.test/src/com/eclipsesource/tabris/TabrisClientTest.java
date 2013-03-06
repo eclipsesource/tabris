@@ -11,7 +11,6 @@
 package com.eclipsesource.tabris;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 
 import org.eclipse.rap.rwt.client.service.ClientInfo;
@@ -161,23 +160,23 @@ public class TabrisClientTest {
   }
 
   @Test
-  public void testCameraIsNoSingleton() {
+  public void testCameraIsSingleton() {
     TabrisClient client = new TabrisClient();
 
     Camera camera = client.getService( Camera.class );
     Camera camera2 = client.getService( Camera.class );
 
-    assertNotSame( camera, camera2 );
+    assertSame( camera, camera2 );
   }
 
   @Test
-  public void testGeolocationIsNoSingleton() {
+  public void testGeolocationIsSingleton() {
     TabrisClient client = new TabrisClient();
 
     Geolocation geolocation = client.getService( Geolocation.class );
     Geolocation geolocation2 = client.getService( Geolocation.class );
 
-    assertNotSame( geolocation, geolocation2 );
+    assertSame( geolocation, geolocation2 );
   }
 
   @Test
