@@ -17,7 +17,7 @@ package com.eclipsesource.tabris.geolocation;
  * be passed as a parameter to <code>GeolocationCallback#onError</code>.
  * </p>
  * 
- * @see GeolocationCallback
+ * @see GeolocationListener
  * @since 0.6
  */
 public class PositionError {

@@ -12,31 +12,31 @@ package com.eclipsesource.tabris.geolocation;
 
 /**
  * <p>
- * The <code>geolocationCallback</code> is used to notify the server side about location updates from the mobile device.
- * It will be called in case of success and error. Typically a callback object is passed as a parameter within to
- * <code>Geolocation#getCurrentPosition</code> or <code>Geolocation#watchPosition</code>.
+ * The {@link GeolocationListener} is used to notify the server side about location updates from the mobile device.
+ * It will be called in case of success and error. Typically a listener object will be added to a {@link Geolocation}
+ * instance.
  * </p>
- * 
+ *
  * @see Geolocation
- * @since 0.6
+ * @since 1.0
  */
-public interface GeolocationCallback {
-  
+public interface GeolocationListener {
+
   /**
    * <p>
    * Gets called when the client updates it's location.
    * </p>
-   * 
+   *
    * @see Position
    */
-  public void onSuccess( Position position );
-  
+  public void positionReceived( Position position );
+
   /**
    * <p>
    * Gets called when there was an error during determining the location on the mobile device.
    * </p>
-   * 
+   *
    * @see PositionError
    */
-  public void onError( PositionError error );
+  public void errorReceived( PositionError error );
 }

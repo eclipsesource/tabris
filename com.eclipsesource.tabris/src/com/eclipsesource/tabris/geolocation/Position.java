@@ -19,7 +19,7 @@ import java.util.Date;
  * <code>Coordinates</code> and a timestamp.
  * </p>
  * 
- * @see GeolocationCallback
+ * @see GeolocationListener
  * @since 0.6
  */
 public class Position {

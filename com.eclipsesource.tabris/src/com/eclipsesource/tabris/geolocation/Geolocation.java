@@ -9,8 +9,12 @@ import org.eclipse.rap.rwt.client.service.ClientService;
  * can be received once or periodically. The clients needs to allow location services in the app. An instance of
  * {@link Geolocation} can be accessed using RWT.getClient().getService( Geolocation.class ).
  * </p>
+ * <p>
+ * <b>Please note:</b> Position determination is an asynchronous operation. You need to register a
+ * {@link GeolocationListener} to get the determined positions.
+ * </p>
  *
- * @see GeolocationCallback
+ * @see GeolocationListener
  * @see GeolocationOptions
  * @see Client
  *
@@ -25,10 +29,9 @@ public interface Geolocation extends ClientService {
    * <code>GeolocationOptions</code>.
    * </p>
    *
-   * @param callback The callback to call when the client answers. Must not be <code>null</code>.
    * @param options The configuration for determining the location. Must not be <code>null</code>.
    */
-  void getCurrentPosition( GeolocationCallback callback, GeolocationOptions options );
+  void determineCurrentPosition( GeolocationOptions options );
 
   /**
    * <p>
@@ -36,10 +39,9 @@ public interface Geolocation extends ClientService {
    * the <code>GeolocationOptions</code> parameter.
    * </p>
    *
-   * @param callback The callback to call when the client answers. Must not be <code>null</code>.
    * @param options The configuration for determining the location. Must not be <code>null</code>.
    */
-  void watchPosition( GeolocationCallback callback, GeolocationOptions options );
+  void watchPosition( GeolocationOptions options );
 
   /**
    * <p>
@@ -47,5 +49,19 @@ public interface Geolocation extends ClientService {
    * </p>
    */
   void clearWatch();
+
+  /**
+   * <p>
+   * Adds a {@link GeolocationListener} to get notified about position determination.
+   * </p>
+   */
+  void addGeolocationListener( GeolocationListener listener );
+
+  /**
+   * <p>
+   * Removes a {@link GeolocationListener}.
+   * </p>
+   */
+  void removeGeolocationListener( GeolocationListener listener );
 
 }
