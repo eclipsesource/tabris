@@ -36,7 +36,6 @@ import com.eclipsesource.tabris.device.ClientDeviceListener;
 @SuppressWarnings("restriction")
 public class ClientDeviceImpl extends AbstractOperationHandler implements ClientDevice {
 
-  private static final String EVENT_DEVICE_CHANGE = "ClientDeviceChange";
   private static final String TYPE = "tabris.Device";
   private static final String TIMEZONE_OFFSET = "timezoneOffset";
   private static final String CONNECTION_TYPE = "connectionType";
@@ -133,9 +132,6 @@ public class ClientDeviceImpl extends AbstractOperationHandler implements Client
   @Override
   public void addClientDeviceListener( ClientDeviceListener listener ) {
     checkArgumentNotNull( listener, ClientDeviceListener.class.getSimpleName() );
-    if( clientDeviceListeners.isEmpty() ) {
-      remoteObject.listen( EVENT_DEVICE_CHANGE, true );
-    }
     clientDeviceListeners.add( listener );
   }
 
@@ -143,9 +139,6 @@ public class ClientDeviceImpl extends AbstractOperationHandler implements Client
   public void removeClientDeviceListener( ClientDeviceListener listener ) {
     checkArgumentNotNull( listener, ClientDeviceListener.class.getSimpleName() );
     clientDeviceListeners.remove( listener );
-    if( clientDeviceListeners.isEmpty() ) {
-      remoteObject.listen( EVENT_DEVICE_CHANGE, false );
-    }
   }
 
   private void fireOrientationChange() {

@@ -34,11 +34,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.device.ClientDevice;
-import com.eclipsesource.tabris.device.ClientDeviceListener;
 import com.eclipsesource.tabris.device.ClientDevice.Capability;
 import com.eclipsesource.tabris.device.ClientDevice.ConnectionType;
 import com.eclipsesource.tabris.device.ClientDevice.Orientation;
 import com.eclipsesource.tabris.device.ClientDevice.Platform;
+import com.eclipsesource.tabris.device.ClientDeviceListener;
 
 
 @SuppressWarnings("restriction")
@@ -282,25 +282,6 @@ public class ClientDeviceImplTest {
     ClientDevice device = new ClientDeviceImpl();
 
     device.removeClientDeviceListener( null );
-  }
-
-  @Test
-  public void testAddListenerAddsListen() {
-    ClientDevice device = new ClientDeviceImpl();
-    device.addClientDeviceListener( mock( ClientDeviceListener.class ) );
-
-    verify( serviceObject ).listen( "ClientDeviceChange", true );
-  }
-
-  @Test
-  public void testRemoveListenerRemovesListen() {
-    ClientDevice device = new ClientDeviceImpl();
-    ClientDeviceListener listener = mock( ClientDeviceListener.class );
-    device.addClientDeviceListener( listener );
-
-    device.removeClientDeviceListener( listener );
-
-    verify( serviceObject ).listen( "ClientDeviceChange", false );
   }
 
   @Test
