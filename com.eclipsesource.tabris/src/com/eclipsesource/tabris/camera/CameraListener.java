@@ -15,29 +15,25 @@ import org.eclipse.swt.graphics.Image;
 
 /**
  * <p>
- * The <code>CameraCallback</code> is used to receive notifications from a mobile client when it's done with 
+ * The {@link CameraListener} is used to receive notifications from a mobile client when it's done with
  * taking/selecting pictures. In the case of a success the picture will be passed as an <code>Image</code> object.
  * </p>
- * 
+ *
  * @see Image
- * @since 0.8
+ * @since 1.0
  */
-public interface CameraCallback {
+public interface CameraListener {
 
   /**
    * <p>
    * Called in the case of successfully taking or selecting a picture from a mobile client's camera/photo album.
    * </p>
-   *  
+   *
+   * @param image the picture transfered form the client. May be <code>null</code> when there was any error on the
+   * client side.
+   *
    *  @see Image
    */
-  void onSuccess( Image image );
+  void receivedPicture( Image image );
 
-  /**
-   * <p>
-   * Called in the case of an error while selecting/taking a picture from a mobile client's camera/photo album.
-   * </p>
-   */
-  void onError();
-  
 }

@@ -22,7 +22,7 @@ import org.eclipse.rap.rwt.client.service.ClientService;
  * RWT.getClient().getService( Camera.class ).
  * </p>
  *
- * @see CameraCallback
+ * @see CameraListener
  * @see CameraOptions
  * @see Client
  *
@@ -32,16 +32,29 @@ public interface Camera extends ClientService {
 
   /**
    * <p>
-   * Instructs the client to open the camera or photo album. The <code>CameraCallback</code> will be called when the
+   * Instructs the client to open the camera or photo album. The added {@link CameraListener}s will be called when the
    * user has taken/selected a picture or in the case of an error.
    * </p>
    *
-   *  @param callback The callback to call. Must not be <code>null</code>.
    *  @param options The options that should be used as the configuration for taking a picture. Must not
    *                 be <code>null</code>.
    *
-   *  @see CameraCallback
+   *  @see CameraListener
    */
-  void takePicture( CameraOptions options, CameraCallback callback );
+  void takePicture( CameraOptions options );
+
+  /**
+   * <p>
+   * Adds a {@link CameraListener} to get notified about image events.
+   * </p>
+   */
+  void addCameraListener( CameraListener listener );
+
+  /**
+   * <p>
+   * Removes a {@link CameraListener}.
+   * </p>
+   */
+  void removeCameraListener( CameraListener listener );
 
 }

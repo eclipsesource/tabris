@@ -39,7 +39,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.eclipsesource.tabris.camera.Camera;
-import com.eclipsesource.tabris.camera.CameraCallback;
+import com.eclipsesource.tabris.camera.CameraListener;
 import com.eclipsesource.tabris.camera.CameraOptions;
 
 
@@ -74,8 +74,10 @@ public class CameraImplTest {
   public void testSendsOpenWithTakePhotoCall() {
     RemoteObject remoteObject = mockServiceObject();
     Camera camera = new CameraImpl();
+    CameraListener listener = mock( CameraListener.class );
+    camera.addCameraListener( listener );
 
-    camera.takePicture( createOptions(), mock( CameraCallback.class ) );
+    camera.takePicture( createOptions() );
 
     ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
     verify( remoteObject ).call( eq( "open" ), captor.capture() );
@@ -85,28 +87,51 @@ public class CameraImplTest {
   }
 
   @Test( expected = IllegalArgumentException.class )
-  public void testFailsWithNullCallback() {
-    Camera camera = new CameraImpl();
-
-    camera.takePicture( createOptions(), null );
-  }
-
-  @Test( expected = IllegalArgumentException.class )
   public void testFailsWithNullOptions() {
     Camera camera = new CameraImpl();
 
-    camera.takePicture( null, mock( CameraCallback.class ) );
+    camera.takePicture( null );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testAddFailsWithNullListener() {
+    Camera camera = new CameraImpl();
+
+    camera.addCameraListener( null );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testRemoveFailsWithNullListener() {
+    Camera camera = new CameraImpl();
+
+    camera.removeCameraListener( null );
   }
 
   @Test
   public void testDelegatesError() {
     CameraImpl camera = new CameraImpl();
-    CameraCallback callback = mock( CameraCallback.class );
+    CameraListener listener = mock( CameraListener.class );
+    camera.addCameraListener( listener );
 
-    camera.takePicture( createOptions(), callback );
+    camera.takePicture( createOptions() );
     Fixture.dispatchNotify( camera.getRemoteObject(), "ImageSelectionError", null );
 
-    verify( callback ).onError();
+    verify( listener ).receivedPicture( null );
+  }
+
+  @Test
+  public void testDelegatesErrorToAllListeners() {
+    CameraImpl camera = new CameraImpl();
+    CameraListener listener1 = mock( CameraListener.class );
+    CameraListener listener2 = mock( CameraListener.class );
+    camera.addCameraListener( listener1 );
+    camera.addCameraListener( listener2 );
+
+    camera.takePicture( createOptions() );
+    Fixture.dispatchNotify( camera.getRemoteObject(), "ImageSelectionError", null );
+
+    verify( listener1 ).receivedPicture( null );
+    verify( listener2 ).receivedPicture( null );
   }
 
   @Test
@@ -114,14 +139,34 @@ public class CameraImplTest {
     String encodedImage = getEncodedImage();
     CameraImpl camera = new CameraImpl();
     RemoteObject remoteObject = camera.getRemoteObject();
-    CameraCallback callback = mock( CameraCallback.class );
+    CameraListener listener = mock( CameraListener.class );
+    camera.addCameraListener( listener );
 
-    camera.takePicture( createOptions(), callback );
+    camera.takePicture( createOptions() );
     Map<String, Object> properties = new HashMap<String, Object>();
     properties.put( "image", encodedImage );
     Fixture.dispatchNotify( remoteObject, "ImageSelection", properties );
 
-    verify( callback ).onSuccess( any( Image.class ) );
+    verify( listener ).receivedPicture( any( Image.class ) );
+  }
+
+  @Test
+  public void testDelegatesImageToAllListeners() throws IOException {
+    String encodedImage = getEncodedImage();
+    CameraImpl camera = new CameraImpl();
+    RemoteObject remoteObject = camera.getRemoteObject();
+    CameraListener listener1 = mock( CameraListener.class );
+    CameraListener listener2 = mock( CameraListener.class );
+    camera.addCameraListener( listener1 );
+    camera.addCameraListener( listener2 );
+
+    camera.takePicture( createOptions() );
+    Map<String, Object> properties = new HashMap<String, Object>();
+    properties.put( "image", encodedImage );
+    Fixture.dispatchNotify( remoteObject, "ImageSelection", properties );
+
+    verify( listener1 ).receivedPicture( any( Image.class ) );
+    verify( listener2 ).receivedPicture( any( Image.class ) );
   }
 
   private String getEncodedImage() throws IOException {
