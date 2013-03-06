@@ -76,4 +76,13 @@ public interface PageManager {
    * </p>
    */
   Store getPageStore();
+
+  /**
+   * <p>
+   * Sets the title for the defined page.
+   * </p>
+   *
+   * @since 1.0
+   */
+  void setTitle( Page page, String title );
 }

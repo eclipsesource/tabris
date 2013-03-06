@@ -40,6 +40,7 @@ import org.mockito.InOrder;
 import com.eclipsesource.tabris.Store;
 import com.eclipsesource.tabris.internal.ZIndexStackLayout;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
+import com.eclipsesource.tabris.ui.Page;
 import com.eclipsesource.tabris.ui.TransitionListener;
 
 
@@ -451,10 +452,20 @@ public class ControllerTest {
     Controller controller = new Controller( shell, remoteUI, contentHolder );
     controller.createRootPages( context );
 
-    controller.showPage( context, page, mock( Store.class ) );
-    controller.setCurrentTitle( "foobar" );
+    RemotePage remotePage = controller.showPage( context, page, mock( Store.class ) );
+    controller.setTitle( remotePage.getPage(), "foobar" );
 
     verify( remoteObject ).set( "title", "foobar" );
+  }
+
+  @Test( expected = IllegalStateException.class )
+  public void testSetTitleFailsWithNonExistingPage() {
+    createRootPage( "foo" );
+    RemoteUI remoteUI = mock( RemoteUI.class );
+    Controller controller = new Controller( shell, remoteUI, contentHolder );
+    controller.createRootPages( context );
+
+    controller.setTitle( mock( Page.class ), "foobar" );
   }
 
   @Test

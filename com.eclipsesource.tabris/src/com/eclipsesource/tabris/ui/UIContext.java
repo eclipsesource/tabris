@@ -36,13 +36,6 @@ public interface UIContext {
 
   /**
    * <p>
-   * Sets the title for the current displayed UI.
-   * </p>
-   */
-  void setTitle( String title );
-
-  /**
-   * <p>
    * Returns the {@link PageManager} for the current session. With this manage you can do all the navigation.
    * </p>
    */

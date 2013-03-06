@@ -26,7 +26,6 @@ public class UIContextImpl implements UIContext {
   private final UIImpl ui;
   private final Store store;
   private final ActionManagerImpl actionManager;
-  private final Controller controller;
   private final PageManagerImpl pageManager;
   private boolean initialized;
 
@@ -39,17 +38,11 @@ public class UIContextImpl implements UIContext {
     this.store = new Store();
     this.actionManager = new ActionManagerImpl( controller );
     this.pageManager = new PageManagerImpl( controller, this );
-    this.controller = controller;
   }
 
   @Override
   public Display getDisplay() {
     return display;
-  }
-
-  @Override
-  public void setTitle( String title ) {
-    controller.setCurrentTitle( title );
   }
 
   @Override

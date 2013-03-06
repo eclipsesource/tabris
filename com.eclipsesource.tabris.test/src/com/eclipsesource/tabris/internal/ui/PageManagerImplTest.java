@@ -205,4 +205,37 @@ public class PageManagerImplTest {
     verify( controller ).show( context, page, store );
   }
 
+  @Test( expected = IllegalArgumentException.class )
+  public void testSetTitleFailsWithNullPage() {
+    Controller controller = mock( Controller.class );
+    when( controller.getCurrentPage() ).thenReturn( mock( Page.class ) );
+    UIContextImpl context = new UIContextImpl( display, controller, mock( UIImpl.class ) );
+    context.markInitialized();
+
+    context.getPageManager().setTitle( null, "foo" );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testSetTitleFailsWithNullTitle() {
+    Controller controller = mock( Controller.class );
+    when( controller.getCurrentPage() ).thenReturn( mock( Page.class ) );
+    UIContextImpl context = new UIContextImpl( display, controller, mock( UIImpl.class ) );
+    context.markInitialized();
+
+    context.getPageManager().setTitle( mock( Page.class ), null );
+  }
+
+  @Test
+  public void testSetTitleDelegatesToController() {
+    Controller controller = mock( Controller.class );
+    Page page = mock( Page.class );
+    when( controller.getCurrentPage() ).thenReturn( page );
+    UIContextImpl context = new UIContextImpl( display, controller, mock( UIImpl.class ) );
+    context.markInitialized();
+
+    context.getPageManager().setTitle( page, "foo" );
+
+    verify( controller ).setTitle( page, "foo" );
+  }
+
 }

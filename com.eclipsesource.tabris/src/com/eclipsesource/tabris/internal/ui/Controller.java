@@ -172,9 +172,25 @@ public class Controller {
     shell.layout( true );
   }
 
-  public void setCurrentTitle( String title ) {
+  public void setTitle( Page page, String title ) {
     if( currentFlow != null ) {
-      currentFlow.getCurrentPage().setTitle( title );
+      RemotePage remotePageToModify = null;
+      List<RemotePage> allPages = currentFlow.getAllPages();
+      for( RemotePage remotePage : allPages ) {
+        if( remotePage.getPage().equals( page ) ) {
+          remotePageToModify = remotePage;
+          break;
+        }
+      }
+      setPageTitle( remotePageToModify, title );
+    }
+  }
+
+  private void setPageTitle( RemotePage remotePage, String title ) {
+    if( remotePage != null ) {
+      remotePage.setTitle( title );
+    } else {
+      throw new IllegalStateException( "Page does not exist." );
     }
   }
 

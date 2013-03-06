@@ -14,7 +14,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.custom.StackLayout;
@@ -68,16 +67,6 @@ public class UIContextImplTest {
     UIContextImpl context = new UIContextImpl( display, controller, mock( UIImpl.class ) );
 
     assertSame( display, context.getDisplay() );
-  }
-
-  @Test
-  public void testSetsTitle() {
-    Controller controller = mock( Controller.class );
-    UIContextImpl context = new UIContextImpl( display, controller, mock( UIImpl.class ) );
-
-    context.setTitle( "foo" );
-
-    verify( controller ).setCurrentTitle( "foo" );
   }
 
   @Test

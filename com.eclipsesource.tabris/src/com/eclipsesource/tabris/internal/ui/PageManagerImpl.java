@@ -57,4 +57,11 @@ public class PageManagerImpl implements PageManager {
   public Store getPageStore() {
     return controller.getCurrentStore();
   }
+
+  @Override
+  public void setTitle( Page page, String title ) {
+    checkArgumentNotNull( page, Page.class.getSimpleName() );
+    checkArgumentNotNull( title, "PageTitle" );
+    controller.setTitle( page, title );
+  }
 }
