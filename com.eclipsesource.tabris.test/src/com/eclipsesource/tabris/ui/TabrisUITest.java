@@ -12,6 +12,7 @@ package com.eclipsesource.tabris.ui;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.testfixture.Fixture;
@@ -42,12 +43,24 @@ public class TabrisUITest {
     Fixture.tearDown();
   }
 
+  @Test( expected = IllegalArgumentException.class )
+  public void testFailsWithNullConfiguration() {
+    new TabrisUI( null );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testCreateFailsWithNullConfiguration() {
+    TabrisUI tabrisUI = new TabrisUI( mock( UIConfiguration.class ) );
+
+    tabrisUI.create( null );
+  }
+
   @Test
   public void testCreatesRootPages() {
     UIConfiguration configuration = new ExampleConfig();
     TabrisUI tabrisUI = new TabrisUI( configuration );
 
-    tabrisUI.createTabrisUI( shell );
+    tabrisUI.create( shell );
 
     assertEquals( 2, shell.getChildren().length );
   }
@@ -58,7 +71,7 @@ public class TabrisUITest {
     TabrisUI tabrisUI = new TabrisUI( configuration );
     shell.open();
 
-    tabrisUI.createTabrisUI( shell );
+    tabrisUI.create( shell );
 
     assertTrue( shell.getLayout() instanceof ZIndexStackLayout );
   }
