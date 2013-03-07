@@ -12,6 +12,7 @@ package com.eclipsesource.tabris.widgets.enhancement;
 
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
+import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
@@ -32,25 +33,32 @@ import org.eclipse.swt.widgets.Listener;
  */
 public class CompositeDecorator extends WidgetDecorator<CompositeDecorator>  {
 
-  private static final String GROUP_EVENT_COMPOSITE = "groupEventComposite";
-  
+  /**
+   * <p>
+   * When using a GroupedEvent this key can be used as a {@link RWT#CUSTOM_VARIANT} to theme the overlayed composite.
+   * </p>
+   *
+   * @since 1.0
+   */
+  public static final String GROUPED_EVENT_COMPOSITE = "groupedEventComposite";
+
   private final Composite composite;
 
   CompositeDecorator( Composite composite ) {
     super( composite );
     this.composite = composite;
   }
-  
-  public void addGroupedListener( int eventType, Listener listener ) 
-    throws IllegalArgumentException, IllegalStateException 
+
+  public void addGroupedListener( int eventType, Listener listener )
+    throws IllegalArgumentException, IllegalStateException
   {
     checkArgumentNotNull( listener, "Listener" );
     Composite facade = getFacade();
     facade.addListener( eventType, listener );
   }
 
-  public void removeGroupedListener( int eventType, Listener listener ) 
-    throws IllegalArgumentException, IllegalStateException 
+  public void removeGroupedListener( int eventType, Listener listener )
+    throws IllegalArgumentException, IllegalStateException
   {
     checkArgumentNotNull( listener, "Listener" );
     Composite facade = findFacade();
@@ -71,7 +79,7 @@ public class CompositeDecorator extends WidgetDecorator<CompositeDecorator>  {
     String compositeId = WidgetUtil.getId( composite );
     Control[] children = composite.getChildren();
     for( Control child : children ) {
-      if( compositeId.equals( child.getData( GROUP_EVENT_COMPOSITE ) ) ) {
+      if( compositeId.equals( child.getData( GROUPED_EVENT_COMPOSITE ) ) ) {
         return ( Composite )child;
       }
     }
@@ -80,7 +88,8 @@ public class CompositeDecorator extends WidgetDecorator<CompositeDecorator>  {
 
   private Composite createFacade() {
     Composite facade = new Composite( composite, SWT.NONE );
-    facade.setData( GROUP_EVENT_COMPOSITE, WidgetUtil.getId( composite ) );
+    facade.setData( GROUPED_EVENT_COMPOSITE, WidgetUtil.getId( composite ) );
+    facade.setData( RWT.CUSTOM_VARIANT, GROUPED_EVENT_COMPOSITE );
     addLayoutDataWithExclude( facade );
     layoutFacade( facade );
     addResizeListener( facade );
@@ -116,14 +125,14 @@ public class CompositeDecorator extends WidgetDecorator<CompositeDecorator>  {
       public void controlResized( ControlEvent e ) {
         layoutFacade( facade );
       }
-  
+
       @Override
       public void controlMoved( ControlEvent e ) {
         layoutFacade( facade );
       }
     } );
   }
-  
+
   private void layoutFacade( final Composite facade ) {
     Rectangle bounds = composite.getBounds();
     facade.setBounds( 0, 0, bounds.width, bounds.height );
