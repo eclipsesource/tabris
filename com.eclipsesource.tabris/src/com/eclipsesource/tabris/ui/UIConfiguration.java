@@ -35,10 +35,11 @@ package com.eclipsesource.tabris.ui;
  * should be top level pages and which are free pages. This is the same with actions. When this task is done these
  * pages needs to be implemented and hooked into the Tabris UI within the
  * {@link UIConfiguration#configure(UI, UIContext)} method. An instance of a {@link UIConfiguration} implementation
- * needs to be passed into the constructor of a {@link TabrisUI} object.
+ * needs to be passed into the constructor of a {@link TabrisUIEntryPoint} or {@link TabrisUI} object.
  * </p>
  *
  * @see TabrisUI
+ * @see TabrisUIEntryPoint
  * @see Page
  * @see PageConfiguration
  * @see Action
