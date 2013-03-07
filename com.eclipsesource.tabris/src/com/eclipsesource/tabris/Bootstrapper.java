@@ -20,6 +20,7 @@ import org.eclipse.rap.rwt.service.ResourceLoader;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
+import com.eclipsesource.tabris.internal.ItemDataRenderer;
 import com.eclipsesource.tabris.internal.TabrisClientProvider;
 import com.eclipsesource.tabris.internal.bootstrap.HttpServiceTracker;
 
@@ -75,6 +76,7 @@ public class Bootstrapper {
    */
   public void bootstrap() {
     application.addClientProvider( new TabrisClientProvider() );
+    application.addPhaseListener( new ItemDataRenderer() );
     registerMobileThemes();
   }
 
