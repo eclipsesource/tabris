@@ -28,6 +28,13 @@ public class WidgetDecorator<T extends WidgetDecorator> {
     this.widget = widget;
   }
 
+  /**
+   * <p>
+   * Instructs a widget to be animated when it's bounds change.
+   * </p>
+   *
+   * @since 0.8
+   */
   @SuppressWarnings("unchecked")
   public T useAnimation() {
     setData( widget, ANIMATED, Boolean.TRUE );
@@ -35,6 +42,10 @@ public class WidgetDecorator<T extends WidgetDecorator> {
   }
 
   /**
+   * <p>
+   * Instructs a {@link Widget} to show immediate visual feedback on a user interaction.
+   * </p>
+   *
    * @since 0.10
    */
   @SuppressWarnings("unchecked")

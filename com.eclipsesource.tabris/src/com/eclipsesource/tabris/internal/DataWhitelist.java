@@ -38,7 +38,6 @@ public class DataWhitelist implements WidgetDataWhiteList {
     public String getKey() {
       return key;
     }
-
   }
 
   @Override

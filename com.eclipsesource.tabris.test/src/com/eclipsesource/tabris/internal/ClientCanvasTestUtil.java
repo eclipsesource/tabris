@@ -15,9 +15,9 @@ import org.json.JSONArray;
 
 @SuppressWarnings("restriction")
 public class ClientCanvasTestUtil {
-  
+
   public static final int LINE_WITH = 3;
-  
+
   public static String createDrawingsWithoutLineWidth() {
     JSONArray drawings = new JSONArray();
     JSONArray polylineParam = createPolylineParam();
@@ -28,7 +28,7 @@ public class ClientCanvasTestUtil {
     drawings.put( polylineParam2 );
     return drawings.toString();
   }
-  
+
   public static String createDrawings( int lineWidth ) {
     JSONArray drawings = new JSONArray();
     JSONArray polylineParam = createPolylineParam();
@@ -44,7 +44,7 @@ public class ClientCanvasTestUtil {
 
   private static JSONArray createPolylineParam() {
     JSONArray drawingParam1 = new JSONArray();
-    drawingParam1.put( GCOperationDispatcher.PROP_POLYLINE );
+    drawingParam1.put( Constants.PROPERTY_POLYLINE );
     JSONArray polyline = createPolyline();
     drawingParam1.put( polyline );
     return drawingParam1;
@@ -61,7 +61,7 @@ public class ClientCanvasTestUtil {
 
   private static JSONArray createLineWidthParam( int lineWidth ) {
     JSONArray drawingParam2 = new JSONArray();
-    drawingParam2.put( GCOperationDispatcher.PROP_LINE_WIDTH );
+    drawingParam2.put( Constants.PROPERTY_LINE_WIDTH );
     JSONArray lineWidthArray = new JSONArray();
     lineWidthArray.put( lineWidth );
     drawingParam2.put( lineWidthArray );
@@ -70,7 +70,7 @@ public class ClientCanvasTestUtil {
 
   private static JSONArray createColorParam() {
     JSONArray drawingParam3 = new JSONArray();
-    drawingParam3.put( GCOperationDispatcher.PROP_FOREGROUND );
+    drawingParam3.put( Constants.PROPERTY_FOREGROUND );
     JSONArray color = new JSONArray();
     color.put( 50 );
     color.put( 100 );
@@ -79,7 +79,7 @@ public class ClientCanvasTestUtil {
     drawingParam3.put( color );
     return drawingParam3;
   }
-  
+
   private ClientCanvasTestUtil() {
     // prevent instantiation
   }

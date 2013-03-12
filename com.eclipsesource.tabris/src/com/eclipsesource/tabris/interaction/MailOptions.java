@@ -7,6 +7,11 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.interaction;
 
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_BODY;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_CC;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SUBJECT;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TO;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_USE_HTML;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNullAndNotEmpty;
 
@@ -14,51 +19,45 @@ import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNu
  * <p>
  * Concrete launch option to create a Mail within the Mail App.
  * <p>
- * 
+ *
  * @since 0.9
  */
 public class MailOptions extends LaunchOptions {
 
-  private static final String CC = "cc";
-  private static final String BODY = "body";
-  private static final String TO = "to";
-  private static final String SUBJECT = "subject";
-  private static final String USE_HTML = "useHtml";
-
   public MailOptions( String to ) {
     super( App.MAIL );
     checkArgumentNotNullAndNotEmpty( to, "To" );
-    add( TO, to );
+    add( PROPERTY_TO, to );
   }
 
   public MailOptions( String to, String subject ) {
     this( to );
     checkArgumentNotNull( subject, "Subject" );
-    add( SUBJECT, subject );
+    add( PROPERTY_SUBJECT, subject );
   }
 
   public MailOptions( String to, String subject, String body ) {
     this( to, subject );
     checkArgumentNotNull( body, "Body" );
-    add( BODY, body );
+    add( PROPERTY_BODY, body );
   }
 
   public void setSubject( String subject ) {
     checkArgumentNotNull( subject, "Subject" );
-    add( SUBJECT, subject );
+    add( PROPERTY_SUBJECT, subject );
   }
 
   public void setCC( String cc ) {
     checkArgumentNotNullAndNotEmpty( cc, "CC" );
-    add( CC, cc );
+    add( PROPERTY_CC, cc );
   }
 
   public void setBody( String body ) {
     checkArgumentNotNull( body, "Body" );
-    add( BODY, body );
+    add( PROPERTY_BODY, body );
   }
 
   public void setUseHtml( boolean useHtml ) {
-    add( USE_HTML, String.valueOf( useHtml ) );
+    add( PROPERTY_USE_HTML, String.valueOf( useHtml ) );
   }
 }

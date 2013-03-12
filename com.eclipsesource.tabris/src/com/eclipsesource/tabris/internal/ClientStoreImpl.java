@@ -10,6 +10,14 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import static com.eclipsesource.tabris.internal.Constants.TYPE_CLIENT_STORE;
+import static com.eclipsesource.tabris.internal.Constants.METHOD_ADD;
+import static com.eclipsesource.tabris.internal.Constants.METHOD_CLEAR;
+import static com.eclipsesource.tabris.internal.Constants.METHOD_REMOVE;
+import static com.eclipsesource.tabris.internal.Constants.METHOD_SYNCHRONIZE_STORE;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_KEY;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_KEYS;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_VALUE;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNullAndNotEmpty;
 
@@ -28,20 +36,12 @@ import com.eclipsesource.tabris.ClientStore;
 @SuppressWarnings("restriction")
 public class ClientStoreImpl extends AbstractOperationHandler implements ClientStore {
 
-  private static final String METHOD_SYNCHRONIZE_STORE = "synchronizeStore";
-  private static final String METHOD_CLEAR = "clear";
-  private static final String METHOD_REMOVE = "remove";
-  private static final String METHOD_ADD = "add";
-  private static final String PROPERTY_KEYS = "keys";
-  private static final String PROPERTY_VALUE = "value";
-  private static final String PROPERTY_KEY = "key";
-
   private final RemoteObject serviceObject;
   private final Map<String, String> store;
 
   public ClientStoreImpl() {
     ConnectionImpl connection = ( ConnectionImpl )RWT.getUISession().getConnection();
-    serviceObject = connection.createServiceObject( "tabris.ClientStore" );
+    serviceObject = connection.createServiceObject( TYPE_CLIENT_STORE );
     serviceObject.setHandler( this );
     store = new HashMap<String, String>();
   }

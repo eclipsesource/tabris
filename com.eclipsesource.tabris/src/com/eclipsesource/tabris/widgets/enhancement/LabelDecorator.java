@@ -28,6 +28,14 @@ public class LabelDecorator extends WidgetDecorator<LabelDecorator>{
     this.label = label;
   }
 
+  /**
+   * <p>
+   * Enables a zooming behavior for a {@link Label}. Can be used e.g. to display very large images on a smaller
+   * {@link Label}.
+   * </p>
+   *
+   * @since 0.8
+   */
   public LabelDecorator useZoom() {
     setData( label, ZOOM, Boolean.TRUE );
     return this;

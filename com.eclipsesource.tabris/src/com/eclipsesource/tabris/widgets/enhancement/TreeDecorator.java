@@ -11,6 +11,8 @@ import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.ALT
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.BACK_FOCUS;
 import static com.eclipsesource.tabris.internal.WidgetsUtil.setData;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.internal.widgets.IDisplayAdapter;
 import org.eclipse.swt.internal.widgets.WidgetTreeVisitor;
 import org.eclipse.swt.internal.widgets.WidgetTreeVisitor.AllWidgetTreeVisitor;
@@ -24,17 +26,17 @@ import org.eclipse.swt.widgets.Widget;
 @SuppressWarnings("restriction")
 public class TreeDecorator extends WidgetDecorator<TreeDecorator> {
 
-  private class BackButtonVariantTreeVisistor extends AllWidgetTreeVisitor {
+  private class BackButtonDataTreeVisistor extends AllWidgetTreeVisitor {
 
     @Override
     public boolean doVisit( Widget widget ) {
       if( widget instanceof Tree && widget != tree ) {
-        return removeVariantBackFocus( widget );
+        return removeBackFocusData( widget );
       }
       return true;
     }
 
-    private boolean removeVariantBackFocus( Widget widget ) {
+    private boolean removeBackFocusData( Widget widget ) {
       Object data = widget.getData( BACK_FOCUS.getKey() );
       if( data != null && data.equals( Boolean.TRUE ) ) {
         setData( widget, BACK_FOCUS, null );
@@ -55,12 +57,24 @@ public class TreeDecorator extends WidgetDecorator<TreeDecorator> {
     this.tree = tree;
   }
 
+  /**
+   * <p>
+   * Defines a title for a tree. This is comparable with a header for a tree.
+   * </p>
+   *
+   * @since 0.9
+   */
   public TreeDecorator useTitle( String title ) {
     tree.setToolTipText( title );
     return this;
   }
 
   /**
+   * <p>
+   * This enables alternative selection on tree items. When the alternative action will be selected the
+   * {@link SelectionEvent#stateMask} contains the {@link SWT#ALT} key.
+   * </p>
+   *
    * @since 0.9
    */
   public TreeDecorator enableAlternativeSelection( TreePart part ) {
@@ -79,18 +93,23 @@ public class TreeDecorator extends WidgetDecorator<TreeDecorator> {
   }
 
   /**
+   * <p>
+   * Enables the defined tree to take advantage of the back button. This means when the back button will be pressed
+   * the tree navigates back.
+   * </p>
+   *
    * @since 0.10
    */
   public void enableBackButtonNavigation() {
     setData( tree, BACK_FOCUS, Boolean.TRUE );
-    setVariantToNullOnOtherTrees();
+    setDataToNullOnOtherTrees();
   }
 
-  private void setVariantToNullOnOtherTrees() {
+  private void setDataToNullOnOtherTrees() {
     IDisplayAdapter displayAdapter = tree.getDisplay().getAdapter( IDisplayAdapter.class );
     Composite[] shells = displayAdapter.getShells();
     for( int i = 0; i < shells.length; i++ ) {
-      WidgetTreeVisitor.accept( shells[ i ], new BackButtonVariantTreeVisistor() );
+      WidgetTreeVisitor.accept( shells[ i ], new BackButtonDataTreeVisistor() );
     }
   }
 

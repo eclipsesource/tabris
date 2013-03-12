@@ -1,5 +1,22 @@
 package com.eclipsesource.tabris.internal;
 
+import static com.eclipsesource.tabris.internal.Constants.EVENT_LOCATION_UPDATE_ERROR_EVENT;
+import static com.eclipsesource.tabris.internal.Constants.EVENT_LOCATION_UPDATE_EVENT;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ACCURACY;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ALTITUDE;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ALTITUDE_ACCURACY;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ENABLE_HIGH_ACCURACY;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ERROR_CODE;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ERROR_MESSAGE;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_FREQUENCY;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_HEADING;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_LATITUDE;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_LONGITUDE;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_MAXIMUM_AGE;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_NEEDS_POSITION;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SPEED;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TIMESTAMP;
+import static com.eclipsesource.tabris.internal.Constants.TYPE_GEOLOCATION;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
 import java.text.ParseException;
@@ -26,24 +43,6 @@ import com.eclipsesource.tabris.geolocation.PositionError.PositionErrorCode;
 @SuppressWarnings("restriction")
 public class GeolocationImpl extends AbstractOperationHandler implements Geolocation {
 
-  private static final String TYPE = "tabris.Geolocation";
-  private static final String PROP_ENABLE_HIGH_ACCURACY = "enableHighAccuracy";
-  private static final String PROP_MAXIMUM_AGE = "maximumAge";
-  private static final String PROP_FREQUENCY = "frequency";
-  private static final String PROP_NEEDS_POSITION = "needsPosition";
-  private static final String LOCATION_UPDATE_ERROR_EVENT = "LocationUpdateError";
-  private static final String LOCATION_UPDATE_EVENT = "LocationUpdate";
-  private static final String PROP_TIMESTAMP = "timestamp";
-  private static final String PROP_SPEED = "speed";
-  private static final String PROP_HEADING = "heading";
-  private static final String PROP_ALTITUDE_ACCURACY = "altitudeAccuracy";
-  private static final String PROP_ACCURACY = "accuracy";
-  private static final String PROP_ALTITUDE = "altitude";
-  private static final String PROP_LONGITUDE = "longitude";
-  private static final String PROP_LATITUDE = "latitude";
-  private static final String PROP_ERROR_MESSAGE = "errorMessage";
-  private static final String PROP_ERROR_CODE = "errorCode";
-
   private enum NeedsPositionFlavor {
     NEVER, ONCE, CONTINUOUS
   }
@@ -52,18 +51,18 @@ public class GeolocationImpl extends AbstractOperationHandler implements Geoloca
   private final List<GeolocationListener> listeners;
 
   public GeolocationImpl() {
-    remoteObject = ( ( ConnectionImpl )RWT.getUISession().getConnection() ).createServiceObject( TYPE );
+    remoteObject = ( ( ConnectionImpl )RWT.getUISession().getConnection() ).createServiceObject( TYPE_GEOLOCATION );
     remoteObject.setHandler( this );
-    remoteObject.set( PROP_NEEDS_POSITION, NeedsPositionFlavor.NEVER.toString() );
+    remoteObject.set( PROPERTY_NEEDS_POSITION, NeedsPositionFlavor.NEVER.toString() );
     listeners = new ArrayList<GeolocationListener>();
   }
 
   @Override
   public void handleNotify( String event, Map<String,Object> properties ) {
-    if( LOCATION_UPDATE_EVENT.equals( event ) ) {
+    if( EVENT_LOCATION_UPDATE_EVENT.equals( event ) ) {
       Position position = getPosition( properties );
       notifyListenersWithPosition( position );
-    } else if( LOCATION_UPDATE_ERROR_EVENT.equals( event ) ) {
+    } else if( EVENT_LOCATION_UPDATE_ERROR_EVENT.equals( event ) ) {
       PositionError error = getPositionError( properties );
       notifyListenersWithError( error );
     }
@@ -82,7 +81,7 @@ public class GeolocationImpl extends AbstractOperationHandler implements Geoloca
   }
 
   private Position getPosition( Map<String, Object> properties ) {
-    String timestampValue = ( String )properties.get( PROP_TIMESTAMP );
+    String timestampValue = ( String )properties.get( PROPERTY_TIMESTAMP );
     try {
       Date timestamp = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ" ).parse( timestampValue );
       Coordinates coordinates = getCoordinates( properties );
@@ -95,13 +94,13 @@ public class GeolocationImpl extends AbstractOperationHandler implements Geoloca
   }
 
   private Coordinates getCoordinates( Map<String, Object> properties ) {
-    return new Coordinates( getPropertyAsDouble( properties, PROP_LATITUDE ),
-                            getPropertyAsDouble( properties, PROP_LONGITUDE ),
-                            getPropertyAsDouble( properties, PROP_ALTITUDE ),
-                            getPropertyAsDouble( properties, PROP_ACCURACY ),
-                            getPropertyAsDouble( properties, PROP_ALTITUDE_ACCURACY ),
-                            getPropertyAsDouble( properties, PROP_HEADING ),
-                            getPropertyAsDouble( properties, PROP_SPEED ) );
+    return new Coordinates( getPropertyAsDouble( properties, PROPERTY_LATITUDE ),
+                            getPropertyAsDouble( properties, PROPERTY_LONGITUDE ),
+                            getPropertyAsDouble( properties, PROPERTY_ALTITUDE ),
+                            getPropertyAsDouble( properties, PROPERTY_ACCURACY ),
+                            getPropertyAsDouble( properties, PROPERTY_ALTITUDE_ACCURACY ),
+                            getPropertyAsDouble( properties, PROPERTY_HEADING ),
+                            getPropertyAsDouble( properties, PROPERTY_SPEED ) );
   }
 
   private double getPropertyAsDouble( Map<String, Object> properties, String propertyName ) {
@@ -116,9 +115,9 @@ public class GeolocationImpl extends AbstractOperationHandler implements Geoloca
   }
 
   private PositionError getPositionError( Map<String, Object> properties ) {
-    String code = ( String )properties.get( PROP_ERROR_CODE );
+    String code = ( String )properties.get( PROPERTY_ERROR_CODE );
     PositionErrorCode errorCode = PositionErrorCode.valueOf( code );
-    String message = ( String )properties.get( PROP_ERROR_MESSAGE );
+    String message = ( String )properties.get( PROPERTY_ERROR_MESSAGE );
     PositionError positionError = new PositionError( errorCode, message );
     return positionError;
   }
@@ -135,19 +134,19 @@ public class GeolocationImpl extends AbstractOperationHandler implements Geoloca
 
   private void startUpdatePosition( NeedsPositionFlavor flavor, GeolocationOptions options ) {
     checkArgumentNotNull( options, "Options" );
-    remoteObject.set( PROP_NEEDS_POSITION, flavor.toString() );
+    remoteObject.set( PROPERTY_NEEDS_POSITION, flavor.toString() );
     setOptions( options );
   }
 
   private void setOptions( GeolocationOptions options ) {
-    remoteObject.set( PROP_FREQUENCY, options.getFrequency() );
-    remoteObject.set( PROP_MAXIMUM_AGE, options.getMaximumAge() );
-    remoteObject.set( PROP_ENABLE_HIGH_ACCURACY, options.isEnableHighAccuracy() );
+    remoteObject.set( PROPERTY_FREQUENCY, options.getFrequency() );
+    remoteObject.set( PROPERTY_MAXIMUM_AGE, options.getMaximumAge() );
+    remoteObject.set( PROPERTY_ENABLE_HIGH_ACCURACY, options.isEnableHighAccuracy() );
   }
 
   @Override
   public void clearWatch() {
-    remoteObject.set( PROP_NEEDS_POSITION, NeedsPositionFlavor.NEVER.toString() );
+    remoteObject.set( PROPERTY_NEEDS_POSITION, NeedsPositionFlavor.NEVER.toString() );
   }
 
   RemoteObject getRemoteObject() {

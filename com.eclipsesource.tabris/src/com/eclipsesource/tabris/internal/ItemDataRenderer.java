@@ -1,5 +1,7 @@
 package com.eclipsesource.tabris.internal;
 
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_DATA;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,8 +32,6 @@ import org.eclipse.swt.widgets.Widget;
 // TODO: Remove when bug is fixed
 @SuppressWarnings("restriction")
 public class ItemDataRenderer implements PhaseListener {
-
-  private static final String PROP_DATA = "data";
 
   @Override
   public void beforePhase( PhaseEvent event ) {
@@ -96,7 +96,7 @@ public class ItemDataRenderer implements PhaseListener {
         for( int i = 0; i < newValue.length; i++ ) {
           data.put( newValue[ i ], newValue[ ++i ] );
         }
-        clientObject.set( PROP_DATA, data );
+        clientObject.set( PROPERTY_DATA, data );
       }
     }
 

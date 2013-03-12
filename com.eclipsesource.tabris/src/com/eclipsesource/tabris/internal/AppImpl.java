@@ -7,6 +7,9 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import static com.eclipsesource.tabris.internal.Constants.EVENT_BACK_NAVIGATION;
+import static com.eclipsesource.tabris.internal.Constants.TYPE_APP;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,15 +29,12 @@ import com.eclipsesource.tabris.app.EventType;
 @SuppressWarnings("restriction")
 public class AppImpl extends AbstractOperationHandler implements App {
 
-  private static final String BACK_NAVIGATION_EVENT = "BackNavigation";
-  private static final String TYPE = "tabris.App";
-
   private final RemoteObject remoteObject;
   private final Map<EventType, List<AppListener>> eventListeners;
   private final List<BackNavigationListener> backNavigationListeners;
 
   public AppImpl() {
-    remoteObject = ( ( ConnectionImpl )RWT.getUISession().getConnection() ).createServiceObject( TYPE );
+    remoteObject = ( ( ConnectionImpl )RWT.getUISession().getConnection() ).createServiceObject( TYPE_APP );
     remoteObject.setHandler( this );
     eventListeners = new HashMap<EventType, List<AppListener>>();
     backNavigationListeners = new ArrayList<BackNavigationListener>();
@@ -64,7 +64,7 @@ public class AppImpl extends AbstractOperationHandler implements App {
   @Override
   public void addBackNavigationListener( BackNavigationListener listener ) {
     if( backNavigationListeners.isEmpty() ) {
-      remoteObject.listen( BACK_NAVIGATION_EVENT, true );
+      remoteObject.listen( EVENT_BACK_NAVIGATION, true );
     }
     backNavigationListeners.add( listener );
   }
@@ -73,13 +73,13 @@ public class AppImpl extends AbstractOperationHandler implements App {
   public void removeBackNavigationListener( BackNavigationListener listener ) {
     backNavigationListeners.remove( listener );
     if( backNavigationListeners.isEmpty() ) {
-      remoteObject.listen( BACK_NAVIGATION_EVENT, false );
+      remoteObject.listen( EVENT_BACK_NAVIGATION, false );
     }
   }
 
   @Override
   public void handleNotify( String event, Map<String, Object> properties ) {
-    if( event.equals( BACK_NAVIGATION_EVENT ) ) {
+    if( event.equals( EVENT_BACK_NAVIGATION ) ) {
       notifyBackNavigationListeners();
     } else {
       AppEvent appEvent = new AppEvent( EventType.fromName( event ), properties );

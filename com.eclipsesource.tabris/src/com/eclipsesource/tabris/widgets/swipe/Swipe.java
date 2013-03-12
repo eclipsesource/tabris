@@ -10,25 +10,25 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.swipe;
 
+import static com.eclipsesource.tabris.internal.Constants.METHOD_ITEM_LOADED;
+import static com.eclipsesource.tabris.internal.Constants.METHOD_LOCK_LEFT;
+import static com.eclipsesource.tabris.internal.Constants.METHOD_LOCK_RIGHT;
+import static com.eclipsesource.tabris.internal.Constants.METHOD_REMOVE_ITEMS;
+import static com.eclipsesource.tabris.internal.Constants.METHOD_UNLOCK_LEFT;
+import static com.eclipsesource.tabris.internal.Constants.METHOD_UNLOCK_RIGHT;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ACTIVE_ITEM;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_CONTENT;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_INDEX;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ITEMS;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PARENT;
+import static com.eclipsesource.tabris.internal.Constants.TYPE_SWIPE;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.SWIPE;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 import static com.eclipsesource.tabris.internal.SwipeItemIndexer.getAsArray;
-import static com.eclipsesource.tabris.internal.SwipeManager.METHOD_ITEM_LOADED;
-import static com.eclipsesource.tabris.internal.SwipeManager.METHOD_LOCK_LEFT;
-import static com.eclipsesource.tabris.internal.SwipeManager.METHOD_LOCK_RIGHT;
-import static com.eclipsesource.tabris.internal.SwipeManager.METHOD_REMOVE_ITEMS;
-import static com.eclipsesource.tabris.internal.SwipeManager.METHOD_UNLOCK_LEFT;
-import static com.eclipsesource.tabris.internal.SwipeManager.METHOD_UNLOCK_RIGHT;
-import static com.eclipsesource.tabris.internal.SwipeManager.PROPERTY_ACTIVE_ITEM;
-import static com.eclipsesource.tabris.internal.SwipeManager.PROPERTY_CONTENT;
-import static com.eclipsesource.tabris.internal.SwipeManager.PROPERTY_INDEX;
-import static com.eclipsesource.tabris.internal.SwipeManager.PROPERTY_ITEMS;
-import static com.eclipsesource.tabris.internal.SwipeManager.PROPERTY_PARENT;
-import static com.eclipsesource.tabris.internal.SwipeManager.TYPE;
 import static com.eclipsesource.tabris.internal.SwipeUtil.notifyDisposed;
 import static com.eclipsesource.tabris.internal.SwipeUtil.notifyItemActivated;
 import static com.eclipsesource.tabris.internal.SwipeUtil.notifyItemDeactivated;
 import static com.eclipsesource.tabris.internal.SwipeUtil.notifyItemLoaded;
-import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.SWIPE;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,7 +83,7 @@ public class Swipe {
     this.listeners = new ArrayList<SwipeListener>();
     this.container = new Composite( parent, SWT.NONE );
     container.setData( SWIPE.getKey(), Boolean.TRUE );
-    this.remoteObject = RWT.getUISession().getConnection().createRemoteObject( TYPE );
+    this.remoteObject = RWT.getUISession().getConnection().createRemoteObject( TYPE_SWIPE );
     initialize();
   }
 

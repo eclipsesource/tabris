@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.interaction;
 
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_URL;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -18,19 +20,17 @@ import com.eclipsesource.tabris.internal.Preconditions;
 
 /**
  * <p>
- * Concrete launch option to open a URL in the Browser.
+ * Concrete launch option to open an URL in the Browser.
  * </p>
  * @since 0.9
  */
 public class BrowserOptions extends LaunchOptions {
-  
-  private static final String URL = "url";
 
   public BrowserOptions( String url ) {
     super( App.BROWSER );
     Preconditions.checkArgumentNotNull( url, "URL" );
     validateUrl( url );
-    add( URL, url );
+    add( PROPERTY_URL, url );
   }
 
   private void validateUrl( String url ) {

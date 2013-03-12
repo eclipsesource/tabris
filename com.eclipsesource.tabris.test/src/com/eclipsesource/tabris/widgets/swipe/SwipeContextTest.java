@@ -17,27 +17,27 @@ import org.junit.Test;
 
 
 public class SwipeContextTest {
-  
+
   @Test
   public void testGetValue() {
     SwipeContext context = new SwipeContext();
-    context.add( "foo", "bar" );
-    
-    assertEquals( "bar", context.get( "foo", String.class ) );
+    context.getStore().add( "foo", "bar" );
+
+    assertEquals( "bar", context.getStore().get( "foo", String.class ) );
   }
-  
+
   @Test( expected = IllegalArgumentException.class )
   public void testGetValueWithWrongType() {
     SwipeContext context = new SwipeContext();
-    context.add( "foo", "bar" );
-    
-    context.get( "foo", Integer.class );
+    context.getStore().add( "foo", "bar" );
+
+    context.getStore().get( "foo", Integer.class );
   }
-  
+
   @Test
   public void testGetWithNonExistingKeyReturnsNull() {
     SwipeContext context = new SwipeContext();
-    
-    assertNull( context.get( "foo", String.class ) );
+
+    assertNull( context.getStore().get( "foo", String.class ) );
   }
 }

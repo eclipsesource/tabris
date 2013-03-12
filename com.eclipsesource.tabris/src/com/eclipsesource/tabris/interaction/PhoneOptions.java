@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.interaction;
 
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_NUMBER;
+
 import com.eclipsesource.tabris.internal.Preconditions;
 
 
@@ -20,12 +22,10 @@ import com.eclipsesource.tabris.internal.Preconditions;
  * @since 0.9
  */
 public class PhoneOptions extends LaunchOptions {
-  
-  private static final String NUMBER = "number";
 
   public PhoneOptions( String phoneNumber ) {
     super( App.PHONE );
     Preconditions.checkArgumentNotNullAndNotEmpty( phoneNumber, "Number" );
-    add( NUMBER, phoneNumber );
+    add( PROPERTY_NUMBER, phoneNumber );
   }
 }

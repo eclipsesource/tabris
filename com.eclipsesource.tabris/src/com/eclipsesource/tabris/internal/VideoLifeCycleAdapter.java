@@ -10,6 +10,13 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import static com.eclipsesource.tabris.internal.Constants.EVENT_PLAYBACK;
+import static com.eclipsesource.tabris.internal.Constants.EVENT_PRESENTATION;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_MODE;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PARENT;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_VIDEO_LISTENER;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_VIDEO_URL;
+import static com.eclipsesource.tabris.internal.Constants.TYPE_VIDEO;
 import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.readEventPropertyValueAsString;
 import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.wasEventSent;
 import static org.eclipse.rap.rwt.lifecycle.WidgetLCAUtil.preserveListener;
@@ -44,16 +51,6 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA {
     SPEED, REPEAT, CONTROLS_VISIBLE, PLAYBACK_MODE, PRESENTATION_MODE, HEAD_POSITION
   }
 
-  static final String TYPE = "tabris.widgets.Video";
-  // write properties
-  static final String PARENT = "parent";
-  static final String VIDEO_URL = "videoURL";
-  static final String VIDEO_LISTENER_PROPERTY = "video";
-  // read properties
-  static final String PRESENTATION_EVENT = "PresentationChanged";
-  static final String PLAYBACK_EVENT = "PlaybackChanged";
-  static final String PROPERTY_MODE = "mode";
-
   @Override
   public void readData( Widget widget ) {
     readPlaybackMode( widget );
@@ -61,8 +58,8 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA {
   }
 
   private void readPlaybackMode( Widget widget ) {
-    if( wasEventSent( getId( widget ), PLAYBACK_EVENT ) ) {
-      String playbackMode = readEventPropertyValueAsString( getId( widget ), PLAYBACK_EVENT, PROPERTY_MODE );
+    if( wasEventSent( getId( widget ), EVENT_PLAYBACK ) ) {
+      String playbackMode = readEventPropertyValueAsString( getId( widget ), EVENT_PLAYBACK, PROPERTY_MODE );
       PlaybackMode newMode = PlaybackMode.valueOf( playbackMode.toUpperCase() );
       Video video = ( Video )widget;
       video.getAdapter( PlaybackAdapter.class ).setPlaybackMode( newMode );
@@ -80,8 +77,8 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA {
   }
 
   private void readPresentationMode( Widget widget ) {
-    if( wasEventSent( getId( widget ), PRESENTATION_EVENT ) ) {
-      String presentationMode = readEventPropertyValueAsString( getId( widget ), PRESENTATION_EVENT, PROPERTY_MODE );
+    if( wasEventSent( getId( widget ), EVENT_PRESENTATION ) ) {
+      String presentationMode = readEventPropertyValueAsString( getId( widget ), EVENT_PRESENTATION, PROPERTY_MODE );
       PresentationMode newMode = PresentationMode.valueOf( presentationMode.toUpperCase() );
       Video video = ( Video )widget;
       video.getAdapter( PlaybackAdapter.class ).getOptions().put( PlaybackOptions.PRESENTATION_MODE, newMode );
@@ -107,7 +104,7 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA {
     for( Entry<PlaybackOptions, Object> entry : options.entrySet() ) {
       preserveProperty( video, keyForEnum( entry.getKey() ), jsonizeValue( entry ) );
     }
-    preserveListener( video, VIDEO_LISTENER_PROPERTY, adapter.hasVideoListener() );
+    preserveListener( video, PROPERTY_VIDEO_LISTENER, adapter.hasVideoListener() );
   }
 
   @Override
@@ -119,16 +116,16 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA {
     for( Entry<PlaybackOptions, Object> entry : options.entrySet() ) {
       renderProperty( widget, keyForEnum( entry.getKey() ), jsonizeValue( entry ), null );
     }
-    renderListener( video, VIDEO_LISTENER_PROPERTY, adapter.hasVideoListener(), false );
+    renderListener( video, PROPERTY_VIDEO_LISTENER, adapter.hasVideoListener(), false );
   }
 
   @Override
   public void renderInitialization( Widget widget ) throws IOException {
     Video video = ( Video ) widget;
     IClientObject clientObject = ClientObjectFactory.getClientObject( video );
-    clientObject.create( TYPE );
-    clientObject.set( PARENT, WidgetUtil.getId( video.getParent() ) );
-    clientObject.set( VIDEO_URL, video.getURL().toString() );
+    clientObject.create( TYPE_VIDEO );
+    clientObject.set( PROPERTY_PARENT, WidgetUtil.getId( video.getParent() ) );
+    clientObject.set( PROPERTY_VIDEO_URL, video.getURL().toString() );
   }
 
   @Override
@@ -143,7 +140,7 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA {
     }
     return value;
   }
-  
+
   static String keyForEnum( Enum<?> type ) {
     return type.name().toLowerCase();
   }

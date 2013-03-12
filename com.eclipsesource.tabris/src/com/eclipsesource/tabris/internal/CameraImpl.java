@@ -1,5 +1,12 @@
 package com.eclipsesource.tabris.internal;
 
+import static com.eclipsesource.tabris.internal.Constants.EVENT_IMAGE_SELECTION_ERROR;
+import static com.eclipsesource.tabris.internal.Constants.EVENT_IMAGE_SELECTION;
+import static com.eclipsesource.tabris.internal.Constants.METHOD_OPEN;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_IMAGE;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_RESOLUTION;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SAVETOALBUM;
+import static com.eclipsesource.tabris.internal.Constants.TYPE_CAMERA;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
 import java.io.ByteArrayInputStream;
@@ -24,20 +31,12 @@ import com.eclipsesource.tabris.camera.CameraOptions;
 @SuppressWarnings("restriction")
 public class CameraImpl extends AbstractOperationHandler implements Camera {
 
-  private static final String TYPE = "tabris.Camera";
-  private static final String OPEN_METHOD = "open";
-  private static final String PROPERTY_RESOLUTION = "resolution";
-  private static final String PROPERTY_SAVETOALBUM = "saveToAlbum";
-  private static final String IMAGE_SELECTION_EVENT = "ImageSelection";
-  private static final String IMAGE_SELECTION_ERROR_EVENT = "ImageSelectionError";
-  private static final String PROPERTY_IMAGE = "image";
-
   private final RemoteObject remoteObject;
   private final List<CameraListener> listeners;
 
   public CameraImpl() {
     listeners = new ArrayList<CameraListener>();
-    remoteObject = ( ( ConnectionImpl )RWT.getUISession().getConnection() ).createServiceObject( TYPE );
+    remoteObject = ( ( ConnectionImpl )RWT.getUISession().getConnection() ).createServiceObject( TYPE_CAMERA );
     remoteObject.setHandler( this );
   }
 
@@ -63,7 +62,7 @@ public class CameraImpl extends AbstractOperationHandler implements Camera {
   public void takePicture( CameraOptions options ) {
     checkArgumentNotNull( options, "Options" );
     Map<String, Object> properties = createProperties( options );
-    remoteObject.call( OPEN_METHOD, properties );
+    remoteObject.call( METHOD_OPEN, properties );
   }
 
   private Map<String, Object> createProperties( CameraOptions options ) {
@@ -88,10 +87,10 @@ public class CameraImpl extends AbstractOperationHandler implements Camera {
 
   @Override
   public void handleNotify( String event, Map<String,Object> properties ) {
-    if( IMAGE_SELECTION_EVENT.equals( event ) ) {
+    if( EVENT_IMAGE_SELECTION.equals( event ) ) {
       Image image = decodeImage( ( String )properties.get( PROPERTY_IMAGE ) );
       notifyListenersWithImage( image );
-    } else if( IMAGE_SELECTION_ERROR_EVENT.equals( event ) ) {
+    } else if( EVENT_IMAGE_SELECTION_ERROR.equals( event ) ) {
       notifyListenersWithError();
     }
   }

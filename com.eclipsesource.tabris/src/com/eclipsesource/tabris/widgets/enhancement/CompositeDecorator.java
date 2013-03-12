@@ -49,6 +49,14 @@ public class CompositeDecorator extends WidgetDecorator<CompositeDecorator>  {
     this.composite = composite;
   }
 
+  /**
+   * <p>
+   * Adds a {@link Listener} for the defined eventType. The listener will be notified when the event occurs anywhere
+   * on the {@link Composite}. It doesn't matter if the {@link Composite} holds controls or not.
+   * </p>
+   *
+   * @since 0.10
+   */
   public void addGroupedListener( int eventType, Listener listener )
     throws IllegalArgumentException, IllegalStateException
   {
@@ -57,6 +65,13 @@ public class CompositeDecorator extends WidgetDecorator<CompositeDecorator>  {
     facade.addListener( eventType, listener );
   }
 
+  /**
+   * <p>
+   * Removes a {@link Listener} for the defined  eventType.
+   * </p>
+   *
+   * @since 0.10
+   */
   public void removeGroupedListener( int eventType, Listener listener )
     throws IllegalArgumentException, IllegalStateException
   {

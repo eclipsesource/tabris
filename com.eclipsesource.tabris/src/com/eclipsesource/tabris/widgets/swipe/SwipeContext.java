@@ -31,11 +31,11 @@ public class SwipeContext {
     store = new Store();
   }
 
-  public void add( String key, Object value ) {
-    store.add( key, value );
+  /**
+   * @since 1.0
+   */
+  public Store getStore() {
+    return store;
   }
 
-  public <T> T get( String key, Class<T> type ) {
-    return store.get( key, type );
-  }
 }

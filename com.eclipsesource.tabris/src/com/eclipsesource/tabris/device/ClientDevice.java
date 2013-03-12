@@ -53,13 +53,13 @@ public interface ClientDevice extends ClientInfo {
 
   /**
    * <p>
-   * Enumeration to distinguish the device orientation.
+   * Enumeration to distinguish the display orientation.
    * </p>
    *
    * @since 0.11
    */
   public enum Orientation {
-    PORTRAIT, LANDSCAPE
+    PORTRAIT, LANDSCAPE, SQUARE
   }
 
   /**

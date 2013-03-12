@@ -24,17 +24,21 @@ public class SwipeAdapter implements SwipeListener {
 
   @Override
   public void itemLoaded( SwipeItem item, int index ) {
+    // intended to be implemented by subclasses.
   }
 
   @Override
   public void itemActivated( SwipeItem item, int index, SwipeContext context ) {
+    // intended to be implemented by subclasses.
   }
 
   @Override
   public void itemDeactivated( SwipeItem item, int index, SwipeContext context ) {
+    // intended to be implemented by subclasses.
   }
 
   @Override
   public void disposed( SwipeContext context ) {
+    // intended to be implemented by subclasses.
   }
 }

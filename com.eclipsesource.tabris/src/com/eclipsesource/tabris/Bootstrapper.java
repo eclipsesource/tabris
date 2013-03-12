@@ -10,6 +10,11 @@
  ******************************************************************************/
 package com.eclipsesource.tabris;
 
+import static com.eclipsesource.tabris.internal.Constants.THEME_ID_ANDROID;
+import static com.eclipsesource.tabris.internal.Constants.THEME_ID_IOS;
+import static com.eclipsesource.tabris.internal.Constants.THEME_PATH_ANDROID;
+import static com.eclipsesource.tabris.internal.Constants.THEME_PATH_IOS;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -47,11 +52,6 @@ import com.eclipsesource.tabris.internal.bootstrap.HttpServiceTracker;
  * @since 0.6
  */
 public class Bootstrapper {
-
-  public static final String THEME_ID_IOS = "com.eclipsesource.rap.mobile.theme.ios";
-  public static final String THEME_ID_ANDROID = "com.eclipsesource.rap.mobile.theme.android";
-  private static final String THEME_PATH_IOS = "theme/ios.css";
-  private static final String THEME_PATH_ANDROID = "theme/theme-android-holo.css";
 
   private final ApplicationImpl application;
   private HttpServiceTracker httpServiceTracker;

@@ -10,6 +10,10 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.interaction;
 
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_LATITUDE;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_LONGITUDE;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_QUERY;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ZOOM;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNullAndNotEmpty;
 
 
@@ -17,38 +21,33 @@ import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNu
  * <p>
  * Concrete launch option to open coordinates or address in the Maps App.
  * <p>
- *  
+ *
  * @since 0.9
  */
 public class MapsOptions extends LaunchOptions {
-  
-  private static final String LONGITUDE = "longitude";
-  private static final String LATITUDE = "latitude";
-  private static final String ZOOM = "zoom";
-  private static final String QUERY = "query";
 
   public MapsOptions( double latitude, double longitude ) {
     super( App.MAPS );
-    add( LATITUDE, String.valueOf( latitude ) );
-    add( LONGITUDE, String.valueOf( longitude ) );
+    add( PROPERTY_LATITUDE, String.valueOf( latitude ) );
+    add( PROPERTY_LONGITUDE, String.valueOf( longitude ) );
   }
-  
+
   public MapsOptions( double latitude, double longitude, int zoomLevel ) {
     this( latitude, longitude );
     validateZoom( zoomLevel );
-    add( ZOOM, String.valueOf( zoomLevel ) );
+    add( PROPERTY_ZOOM, String.valueOf( zoomLevel ) );
   }
-  
+
   public MapsOptions( String query ) {
     super( App.MAPS );
     checkArgumentNotNullAndNotEmpty( query, "Query" );
-    add( QUERY, query );
+    add( PROPERTY_QUERY, query );
   }
-  
+
   public MapsOptions( String query, int zoomLevel ) {
     this( query );
     validateZoom( zoomLevel );
-    add( ZOOM, String.valueOf( zoomLevel ) );
+    add( PROPERTY_ZOOM, String.valueOf( zoomLevel ) );
   }
 
   private void validateZoom( int zoomLevel ) {

@@ -27,6 +27,13 @@ public class ToolItemDecorator {
     this.toolItem = toolItem;
   }
 
+  /**
+   * <p>
+   * Instructs a {@link ToolItem} to represent itself as a title item.
+   * </p>
+   *
+   * @since 0.8
+   */
   public ToolItemDecorator useAsTitle() {
     setData( toolItem, TITLE, Boolean.TRUE );
     return this;

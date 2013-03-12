@@ -20,21 +20,6 @@ import com.eclipsesource.tabris.widgets.swipe.SwipeItemProvider;
 
 public class SwipeManager {
 
-  public static final String TYPE = "tabris.Swipe";
-  public static final String EVENT_SWIPED_TO_ITEM = "SwipedToItem";
-  public static final String PROPERTY_ITEM = "item";
-  public static final String PROPERTY_PARENT = "parent";
-  public static final String METHOD_REMOVE_ITEMS = "removeItems";
-  public static final String PROPERTY_ITEMS = "items";
-  public static final String PROPERTY_ACTIVE_ITEM = "activeItem";
-  public static final String METHOD_ITEM_LOADED = "itemLoaded";
-  public static final String PROPERTY_CONTENT = "content";
-  public static final String PROPERTY_INDEX = "index";
-  public static final String METHOD_LOCK_LEFT = "lockLeft";
-  public static final String METHOD_LOCK_RIGHT = "lockRight";
-  public static final String METHOD_UNLOCK_LEFT = "unlockLeft";
-  public static final String METHOD_UNLOCK_RIGHT = "unlockRight";
-
   private final SwipeItemProvider provider;
   private final SwipeContext context;
   private final SwipeItemHolder itemHolder;

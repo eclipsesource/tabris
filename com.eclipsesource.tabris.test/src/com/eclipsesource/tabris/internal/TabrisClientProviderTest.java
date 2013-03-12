@@ -33,15 +33,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.eclipsesource.tabris.Bootstrapper;
 import com.eclipsesource.tabris.TabrisClient;
 
 
 @SuppressWarnings("restriction")
 public class TabrisClientProviderTest {
-  
+
   private static final String CURRENT_THEME_ID = "org.eclipse.rap.theme.current";
-  
+
   private TabrisClientProvider provider;
 
   @Before
@@ -49,65 +48,65 @@ public class TabrisClientProviderTest {
     Fixture.setUp();
     provider = new TabrisClientProvider();
   }
-  
+
   @After
   public void tearDown() {
     Fixture.tearDown();
   }
-  
+
   @Test
   public void testAcceptForAndroid() {
     TestRequest request = ( TestRequest )RWT.getRequest();
     request.setHeader( Constants.USER_AGENT, Constants.ID_ANDROID );
-    
+
     assertTrue( provider.accept( request ) );
   }
-  
+
   @Test
   public void testAcceptForIOS() {
     TestRequest request = ( TestRequest )RWT.getRequest();
     request.setHeader( Constants.USER_AGENT, Constants.ID_IOS );
-    
+
     assertTrue( provider.accept( request ) );
   }
-  
+
   @Test
   public void testDoesNotAcceptForWeb() {
     assertFalse( provider.accept( RWT.getRequest() ) );
   }
-  
+
   @Test
   public void testReturnsTabrisClient() {
     assertTrue( provider.getClient() instanceof TabrisClient );
   }
-  
+
   @Test
   public void testUsesIOSTheme() throws IOException {
-    registerTheme( Bootstrapper.THEME_ID_IOS );
+    registerTheme( Constants.THEME_ID_IOS );
     TestRequest request = ( TestRequest )RWT.getRequest();
     request.setHeader( Constants.USER_AGENT, Constants.ID_IOS );
-    
+
     provider.accept( request );
-    
+
     String currentTheme = ( String )RWT.getUISession().getAttribute( CURRENT_THEME_ID );
-    assertEquals( Bootstrapper.THEME_ID_IOS, currentTheme );
+    assertEquals( Constants.THEME_ID_IOS, currentTheme );
   }
-  
+
   @Test
   public void testUsesAndroidTheme() throws IOException {
-    registerTheme( Bootstrapper.THEME_ID_ANDROID );
+    registerTheme( Constants.THEME_ID_ANDROID );
     TestRequest request = ( TestRequest )RWT.getRequest();
     request.setHeader( Constants.USER_AGENT, Constants.ID_ANDROID );
-    
+
     provider.accept( request );
-    
+
     String currentTheme = ( String )RWT.getUISession().getAttribute( CURRENT_THEME_ID );
-    assertEquals( Bootstrapper.THEME_ID_ANDROID, currentTheme );
+    assertEquals( Constants.THEME_ID_ANDROID, currentTheme );
   }
-  
+
   private void registerTheme( String themeId ) throws IOException {
     ResourceLoader resourceLoader = new ResourceLoader() {
-      
+
       @Override
       public InputStream getResourceAsStream( String resourceName ) throws IOException {
         return new ByteArrayInputStream( "".getBytes() );

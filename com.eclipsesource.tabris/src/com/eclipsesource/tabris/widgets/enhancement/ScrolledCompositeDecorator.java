@@ -28,6 +28,13 @@ public class ScrolledCompositeDecorator extends WidgetDecorator<ScrolledComposit
     this.composite = composite;
   }
 
+  /**
+   * <p>
+   * Enables pagewise scrolling.
+   * </p>
+   *
+   * @since 0.8
+   */
   public ScrolledCompositeDecorator usePaging() {
     setData( composite, PAGING, Boolean.TRUE );
     return this;

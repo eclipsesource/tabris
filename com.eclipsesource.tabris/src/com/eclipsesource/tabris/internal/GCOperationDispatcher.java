@@ -10,6 +10,10 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_FOREGROUND;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_LINE_WIDTH;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_POLYLINE;
+
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.RGB;
@@ -20,10 +24,6 @@ import org.json.JSONException;
 @SuppressWarnings("restriction")
 public class GCOperationDispatcher {
 
-  static final String PROP_POLYLINE = "polyline";
-  static final String PROP_FOREGROUND = "foreground";
-  static final String PROP_LINE_WIDTH = "lineWidth";
-  
   private final GC gc;
   private JSONArray drawings;
 
@@ -68,11 +68,11 @@ public class GCOperationDispatcher {
   private void dispatchOperation( JSONArray operation ) throws JSONException {
     String operationType = operation.getString( 0 );
     JSONArray parameters = operation.getJSONArray( 1 );
-    if( PROP_LINE_WIDTH.equals( operationType ) ) {
+    if( PROPERTY_LINE_WIDTH.equals( operationType ) ) {
       dispatchLineWidth( parameters );
-    } else if( PROP_FOREGROUND.equals( operationType ) ) {
+    } else if( PROPERTY_FOREGROUND.equals( operationType ) ) {
       dispatchSetForeground( parameters );
-    } else if( PROP_POLYLINE.equals( operationType ) ) {
+    } else if( PROPERTY_POLYLINE.equals( operationType ) ) {
       dispatchDrawPolyline( parameters );
     }
   }

@@ -10,6 +10,11 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_APP;
+import static com.eclipsesource.tabris.internal.Constants.METHOD_OPEN;
+import static com.eclipsesource.tabris.internal.Constants.METHOD_OPEN_URL;
+import static com.eclipsesource.tabris.internal.Constants.TYPE_APP_LAUNCHER;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_URL;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
 import java.net.MalformedURLException;
@@ -26,15 +31,10 @@ import com.eclipsesource.tabris.interaction.LaunchOptions;
 
 public class AppLauncherImpl implements AppLauncher {
 
-  private static final String APP_PROPERTY = "app";
-  private static final String URL_PROPERTY = "url";
-  private static final String METHOD_OPEN = "open";
-  private static final String METHOD_OPEN_URL = "openUrl";
-
   private final RemoteObject remoteObject;
 
   public AppLauncherImpl() {
-    remoteObject = RWT.getUISession().getConnection().createRemoteObject( "tabris.AppLauncher" );
+    remoteObject = RWT.getUISession().getConnection().createRemoteObject( TYPE_APP_LAUNCHER );
   }
 
   @Override
@@ -45,7 +45,7 @@ public class AppLauncherImpl implements AppLauncher {
 
   private void createOpenCall( LaunchOptions launchOptions ) {
     Map<String, Object> properties = new HashMap<String, Object>( launchOptions.getOptions() );
-    properties.put( APP_PROPERTY, launchOptions.getApp().toString() );
+    properties.put( PROPERTY_APP, launchOptions.getApp().toString() );
     remoteObject.call( METHOD_OPEN, properties );
   }
 
@@ -66,7 +66,7 @@ public class AppLauncherImpl implements AppLauncher {
 
   private void createOpenUrlCall( String url ) {
     HashMap<String, Object> poperties = new HashMap<String, Object>();
-    poperties.put( URL_PROPERTY, url );
+    poperties.put( PROPERTY_URL, url );
     remoteObject.call( METHOD_OPEN_URL, poperties );
   }
 }

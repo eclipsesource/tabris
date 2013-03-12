@@ -10,9 +10,9 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import static com.eclipsesource.tabris.internal.Constants.EVENT_SWIPED_TO_ITEM;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ITEM;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
-import static com.eclipsesource.tabris.internal.SwipeManager.EVENT_SWIPED_TO_ITEM;
-import static com.eclipsesource.tabris.internal.SwipeManager.PROPERTY_ITEM;
 
 import java.util.Map;
 

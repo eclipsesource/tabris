@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.interaction;
 
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_NUMBER;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TEXT;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
 
@@ -21,14 +23,11 @@ import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNu
  */
 public class SMSOptions extends LaunchOptions {
 
-  private static final String TEXT = "text";
-  private static final String NUMBER = "number";
-
   public SMSOptions( String phoneNumber, String text ) {
     super( App.SMS );
     checkArgumentNotNull( phoneNumber, "Number" );
     checkArgumentNotNull( text, "Text" );
-    add( NUMBER, phoneNumber );
-    add( TEXT, text );
+    add( PROPERTY_NUMBER, phoneNumber );
+    add( PROPERTY_TEXT, text );
   }
 }

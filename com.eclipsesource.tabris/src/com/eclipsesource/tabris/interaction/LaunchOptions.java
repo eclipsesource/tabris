@@ -20,7 +20,7 @@ import java.util.Map;
  * <p>
  * Generic launch options. Not intended to be used directly.
  * <p>
- * 
+ *
  * @see BrowserOptions
  * @see MailOptions
  * @see MapsOptions
@@ -28,11 +28,11 @@ import java.util.Map;
  * @see SMSOptions
  * @see TwitterOptions
  * @see FacebookOptions
- * 
+ *
  * @since 0.9
  */
 public class LaunchOptions {
-  
+
   public enum App {
     MAIL, BROWSER, MAPS, PHONE, SMS, TWITTER, FACEBOOK
   }
@@ -45,17 +45,17 @@ public class LaunchOptions {
     this.app = app;
     this.options = new HashMap<String, String>();
   }
-  
+
   public App getApp() {
     return app;
   }
-  
+
   public void add( String name, String value ) {
     options.put( name, value );
   }
-  
+
   public Map<String, String> getOptions() {
     return new HashMap<String, String>( options );
   }
-  
+
 }

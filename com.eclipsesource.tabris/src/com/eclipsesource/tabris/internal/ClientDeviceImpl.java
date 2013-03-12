@@ -10,6 +10,11 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_CAPABILITIES;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_CONNECTION_TYPE;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ORIENTATION;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TIMEZONE_OFFSET;
+import static com.eclipsesource.tabris.internal.Constants.TYPE_CLIENT_DEVICE;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 import static com.eclipsesource.tabris.internal.Preconditions.checkState;
 
@@ -36,12 +41,6 @@ import com.eclipsesource.tabris.device.ClientDeviceListener;
 @SuppressWarnings("restriction")
 public class ClientDeviceImpl extends AbstractOperationHandler implements ClientDevice {
 
-  private static final String TYPE = "tabris.Device";
-  private static final String TIMEZONE_OFFSET = "timezoneOffset";
-  private static final String CONNECTION_TYPE = "connectionType";
-  private static final String CAPABILITIES = "capabilities";
-  private static final Object ORIENTATION = "orientation";
-
   private final RemoteObject remoteObject;
   private final List<ClientDeviceListener> clientDeviceListeners;
   private Locale[] locales;
@@ -51,7 +50,7 @@ public class ClientDeviceImpl extends AbstractOperationHandler implements Client
   private List<Capability> capabilities;
 
   public ClientDeviceImpl() {
-    remoteObject = ( ( ConnectionImpl )RWT.getUISession().getConnection() ).createServiceObject( TYPE );
+    remoteObject = ( ( ConnectionImpl )RWT.getUISession().getConnection() ).createServiceObject( TYPE_CLIENT_DEVICE );
     remoteObject.setHandler( this );
     clientDeviceListeners = new ArrayList<ClientDeviceListener>();
     readLocales();
@@ -72,18 +71,18 @@ public class ClientDeviceImpl extends AbstractOperationHandler implements Client
 
   @Override
   public void handleSet( Map<String, Object> properties ) {
-    if( properties.containsKey( TIMEZONE_OFFSET ) ) {
-      timezoneOffset = ( Integer )properties.get( TIMEZONE_OFFSET );
+    if( properties.containsKey( PROPERTY_TIMEZONE_OFFSET ) ) {
+      timezoneOffset = ( Integer )properties.get( PROPERTY_TIMEZONE_OFFSET );
     }
-    if( properties.containsKey( CONNECTION_TYPE ) ) {
-      connectionType = ConnectionType.valueOf( ( String )properties.get( CONNECTION_TYPE ) );
+    if( properties.containsKey( PROPERTY_CONNECTION_TYPE ) ) {
+      connectionType = ConnectionType.valueOf( ( String )properties.get( PROPERTY_CONNECTION_TYPE ) );
       fireConnectionTypeChange();
     }
-    if( properties.containsKey( CAPABILITIES ) ) {
-      setCapabilities( ( Object[] )properties.get( CAPABILITIES ) );
+    if( properties.containsKey( PROPERTY_CAPABILITIES ) ) {
+      setCapabilities( ( Object[] )properties.get( PROPERTY_CAPABILITIES ) );
     }
-    if( properties.containsKey( ORIENTATION ) ) {
-      orientation = Orientation.valueOf( ( String )properties.get( ORIENTATION ) );
+    if( properties.containsKey( PROPERTY_ORIENTATION ) ) {
+      orientation = Orientation.valueOf( ( String )properties.get( PROPERTY_ORIENTATION ) );
       fireOrientationChange();
     }
   }

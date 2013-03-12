@@ -12,6 +12,8 @@ package com.eclipsesource.tabris.internal;
 
 import static com.eclipsesource.tabris.device.ClientDevice.Platform.ANDROID;
 import static com.eclipsesource.tabris.device.ClientDevice.Platform.IOS;
+import static com.eclipsesource.tabris.internal.Constants.THEME_ID_ANDROID;
+import static com.eclipsesource.tabris.internal.Constants.THEME_ID_IOS;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,9 +22,8 @@ import org.eclipse.rap.rwt.client.Client;
 import org.eclipse.rap.rwt.internal.client.ClientProvider;
 import org.eclipse.rap.rwt.internal.theme.ThemeUtil;
 
-import com.eclipsesource.tabris.Bootstrapper;
-import com.eclipsesource.tabris.device.ClientDevice.Platform;
 import com.eclipsesource.tabris.TabrisClient;
+import com.eclipsesource.tabris.device.ClientDevice.Platform;
 
 
 @SuppressWarnings("restriction")
@@ -40,9 +41,9 @@ public class TabrisClientProvider implements ClientProvider {
 
   private void setThemeForPlatform( Platform platform ) {
     if( platform == IOS ) {
-      ThemeUtil.setCurrentThemeId( RWT.getUISession(), Bootstrapper.THEME_ID_IOS );
+      ThemeUtil.setCurrentThemeId( RWT.getUISession(), THEME_ID_IOS );
     } else if( platform == ANDROID ) {
-      ThemeUtil.setCurrentThemeId( RWT.getUISession(), Bootstrapper.THEME_ID_ANDROID );
+      ThemeUtil.setCurrentThemeId( RWT.getUISession(), THEME_ID_ANDROID );
     }
   }
 
