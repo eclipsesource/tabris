@@ -136,7 +136,7 @@ public class VideoLifeCycleAdapterTest {
 
     verify( playbackListener ).playbackChanged( Playback.READY );
     Message message = Fixture.getProtocolMessage();
-    assertNull( message.findSetOperation( video, keyForEnum( PlaybackOptions.PLAYBACK_MODE ) ) );
+    assertNull( message.findSetOperation( video, keyForEnum( PlaybackOptions.PLAYBACK ) ) );
   }
 
   @Test
@@ -151,7 +151,7 @@ public class VideoLifeCycleAdapterTest {
 
     verify( playbackListener ).playbackChanged( Playback.PLAY );
     Message message = Fixture.getProtocolMessage();
-    assertNull( message.findSetOperation( video, keyForEnum( PlaybackOptions.PLAYBACK_MODE ) ) );
+    assertNull( message.findSetOperation( video, keyForEnum( PlaybackOptions.PLAYBACK ) ) );
   }
 
   @Test
@@ -191,7 +191,7 @@ public class VideoLifeCycleAdapterTest {
 
     verify( presentationListener ).presentationChanged( Presentation.FULL_SCREEN );
     Message message = Fixture.getProtocolMessage();
-    assertNull( message.findSetOperation( video, keyForEnum( PlaybackOptions.PRESENTATION_MODE ) ) );
+    assertNull( message.findSetOperation( video, keyForEnum( PlaybackOptions.PRESENTATION ) ) );
   }
 
   @Test
@@ -204,8 +204,8 @@ public class VideoLifeCycleAdapterTest {
     lifeCycleAdapter.renderChanges( video );
 
     Message message = Fixture.getProtocolMessage();
-    SetOperation operation = message.findSetOperation( video, keyForEnum( PlaybackOptions.PLAYBACK_MODE ) );
-    assertEquals( keyForEnum( Playback.PLAY ), operation.getProperty( keyForEnum( PlaybackOptions.PLAYBACK_MODE ) ) );
+    SetOperation operation = message.findSetOperation( video, keyForEnum( PlaybackOptions.PLAYBACK ) );
+    assertEquals( keyForEnum( Playback.PLAY ), operation.getProperty( keyForEnum( PlaybackOptions.PLAYBACK ) ) );
   }
 
   @Test
@@ -218,9 +218,9 @@ public class VideoLifeCycleAdapterTest {
     lifeCycleAdapter.renderChanges( video );
 
     Message message = Fixture.getProtocolMessage();
-    SetOperation operation = message.findSetOperation( video, keyForEnum( PlaybackOptions.PRESENTATION_MODE ) );
+    SetOperation operation = message.findSetOperation( video, keyForEnum( PlaybackOptions.PRESENTATION ) );
     assertEquals( keyForEnum( Presentation.FULL_SCREEN ),
-                  operation.getProperty( keyForEnum( PlaybackOptions.PRESENTATION_MODE ) ) );
+                  operation.getProperty( keyForEnum( PlaybackOptions.PRESENTATION ) ) );
   }
 
   @Test

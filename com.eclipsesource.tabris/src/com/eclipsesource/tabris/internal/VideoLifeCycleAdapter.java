@@ -47,7 +47,7 @@ import com.eclipsesource.tabris.widgets.Video.Presentation;
 public class VideoLifeCycleAdapter extends AbstractWidgetLCA {
 
   public enum PlaybackOptions {
-    SPEED, REPEAT, CONTROLS_VISIBLE, PLAYBACK_MODE, PRESENTATION_MODE, HEAD_POSITION
+    SPEED, REPEAT, CONTROLS_VISIBLE, PLAYBACK, PRESENTATION, HEAD_POSITION
   }
 
   @Override
@@ -80,7 +80,7 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA {
       String presentationMode = readEventPropertyValueAsString( getId( widget ), EVENT_PRESENTATION, PROPERTY_PLAYBACK );
       Presentation newMode = Presentation.valueOf( presentationMode.toUpperCase() );
       Video video = ( Video )widget;
-      video.getAdapter( PlaybackAdapter.class ).getOptions().put( PlaybackOptions.PRESENTATION_MODE, newMode );
+      video.getAdapter( PlaybackAdapter.class ).getOptions().put( PlaybackOptions.PRESENTATION, newMode );
       notifyListenersAboutPresentationModeChange( newMode, video );
     }
   }

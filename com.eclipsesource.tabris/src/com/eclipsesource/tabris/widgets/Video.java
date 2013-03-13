@@ -157,8 +157,8 @@ public class Video extends Composite {
   }
 
   private void initiateDefaultValues() {
-    playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, Playback.PAUSE );
-    playbackOptions.put( PlaybackOptions.PRESENTATION_MODE, Presentation.EMBEDDED );
+    playbackOptions.put( PlaybackOptions.PLAYBACK, Playback.PAUSE );
+    playbackOptions.put( PlaybackOptions.PRESENTATION, Presentation.EMBEDDED );
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( HALT_SPEED ) );
     playbackOptions.put( PlaybackOptions.CONTROLS_VISIBLE, Boolean.valueOf( true ) );
     playbackOptions.put( PlaybackOptions.REPEAT, Boolean.valueOf( false ) );
@@ -188,8 +188,8 @@ public class Video extends Composite {
    */
   public void play() {
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( PLAY_SPEED ) );
-    Playback oldMode = ( Playback )playbackOptions.get( PlaybackOptions.PLAYBACK_MODE );
-    playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, Playback.PLAY );
+    Playback oldMode = ( Playback )playbackOptions.get( PlaybackOptions.PLAYBACK );
+    playbackOptions.put( PlaybackOptions.PLAYBACK, Playback.PLAY );
     firePlayback( oldMode, Playback.PLAY );
   }
 
@@ -200,8 +200,8 @@ public class Video extends Composite {
    */
   public void pause() {
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( HALT_SPEED ) );
-    Playback oldMode = ( Playback )playbackOptions.get( PlaybackOptions.PLAYBACK_MODE );
-    playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, Playback.PAUSE );
+    Playback oldMode = ( Playback )playbackOptions.get( PlaybackOptions.PLAYBACK );
+    playbackOptions.put( PlaybackOptions.PLAYBACK, Playback.PAUSE );
     firePlayback( oldMode, Playback.PAUSE );
   }
 
@@ -212,8 +212,8 @@ public class Video extends Composite {
    */
   public void stop() {
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( HALT_SPEED ) );
-    Playback oldMode = ( Playback )playbackOptions.get( PlaybackOptions.PLAYBACK_MODE );
-    playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, Playback.STOP );
+    Playback oldMode = ( Playback )playbackOptions.get( PlaybackOptions.PLAYBACK );
+    playbackOptions.put( PlaybackOptions.PLAYBACK, Playback.STOP );
     firePlayback( oldMode, Playback.STOP );
   }
 
@@ -227,8 +227,8 @@ public class Video extends Composite {
       throw new IllegalArgumentException( "Speed has to be > 1 for a fast fotward. But was " + speed );
     }
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( speed ) );
-    Playback oldMode = ( Playback )playbackOptions.get( PlaybackOptions.PLAYBACK_MODE );
-    playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, Playback.FAST_FORWARD );
+    Playback oldMode = ( Playback )playbackOptions.get( PlaybackOptions.PLAYBACK );
+    playbackOptions.put( PlaybackOptions.PLAYBACK, Playback.FAST_FORWARD );
     firePlayback( oldMode, Playback.FAST_FORWARD );
   }
 
@@ -242,8 +242,8 @@ public class Video extends Composite {
       throw new IllegalArgumentException( "Speed has to be < 1 for a fast backward. But was " + speed );
     }
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( speed ) );
-    Playback oldMode = ( Playback )playbackOptions.get( PlaybackOptions.PLAYBACK_MODE );
-    playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, Playback.FAST_BACKWARD );
+    Playback oldMode = ( Playback )playbackOptions.get( PlaybackOptions.PLAYBACK );
+    playbackOptions.put( PlaybackOptions.PLAYBACK, Playback.FAST_BACKWARD );
     firePlayback( oldMode, Playback.FAST_BACKWARD );
   }
 
@@ -292,8 +292,8 @@ public class Video extends Composite {
    */
   public void setFullscreen( boolean fullScreenEnabled ) {
     Presentation presentationMode = fullScreenEnabled ? Presentation.FULL_SCREEN : Presentation.EMBEDDED;
-    Presentation oldMode = ( Presentation )playbackOptions.get( PlaybackOptions.PRESENTATION_MODE );
-    playbackOptions.put( PlaybackOptions.PRESENTATION_MODE, presentationMode );
+    Presentation oldMode = ( Presentation )playbackOptions.get( PlaybackOptions.PRESENTATION );
+    playbackOptions.put( PlaybackOptions.PRESENTATION, presentationMode );
     firePresentation( oldMode, presentationMode );
   }
 
@@ -325,7 +325,7 @@ public class Video extends Composite {
    * @since 1.0
    */
   public Playback getPlayback() {
-    return ( Playback )playbackOptions.get( PlaybackOptions.PLAYBACK_MODE );
+    return ( Playback )playbackOptions.get( PlaybackOptions.PLAYBACK );
   }
 
   /**
@@ -338,7 +338,7 @@ public class Video extends Composite {
    * @since 1.0
    */
   public Presentation getPresentation() {
-    return ( Presentation )playbackOptions.get( PlaybackOptions.PRESENTATION_MODE );
+    return ( Presentation )playbackOptions.get( PlaybackOptions.PRESENTATION );
   }
 
   /**
@@ -419,7 +419,7 @@ public class Video extends Composite {
   public class PlaybackAdapter {
 
     public void setPlaybackMode( Playback playback ) {
-      playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, playback );
+      playbackOptions.put( PlaybackOptions.PLAYBACK, playback );
     }
 
     public void firePlaybackChange( Playback playback ) {
