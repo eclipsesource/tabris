@@ -275,7 +275,7 @@ public class Controller {
   }
 
   void fireTransitionBeforeEvent( UIContextImpl context, RemotePage from, RemotePage to ) {
-    List<TransitionListener> listeners = context.getUI().getTransitionListeners();
+    List<TransitionListener> listeners = new ArrayList<TransitionListener>( context.getUI().getTransitionListeners() );
     for( TransitionListener listener : listeners ) {
       Page oldPage = from != null ? from.getPage() : null;
       Page newPage = to != null ? to.getPage() : null;
@@ -284,7 +284,7 @@ public class Controller {
   }
 
   void fireTransitionAfterEvent( UIContextImpl context, RemotePage from, RemotePage to ) {
-    List<TransitionListener> listeners = context.getUI().getTransitionListeners();
+    List<TransitionListener> listeners = new ArrayList<TransitionListener>( context.getUI().getTransitionListeners() );
     for( TransitionListener listener : listeners ) {
       Page oldPage = from != null ? from.getPage() : null;
       Page newPage = to != null ? to.getPage() : null;

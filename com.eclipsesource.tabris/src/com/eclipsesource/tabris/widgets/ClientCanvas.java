@@ -182,7 +182,8 @@ public class ClientCanvas extends Canvas implements PhaseListener, UISessionList
 
   private void fireDrawEvent() {
     if( !isDisposed() ) {
-      for( ClientDrawListener listener : drawListeners ) {
+      List<ClientDrawListener> listeners = new ArrayList<ClientDrawListener>( drawListeners );
+      for( ClientDrawListener listener : listeners ) {
         listener.receivedDrawing();
       }
     }

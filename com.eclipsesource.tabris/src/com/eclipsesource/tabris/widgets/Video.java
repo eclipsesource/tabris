@@ -388,7 +388,8 @@ public class Video extends Composite {
 
   private void firePlayback( Playback oldMode, Playback newMode ) {
     if( oldMode != newMode ) {
-      for( PlaybackListener listener : playbackListeners ) {
+      List<PlaybackListener> listeners = new ArrayList<PlaybackListener>( playbackListeners );
+      for( PlaybackListener listener : listeners ) {
         listener.playbackChanged( newMode );
       }
     }
@@ -396,7 +397,8 @@ public class Video extends Composite {
 
   private void firePresentation( Presentation oldMode, Presentation newMode ) {
     if( oldMode != newMode ) {
-      for( PresentationListener listener : presentationListeners ) {
+      List<PresentationListener> listeners = new ArrayList<PresentationListener>( presentationListeners );
+      for( PresentationListener listener : listeners ) {
         listener.presentationChanged( newMode );
       }
     }

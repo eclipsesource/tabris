@@ -144,7 +144,8 @@ public class ClientDeviceImpl extends AbstractOperationHandler implements Client
     ProcessActionRunner.add( new Runnable() {
       @Override
       public void run() {
-        for( ClientDeviceListener listener : clientDeviceListeners ) {
+        List<ClientDeviceListener> listeners = new ArrayList<ClientDeviceListener>( clientDeviceListeners );
+        for( ClientDeviceListener listener : listeners ) {
           listener.orientationChange( orientation );
         }
       }
@@ -155,7 +156,8 @@ public class ClientDeviceImpl extends AbstractOperationHandler implements Client
     ProcessActionRunner.add( new Runnable() {
       @Override
       public void run() {
-        for( ClientDeviceListener listener : clientDeviceListeners ) {
+        List<ClientDeviceListener> listeners = new ArrayList<ClientDeviceListener>( clientDeviceListeners );
+        for( ClientDeviceListener listener : listeners ) {
           listener.connectionTypeChanged( connectionType );
         }
       }

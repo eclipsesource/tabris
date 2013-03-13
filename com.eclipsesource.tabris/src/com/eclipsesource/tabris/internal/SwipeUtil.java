@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.eclipsesource.tabris.widgets.swipe.SwipeContext;
@@ -18,35 +19,39 @@ import com.eclipsesource.tabris.widgets.swipe.SwipeListener;
 
 
 public class SwipeUtil {
-  
-  public static void notifyItemLoaded( List<SwipeListener> listeners, SwipeItem item, int index ) {
+
+  public static void notifyItemLoaded( List<SwipeListener> swipeListeners, SwipeItem item, int index ) {
+    List<SwipeListener> listeners = new ArrayList<SwipeListener>( swipeListeners );
     for( SwipeListener listener : listeners ) {
       listener.itemLoaded( item, index );
     }
   }
-  
-  public static void notifyItemActivated( 
-    List<SwipeListener> listeners, SwipeItem item, int index, SwipeContext context ) 
+
+  public static void notifyItemActivated(
+    List<SwipeListener> swipeListeners, SwipeItem item, int index, SwipeContext context )
   {
+    List<SwipeListener> listeners = new ArrayList<SwipeListener>( swipeListeners );
     for( SwipeListener listener : listeners ) {
       listener.itemActivated( item, index, context );
     }
   }
-  
-  public static void notifyItemDeactivated( 
-    List<SwipeListener> listeners, SwipeItem item, int index, SwipeContext context ) 
+
+  public static void notifyItemDeactivated(
+    List<SwipeListener> swipeListeners, SwipeItem item, int index, SwipeContext context )
   {
+    List<SwipeListener> listeners = new ArrayList<SwipeListener>( swipeListeners );
     for( SwipeListener listener : listeners ) {
       listener.itemDeactivated( item, index, context );
     }
   }
-  
-  public static void notifyDisposed( List<SwipeListener> listeners, SwipeContext context ) {
+
+  public static void notifyDisposed( List<SwipeListener> swipeListeners, SwipeContext context ) {
+    List<SwipeListener> listeners = new ArrayList<SwipeListener>( swipeListeners );
     for( SwipeListener listener : listeners ) {
       listener.disposed( context );
     }
   }
-  
+
   private SwipeUtil() {
     // prevent instantiation
   }

@@ -88,7 +88,8 @@ public class AppImpl extends AbstractOperationHandler implements App {
   }
 
   private void notifyBackNavigationListeners() {
-    for( BackNavigationListener listener : backNavigationListeners ) {
+    List<BackNavigationListener> listeners = new ArrayList<BackNavigationListener>( backNavigationListeners );
+    for( BackNavigationListener listener : listeners ) {
       listener.navigatedBack();
     }
   }
@@ -96,7 +97,8 @@ public class AppImpl extends AbstractOperationHandler implements App {
   private void notifyEventListeners( AppEvent appEvent ) {
     List<AppListener> listeners = eventListeners.get( appEvent.getType() );
     if( listeners != null ) {
-      for( AppListener appListener : listeners ) {
+      List<AppListener> listenersCopy = new ArrayList<AppListener>( listeners );
+      for( AppListener appListener : listenersCopy ) {
         appListener.handleEvent( appEvent );
       }
     }

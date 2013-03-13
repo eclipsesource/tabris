@@ -1,7 +1,7 @@
 package com.eclipsesource.tabris.internal;
 
-import static com.eclipsesource.tabris.internal.Constants.EVENT_IMAGE_SELECTION_ERROR;
 import static com.eclipsesource.tabris.internal.Constants.EVENT_IMAGE_SELECTION;
+import static com.eclipsesource.tabris.internal.Constants.EVENT_IMAGE_SELECTION_ERROR;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_OPEN;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_IMAGE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_RESOLUTION;
@@ -32,10 +32,10 @@ import com.eclipsesource.tabris.camera.CameraOptions;
 public class CameraImpl extends AbstractOperationHandler implements Camera {
 
   private final RemoteObject remoteObject;
-  private final List<CameraListener> listeners;
+  private final List<CameraListener> cameraListeners;
 
   public CameraImpl() {
-    listeners = new ArrayList<CameraListener>();
+    cameraListeners = new ArrayList<CameraListener>();
     remoteObject = ( ( ConnectionImpl )RWT.getUISession().getConnection() ).createServiceObject( TYPE_CAMERA );
     remoteObject.setHandler( this );
   }
@@ -49,13 +49,13 @@ public class CameraImpl extends AbstractOperationHandler implements Camera {
   @Override
   public void addCameraListener( CameraListener listener ) {
     checkArgumentNotNull( listener, CameraListener.class.getSimpleName() );
-    listeners.add( listener );
+    cameraListeners.add( listener );
   }
 
   @Override
   public void removeCameraListener( CameraListener listener ) {
     checkArgumentNotNull( listener, CameraListener.class.getSimpleName() );
-    listeners.remove( listener );
+    cameraListeners.remove( listener );
   }
 
   @Override
@@ -96,12 +96,14 @@ public class CameraImpl extends AbstractOperationHandler implements Camera {
   }
 
   private void notifyListenersWithImage( Image image ) {
+    List<CameraListener> listeners = new ArrayList<CameraListener>( cameraListeners );
     for( CameraListener listener : listeners ) {
       listener.receivedPicture( image );
     }
   }
 
   private void notifyListenersWithError() {
+    List<CameraListener> listeners = new ArrayList<CameraListener>( cameraListeners );
     for( CameraListener listener : listeners ) {
       listener.receivedPicture( null );
     }

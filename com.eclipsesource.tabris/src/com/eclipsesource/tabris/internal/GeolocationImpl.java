@@ -5,11 +5,11 @@ import static com.eclipsesource.tabris.internal.Constants.EVENT_LOCATION_UPDATE_
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ACCURACY;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ALTITUDE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ALTITUDE_ACCURACY;
-import static com.eclipsesource.tabris.internal.Constants.PROPERTY_HIGH_ACCURACY;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ERROR_CODE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ERROR_MESSAGE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_FREQUENCY;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_HEADING;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_HIGH_ACCURACY;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_LATITUDE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_LONGITUDE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_MAXIMUM_AGE;
@@ -48,13 +48,13 @@ public class GeolocationImpl extends AbstractOperationHandler implements Geoloca
   }
 
   private final RemoteObject remoteObject;
-  private final List<GeolocationListener> listeners;
+  private final List<GeolocationListener> geolocationListeners;
 
   public GeolocationImpl() {
     remoteObject = ( ( ConnectionImpl )RWT.getUISession().getConnection() ).createServiceObject( TYPE_GEOLOCATION );
     remoteObject.setHandler( this );
     remoteObject.set( PROPERTY_NEEDS_POSITION, NeedsPositionFlavor.NEVER.toString() );
-    listeners = new ArrayList<GeolocationListener>();
+    geolocationListeners = new ArrayList<GeolocationListener>();
   }
 
   @Override
@@ -69,12 +69,14 @@ public class GeolocationImpl extends AbstractOperationHandler implements Geoloca
   }
 
   private void notifyListenersWithPosition( Position position ) {
+    List<GeolocationListener> listeners = new ArrayList<GeolocationListener>( geolocationListeners );
     for( GeolocationListener listener : listeners ) {
       listener.positionReceived( position );
     }
   }
 
   private void notifyListenersWithError( PositionError error ) {
+    List<GeolocationListener> listeners = new ArrayList<GeolocationListener>( geolocationListeners );
     for( GeolocationListener listener : listeners ) {
       listener.errorReceived( error );
     }
@@ -156,13 +158,13 @@ public class GeolocationImpl extends AbstractOperationHandler implements Geoloca
   @Override
   public void addGeolocationListener( GeolocationListener listener ) {
     checkArgumentNotNull( listener, GeolocationListener.class.getSimpleName() );
-    listeners.add( listener );
+    geolocationListeners.add( listener );
   }
 
   @Override
   public void removeGeolocationListener( GeolocationListener listener ) {
     checkArgumentNotNull( listener, GeolocationListener.class.getSimpleName() );
-    listeners.remove( listener );
+    geolocationListeners.remove( listener );
   }
 
 }
