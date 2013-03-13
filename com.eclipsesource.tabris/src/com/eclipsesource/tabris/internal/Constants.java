@@ -79,6 +79,7 @@ public class Constants {
   public static final String EVENT_PRESENTATION = "Presentation";
   public static final String EVENT_PLAYBACK = "Playback";
   public static final String PROPERTY_PLAYBACK = "playback";
+  public static final String PROPERTY_PRESENTATION = "presentation";
 
   // Swipe Constants
   public static final String TYPE_SWIPE = "tabris.Swipe";

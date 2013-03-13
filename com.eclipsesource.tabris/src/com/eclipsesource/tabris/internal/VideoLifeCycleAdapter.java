@@ -14,6 +14,7 @@ import static com.eclipsesource.tabris.internal.Constants.EVENT_PLAYBACK;
 import static com.eclipsesource.tabris.internal.Constants.EVENT_PRESENTATION;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PARENT;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PLAYBACK;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PRESENTATION;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_URL;
 import static com.eclipsesource.tabris.internal.Constants.TYPE_VIDEO;
 import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.readEventPropertyValueAsString;
@@ -77,7 +78,7 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA {
 
   private void readPresentationMode( Widget widget ) {
     if( wasEventSent( getId( widget ), EVENT_PRESENTATION ) ) {
-      String presentationMode = readEventPropertyValueAsString( getId( widget ), EVENT_PRESENTATION, PROPERTY_PLAYBACK );
+      String presentationMode = readEventPropertyValueAsString( getId( widget ), EVENT_PRESENTATION, PROPERTY_PRESENTATION );
       Presentation newMode = Presentation.valueOf( presentationMode.toUpperCase() );
       Video video = ( Video )widget;
       video.getAdapter( PlaybackAdapter.class ).getOptions().put( PlaybackOptions.PRESENTATION, newMode );

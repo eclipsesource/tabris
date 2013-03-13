@@ -11,6 +11,7 @@
 package com.eclipsesource.tabris.internal;
 
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PLAYBACK;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PRESENTATION;
 import static com.eclipsesource.tabris.internal.VideoLifeCycleAdapter.keyForEnum;
 import static org.eclipse.rap.rwt.testfixture.Fixture.fakeNotifyOperation;
 import static org.junit.Assert.assertEquals;
@@ -158,7 +159,7 @@ public class VideoLifeCycleAdapterTest {
   public void testFiresPresentationChange() {
     video.addPresentationListener( presentationListener );
     Map<String, Object> parameters = new HashMap<String, Object>();
-    parameters.put( PROPERTY_PLAYBACK, Presentation.FULL_SCREEN.name() );
+    parameters.put( PROPERTY_PRESENTATION, Presentation.FULL_SCREEN.name() );
     fakeNotifyOperation( getId(), Constants.EVENT_PRESENTATION, parameters );
 
     Fixture.executeLifeCycleFromServerThread();
@@ -170,7 +171,7 @@ public class VideoLifeCycleAdapterTest {
   public void testFiresPresentationChangeToFullScreen() {
     video.addPresentationListener( presentationListener );
     Map<String, Object> parameters = new HashMap<String, Object>();
-    parameters.put( PROPERTY_PLAYBACK, Presentation.FULL_SCREEN.name() );
+    parameters.put( PROPERTY_PRESENTATION, Presentation.FULL_SCREEN.name() );
     fakeNotifyOperation( getId(), Constants.EVENT_PRESENTATION, parameters );
 
     Fixture.executeLifeCycleFromServerThread();
@@ -184,7 +185,7 @@ public class VideoLifeCycleAdapterTest {
     Fixture.executeLifeCycleFromServerThread();
     Fixture.fakeNewRequest();
     Map<String, Object> parameters = new HashMap<String, Object>();
-    parameters.put( PROPERTY_PLAYBACK, Presentation.FULL_SCREEN.name() );
+    parameters.put( PROPERTY_PRESENTATION, Presentation.FULL_SCREEN.name() );
     fakeNotifyOperation( getId(), Constants.EVENT_PRESENTATION, parameters );
 
     Fixture.executeLifeCycleFromServerThread();
