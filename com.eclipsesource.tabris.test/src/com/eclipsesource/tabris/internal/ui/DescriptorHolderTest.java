@@ -24,7 +24,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.ui.Action;
-import com.eclipsesource.tabris.ui.Prominence;
 
 
 public class DescriptorHolderTest {
@@ -73,8 +72,7 @@ public class DescriptorHolderTest {
                                                         "bar",
                                                         createImage( display ),
                                                         true,
-                                                        true,
-                                                        Prominence.DEFAULT );
+                                                        true );
 
     holder.add( descriptor );
 
@@ -89,8 +87,7 @@ public class DescriptorHolderTest {
                                                         "bar",
                                                         createImage( display ),
                                                         true,
-                                                        true,
-                                                        Prominence.DEFAULT );
+                                                        true );
 
     holder.add( descriptor );
 
@@ -107,8 +104,7 @@ public class DescriptorHolderTest {
                                                         "bar",
                                                         createImage( display ),
                                                         true,
-                                                        true,
-                                                        Prominence.DEFAULT );
+                                                        true );
 
     holder.add( descriptor );
     holder.add( descriptor );

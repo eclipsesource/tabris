@@ -5,7 +5,7 @@ import static com.eclipsesource.tabris.internal.Constants.EVENT_IMAGE_SELECTION;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_OPEN;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_IMAGE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_RESOLUTION;
-import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SAVETOALBUM;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SAVE_TO_ALBUM;
 import static com.eclipsesource.tabris.internal.Constants.TYPE_CAMERA;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
@@ -81,7 +81,7 @@ public class CameraImpl extends AbstractOperationHandler implements Camera {
 
   private void addSaveToAlbum( Map<String, Object> properties, CameraOptions options ) {
     if( options.savesToAlbum() ) {
-      properties.put( PROPERTY_SAVETOALBUM, Boolean.TRUE );
+      properties.put( PROPERTY_SAVE_TO_ALBUM, Boolean.TRUE );
     }
   }
 

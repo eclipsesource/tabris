@@ -10,14 +10,14 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.swipe;
 
-import static com.eclipsesource.tabris.internal.Constants.METHOD_ITEM_LOADED;
+import static com.eclipsesource.tabris.internal.Constants.METHOD_ADD;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_LOCK_LEFT;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_LOCK_RIGHT;
-import static com.eclipsesource.tabris.internal.Constants.METHOD_REMOVE_ITEMS;
+import static com.eclipsesource.tabris.internal.Constants.METHOD_REMOVE;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_UNLOCK_LEFT;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_UNLOCK_RIGHT;
-import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ACTIVE_ITEM;
-import static com.eclipsesource.tabris.internal.Constants.PROPERTY_CONTENT;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ACTIVE;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_CONTROL;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_INDEX;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ITEMS;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PARENT;
@@ -247,7 +247,7 @@ public class Swipe {
     if( outOfRangeIndexes.length > 0 ) {
       Map<String, Object> properties = new HashMap<String, Object>();
       properties.put( PROPERTY_ITEMS, outOfRangeIndexes );
-      remoteObject.call( METHOD_REMOVE_ITEMS, properties );
+      remoteObject.call( METHOD_REMOVE, properties );
     }
   }
 
@@ -283,7 +283,7 @@ public class Swipe {
   private void activateItem( int currentIndex ) {
     SwipeItem currentItem = manager.getItemHolder().getItem( currentIndex );
     currentItem.activate( manager.getContext() );
-    remoteObject.set( PROPERTY_ACTIVE_ITEM, currentIndex );
+    remoteObject.set( PROPERTY_ACTIVE, currentIndex );
     notifyItemActivated( listeners, currentItem, currentIndex, manager.getContext() );
   }
 
@@ -322,7 +322,7 @@ public class Swipe {
       Control content = item.load( container );
       container.layout( true );
       manager.getItemHolder().setContentForItem( index, content );
-      remoteObject.call( METHOD_ITEM_LOADED, createLoadProperties( index, content ) );
+      remoteObject.call( METHOD_ADD, createLoadProperties( index, content ) );
       notifyItemLoaded( listeners, item, index );
     }
   }
@@ -330,7 +330,7 @@ public class Swipe {
   private Map<String, Object> createLoadProperties( int index, Control content ) {
     Map<String, Object> result = new HashMap<String, Object>();
     result.put( PROPERTY_INDEX, Integer.valueOf( index ) );
-    result.put( PROPERTY_CONTENT, WidgetUtil.getId( content ) );
+    result.put( PROPERTY_CONTROL, WidgetUtil.getId( content ) );
     return result;
   }
 

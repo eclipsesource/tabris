@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
-import static com.eclipsesource.tabris.internal.Constants.EVENT_SWIPED_TO_ITEM;
+import static com.eclipsesource.tabris.internal.Constants.EVENT_SWIPE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ITEM;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
@@ -32,7 +32,7 @@ public class SwipeOperationHandler extends AbstractOperationHandler {
 
   @Override
   public void handleNotify( String event, Map<String, Object> properties ) {
-    if( EVENT_SWIPED_TO_ITEM.equals( event ) ) {
+    if( EVENT_SWIPE.equals( event ) ) {
       verifyHasItemProperty( properties );
       Integer itemIndex = ( Integer )properties.get( PROPERTY_ITEM );
       swipe.show( itemIndex.intValue() );
@@ -42,10 +42,10 @@ public class SwipeOperationHandler extends AbstractOperationHandler {
   private void verifyHasItemProperty( Map<String, Object> properties ) {
     checkArgumentNotNull( properties, "Properties" );
     if( !properties.containsKey( PROPERTY_ITEM ) ) {
-      throw new IllegalArgumentException( "Properties of " + EVENT_SWIPED_TO_ITEM + " do not contian an item." );
+      throw new IllegalArgumentException( "Properties of " + EVENT_SWIPE + " do not contian an item." );
     }
     if( !( properties.get( PROPERTY_ITEM ) instanceof Integer ) ) {
-      throw new IllegalArgumentException( "Property item of " + EVENT_SWIPED_TO_ITEM + " is not an Integer." );
+      throw new IllegalArgumentException( "Property item of " + EVENT_SWIPE + " is not an Integer." );
     }
   }
 }

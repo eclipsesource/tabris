@@ -29,7 +29,7 @@ public class GeolocationOptionsTest {
   
   @Test
   public void testValues() {
-    assertTrue( options.isEnableHighAccuracy() );
+    assertTrue( options.isHighAccuracyEnabled() );
     assertEquals( 10, options.getFrequency() );
     assertEquals( 100, options.getMaximumAge() );
   }
@@ -38,7 +38,7 @@ public class GeolocationOptionsTest {
   public void testDefaultValues() {
     GeolocationOptions geolocationOptions = new GeolocationOptions();
     
-    assertFalse( geolocationOptions.isEnableHighAccuracy() );
+    assertFalse( geolocationOptions.isHighAccuracyEnabled() );
     assertEquals( 10000, geolocationOptions.getFrequency() );
     assertEquals( -1, geolocationOptions.getMaximumAge() );
   }

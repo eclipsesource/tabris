@@ -27,40 +27,40 @@ public class SwipeOperationHandlerTest {
   public void testFailsWithNullSwipe() {
     new SwipeOperationHandler( null );
   }
-  
+
   @Test
   public void testNotifiesAboutSwipeEvent() {
     Swipe swipe = mock( Swipe.class );
     SwipeOperationHandler handler = new SwipeOperationHandler( swipe );
     Map<String, Object> properties = new HashMap<String, Object>();
     properties.put( "item", Integer.valueOf( 0 ) );
-    
-    handler.handleNotify( "SwipedToItem", properties );
-    
+
+    handler.handleNotify( "Swipe", properties );
+
     verify( swipe ).show( 0 );
   }
-  
+
   @Test( expected = IllegalArgumentException.class )
   public void testSwipeEventFailsWithoutItemProperty() {
     SwipeOperationHandler handler = new SwipeOperationHandler( mock( Swipe.class ) );
     Map<String, Object> properties = new HashMap<String, Object>();
-    
-    handler.handleNotify( "SwipedToItem", properties );
+
+    handler.handleNotify( "Swipe", properties );
   }
-  
+
   @Test( expected = IllegalArgumentException.class )
   public void testSwipeEventFailsWithNoIntegerItemProperty() {
     SwipeOperationHandler handler = new SwipeOperationHandler( mock( Swipe.class ) );
     Map<String, Object> properties = new HashMap<String, Object>();
     properties.put( "item", "0" );
-    
-    handler.handleNotify( "SwipedToItem", properties );
+
+    handler.handleNotify( "Swipe", properties );
   }
-  
+
   @Test( expected = IllegalArgumentException.class )
   public void testSwipeEventFailsWithNullProperties() {
     SwipeOperationHandler handler = new SwipeOperationHandler( mock( Swipe.class ) );
-    
-    handler.handleNotify( "SwipedToItem", null );
+
+    handler.handleNotify( "Swipe", null );
   }
 }

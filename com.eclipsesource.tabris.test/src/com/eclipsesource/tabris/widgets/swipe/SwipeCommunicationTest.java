@@ -81,9 +81,9 @@ public class SwipeCommunicationTest {
 
     ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
     InOrder order = inOrder( remoteObject );
-    order.verify( remoteObject ).call( eq( "itemLoaded" ), captor.capture() );
-    order.verify( remoteObject ).set( "activeItem", 0 );
-    order.verify( remoteObject ).call( eq( "itemLoaded" ), captor.capture() );
+    order.verify( remoteObject ).call( eq( "add" ), captor.capture() );
+    order.verify( remoteObject ).set( "active", 0 );
+    order.verify( remoteObject ).call( eq( "add" ), captor.capture() );
     assertLoadProperties( captor.getAllValues(), firstItem, secondItem );
   }
 
@@ -97,16 +97,16 @@ public class SwipeCommunicationTest {
 
     swipe.show( 0 );
 
-    verify( remoteObject, never() ).call( eq( "removeItems" ), anyMap() );
+    verify( remoteObject, never() ).call( eq( "remove" ), anyMap() );
   }
 
   private void assertLoadProperties( List<Map> allValues, TestItem firstItem, TestItem secondItem ) {
     Map properties1 = allValues.get( 0 );
     assertEquals( Integer.valueOf( 0 ), properties1.get( "index" ) );
-    assertEquals( WidgetUtil.getId( firstItem.getLoadedComposite() ), properties1.get( "content" ) );
+    assertEquals( WidgetUtil.getId( firstItem.getLoadedComposite() ), properties1.get( "control" ) );
     Map properties2 = allValues.get( 1 );
     assertEquals( Integer.valueOf( 1 ), properties2.get( "index" ) );
-    assertEquals( WidgetUtil.getId( secondItem.getLoadedComposite() ), properties2.get( "content" ) );
+    assertEquals( WidgetUtil.getId( secondItem.getLoadedComposite() ), properties2.get( "control" ) );
   }
 
   @Test
@@ -123,7 +123,7 @@ public class SwipeCommunicationTest {
     swipe.show( 2 );
 
     ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
-    verify( remoteObject ).call( eq( "removeItems" ), captor.capture() );
+    verify( remoteObject ).call( eq( "remove" ), captor.capture() );
     int[] items = ( int[] )captor.getValue().get( "items" );
     assertArrayEquals( new int[] { 0 }, items );
   }
@@ -228,9 +228,9 @@ public class SwipeCommunicationTest {
     mockProviderSize( itemProvider, 6 );
     swipe.refresh();
 
-    verify( remoteObject, never() ).call( eq( "removeItems" ), anyMap() );
+    verify( remoteObject, never() ).call( eq( "remove" ), anyMap() );
     ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
-    verify( remoteObject, times( 3 ) ).call( eq( "itemLoaded" ), captor.capture() );
+    verify( remoteObject, times( 3 ) ).call( eq( "add" ), captor.capture() );
     assertEquals( Integer.valueOf( 5 ), captor.getAllValues().get( 2 ).get( "index" ) );
   }
 
@@ -249,7 +249,7 @@ public class SwipeCommunicationTest {
     swipe.show( 4 );
 
     ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
-    verify( remoteObject, times( 4 ) ).call( eq( "itemLoaded" ), captor.capture() );
+    verify( remoteObject, times( 4 ) ).call( eq( "add" ), captor.capture() );
     assertEquals( Integer.valueOf( 0 ), captor.getAllValues().get( 0 ).get( "index" ) );
     assertEquals( Integer.valueOf( 1 ), captor.getAllValues().get( 1 ).get( "index" ) );
     assertEquals( Integer.valueOf( 3 ), captor.getAllValues().get( 2 ).get( "index" ) );
@@ -271,7 +271,7 @@ public class SwipeCommunicationTest {
     swipe.show( 4 );
 
     ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
-    verify( remoteObject, times( 1 ) ).call( eq( "removeItems" ), captor.capture() );
+    verify( remoteObject, times( 1 ) ).call( eq( "remove" ), captor.capture() );
     int[] actualIndexes = ( int[] )captor.getValue().get( "items" );
     assertArrayEquals( new int[] { 0, 1 }, actualIndexes );
   }
@@ -294,7 +294,7 @@ public class SwipeCommunicationTest {
     swipe.refresh();
 
     ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
-    verify( remoteObject, times( 1 ) ).call( eq( "removeItems" ), captor.capture() );
+    verify( remoteObject, times( 1 ) ).call( eq( "remove" ), captor.capture() );
     int[] actualIndexes = ( int[] )captor.getValue().get( "items" );
     assertArrayEquals( new int[] { 1 }, actualIndexes );
   }
@@ -315,7 +315,7 @@ public class SwipeCommunicationTest {
     mockProviderSize( itemProvider, 1 );
     swipe.refresh();
 
-    verify( remoteObject ).set( "activeItem", 0 );
+    verify( remoteObject ).set( "active", 0 );
   }
 
 }

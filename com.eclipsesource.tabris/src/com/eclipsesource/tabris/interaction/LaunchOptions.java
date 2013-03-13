@@ -37,25 +37,25 @@ public class LaunchOptions {
     MAIL, BROWSER, MAPS, PHONE, SMS, TWITTER, FACEBOOK
   }
 
-  private final Map<String, String> options;
+  private final Map<String, Object> options;
   private final App app;
 
   LaunchOptions( App app ) {
     checkArgumentNotNull( app, "App" );
     this.app = app;
-    this.options = new HashMap<String, String>();
+    this.options = new HashMap<String, Object>();
   }
 
   public App getApp() {
     return app;
   }
 
-  public void add( String name, String value ) {
+  public void add( String name, Object value ) {
     options.put( name, value );
   }
 
-  public Map<String, String> getOptions() {
-    return new HashMap<String, String>( options );
+  public Map<String, Object> getOptions() {
+    return new HashMap<String, Object>( options );
   }
 
 }

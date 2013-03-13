@@ -22,50 +22,50 @@ import com.eclipsesource.tabris.interaction.LaunchOptions.App;
 
 
 public class LaunchOptionsTest {
-  
+
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithoutApp() {
     new LaunchOptions( null );
   }
-  
+
   @Test
   public void testGetApp() {
     LaunchOptions options = new LaunchOptions( App.MAIL );
-    
+
     assertSame( App.MAIL, options.getApp() );
   }
-  
+
   @Test
   public void testAddsOptions() {
     LaunchOptions options = new LaunchOptions( App.MAIL );
     options.add( "foo", "bar" );
     options.add( "foo1", "bar1" );
-    
-    Map<String, String> optionValues = options.getOptions();
-    
+
+    Map<String, Object> optionValues = options.getOptions();
+
     assertEquals( 2, optionValues.size() );
     assertEquals( "bar", optionValues.get( "foo" ) );
     assertEquals( "bar1", optionValues.get( "foo1" ) );
   }
-  
+
   @Test
   public void testOptionsIsSafeCopy() {
     LaunchOptions options = new LaunchOptions( App.MAIL );
     options.add( "foo", "bar" );
     options.add( "foo1", "bar1" );
-    
+
     assertNotSame( options.getOptions(), options.getOptions() );
   }
-  
+
   @Test
   public void testModifyoptionMapDoesNotAffectOriginal() {
     LaunchOptions options = new LaunchOptions( App.MAIL );
     options.add( "foo", "bar" );
     options.add( "foo1", "bar1" );
-    
-    Map<String, String> optionValues = options.getOptions();
+
+    Map<String, Object> optionValues = options.getOptions();
     optionValues.put( "foo2", "bar2" );
-    
+
     assertEquals( 2, options.getOptions().size() );
   }
 }

@@ -72,7 +72,6 @@ public class ActionConfigurationTest {
     assertEquals( "", descriptor.getTitle() );
     assertTrue( descriptor.isEnabled() );
     assertTrue( descriptor.isVisible() );
-    assertEquals( 0, descriptor.getProminence().length );
   }
 
   @Test
@@ -122,14 +121,4 @@ public class ActionConfigurationTest {
     newAction( "foo", TestAction.class ).setImage( null );
   }
 
-  @Test
-  public void testSetsProminence() {
-    ActionConfiguration configuration = newAction( "foo", TestAction.class ).setProminence( Prominence.DEFAULT );
-
-    ActionDescriptor descriptor = ( ( InternalActionConfiguration )configuration ).createDescriptor();
-
-    Prominence[] prominence = descriptor.getProminence();
-    assertEquals( 1, prominence.length );
-    assertSame( Prominence.DEFAULT, prominence[ 0 ] );
-  }
 }

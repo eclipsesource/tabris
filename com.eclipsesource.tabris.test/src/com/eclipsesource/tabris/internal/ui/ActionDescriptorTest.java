@@ -12,7 +12,6 @@ package com.eclipsesource.tabris.internal.ui;
 
 import static com.eclipsesource.tabris.internal.ui.UITestUtil.createImage;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -25,7 +24,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.ui.Action;
-import com.eclipsesource.tabris.ui.Prominence;
 
 
 public class ActionDescriptorTest {
@@ -50,8 +48,7 @@ public class ActionDescriptorTest {
                                                         "bar",
                                                         createImage( display ),
                                                         true,
-                                                        true,
-                                                        Prominence.DEFAULT );
+                                                        true );
 
     assertEquals( "foo", descriptor.getId() );
   }
@@ -64,8 +61,7 @@ public class ActionDescriptorTest {
                                                         "bar",
                                                         createImage( display ),
                                                         true,
-                                                        true,
-                                                        Prominence.DEFAULT );
+                                                        true );
 
     assertSame( action, descriptor.getAction() );
   }
@@ -78,8 +74,7 @@ public class ActionDescriptorTest {
                                                         "bar",
                                                         createImage( display ),
                                                         true,
-                                                        true,
-                                                        Prominence.DEFAULT );
+                                                        true );
 
     assertTrue( descriptor.isVisible() );
   }
@@ -92,8 +87,7 @@ public class ActionDescriptorTest {
                                                         "bar",
                                                         createImage( display ),
                                                         true,
-                                                        true,
-                                                        Prominence.DEFAULT );
+                                                        true );
 
     assertTrue( descriptor.isEnabled() );
   }
@@ -106,8 +100,7 @@ public class ActionDescriptorTest {
                                                         "bar",
                                                         createImage( display ),
                                                         true,
-                                                        true,
-                                                        Prominence.DEFAULT );
+                                                        true );
 
     assertEquals( "bar", descriptor.getTitle() );
   }
@@ -121,28 +114,9 @@ public class ActionDescriptorTest {
                                                         "bar",
                                                         image,
                                                         true,
-                                                        true,
-                                                        Prominence.DEFAULT );
+                                                        true );
 
     assertSame( image, descriptor.getImage() );
   }
 
-  @Test
-  public void testGetProminence() {
-    Action action = mock( Action.class );
-    Image image = createImage( display );
-    ActionDescriptor descriptor = new ActionDescriptor( "foo", action, "bar", image, true, true, Prominence.DEFAULT );
-
-    assertSame( Prominence.DEFAULT, descriptor.getProminence()[ 0 ] );
-    assertEquals( 1, descriptor.getProminence().length );
-  }
-
-  @Test
-  public void testGetProminenceIsNeverNull() {
-    Action action = mock( Action.class );
-    Image image = createImage( display );
-    ActionDescriptor descriptor = new ActionDescriptor( "foo", action, "bar", image, true, true );
-
-    assertNotNull( descriptor.getProminence() );
-  }
 }

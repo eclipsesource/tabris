@@ -204,7 +204,7 @@ public class ClientStoreImplTest {
     properties.put( "foo", "bar" );
     properties.put( "foo1", "bar1" );
 
-    Fixture.dispatchCall( serviceObject, "synchronizeStore", properties  );
+    Fixture.dispatchCall( serviceObject, "synchronize", properties  );
 
     assertEquals( "bar", store.get( "foo" ) );
     assertEquals( "bar1", store.get( "foo1" ) );

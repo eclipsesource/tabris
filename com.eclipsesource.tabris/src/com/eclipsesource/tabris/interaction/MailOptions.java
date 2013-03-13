@@ -9,9 +9,9 @@ package com.eclipsesource.tabris.interaction;
 
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_BODY;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_CC;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_HTML;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SUBJECT;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TO;
-import static com.eclipsesource.tabris.internal.Constants.PROPERTY_USE_HTML;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNullAndNotEmpty;
 
@@ -58,6 +58,6 @@ public class MailOptions extends LaunchOptions {
   }
 
   public void setUseHtml( boolean useHtml ) {
-    add( PROPERTY_USE_HTML, String.valueOf( useHtml ) );
+    add( PROPERTY_HTML, Boolean.valueOf( useHtml ) );
   }
 }

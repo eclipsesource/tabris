@@ -10,13 +10,12 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
-import static com.eclipsesource.tabris.internal.Constants.PROPERTY_MODE;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PLAYBACK;
 import static com.eclipsesource.tabris.internal.VideoLifeCycleAdapter.keyForEnum;
 import static org.eclipse.rap.rwt.testfixture.Fixture.fakeNotifyOperation;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
@@ -44,10 +43,11 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.eclipsesource.tabris.internal.VideoLifeCycleAdapter.PlaybackOptions;
 import com.eclipsesource.tabris.test.ControlLCATestUtil;
+import com.eclipsesource.tabris.widgets.PlaybackListener;
+import com.eclipsesource.tabris.widgets.PresentationListener;
 import com.eclipsesource.tabris.widgets.Video;
-import com.eclipsesource.tabris.widgets.Video.PlaybackMode;
-import com.eclipsesource.tabris.widgets.Video.PresentationMode;
-import com.eclipsesource.tabris.widgets.VideoListener;
+import com.eclipsesource.tabris.widgets.Video.Playback;
+import com.eclipsesource.tabris.widgets.Video.Presentation;
 
 
 @RunWith( MockitoJUnitRunner.class )
@@ -55,7 +55,8 @@ public class VideoLifeCycleAdapterTest {
 
   private Video video;
   private Shell parent;
-  @Mock private VideoListener videoListener;
+  @Mock private PlaybackListener playbackListener;
+  @Mock private PresentationListener presentationListener;
   private AbstractWidgetLCA lifeCycleAdapter;
 
   @Before
@@ -90,7 +91,7 @@ public class VideoLifeCycleAdapterTest {
     lifeCycleAdapter.renderInitialization( video );
 
     CreateOperation createOperation = Fixture.getProtocolMessage().findCreateOperation( video );
-    assertEquals( video.getURL().toString(), createOperation.getProperty( Constants.PROPERTY_VIDEO_URL ) );
+    assertEquals( video.getURL().toString(), createOperation.getProperty( Constants.PROPERTY_URL ) );
   }
 
   @Test
@@ -113,82 +114,82 @@ public class VideoLifeCycleAdapterTest {
 
   @Test
   public void testFiresPlaybackChange() {
-    video.addVideoListener( videoListener );
+    video.addPlaybackListener( playbackListener );
     Map<String, Object> parameters = new HashMap<String, Object>();
-    parameters.put( PROPERTY_MODE, PlaybackMode.ERROR.name() );
+    parameters.put( PROPERTY_PLAYBACK, Playback.ERROR.name() );
     fakeNotifyOperation( getId(), Constants.EVENT_PLAYBACK, parameters );
 
     Fixture.executeLifeCycleFromServerThread();
 
-    verify( videoListener ).playbackChanged( PlaybackMode.ERROR );
+    verify( playbackListener ).playbackChanged( Playback.ERROR );
   }
 
   @Test
   public void testRendersPlaybackReadyOnce() {
-    video.addVideoListener( videoListener );
+    video.addPlaybackListener( playbackListener );
     Fixture.executeLifeCycleFromServerThread();
     Fixture.fakeNewRequest();
     Map<String, Object> parameters = new HashMap<String, Object>();
-    parameters.put( PROPERTY_MODE, PlaybackMode.READY.name() );
+    parameters.put( PROPERTY_PLAYBACK, Playback.READY.name() );
     fakeNotifyOperation( getId(), Constants.EVENT_PLAYBACK, parameters );
     Fixture.executeLifeCycleFromServerThread();
 
-    verify( videoListener ).playbackChanged( PlaybackMode.READY );
+    verify( playbackListener ).playbackChanged( Playback.READY );
     Message message = Fixture.getProtocolMessage();
     assertNull( message.findSetOperation( video, keyForEnum( PlaybackOptions.PLAYBACK_MODE ) ) );
   }
 
   @Test
   public void testRendersPlaybackPlayOnce() {
-    video.addVideoListener( videoListener );
+    video.addPlaybackListener( playbackListener );
     Fixture.executeLifeCycleFromServerThread();
     Fixture.fakeNewRequest();
     Map<String, Object> parameters = new HashMap<String, Object>();
-    parameters.put( PROPERTY_MODE, PlaybackMode.PLAY.name() );
+    parameters.put( PROPERTY_PLAYBACK, Playback.PLAY.name() );
     fakeNotifyOperation( getId(), Constants.EVENT_PLAYBACK, parameters );
     Fixture.executeLifeCycleFromServerThread();
 
-    verify( videoListener ).playbackChanged( PlaybackMode.PLAY );
+    verify( playbackListener ).playbackChanged( Playback.PLAY );
     Message message = Fixture.getProtocolMessage();
     assertNull( message.findSetOperation( video, keyForEnum( PlaybackOptions.PLAYBACK_MODE ) ) );
   }
 
   @Test
   public void testFiresPresentationChange() {
-    video.addVideoListener( videoListener );
+    video.addPresentationListener( presentationListener );
     Map<String, Object> parameters = new HashMap<String, Object>();
-    parameters.put( PROPERTY_MODE, PresentationMode.FULL_SCREEN.name() );
+    parameters.put( PROPERTY_PLAYBACK, Presentation.FULL_SCREEN.name() );
     fakeNotifyOperation( getId(), Constants.EVENT_PRESENTATION, parameters );
 
     Fixture.executeLifeCycleFromServerThread();
 
-    verify( videoListener ).presentationChanged( PresentationMode.FULL_SCREEN );
+    verify( presentationListener ).presentationChanged( Presentation.FULL_SCREEN );
   }
 
   @Test
   public void testFiresPresentationChangeToFullScreen() {
-    video.addVideoListener( videoListener );
+    video.addPresentationListener( presentationListener );
     Map<String, Object> parameters = new HashMap<String, Object>();
-    parameters.put( PROPERTY_MODE, PresentationMode.FULL_SCREEN.name() );
+    parameters.put( PROPERTY_PLAYBACK, Presentation.FULL_SCREEN.name() );
     fakeNotifyOperation( getId(), Constants.EVENT_PRESENTATION, parameters );
 
     Fixture.executeLifeCycleFromServerThread();
 
-    verify( videoListener ).presentationChanged( PresentationMode.FULL_SCREEN );
+    verify( presentationListener ).presentationChanged( Presentation.FULL_SCREEN );
   }
 
   @Test
   public void testFiresPresentationChangeToFullScreenOnce() {
-    video.addVideoListener( videoListener );
+    video.addPresentationListener( presentationListener );
     Fixture.executeLifeCycleFromServerThread();
     Fixture.fakeNewRequest();
     Map<String, Object> parameters = new HashMap<String, Object>();
-    parameters.put( PROPERTY_MODE, PresentationMode.FULL_SCREEN.name() );
+    parameters.put( PROPERTY_PLAYBACK, Presentation.FULL_SCREEN.name() );
     fakeNotifyOperation( getId(), Constants.EVENT_PRESENTATION, parameters );
 
     Fixture.executeLifeCycleFromServerThread();
 
-    verify( videoListener ).presentationChanged( PresentationMode.FULL_SCREEN );
+    verify( presentationListener ).presentationChanged( Presentation.FULL_SCREEN );
     Message message = Fixture.getProtocolMessage();
     assertNull( message.findSetOperation( video, keyForEnum( PlaybackOptions.PRESENTATION_MODE ) ) );
   }
@@ -204,7 +205,7 @@ public class VideoLifeCycleAdapterTest {
 
     Message message = Fixture.getProtocolMessage();
     SetOperation operation = message.findSetOperation( video, keyForEnum( PlaybackOptions.PLAYBACK_MODE ) );
-    assertEquals( keyForEnum( PlaybackMode.PLAY ), operation.getProperty( keyForEnum( PlaybackOptions.PLAYBACK_MODE ) ) );
+    assertEquals( keyForEnum( Playback.PLAY ), operation.getProperty( keyForEnum( PlaybackOptions.PLAYBACK_MODE ) ) );
   }
 
   @Test
@@ -218,7 +219,7 @@ public class VideoLifeCycleAdapterTest {
 
     Message message = Fixture.getProtocolMessage();
     SetOperation operation = message.findSetOperation( video, keyForEnum( PlaybackOptions.PRESENTATION_MODE ) );
-    assertEquals( keyForEnum( PresentationMode.FULL_SCREEN ),
+    assertEquals( keyForEnum( Presentation.FULL_SCREEN ),
                   operation.getProperty( keyForEnum( PlaybackOptions.PRESENTATION_MODE ) ) );
   }
 
@@ -298,16 +299,30 @@ public class VideoLifeCycleAdapterTest {
   }
 
   @Test
-  public void testRendersVideoListener() throws IOException {
+  public void testRendersPlaybackListener() throws IOException {
     Fixture.markInitialized( video.getDisplay() );
     Fixture.markInitialized( video );
     Fixture.preserveWidgets();
 
-    video.addVideoListener( mock( VideoListener.class ) );
+    video.addPlaybackListener( playbackListener );
     lifeCycleAdapter.renderChanges( video );
 
     Message message = Fixture.getProtocolMessage();
-    ListenOperation listenOperation = message.findListenOperation( video, Constants.PROPERTY_VIDEO_LISTENER );
+    ListenOperation listenOperation = message.findListenOperation( video, Constants.EVENT_PLAYBACK );
+    assertNotNull( listenOperation );
+  }
+
+  @Test
+  public void testRendersPresentationListener() throws IOException {
+    Fixture.markInitialized( video.getDisplay() );
+    Fixture.markInitialized( video );
+    Fixture.preserveWidgets();
+
+    video.addPresentationListener( presentationListener );
+    lifeCycleAdapter.renderChanges( video );
+
+    Message message = Fixture.getProtocolMessage();
+    ListenOperation listenOperation = message.findListenOperation( video, Constants.EVENT_PRESENTATION );
     assertNotNull( listenOperation );
   }
 

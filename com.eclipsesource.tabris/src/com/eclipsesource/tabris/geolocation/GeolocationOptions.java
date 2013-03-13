@@ -91,7 +91,7 @@ public class GeolocationOptions {
    * Returns if high accuracy is enabled or not.
    * </p>
    */
-  public boolean isEnableHighAccuracy() {
+  public boolean isHighAccuracyEnabled() {
     return enableHighAccuracy;
   }
   

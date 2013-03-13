@@ -12,7 +12,7 @@ package com.eclipsesource.tabris.internal;
 
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_FOREGROUND;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_LINE_WIDTH;
-import static com.eclipsesource.tabris.internal.Constants.PROPERTY_POLYLINE;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PATH;
 
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
@@ -72,7 +72,7 @@ public class GCOperationDispatcher {
       dispatchLineWidth( parameters );
     } else if( PROPERTY_FOREGROUND.equals( operationType ) ) {
       dispatchSetForeground( parameters );
-    } else if( PROPERTY_POLYLINE.equals( operationType ) ) {
+    } else if( PROPERTY_PATH.equals( operationType ) ) {
       dispatchDrawPolyline( parameters );
     }
   }

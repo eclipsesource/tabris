@@ -30,33 +30,37 @@ import com.eclipsesource.tabris.internal.VideoLifeCycleAdapter.PlaybackOptions;
  * A <code>Video</code> can be used to play videos from an URL on a mobile device. It provides facilities to control
  * the video from the server side and to receive notification when the client controls will be triggered.
  * </p>
- * 
- * @see VideoListener
+ *
+ * @see PlaybackListener
+ * @see PresentationListener
+ *
  * @since 0.7
  */
 public class Video extends Composite {
-  
+
   /**
    * <p>
    * The current playback state of the video player.
    * This may also change as a result of the user interacting with the video player controls.
    * </p>
+   *
+   * @since 1.0
    */
-  public enum PlaybackMode {
+  public enum Playback {
     /**
      * <p>
      * Video playback is ready.
      * </p>
      */
     READY,
-    
+
     /**
      * <p>
      * Video playback is currently under way.
      * </p>
      */
     PLAY,
-    
+
     /**
      * <p>
      * Video playback is currently paused.
@@ -77,28 +81,28 @@ public class Video extends Composite {
      * </p>
      */
     INTERRUPT,
-    
+
     /**
      * <p>
      * The player is currently seeking towards the end of the video.
      * </p>
      */
     FAST_FORWARD,
-    
+
     /**
      * <p>
      * The player is currently seeking towards the beginning of the video.
      * </p>
      */
     FAST_BACKWARD,
-    
+
     /**
      * <p>
      * The player has reached the end of the video and finished playing.
      * </p>
      */
     DONE,
-    
+
     /**
      * <p>
      * An error has occurred like: buffering of data has stalled.
@@ -106,24 +110,26 @@ public class Video extends Composite {
      */
     ERROR
   }
-  
+
   /**
    * <p>
-   * The current presentation mode of the video player.
+   * The current presentation of the video player.
    * This may also change as a result of the user interacting with the video player controls.
    * </p>
+   *
+   * @since 1.0
    */
-  public enum PresentationMode {
+  public enum Presentation {
     /**
      * <p>
-     * The player has entered or should enter full-screen mode.
+     * The player has entered or should enter full-screen.
      * ,/p>
      */
     FULL_SCREEN,
 
     /**
      * <p>
-     * The player has exited or should exit full-screen mode.
+     * The player has exited or should exit full-screen.
      * </p>
      */
     EMBEDDED
@@ -131,16 +137,17 @@ public class Video extends Composite {
 
   private static final float PLAY_SPEED = 1;
   private static final float HALT_SPEED = 0;
-  
+
   private URL videoUrl;
-  private final List<VideoListener> listeners = new ArrayList<VideoListener>();
+  private final List<PlaybackListener> playbackListeners = new ArrayList<PlaybackListener>();
+  private final List<PresentationListener> presentationListeners = new ArrayList<PresentationListener>();
   private final Map<PlaybackOptions, Object> playbackOptions = new HashMap<PlaybackOptions, Object>();
-  
+
   /**
    * <p>
    * Creates a new Video object.
    * </p>
-   * 
+   *
    * @throws IllegalArgumentException when the passed URl string is not a valid url.
    */
   public Video( String videoUrl, Composite parent ) throws IllegalArgumentException {
@@ -148,10 +155,10 @@ public class Video extends Composite {
     initiateDefaultValues();
     assignUrl( videoUrl );
   }
-  
+
   private void initiateDefaultValues() {
-    playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, PlaybackMode.PAUSE );
-    playbackOptions.put( PlaybackOptions.PRESENTATION_MODE, PresentationMode.EMBEDDED );
+    playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, Playback.PAUSE );
+    playbackOptions.put( PlaybackOptions.PRESENTATION_MODE, Presentation.EMBEDDED );
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( HALT_SPEED ) );
     playbackOptions.put( PlaybackOptions.CONTROLS_VISIBLE, Boolean.valueOf( true ) );
     playbackOptions.put( PlaybackOptions.REPEAT, Boolean.valueOf( false ) );
@@ -164,11 +171,11 @@ public class Video extends Composite {
       throw new IllegalArgumentException( videoUrl + " is not a valid url", mfURLe );
     }
   }
-  
+
   /**
    * <p>
    * Returns the url of the video to play.
-   * </p> 
+   * </p>
    */
   public URL getURL() {
     return videoUrl;
@@ -181,11 +188,11 @@ public class Video extends Composite {
    */
   public void play() {
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( PLAY_SPEED ) );
-    PlaybackMode oldMode = ( PlaybackMode )playbackOptions.get( PlaybackOptions.PLAYBACK_MODE );
-    playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, PlaybackMode.PLAY );
-    firePlaybackChanged( oldMode, PlaybackMode.PLAY );
+    Playback oldMode = ( Playback )playbackOptions.get( PlaybackOptions.PLAYBACK_MODE );
+    playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, Playback.PLAY );
+    firePlayback( oldMode, Playback.PLAY );
   }
-  
+
   /**
    * <p>
    * Pauses the video playback on the client device.
@@ -193,11 +200,11 @@ public class Video extends Composite {
    */
   public void pause() {
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( HALT_SPEED ) );
-    PlaybackMode oldMode = ( PlaybackMode )playbackOptions.get( PlaybackOptions.PLAYBACK_MODE );
-    playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, PlaybackMode.PAUSE );
-    firePlaybackChanged( oldMode, PlaybackMode.PAUSE );
+    Playback oldMode = ( Playback )playbackOptions.get( PlaybackOptions.PLAYBACK_MODE );
+    playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, Playback.PAUSE );
+    firePlayback( oldMode, Playback.PAUSE );
   }
-  
+
   /**
    * <p>
    * Stops the video playback on the client device.
@@ -205,11 +212,11 @@ public class Video extends Composite {
    */
   public void stop() {
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( HALT_SPEED ) );
-    PlaybackMode oldMode = ( PlaybackMode )playbackOptions.get( PlaybackOptions.PLAYBACK_MODE );
-    playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, PlaybackMode.STOP );
-    firePlaybackChanged( oldMode, PlaybackMode.STOP );
+    Playback oldMode = ( Playback )playbackOptions.get( PlaybackOptions.PLAYBACK_MODE );
+    playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, Playback.STOP );
+    firePlayback( oldMode, Playback.STOP );
   }
-  
+
   /**
    * <p>
    * Fast forwards the video playback on the client device.
@@ -220,11 +227,11 @@ public class Video extends Composite {
       throw new IllegalArgumentException( "Speed has to be > 1 for a fast fotward. But was " + speed );
     }
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( speed ) );
-    PlaybackMode oldMode = ( PlaybackMode )playbackOptions.get( PlaybackOptions.PLAYBACK_MODE );
-    playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, PlaybackMode.FAST_FORWARD );
-    firePlaybackChanged( oldMode, PlaybackMode.FAST_FORWARD );
+    Playback oldMode = ( Playback )playbackOptions.get( PlaybackOptions.PLAYBACK_MODE );
+    playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, Playback.FAST_FORWARD );
+    firePlayback( oldMode, Playback.FAST_FORWARD );
   }
-  
+
   /**
    * <p>
    * Fast backwards the video playback on the client device.
@@ -235,11 +242,11 @@ public class Video extends Composite {
       throw new IllegalArgumentException( "Speed has to be < 1 for a fast backward. But was " + speed );
     }
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( speed ) );
-    PlaybackMode oldMode = ( PlaybackMode )playbackOptions.get( PlaybackOptions.PLAYBACK_MODE );
-    playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, PlaybackMode.FAST_BACKWARD );
-    firePlaybackChanged( oldMode, PlaybackMode.FAST_BACKWARD );
+    Playback oldMode = ( Playback )playbackOptions.get( PlaybackOptions.PLAYBACK_MODE );
+    playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, Playback.FAST_BACKWARD );
+    firePlayback( oldMode, Playback.FAST_BACKWARD );
   }
-  
+
   /**
    * <p>
    * returns the current speed of the video playback. 1.0 mean normal speed.
@@ -248,18 +255,18 @@ public class Video extends Composite {
   public float getSpeed() {
     return ( ( Float )playbackOptions.get( PlaybackOptions.SPEED ) ).floatValue();
   }
-  
+
   /**
    * <p>
    * Steps to a specific point in time of the video to play.
    * </p>
-   * 
+   *
    * @param seconds the time to step to in seconds.
    */
   public void stepToTime( int seconds ) {
     playbackOptions.put( PlaybackOptions.HEAD_POSITION, Integer.valueOf( seconds ) );
   }
-  
+
   /**
    * <p>
    * Sets the repeat value of the video playback on the client device.
@@ -268,7 +275,7 @@ public class Video extends Composite {
   public void setRepeat( boolean repeat ) {
     playbackOptions.put( PlaybackOptions.REPEAT, Boolean.valueOf( repeat ) );
   }
-  
+
   /**
    * <p>
    * Returns if the video will be repeated.
@@ -277,19 +284,19 @@ public class Video extends Composite {
   public boolean hasRepeat() {
     return ( ( Boolean )playbackOptions.get( PlaybackOptions.REPEAT ) ).booleanValue();
   }
-  
+
   /**
    * <p>
    * Sets full screen playback on the client device.
    * </p>
    */
   public void setFullscreen( boolean fullScreenEnabled ) {
-    PresentationMode presentationMode = fullScreenEnabled ? PresentationMode.FULL_SCREEN : PresentationMode.EMBEDDED;
-    PresentationMode oldMode = ( PresentationMode )playbackOptions.get( PlaybackOptions.PRESENTATION_MODE );
+    Presentation presentationMode = fullScreenEnabled ? Presentation.FULL_SCREEN : Presentation.EMBEDDED;
+    Presentation oldMode = ( Presentation )playbackOptions.get( PlaybackOptions.PRESENTATION_MODE );
     playbackOptions.put( PlaybackOptions.PRESENTATION_MODE, presentationMode );
-    firePresentationChanged( oldMode, presentationMode );
+    firePresentation( oldMode, presentationMode );
   }
-  
+
   /**
    * <p>
    * Controls if video controls should be visible on the client or not.
@@ -298,7 +305,7 @@ public class Video extends Composite {
   public void setPlayerControlsVisible( boolean visibility ) {
     playbackOptions.put( PlaybackOptions.CONTROLS_VISIBLE, Boolean.valueOf( visibility ) );
   }
-  
+
   /**
    * <p>
    * returns if video controls are visible on the client or not.
@@ -307,63 +314,94 @@ public class Video extends Composite {
   public boolean hasPlayerControlsVisible() {
     return ( ( Boolean )playbackOptions.get( PlaybackOptions.CONTROLS_VISIBLE ) ).booleanValue();
   }
-  
+
   /**
    * <p>
    * Returns the current <code>PlaybackMode</code>
    * </p>
-   * 
-   * @see PlaybackMode
+   *
+   * @see Playback
+   *
+   * @since 1.0
    */
-  public PlaybackMode getPlaybackMode() {
-    return ( PlaybackMode )playbackOptions.get( PlaybackOptions.PLAYBACK_MODE );
+  public Playback getPlayback() {
+    return ( Playback )playbackOptions.get( PlaybackOptions.PLAYBACK_MODE );
   }
-  
+
   /**
    * <p>
-   * Returns the current <code>PresentationMode</code>.
+   * Returns the current {@link Presentation}.
    * </p>
-   * 
-   * @see PresentationMode
+   *
+   * @see Presentation
+   *
+   * @since 1.0
    */
-  public PresentationMode getPresentationMode() {
-    return ( PresentationMode )playbackOptions.get( PlaybackOptions.PRESENTATION_MODE );
+  public Presentation getPresentation() {
+    return ( Presentation )playbackOptions.get( PlaybackOptions.PRESENTATION_MODE );
   }
-  
+
   /**
    * <p>
-   * Adds a <code>VideoListener</code> to receive notifications of video events like play or stop.
+   * Adds a {@link PlaybackListener} to receive notifications of video events like play or stop.
    * </p>
+   *
+   * @since 1.0
    */
-  public void addVideoListener( VideoListener listener ) {
-    listeners.add( listener );
+  public void addPlaybackListener( PlaybackListener listener ) {
+    playbackListeners.add( listener );
   }
-  
+
   /**
    * <p>
-   * Removes a <code>VideoListener</code>
+   * Removes a {@link PlaybackListener}.
    * </p>
+   *
+   * @since 1.0
    */
-  public void removeVideoListener( VideoListener listener ) {
-    listeners.remove( listener );
+  public void removePlaybackListener( PlaybackListener listener ) {
+    playbackListeners.remove( listener );
   }
-  
-  private void firePlaybackChanged( PlaybackMode oldMode, PlaybackMode newMode ) {
+
+  /**
+   * <p>
+   * Adds a {@link PresentationListener} to receive notifications of presentation events like entered fullscrion and
+   * so on.
+   * </p>
+   *
+   * @since 1.0
+   */
+  public void addPresentationListener( PresentationListener listener ) {
+    presentationListeners.add( listener );
+  }
+
+  /**
+   * <p>
+   * Removes a {@link PresentationListener}.
+   * </p>
+   *
+   * @since 1.0
+   */
+  public void removePresentationListener( PresentationListener listener ) {
+    presentationListeners.remove( listener );
+  }
+
+  private void firePlayback( Playback oldMode, Playback newMode ) {
     if( oldMode != newMode ) {
-      for( VideoListener listener : listeners ) {
+      for( PlaybackListener listener : playbackListeners ) {
         listener.playbackChanged( newMode );
       }
     }
   }
-  
-  private void firePresentationChanged( PresentationMode oldMode, PresentationMode newMode ) {
+
+  private void firePresentation( Presentation oldMode, Presentation newMode ) {
     if( oldMode != newMode ) {
-      for( VideoListener listener : listeners ) {
+      for( PresentationListener listener : presentationListeners ) {
         listener.presentationChanged( newMode );
       }
     }
   }
-  
+
   @Override
   @SuppressWarnings("unchecked")
   public <T> T getAdapter( Class<T> adapter ) {
@@ -377,29 +415,33 @@ public class Video extends Composite {
     }
     return result;
   }
-  
+
   public class PlaybackAdapter {
-    
-    public void setPlaybackMode( PlaybackMode mode ) {
-      playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, mode );
+
+    public void setPlaybackMode( Playback playback ) {
+      playbackOptions.put( PlaybackOptions.PLAYBACK_MODE, playback );
     }
-    
-    public void firePlaybackChange( PlaybackMode mode ) {
-      firePlaybackChanged( null, mode );
+
+    public void firePlaybackChange( Playback playback ) {
+      firePlayback( null, playback );
     }
-    
-    public void firePresentationChange( PresentationMode mode ) {
-      firePresentationChanged( null, mode );
+
+    public void firePresentationChange( Presentation mode ) {
+      firePresentation( null, mode );
     }
-    
+
     public Map<PlaybackOptions, Object> getOptions() {
       return playbackOptions;
     }
 
-    public boolean hasVideoListener() {
-      return !listeners.isEmpty();
+    public boolean hasPlaybackListener() {
+      return !playbackListeners.isEmpty();
     }
-    
+
+    public boolean hasPresentationListener() {
+      return !presentationListeners.isEmpty();
+    }
+
   }
-  
+
 }

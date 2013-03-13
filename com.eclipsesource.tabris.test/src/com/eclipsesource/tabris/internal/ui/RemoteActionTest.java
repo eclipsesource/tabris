@@ -13,7 +13,6 @@ package com.eclipsesource.tabris.internal.ui;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
@@ -34,7 +33,6 @@ import org.mockito.ArgumentCaptor;
 
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 import com.eclipsesource.tabris.ui.Action;
-import com.eclipsesource.tabris.ui.Prominence;
 import com.eclipsesource.tabris.ui.UIContext;
 
 
@@ -56,7 +54,6 @@ public class RemoteActionTest {
     when( actionDescriptor.getId() ).thenReturn( "foo" );
     when( actionDescriptor.getImage() ).thenReturn( UITestUtil.createImage( display ) );
     when( actionDescriptor.getTitle() ).thenReturn( "bar" );
-    when( actionDescriptor.getProminence() ).thenReturn( new Prominence[] { Prominence.DEFAULT } );
   }
 
   @After
@@ -75,17 +72,8 @@ public class RemoteActionTest {
     assertEquals( Integer.valueOf( 49 ), captor.getValue()[ 1 ] );
     assertEquals( Integer.valueOf( 43 ), captor.getValue()[ 2 ] );
     verify( remoteObject ).set( "title", "bar" );
-    verify( remoteObject ).set( "prominence", new String[] { "DEFAULT" } );
     verify( remoteObject ).set( "visibility", false );
     verify( remoteObject ).set( "enabled", false );
-  }
-
-  @Test
-  public void testSetsNoProminencenWhenEmpty() {
-    when( actionDescriptor.getProminence() ).thenReturn( new Prominence[] {} );
-    new RemoteAction( context, actionDescriptor, "foo" );
-
-    verify( remoteObject, never() ).set( eq( "prominence" ), any( String[].class ) );
   }
 
   @Test

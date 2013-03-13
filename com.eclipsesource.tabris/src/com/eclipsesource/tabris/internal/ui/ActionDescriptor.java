@@ -13,7 +13,6 @@ package com.eclipsesource.tabris.internal.ui;
 import org.eclipse.swt.graphics.Image;
 
 import com.eclipsesource.tabris.ui.Action;
-import com.eclipsesource.tabris.ui.Prominence;
 
 
 public class ActionDescriptor {
@@ -22,7 +21,6 @@ public class ActionDescriptor {
   private final Action action;
   private final String title;
   private final Image image;
-  private final Prominence[] prominence;
   private final boolean visible;
   private final boolean enabled;
 
@@ -31,8 +29,7 @@ public class ActionDescriptor {
                            String title,
                            Image image,
                            boolean visible,
-                           boolean enabled,
-                           Prominence... prominence )
+                           boolean enabled )
   {
     this.id = id;
     this.action = action;
@@ -40,7 +37,6 @@ public class ActionDescriptor {
     this.image = image;
     this.enabled = enabled;
     this.visible = visible;
-    this.prominence = prominence;
   }
 
   public String getId() {
@@ -57,10 +53,6 @@ public class ActionDescriptor {
 
   public Image getImage() {
     return image;
-  }
-
-  public Prominence[] getProminence() {
-    return prominence;
   }
 
   public boolean isVisible() {

@@ -14,12 +14,9 @@ import static com.eclipsesource.tabris.internal.Constants.EVENT_SELECTION;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ENABLED;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_IMAGE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PARENT;
-import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PROMINENCE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TITLE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_VISIBILITY;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.rap.rwt.RWT;
@@ -29,7 +26,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.internal.graphics.ImageFactory;
 
-import com.eclipsesource.tabris.ui.Prominence;
 import com.eclipsesource.tabris.ui.UIContext;
 
 
@@ -52,7 +48,6 @@ public class RemoteAction extends AbstractOperationHandler {
     remoteObject.set( PROPERTY_PARENT, parentId );
     remoteObject.set( PROPERTY_TITLE, descriptor.getTitle() );
     setImage();
-    setProminence();
     setDefaultEnabled();
     setDefaultVisible();
   }
@@ -66,22 +61,6 @@ public class RemoteAction extends AbstractOperationHandler {
                                           Integer.valueOf( bounds.height ) };
       remoteObject.set( PROPERTY_IMAGE, imageData );
     }
-  }
-
-  private void setProminence() {
-    if( descriptor.getProminence() != null && descriptor.getProminence().length > 0 ) {
-      remoteObject.set( PROPERTY_PROMINENCE, createProminenceParameter( descriptor.getProminence() ) );
-    }
-  }
-
-  private String[] createProminenceParameter( Prominence[] prominences ) {
-    List<String> parameters = new ArrayList<String>();
-    for( Prominence prominence : prominences ) {
-      parameters.add( prominence.toString() );
-    }
-    String[] result = new String[ parameters.size() ];
-    parameters.toArray( result );
-    return result;
   }
 
   private void setDefaultEnabled() {

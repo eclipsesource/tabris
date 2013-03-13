@@ -72,7 +72,7 @@ public class GeolocationImplTest {
     verify( remoteObject ).set( "needsPosition", "ONCE" );
     verify( remoteObject ).set( "frequency", options.getFrequency() );
     verify( remoteObject ).set( "maximumAge", options.getMaximumAge() );
-    verify( remoteObject ).set( "enableHighAccuracy", options.isEnableHighAccuracy() );
+    verify( remoteObject ).set( "highAccuracy", options.isHighAccuracyEnabled() );
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -97,7 +97,7 @@ public class GeolocationImplTest {
     verify( remoteObject ).set( "needsPosition", "CONTINUOUS" );
     verify( remoteObject ).set( "frequency", options.getFrequency() );
     verify( remoteObject ).set( "maximumAge", options.getMaximumAge() );
-    verify( remoteObject ).set( "enableHighAccuracy", options.isEnableHighAccuracy() );
+    verify( remoteObject ).set( "highAccuracy", options.isHighAccuracyEnabled() );
   }
 
 

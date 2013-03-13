@@ -8,21 +8,29 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.ui;
+package com.eclipsesource.tabris.widgets;
+
+import com.eclipsesource.tabris.widgets.Video.Presentation;
 
 
 /**
  * <p>
- * A {@link Prominence} is a characteristic of an {@link Action}. It define show the {@link Action} should be rendered
- * on the client device. Currently only one {@link Prominence} is defined. More will follow.
+ * A {@link PresentationListener} can be added to a {@link Video} object to receive presentation events like the
+ * entering of the fullscreen mode.
  * </p>
  *
- * @see ActionConfiguration#setProminence(Prominence...)
+ * @see Video
  *
- * @since 0.11
+ * @since 1.0
  */
-public enum Prominence {
+public interface PresentationListener {
 
-  DEFAULT
-
+  /**
+   * <p>
+   * Gets called when the {@link Presentation} has changed, e.g. from FULLSCREEN to EMBEDDED.
+   * </p>
+   *
+   * @see Presentation
+   */
+  void presentationChanged( Presentation newPresentation );
 }

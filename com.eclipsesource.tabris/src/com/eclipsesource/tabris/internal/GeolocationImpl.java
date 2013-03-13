@@ -5,7 +5,7 @@ import static com.eclipsesource.tabris.internal.Constants.EVENT_LOCATION_UPDATE_
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ACCURACY;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ALTITUDE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ALTITUDE_ACCURACY;
-import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ENABLE_HIGH_ACCURACY;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_HIGH_ACCURACY;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ERROR_CODE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ERROR_MESSAGE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_FREQUENCY;
@@ -141,7 +141,7 @@ public class GeolocationImpl extends AbstractOperationHandler implements Geoloca
   private void setOptions( GeolocationOptions options ) {
     remoteObject.set( PROPERTY_FREQUENCY, options.getFrequency() );
     remoteObject.set( PROPERTY_MAXIMUM_AGE, options.getMaximumAge() );
-    remoteObject.set( PROPERTY_ENABLE_HIGH_ACCURACY, options.isEnableHighAccuracy() );
+    remoteObject.set( PROPERTY_HIGH_ACCURACY, options.isHighAccuracyEnabled() );
   }
 
   @Override

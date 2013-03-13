@@ -42,7 +42,6 @@ public class ActionConfiguration {
   protected final Class<? extends Action> actionType;
   protected String title;
   protected Image image;
-  protected Prominence[] prominence;
   protected boolean enabled;
   protected boolean visible;
 
@@ -68,7 +67,6 @@ public class ActionConfiguration {
     this.actionType = actionType;
     this.title = "";
     this.image = null;
-    this.prominence = new Prominence[] {};
     this.enabled = true;
     this.visible = true;
   }
@@ -120,13 +118,4 @@ public class ActionConfiguration {
     return this;
   }
 
-  /**
-   * <p>
-   * Sets the {@link Prominence} of an action. One action can have multiple prominences.
-   * </p>
-   */
-  public ActionConfiguration setProminence( Prominence... prominence ) {
-    this.prominence = prominence;
-    return this;
-  }
 }

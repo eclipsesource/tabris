@@ -22,6 +22,6 @@ public class InternalActionConfiguration extends ActionConfiguration {
 
   public ActionDescriptor createDescriptor() {
     Action action = InstanceCreator.createInstance( actionType );
-    return new ActionDescriptor( actionId, action, title, image, visible, enabled, prominence );
+    return new ActionDescriptor( actionId, action, title, image, visible, enabled );
   }
 }

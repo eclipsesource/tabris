@@ -45,6 +45,20 @@
             </message_arguments>
         </filter>
     </resource>
+    <resource path="src/com/eclipsesource/tabris/geolocation/GeolocationOptions.java" type="com.eclipsesource.tabris.geolocation.GeolocationOptions">
+        <filter id="1143996420">
+            <message_arguments>
+                <message_argument value="isHighAccuracyEnabled()"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/interaction/LaunchOptions.java" type="com.eclipsesource.tabris.interaction.LaunchOptions">
+        <filter id="1143996420">
+            <message_arguments>
+                <message_argument value="add(String, Object)"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="src/com/eclipsesource/tabris/internal/AppImpl.java" type="com.eclipsesource.tabris.internal.AppImpl">
         <filter id="574660632">
             <message_arguments>
@@ -105,6 +119,33 @@
                 <message_argument value="Geolocation"/>
                 <message_argument value="ClientService"/>
                 <message_argument value="GeolocationImpl"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/widgets/Video.java" type="com.eclipsesource.tabris.widgets.Video$PlaybackAdapter">
+        <filter id="1143996420">
+            <message_arguments>
+                <message_argument value="firePlaybackChange(Video.Playback)"/>
+            </message_arguments>
+        </filter>
+        <filter id="1143996420">
+            <message_arguments>
+                <message_argument value="firePresentationChange(Video.Presentation)"/>
+            </message_arguments>
+        </filter>
+        <filter id="1143996420">
+            <message_arguments>
+                <message_argument value="hasPlaybackListener()"/>
+            </message_arguments>
+        </filter>
+        <filter id="1143996420">
+            <message_arguments>
+                <message_argument value="hasPresentationListener()"/>
+            </message_arguments>
+        </filter>
+        <filter id="1143996420">
+            <message_arguments>
+                <message_argument value="setPlaybackMode(Video.Playback)"/>
             </message_arguments>
         </filter>
     </resource>

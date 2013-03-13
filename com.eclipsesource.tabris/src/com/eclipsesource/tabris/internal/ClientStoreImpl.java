@@ -14,7 +14,7 @@ import static com.eclipsesource.tabris.internal.Constants.TYPE_CLIENT_STORE;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_ADD;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_CLEAR;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_REMOVE;
-import static com.eclipsesource.tabris.internal.Constants.METHOD_SYNCHRONIZE_STORE;
+import static com.eclipsesource.tabris.internal.Constants.METHOD_SYNCHRONIZE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_KEY;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_KEYS;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_VALUE;
@@ -90,7 +90,7 @@ public class ClientStoreImpl extends AbstractOperationHandler implements ClientS
 
   @Override
   public void handleCall( String method, Map<String, Object> parameters ) {
-    if( method.equals( METHOD_SYNCHRONIZE_STORE ) ) {
+    if( method.equals( METHOD_SYNCHRONIZE ) ) {
       for( Entry<String, Object> entry : parameters.entrySet() ) {
         store.put( entry.getKey(), ( String )entry.getValue() );
       }

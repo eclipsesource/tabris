@@ -44,7 +44,7 @@ public class ClientCanvasTestUtil {
 
   private static JSONArray createPolylineParam() {
     JSONArray drawingParam1 = new JSONArray();
-    drawingParam1.put( Constants.PROPERTY_POLYLINE );
+    drawingParam1.put( Constants.PROPERTY_PATH );
     JSONArray polyline = createPolyline();
     drawingParam1.put( polyline );
     return drawingParam1;
