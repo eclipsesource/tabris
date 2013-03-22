@@ -29,8 +29,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.test.TabrisTestUtil;
-import com.eclipsesource.tabris.ui.PageManager;
-import com.eclipsesource.tabris.ui.UIContext;
+import com.eclipsesource.tabris.ui.PageOperator;
+import com.eclipsesource.tabris.ui.UI;
 
 
 @SuppressWarnings("restriction")
@@ -89,11 +89,11 @@ public class RemoteUITest {
   }
 
   @Test
-  public void testShowPageEventCallsContext() {
-    UIContext context = mock( UIContext.class );
-    PageManager pageManager = mock( PageManager.class );
-    when( context.getPageManager() ).thenReturn( pageManager );
-    RemoteUI remoteUI = createRemoteUI( context );
+  public void testShowPageEventCallsUI() {
+    UI ui = mock( UI.class );
+    PageOperator pageOperator = mock( PageOperator.class );
+    when( ui.getPageOperator() ).thenReturn( pageOperator );
+    RemoteUI remoteUI = createRemoteUI( ui );
     Map<String, Object> properties = new HashMap<String, Object>();
     properties.put( "pageId", "foo" );
     Controller controller = mock( Controller.class );
@@ -102,24 +102,24 @@ public class RemoteUITest {
 
     Fixture.dispatchNotify( remoteObject, "ShowPage", properties );
 
-    verify( pageManager ).showPage( "bar" );
+    verify( pageOperator ).openPage( "bar" );
   }
 
   @Test
-  public void testShowPreviousPageEventCallsContext() {
-    UIContext context = mock( UIContext.class );
-    PageManager pageManager = mock( PageManager.class );
-    when( context.getPageManager() ).thenReturn( pageManager );
-    createRemoteUI( context );
+  public void testShowPreviousPageEventCallsUI() {
+    UI ui = mock( UI.class );
+    PageOperator pageOperator = mock( PageOperator.class );
+    when( ui.getPageOperator() ).thenReturn( pageOperator );
+    createRemoteUI( ui );
 
     Fixture.dispatchNotify( remoteObject, "ShowPreviousPage", null );
 
-    verify( pageManager ).showPreviousPage();
+    verify( pageOperator ).closeCurrentPage();
   }
 
   @Test
   public void testSendsForeground() {
-    RemoteUI remoteUI = createRemoteUI( mock( UIContext.class ) );
+    RemoteUI remoteUI = createRemoteUI( mock( UI.class ) );
 
     remoteUI.setForeground( new Color( shell.getDisplay(), 100, 200, 150 ) );
 
@@ -128,17 +128,17 @@ public class RemoteUITest {
 
   @Test
   public void testSendsBackground() {
-    RemoteUI remoteUI = createRemoteUI( mock( UIContext.class ) );
+    RemoteUI remoteUI = createRemoteUI( mock( UI.class ) );
 
     remoteUI.setBackground( new Color( shell.getDisplay(), 100, 120, 150 ) );
 
     verify( remoteObject ).set( "background", new int[] { 100, 120, 150 } );
   }
 
-  private RemoteUI createRemoteUI( UIContext context ) {
+  private RemoteUI createRemoteUI( UI ui ) {
     RemoteUI remoteUI = new RemoteUI( shell );
     when( remoteObject.getHandler() ).thenReturn( remoteUI );
-    remoteUI.setContext( context );
+    remoteUI.setUi( ui );
     return remoteUI;
   }
 }

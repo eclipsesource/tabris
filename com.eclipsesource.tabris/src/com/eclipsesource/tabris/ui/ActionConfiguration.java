@@ -13,10 +13,11 @@ package com.eclipsesource.tabris.ui;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNullAndNotEmpty;
 
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.rap.rwt.Adaptable;
 import org.eclipse.swt.widgets.Display;
 
-import com.eclipsesource.tabris.internal.ui.InternalActionConfiguration;
+import com.eclipsesource.tabris.internal.ui.ActionDescriptor;
+import com.eclipsesource.tabris.internal.ui.InstanceCreator;
 
 
 /**
@@ -26,24 +27,22 @@ import com.eclipsesource.tabris.internal.ui.InternalActionConfiguration;
  * {@link ActionConfiguration}. It provides methods to define the visual role in a UI e.g. it's image or it's text.
  * </p>
  * <p>
- * {@link ActionConfiguration} objects will be usually created within the
- * {@link UIConfiguration#configure(UI, UIContext)} method and added to the {@link UI}.
+ * {@link ActionConfiguration} objects will be usually added to the {@link UIConfiguration}.
  * </p>
  *
  * @see Action
  * @see UIConfiguration
- * @see UI
  *
  * @since 0.11
  */
-public class ActionConfiguration {
+public class ActionConfiguration implements Adaptable {
 
   protected final String actionId;
   protected final Class<? extends Action> actionType;
   protected String title;
-  protected Image image;
   protected boolean enabled;
   protected boolean visible;
+  private String imagePath;
 
   /**
    * <p>
@@ -54,19 +53,16 @@ public class ActionConfiguration {
    * @param actionId the unique id of the {@link Action}. Must not be empty or <code>null</code>.
    * @param actionType the type of the {@link Action} to be created. Must not be <code>null</code>.
    *
-   * @see PageManager#showPage(String)
+   * @see PageOperator#openPage(String)
+   * @since 1.0
    */
-  public static ActionConfiguration newAction( String actionId, Class<? extends Action> actionType ) {
+  public ActionConfiguration( String actionId, Class<? extends Action> actionType ) {
     checkArgumentNotNullAndNotEmpty( actionId, "Action Id" );
     checkArgumentNotNull( actionType, "Type of Action" );
-    return new InternalActionConfiguration( actionId, actionType );
-  }
-
-  protected ActionConfiguration( String actionId, Class<? extends Action> actionType ) {
     this.actionId = actionId;
     this.actionType = actionType;
     this.title = "";
-    this.image = null;
+    this.imagePath = null;
     this.enabled = true;
     this.visible = true;
   }
@@ -86,7 +82,7 @@ public class ActionConfiguration {
 
   /**
    * <p>
-   * Defines the initial visibility of the action. To modify this state at runtime use {@link ActionManager}.
+   * Defines the initial visibility of the action. To modify this state at runtime use {@link ActionOperator}.
    * </p>
    */
   public ActionConfiguration setVisible( boolean visible ) {
@@ -96,7 +92,7 @@ public class ActionConfiguration {
 
   /**
    * <p>
-   * Defines the initial enabled state of the action. To modify this state at runtime use {@link ActionManager}.
+   * Defines the initial enabled state of the action. To modify this state at runtime use {@link ActionOperator}.
    * </p>
    */
   public ActionConfiguration setEnabled( boolean enabled ) {
@@ -107,15 +103,34 @@ public class ActionConfiguration {
   /**
    * <p>
    * Defines the image of an action. You will need to have a {@link Display} to create one. Take a look
-   * at {@link UIContext#getDisplay()}.
+   * at {@link UI#getDisplay()}.
    * </p>
    *
-   * @param image the image of the action. Must not be <code>null</code>.
+   * @param imagePath the image of the action. Must not be <code>null</code>.
+   *
+   * @since 1.0
    */
-  public ActionConfiguration setImage( Image image ) {
-    checkArgumentNotNull( image, "Action Image" );
-    this.image = image;
+  public ActionConfiguration setImage( String imagePath ) {
+    checkArgumentNotNull( imagePath, "Action Image" );
+    this.imagePath = imagePath;
     return this;
+  }
+
+  /**
+   * @since 1.0
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public <T> T getAdapter( Class<T> adapter ) {
+    if( adapter == ActionDescriptor.class ) {
+      return ( T )createDescriptor();
+    }
+    return null;
+  }
+
+  private ActionDescriptor createDescriptor() {
+    Action action = InstanceCreator.createInstance( actionType );
+    return new ActionDescriptor( actionId, action, title, imagePath, visible, enabled );
   }
 
 }

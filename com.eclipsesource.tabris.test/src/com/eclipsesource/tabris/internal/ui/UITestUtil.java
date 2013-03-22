@@ -17,6 +17,6 @@ import org.eclipse.swt.widgets.Display;
 public class UITestUtil {
 
   public static Image createImage( Display display ) {
-    return new Image( display, UIImplTest.class.getResourceAsStream( "testImage.png" ) );
+    return new Image( display, UITestUtil.class.getResourceAsStream( "testImage.png" ) );
   }
 }

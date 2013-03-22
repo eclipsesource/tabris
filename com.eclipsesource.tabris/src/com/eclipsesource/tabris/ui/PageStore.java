@@ -1,14 +1,4 @@
-/*******************************************************************************
- * Copyright (c) 2013 EclipseSource and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    EclipseSource - initial API and implementation
- ******************************************************************************/
-package com.eclipsesource.tabris.widgets.swipe;
+package com.eclipsesource.tabris.ui;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,38 +6,43 @@ import java.util.Map;
 
 /**
  * <p>
- * A <code>SwipeContet</p> is a shared store that exists only once per {@link Swipe} object. The context will be shared
- * during all swiping events.
+ * A PageStore object can be used to store session specific data and pass them from one page to another. This enables
+ * a loose communication between pages.
  * </p>
  *
- * @see SwipeListener
- *
- * @since 0.10
+ * @since 1.0
  */
-public class SwipeContext {
+public class PageStore {
 
   private final Map<String, Object> store;
 
-  public SwipeContext() {
+  public PageStore() {
     this.store = new HashMap<String, Object>();
   }
 
   /**
    * <p>
-   * Adds a value to this context. Already existing values will be overridden.
+   * Adds a value to this store. Already existing values will be overridden.
    * </p>
    * @param key key to identify the stored value. Must not be empty or <code>null</code>.
    * @param value the value to be stored. Must not be <code>null</code>.
-   * @since 1.0
    */
   public void set( String key, Object value ) {
     store.put( key, value );
   }
 
+  /**
+   * <p>
+   * Adds all Values form the passed in store to this store.
+   * </p>
+   */
+  public void addStore( PageStore store ) {
+    this.store.putAll( store.getAll() );
+  }
 
   /**
    * <p>
-   * Gets a value from this context, already casted to the passed in type.
+   * Gets a value from this store, already casted to the passed in type.
    * </p>
    *
    * @throws IllegalArgumentException when the stored value can not be casted to the passed in type.
@@ -64,5 +59,9 @@ public class SwipeContext {
       }
     }
     return result;
+  }
+
+  Map<String, Object> getAll() {
+    return new HashMap<String, Object>( store );
   }
 }

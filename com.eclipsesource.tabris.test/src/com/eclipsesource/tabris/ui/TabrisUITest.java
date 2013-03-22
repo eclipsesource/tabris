@@ -13,9 +13,12 @@ package com.eclipsesource.tabris.ui;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import org.eclipse.rap.rwt.lifecycle.PhaseId;
+import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
@@ -24,11 +27,13 @@ import org.junit.Test;
 
 import com.eclipsesource.tabris.internal.ZIndexStackLayout;
 import com.eclipsesource.tabris.internal.ui.TestPage;
+import com.eclipsesource.tabris.test.TabrisTestUtil;
 
 
 public class TabrisUITest {
 
   private Shell shell;
+  private RemoteObject remoteObject;
 
   @Before
   public void setUp() {
@@ -36,6 +41,7 @@ public class TabrisUITest {
     Display display = new Display();
     shell = new Shell( display );
     Fixture.fakePhase( PhaseId.PROCESS_ACTION );
+    remoteObject = TabrisTestUtil.mockRemoteObject();
   }
 
   @After
@@ -57,8 +63,7 @@ public class TabrisUITest {
 
   @Test
   public void testCreatesRootPages() {
-    UIConfiguration configuration = new ExampleConfig();
-    TabrisUI tabrisUI = new TabrisUI( configuration );
+    TabrisUI tabrisUI = new TabrisUI( createConfiguration() );
 
     tabrisUI.create( shell );
 
@@ -67,8 +72,7 @@ public class TabrisUITest {
 
   @Test
   public void testZIndexLayout() {
-    UIConfiguration configuration = new ExampleConfig();
-    TabrisUI tabrisUI = new TabrisUI( configuration );
+    TabrisUI tabrisUI = new TabrisUI( createConfiguration() );
     shell.open();
 
     tabrisUI.create( shell );
@@ -76,13 +80,33 @@ public class TabrisUITest {
     assertTrue( shell.getLayout() instanceof ZIndexStackLayout );
   }
 
-  private static class ExampleConfig implements UIConfiguration {
+  @Test
+  public void testSetsBackgroundOnRemoteUI() {
+    TabrisUI tabrisUI = new TabrisUI( createConfiguration() );
+    shell.open();
 
-    @Override
-    public void configure( UI ui, UIContext context ) {
-      ui.addPage( PageConfiguration.newPage( "foo1", TestPage.class ).setTopLevel( true ) );
-      ui.addPage( PageConfiguration.newPage( "foo2", TestPage.class ).setTopLevel( true ) );
-    }
+    tabrisUI.create( shell );
 
+    verify( remoteObject ).set( "background", new int[] { 100, 100, 100 } );
   }
+
+  @Test
+  public void testSetsForegroundOnRemoteUI() {
+    TabrisUI tabrisUI = new TabrisUI( createConfiguration() );
+    shell.open();
+
+    tabrisUI.create( shell );
+
+    verify( remoteObject ).set( "foreground", new int[] { 200, 200, 200 } );
+  }
+
+  private UIConfiguration createConfiguration() {
+    UIConfiguration configuration = new UIConfiguration();
+    configuration.addPageConfiguration( new PageConfiguration( "foo1", TestPage.class ).setTopLevel( true ) );
+    configuration.addPageConfiguration( new PageConfiguration( "foo2", TestPage.class ).setTopLevel( true ) );
+    configuration.setBackground( new RGB( 100, 100, 100 ) );
+    configuration.setForeground( new RGB( 200, 200, 200 ) );
+    return configuration;
+  }
+
 }

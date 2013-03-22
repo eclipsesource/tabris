@@ -21,6 +21,7 @@ public class Constants {
   public static final String THEME_ID_ANDROID = "com.eclipsesource.rap.mobile.theme.android";
   public static final String THEME_PATH_IOS = "theme/ios.css";
   public static final String THEME_PATH_ANDROID = "theme/theme-android-holo.css";
+  public static final String INDEX_JSON = "index.json";
 
   // Common Constants
   public static final String METHOD_OPEN = "open";

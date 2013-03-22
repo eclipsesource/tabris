@@ -10,20 +10,15 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.ui;
 
-import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Display;
 
 
 /**
  * <p>
- * For a Tabris UI one {@link UI} object exists. This object will be passed in you {@link UIConfiguration}
- * implementation to add pages and actions. Think about it as the glue between you pages and actions.
+ * The {@link UI} is a shared object that you will find all over the Tabris UI API. It's your control for the
+ * whole UI once it was created. You can use it to store global data for using it in a {@link Page} or to navigate
+ * through your application.
  * </p>
- *
- * @see PageConfiguration
- * @see Page
- * @see ActionConfiguration
- * @see Action
- * @see TransitionListener
  *
  * @since 0.11
  */
@@ -31,48 +26,30 @@ public interface UI {
 
   /**
    * <p>
-   * Adds a page represented by a {@link PageConfiguration} object.
-   * </p>
-   */
-  UI addPage( PageConfiguration configuration );
-
-  /**
-   * <p>
-   * Adds an action represented by an {@link ActionConfiguration} object.
-   * </p>
-   */
-  UI addAction( ActionConfiguration configuration );
-
-  /**
-   * <p>
-   * Sets the foreground color for navigation controls and the area where those controls are located on.
+   * Returns the {@link Display} object for the accessing user.
    * </p>
    *
    * @since 1.0
    */
-  void setForeground( Color foreground );
+  Display getDisplay();
 
   /**
    * <p>
-   * Sets the background color for navigation controls and the area where those controls are located on.
+   * Returns the {@link PageOperator} for the current session. With this manage you can do all the navigation.
    * </p>
    *
    * @since 1.0
    */
-  void setBackground( Color background );
+  PageOperator getPageOperator();
 
   /**
    * <p>
-   * Adds a {@link TransitionListener} that notifies you when a user browses from one page to another.
+   * Returns the {@link ActionOperator} for the current session. With this you can manage the state of {@link Action}
+   * objects.
    * </p>
+   *
+   * @since 1.0
    */
-  UI addTransitionListener( TransitionListener listener );
-
-  /**
-   * <p>
-   * Removes a {@link TransitionListener}.
-   * </p>
-   */
-  UI removeTransitionListener( TransitionListener listener );
+  ActionOperator getActionOperator();
 
 }

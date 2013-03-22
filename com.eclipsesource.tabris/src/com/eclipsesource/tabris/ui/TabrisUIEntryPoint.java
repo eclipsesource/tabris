@@ -38,14 +38,10 @@ import com.eclipsesource.tabris.TabrisClient;
  * Anyway, if you have the need to create your own display e.g. for using it together with JFace DataBinding, you need
  * to create the {@link TabrisUI} by your own.
  * </p>
- * <p>
- * For more details on what's a Tabris UI please see {@link UIConfiguration}.
- * </p>
  *
  * @see ApplicationConfiguration
  * @see EntryPoint
  * @see EntryPointFactory
- * @see UIConfiguration
  * @see TabrisUI
  *
  * @since 1.0
@@ -62,7 +58,6 @@ public class TabrisUIEntryPoint implements EntryPoint {
    *
    * @param configuration the configuration of the UI. Must not be <code>null</code>.
    *
-   * @see UIConfiguration
    */
   public TabrisUIEntryPoint( UIConfiguration configuration ) throws IllegalArgumentException {
     this( new TabrisUI( configuration ) );

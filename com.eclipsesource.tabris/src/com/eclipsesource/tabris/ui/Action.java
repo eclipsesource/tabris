@@ -20,11 +20,11 @@ package com.eclipsesource.tabris.ui;
  * </p>
  * <p>
  * During runtime you can influence an {@link Action} by changing it's visibility or it's enablement using the
- * {@link ActionManager}.
+ * {@link ActionOperator}.
  * </p>
  *
  * @see ActionConfiguration
- * @see ActionManager
+ * @see ActionOperator
  *
  * @since 0.11
  */
@@ -35,8 +35,10 @@ public interface Action {
    * Will be called by the Tabris UI when a User presses the visual representation of this action.
    * </p>
    *
-   * @param context the context to control the application flow and share data.
+   * @param ui the ui to control the application flow and share data.
+   *
+   * @since 1.0
    */
-  void execute( UIContext context );
+  void execute( UI ui );
 
 }

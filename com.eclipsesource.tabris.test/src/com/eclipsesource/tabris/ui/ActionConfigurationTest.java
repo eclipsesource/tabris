@@ -10,34 +10,30 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.ui;
 
-import static com.eclipsesource.tabris.ui.ActionConfiguration.newAction;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.internal.ui.ActionDescriptor;
-import com.eclipsesource.tabris.internal.ui.InternalActionConfiguration;
 import com.eclipsesource.tabris.internal.ui.TestAction;
-import com.eclipsesource.tabris.internal.ui.UITestUtil;
 
 
 public class ActionConfigurationTest {
 
-  private Display display;
 
   @Before
   public void setUp() {
     Fixture.setUp();
-    display = new Display();
+    new Display();
   }
 
   @After
@@ -47,28 +43,37 @@ public class ActionConfigurationTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithNullId() {
-    ActionConfiguration.newAction( null, TestAction.class );
+    new ActionConfiguration( null, TestAction.class );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithEmptyId() {
-    ActionConfiguration.newAction( "", TestAction.class );
+    new ActionConfiguration( "", TestAction.class );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithNullType() {
-    ActionConfiguration.newAction( "foo", null );
+    new ActionConfiguration( "foo", null );
+  }
+
+  @Test
+  public void testCanCreateDescriptor() {
+    ActionConfiguration configuration = new ActionConfiguration( "foo", TestAction.class );
+
+    ActionDescriptor descriptor = configuration.getAdapter( ActionDescriptor.class );
+
+    assertNotNull( descriptor );
   }
 
   @Test
   public void testSetsDefaultAttributes() {
-    ActionConfiguration configuration = ActionConfiguration.newAction( "foo", TestAction.class );
+    ActionConfiguration configuration = new ActionConfiguration( "foo", TestAction.class );
 
-    ActionDescriptor descriptor = ( ( InternalActionConfiguration )configuration ).createDescriptor();
+    ActionDescriptor descriptor = configuration.getAdapter( ActionDescriptor.class );
 
     assertEquals( "foo", descriptor.getId() );
     assertTrue( descriptor.getAction() instanceof TestAction );
-    assertNull( descriptor.getImage() );
+    assertNull( descriptor.getImagePath() );
     assertEquals( "", descriptor.getTitle() );
     assertTrue( descriptor.isEnabled() );
     assertTrue( descriptor.isVisible() );
@@ -76,49 +81,48 @@ public class ActionConfigurationTest {
 
   @Test
   public void testSetsTitle() {
-    ActionConfiguration configuration = newAction( "foo", TestAction.class ).setTitle( "bar" );
+    ActionConfiguration configuration = new ActionConfiguration( "foo", TestAction.class ).setTitle( "bar" );
 
-    ActionDescriptor descriptor = ( ( InternalActionConfiguration )configuration ).createDescriptor();
+    ActionDescriptor descriptor = configuration.getAdapter( ActionDescriptor.class );
 
     assertEquals( "bar", descriptor.getTitle() );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testSetTitleFailsWithNull() {
-    newAction( "foo", TestAction.class ).setTitle( null );
+    new ActionConfiguration( "foo", TestAction.class ).setTitle( null );
   }
 
   @Test
   public void testSetsVisible() {
-    ActionConfiguration configuration = newAction( "foo", TestAction.class ).setVisible( false );
+    ActionConfiguration configuration = new ActionConfiguration( "foo", TestAction.class ).setVisible( false );
 
-    ActionDescriptor descriptor = ( ( InternalActionConfiguration )configuration ).createDescriptor();
+    ActionDescriptor descriptor = configuration.getAdapter( ActionDescriptor.class );
 
     assertFalse( descriptor.isVisible() );
   }
 
   @Test
   public void testSetsEnabled() {
-    ActionConfiguration configuration = newAction( "foo", TestAction.class ).setEnabled( false );
+    ActionConfiguration configuration = new ActionConfiguration( "foo", TestAction.class ).setEnabled( false );
 
-    ActionDescriptor descriptor = ( ( InternalActionConfiguration )configuration ).createDescriptor();
+    ActionDescriptor descriptor = configuration.getAdapter( ActionDescriptor.class );
 
     assertFalse( descriptor.isEnabled() );
   }
 
   @Test
   public void testSetsImage() {
-    Image image = UITestUtil.createImage( display );
-    ActionConfiguration configuration = newAction( "foo", TestAction.class ).setImage( image );
+    ActionConfiguration configuration = new ActionConfiguration( "foo", TestAction.class ).setImage( "testImage.png" );
 
-    ActionDescriptor descriptor = ( ( InternalActionConfiguration )configuration ).createDescriptor();
+    ActionDescriptor descriptor = configuration.getAdapter( ActionDescriptor.class );
 
-    assertSame( image, descriptor.getImage() );
+    assertSame( "testImage.png", descriptor.getImagePath() );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testSetImageFailsWithNull() {
-    newAction( "foo", TestAction.class ).setImage( null );
+    new ActionConfiguration( "foo", TestAction.class ).setImage( null );
   }
 
 }

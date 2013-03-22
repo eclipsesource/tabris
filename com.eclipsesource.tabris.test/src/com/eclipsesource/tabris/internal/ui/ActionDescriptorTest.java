@@ -10,15 +10,12 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
-import static com.eclipsesource.tabris.internal.ui.UITestUtil.createImage;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,12 +25,9 @@ import com.eclipsesource.tabris.ui.Action;
 
 public class ActionDescriptorTest {
 
-  private Display display;
-
   @Before
   public void setUp() {
     Fixture.setUp();
-    display = new Display();
   }
 
   @After
@@ -46,7 +40,7 @@ public class ActionDescriptorTest {
     ActionDescriptor descriptor = new ActionDescriptor( "foo",
                                                         mock( Action.class ),
                                                         "bar",
-                                                        createImage( display ),
+                                                        "testImage.png",
                                                         true,
                                                         true );
 
@@ -59,7 +53,7 @@ public class ActionDescriptorTest {
     ActionDescriptor descriptor = new ActionDescriptor( "foo",
                                                         action,
                                                         "bar",
-                                                        createImage( display ),
+                                                        "testImage.png",
                                                         true,
                                                         true );
 
@@ -72,7 +66,7 @@ public class ActionDescriptorTest {
     ActionDescriptor descriptor = new ActionDescriptor( "foo",
                                                         action,
                                                         "bar",
-                                                        createImage( display ),
+                                                        "testImage.png",
                                                         true,
                                                         true );
 
@@ -85,7 +79,7 @@ public class ActionDescriptorTest {
     ActionDescriptor descriptor = new ActionDescriptor( "foo",
                                                         action,
                                                         "bar",
-                                                        createImage( display ),
+                                                        "testImage.png",
                                                         true,
                                                         true );
 
@@ -98,7 +92,7 @@ public class ActionDescriptorTest {
     ActionDescriptor descriptor = new ActionDescriptor( "foo",
                                                         action,
                                                         "bar",
-                                                        createImage( display ),
+                                                        "testImage.png",
                                                         true,
                                                         true );
 
@@ -106,17 +100,17 @@ public class ActionDescriptorTest {
   }
 
   @Test
-  public void testGetImage() {
-    Action action = mock( Action.class );
-    Image image = createImage( display );
-    ActionDescriptor descriptor = new ActionDescriptor( "foo",
-                                                        action,
-                                                        "bar",
-                                                        image,
-                                                        true,
-                                                        true );
+    public void testGetImagePath() {
+      Action action = mock( Action.class );
+      String image = "testImage.png";
+      ActionDescriptor descriptor = new ActionDescriptor( "foo",
+                                                          action,
+                                                          "bar",
+                                                          image,
+                                                          true,
+                                                          true );
 
-    assertSame( image, descriptor.getImage() );
-  }
+      assertSame( image, descriptor.getImagePath() );
+    }
 
 }

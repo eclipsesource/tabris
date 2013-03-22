@@ -10,21 +10,20 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.ui;
 
-import com.eclipsesource.tabris.Store;
 
 
 /**
  * <p>
- * The {@link PageManager} can be used to handle pages. This includes the navigation or the data transmission between
- * single pages. To get an instance use {@link UIContext#getPageManager()}.
+ * The {@link PageOperator} can be used to handle pages. This includes the navigation or the data transmission between
+ * single pages. To get an instance use {@link UI#getPageOperator()}.
  * </p>
  *
- * @see UIContext
+ * @see UI
  * @see Page
  *
- * @since 0.11
+ * @since 1.0
  */
-public interface PageManager {
+public interface PageOperator {
 
   /**
    * <p>
@@ -34,48 +33,56 @@ public interface PageManager {
    * @param pageId the Id of the page to show. Must not be empty or <code>null</code>.
    *
    * @throws IllegalStateException when no page exist for the given id.
+   *
+   * @since 1.0
    */
-  void showPage( String pageId ) throws IllegalStateException;
+  void openPage( String pageId ) throws IllegalStateException;
 
   /**
    * <p>
    * When called the specified page will be shown on the client device. The passed in store will be the page store for
-   * the new page. See {@link PageManager#getPageStore()}.
+   * the new page. See {@link PageOperator#getCurrentPageStore()}.
    * </p>
    *
    * @param pageId the Id of the page to show. Must not be empty or <code>null</code>.
    * @param store the page store for the new page. Must not be <code>null</code>.
    *
    * @throws IllegalStateException when no page exist for the given id.
+   *
+   * @since 1.0
    */
-  void showPage( String pageId, Store store );
+  void openPage( String pageId, PageStore store ) throws IllegalStateException;
 
   /**
    * <p>
    * Shows the last page and destroys the current active page.
    * </p>
    *
-   * @return <code>true</code> when the back navigation was successful. When <code>false</code> a back navigation was
-   *         not possible e.g. when the current active page is a top level page.
+   * @throws IllegalStateException when it's called on a top level page.
+   *
+   * @since 1.0
    */
-  boolean showPreviousPage();
+  void closeCurrentPage() throws IllegalStateException;
 
   /**
    * <p>
    * Returns the current visible {@link Page} object.
    * </p>
+   *
+   * @since 1.0
    */
-  Page getPage();
+  Page getCurrentPage();
 
   /**
    * <p>
-   * As you may have seen there is a global store in {@link UIContext#getGlobalStore()} to store data application wide.
-   * But in most cases global data is not necessary. For this every page has it's own {@link Store}. You can influence
-   * this store by calling the {@link PageManager#showPage(String, Store)} method with a new {@link Store}. This method
-   * returns the {@link Store} for the current active page.
+   * Every page has it's own {@link PageStore}. You can influence this store by calling the
+   * {@link PageOperator#openPage(String, PageStore)} method with a new {@link PageStore}. This method
+   * returns the {@link PageStore} for the current active page.
    * </p>
+   *
+   * @since 1.0
    */
-  Store getPageStore();
+  PageStore getCurrentPageStore();
 
   /**
    * <p>
@@ -84,5 +91,6 @@ public interface PageManager {
    *
    * @since 1.0
    */
-  void setTitle( Page page, String title );
+  void setCurrentPageTitle( Page page, String title );
+
 }

@@ -20,22 +20,22 @@ import java.util.Map;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import com.eclipsesource.tabris.Store;
 import com.eclipsesource.tabris.internal.ZIndexStackLayout;
 import com.eclipsesource.tabris.ui.Page;
+import com.eclipsesource.tabris.ui.PageStore;
 import com.eclipsesource.tabris.ui.TransitionListener;
 
 
 public class Controller {
 
-  private final DescriptorHolder content;
+  private final UIDescriptor content;
   private final Shell shell;
   private final List<RemoteAction> globalActions;
   private final Map<PageDescriptor, RemotePage> rootPages;
   private final RemoteUI remoteUI;
   private PageFlow currentFlow;
 
-  public Controller( Shell shell, RemoteUI remoteUI, DescriptorHolder content ) {
+  public Controller( Shell shell, RemoteUI remoteUI, UIDescriptor content ) {
     this.shell = shell;
     this.remoteUI = remoteUI;
     this.content = content;
@@ -43,25 +43,25 @@ public class Controller {
     this.rootPages = new HashMap<PageDescriptor, RemotePage>();
   }
 
-  public void createRootPages( UIContextImpl context ) {
+  public void createRootPages( UIImpl ui ) {
     List<PageDescriptor> pages = content.getRootPages();
     verifyRootPages( pages );
-    createRootRemotePages( context, pages );
-    showRoot( context, pages.get( 0 ), new Store() );
+    createRootRemotePages( ui, pages );
+    showRoot( ui, pages.get( 0 ), new PageStore() );
   }
 
-  private void createRootRemotePages( UIContextImpl context, List<PageDescriptor> pages ) {
+  private void createRootRemotePages( UIImpl ui, List<PageDescriptor> pages ) {
     for( PageDescriptor descriptor : pages ) {
-      RemotePage remotePage = new RemotePage( context, descriptor, remoteUI.getRemoteUIId(), new Store() );
+      RemotePage remotePage = new RemotePage( ui, descriptor, remoteUI.getRemoteUIId(), new PageStore() );
       rootPages.put( descriptor, remotePage );
       remotePage.createControl( shell );
     }
   }
 
-  public void createGlobalActions( UIContextImpl context ) {
+  public void createGlobalActions( UIImpl ui ) {
     List<ActionDescriptor> actions = content.getGlobalActions();
     for( ActionDescriptor actionDescriptor : actions ) {
-      globalActions.add( new RemoteAction( context, actionDescriptor, remoteUI.getRemoteUIId() ) );
+      globalActions.add( new RemoteAction( ui, actionDescriptor, remoteUI.getRemoteUIId() ) );
     }
   }
 
@@ -71,98 +71,98 @@ public class Controller {
     }
   }
 
-  void show( UIContextImpl context, PageDescriptor newPage, Store store ) {
+  void show( UIImpl ui, PageDescriptor newPage, PageStore store ) {
     if( newPage.isTopLevel() ) {
-      showRoot( context, newPage, store );
+      showRoot( ui, newPage, store );
     } else {
-      showPage( context, newPage, store );
+      showPage( ui, newPage, store );
     }
   }
 
-  void showRoot( UIContextImpl context, PageDescriptor newPage, Store store ) {
+  void showRoot( UIImpl ui, PageDescriptor newPage, PageStore store ) {
     RemotePage oldRoot = null;
     RemotePage newRoot = rootPages.get( newPage );
     newRoot.getStore().addStore( store );
     if( currentFlow != null ) {
-      oldRoot = cleanupOldRoot( context, newRoot );
+      oldRoot = cleanupOldRoot( ui, newRoot );
     }
-    initializeNewRoot( context, oldRoot, newRoot );
+    initializeNewRoot( ui, oldRoot, newRoot );
   }
 
-  private RemotePage cleanupOldRoot( UIContextImpl context, RemotePage root ) {
+  private RemotePage cleanupOldRoot( UIImpl ui, RemotePage root ) {
     RemotePage oldRoot = currentFlow.getCurrentPage();
-    fireTransitionBeforeEvent( context, oldRoot, root );
+    fireTransitionBeforeEvent( ui, oldRoot, root );
     oldRoot.destroyActions();
-    oldRoot.getPage().deactivate( context );
+    oldRoot.getPage().deactivate();
     currentFlow.destroy();
     return oldRoot;
   }
 
-  private void initializeNewRoot( UIContextImpl context, RemotePage oldRoot, RemotePage newRoot ) {
+  private void initializeNewRoot( UIImpl ui, RemotePage oldRoot, RemotePage newRoot ) {
     currentFlow = new PageFlow( newRoot );
     remoteUI.activate( newRoot.getRemotePageId() );
     newRoot.createActions();
-    newRoot.getPage().activate( context );
+    newRoot.getPage().activate();
     makeControlVisible( currentFlow.getCurrentPage().getControl() );
-    fireTransitionAfterEvent( context, oldRoot, newRoot );
+    fireTransitionAfterEvent( ui, oldRoot, newRoot );
   }
 
-  RemotePage showPage( UIContextImpl context, PageDescriptor newPage, Store store ) {
-    RemotePage oldRemotePage = cleanupOldPage( context );
-    return initializeNewPage( context, newPage, oldRemotePage, store );
+  RemotePage showPage( UIImpl ui, PageDescriptor newPage, PageStore store ) {
+    RemotePage oldRemotePage = cleanupOldPage( ui );
+    return initializeNewPage( ui, newPage, oldRemotePage, store );
   }
 
-  private RemotePage cleanupOldPage( UIContextImpl context ) {
+  private RemotePage cleanupOldPage( UIImpl ui ) {
     RemotePage oldPage = currentFlow.getCurrentPage();
     oldPage.destroyActions();
-    oldPage.getPage().deactivate( context );
+    oldPage.getPage().deactivate();
     return oldPage;
   }
 
-  private RemotePage initializeNewPage( UIContextImpl context,
+  private RemotePage initializeNewPage( UIImpl ui,
                                         PageDescriptor newPage,
                                         RemotePage oldRemotePage,
-                                        Store store )
+                                        PageStore store )
   {
-    RemotePage newRemotePage = new RemotePage( context, newPage, remoteUI.getRemoteUIId(), store );
-    fireTransitionBeforeEvent( context, oldRemotePage, newRemotePage );
+    RemotePage newRemotePage = new RemotePage( ui, newPage, remoteUI.getRemoteUIId(), store );
+    fireTransitionBeforeEvent( ui, oldRemotePage, newRemotePage );
     currentFlow.add( newRemotePage );
     newRemotePage.createControl( shell );
     newRemotePage.createActions();
     remoteUI.activate( newRemotePage.getRemotePageId() );
-    newRemotePage.getPage().activate( context );
+    newRemotePage.getPage().activate();
     makeControlVisible( newRemotePage.getControl() );
-    fireTransitionAfterEvent( context, oldRemotePage, newRemotePage );
+    fireTransitionAfterEvent( ui, oldRemotePage, newRemotePage );
     return newRemotePage;
   }
 
-  boolean showPreviousPage( UIContextImpl context ) {
+  boolean closeCurrentPage( UIImpl ui ) {
     if( currentFlow != null && currentFlow.getPreviousPage() != null ) {
-      restorePreviousPage( context, currentFlow.getPreviousPage() );
+      restorePreviousPage( ui, currentFlow.getPreviousPage() );
       return true;
     }
     return false;
   }
 
-  private void restorePreviousPage( UIContextImpl context, RemotePage previousPage ) {
-    RemotePage removedPage = cleanUpCurrentPage( context );
-    fireTransitionBeforeEvent( context, removedPage, previousPage );
-    initializePreviousPage( context, previousPage );
-    fireTransitionAfterEvent( context, removedPage, previousPage );
+  private void restorePreviousPage( UIImpl ui, RemotePage previousPage ) {
+    RemotePage removedPage = cleanUpCurrentPage( ui );
+    fireTransitionBeforeEvent( ui, removedPage, previousPage );
+    initializePreviousPage( ui, previousPage );
+    fireTransitionAfterEvent( ui, removedPage, previousPage );
   }
 
-  private RemotePage cleanUpCurrentPage( UIContextImpl context ) {
+  private RemotePage cleanUpCurrentPage( UIImpl ui ) {
     RemotePage removedPage = currentFlow.pop();
     removedPage.destroy();
     removedPage.destroyActions();
-    removedPage.getPage().deactivate( context );
+    removedPage.getPage().deactivate();
     return removedPage;
   }
 
-  private void initializePreviousPage( UIContextImpl context, RemotePage previousPage ) {
+  private void initializePreviousPage( UIImpl ui, RemotePage previousPage ) {
     remoteUI.activate( previousPage.getRemotePageId() );
     previousPage.createActions();
-    previousPage.getPage().activate( context );
+    previousPage.getPage().activate();
     makeControlVisible( previousPage.getControl() );
   }
 
@@ -201,7 +201,7 @@ public class Controller {
     return null;
   }
 
-  public Store getCurrentStore() {
+  public PageStore getCurrentStore() {
     if( currentFlow != null ) {
       return currentFlow.getCurrentPage().getStore();
     }
@@ -274,21 +274,23 @@ public class Controller {
     return null;
   }
 
-  void fireTransitionBeforeEvent( UIContextImpl context, RemotePage from, RemotePage to ) {
-    List<TransitionListener> listeners = new ArrayList<TransitionListener>( context.getUI().getTransitionListeners() );
+  void fireTransitionBeforeEvent( UIImpl ui, RemotePage from, RemotePage to ) {
+    UIDescriptor uiDescriptor = ui.getConfiguration().getAdapter( UIDescriptor.class );
+    List<TransitionListener> listeners = new ArrayList<TransitionListener>( uiDescriptor.getTransitionListeners() );
     for( TransitionListener listener : listeners ) {
       Page oldPage = from != null ? from.getPage() : null;
       Page newPage = to != null ? to.getPage() : null;
-      listener.before( context, oldPage, newPage );
+      listener.before( ui, oldPage, newPage );
     }
   }
 
-  void fireTransitionAfterEvent( UIContextImpl context, RemotePage from, RemotePage to ) {
-    List<TransitionListener> listeners = new ArrayList<TransitionListener>( context.getUI().getTransitionListeners() );
+  void fireTransitionAfterEvent( UIImpl ui, RemotePage from, RemotePage to ) {
+    UIDescriptor uiDescriptor = ui.getConfiguration().getAdapter( UIDescriptor.class );
+    List<TransitionListener> listeners = new ArrayList<TransitionListener>( uiDescriptor.getTransitionListeners() );
     for( TransitionListener listener : listeners ) {
       Page oldPage = from != null ? from.getPage() : null;
       Page newPage = to != null ? to.getPage() : null;
-      listener.after( context, oldPage, newPage );
+      listener.after( ui, oldPage, newPage );
     }
   }
 

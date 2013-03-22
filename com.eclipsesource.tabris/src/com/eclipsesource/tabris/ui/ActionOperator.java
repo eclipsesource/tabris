@@ -13,13 +13,13 @@ package com.eclipsesource.tabris.ui;
 
 /**
  * <p>
- * The single purpose of the {@link ActionManager} is to modify and get the state of {@link Action} objects at runtime.
+ * The single purpose of the {@link ActionOperator} is to modify and get the state of {@link Action} objects at runtime.
  * this means you can influence the visibility or the enabled state of an {@link Action}.
  * </p>
  *
- * @since 0.11
+ * @since 1.0
  */
-public interface ActionManager {
+public interface ActionOperator {
 
   /**
    * <p>

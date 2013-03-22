@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.ui.Page;
-import com.eclipsesource.tabris.ui.UIContext;
+import com.eclipsesource.tabris.ui.UI;
 
 
 public class InstanceCreatorTest {
@@ -41,15 +41,15 @@ public class InstanceCreatorTest {
   public static class TestClass implements Page {
 
     @Override
-    public void create( Composite parent, UIContext context ) {
+    public void createContents( Composite parent, UI ui ) {
     }
 
     @Override
-    public void activate( UIContext context ) {
+    public void activate() {
     }
 
     @Override
-    public void deactivate( UIContext context ) {
+    public void deactivate() {
     }
 
   }
@@ -60,15 +60,15 @@ public class InstanceCreatorTest {
     }
 
     @Override
-    public void create( Composite parent, UIContext context ) {
+    public void createContents( Composite parent, UI ui ) {
     }
 
     @Override
-    public void activate( UIContext context ) {
+    public void activate() {
     }
 
     @Override
-    public void deactivate( UIContext context ) {
+    public void deactivate() {
     }
 
   }
@@ -79,15 +79,15 @@ public class InstanceCreatorTest {
     }
 
     @Override
-    public void create( Composite parent, UIContext context ) {
+    public void createContents( Composite parent, UI ui ) {
     }
 
     @Override
-    public void activate( UIContext context ) {
+    public void activate() {
     }
 
     @Override
-    public void deactivate( UIContext context ) {
+    public void deactivate() {
     }
 
   }

@@ -13,15 +13,19 @@ package com.eclipsesource.tabris.internal.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.eclipsesource.tabris.ui.TransitionListener;
 
-public class DescriptorHolder {
+
+public class UIDescriptor {
 
   private final List<PageDescriptor> pageDescriptors;
   private final List<ActionDescriptor> actionDescriptors;
+  private final List<TransitionListener> transitionListeners;
 
-  public DescriptorHolder() {
+  public UIDescriptor() {
     pageDescriptors = new ArrayList<PageDescriptor>();
     actionDescriptors = new ArrayList<ActionDescriptor>();
+    transitionListeners = new ArrayList<TransitionListener>();
   }
 
   public void add( PageDescriptor descriptor ) {
@@ -80,5 +84,17 @@ public class DescriptorHolder {
 
   public List<ActionDescriptor> getGlobalActions() {
     return actionDescriptors;
+  }
+
+  public void addTransitionListener( TransitionListener listener ) {
+    transitionListeners.add( listener );
+  }
+
+  public void removeTransitionListener( TransitionListener listener ) {
+    transitionListeners.remove( listener );
+  }
+
+  public List<TransitionListener> getTransitionListeners() {
+    return transitionListeners;
   }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 EclipseSource and others.
+ * Copyright (c) 2012,2013 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,12 +10,25 @@
  ******************************************************************************/
 package com.eclipsesource.tabris;
 
+import static com.eclipsesource.tabris.internal.Constants.INDEX_JSON;
+import static com.eclipsesource.tabris.internal.Constants.THEME_ID_ANDROID;
+import static com.eclipsesource.tabris.internal.Constants.THEME_ID_IOS;
+import static com.eclipsesource.tabris.internal.Constants.THEME_PATH_ANDROID;
+import static com.eclipsesource.tabris.internal.Constants.THEME_PATH_IOS;
 import static org.eclipse.rap.rwt.SingletonUtil.getSessionInstance;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.eclipse.rap.rwt.application.Application;
+import org.eclipse.rap.rwt.application.ApplicationConfiguration;
 import org.eclipse.rap.rwt.client.Client;
 import org.eclipse.rap.rwt.client.service.ClientInfo;
 import org.eclipse.rap.rwt.client.service.ClientService;
+import org.eclipse.rap.rwt.internal.application.ApplicationImpl;
 import org.eclipse.rap.rwt.internal.client.WidgetDataWhiteList;
+import org.eclipse.rap.rwt.internal.service.ContextProvider;
+import org.eclipse.rap.rwt.service.ResourceLoader;
 
 import com.eclipsesource.tabris.app.App;
 import com.eclipsesource.tabris.camera.Camera;
@@ -29,6 +42,9 @@ import com.eclipsesource.tabris.internal.ClientDeviceImpl;
 import com.eclipsesource.tabris.internal.ClientStoreImpl;
 import com.eclipsesource.tabris.internal.DataWhitelist;
 import com.eclipsesource.tabris.internal.GeolocationImpl;
+import com.eclipsesource.tabris.internal.ItemDataRenderer;
+import com.eclipsesource.tabris.internal.TabrisClientProvider;
+import com.eclipsesource.tabris.internal.TabrisResourceLoader;
 
 
 /**
@@ -46,19 +62,60 @@ import com.eclipsesource.tabris.internal.GeolocationImpl;
  * They can be obtained using the getService( Class ) method.
  * </p>
  *
+ * <p>
+ * <b>Please note:</b> the client needs to be installed by calling the {@link TabrisClient#install(Application)}
+ * method within an {@link ApplicationConfiguration#configure(Application)} method.
+ * </p>
+ *
  * @since 0.9
  */
 @SuppressWarnings("restriction")
 public class TabrisClient implements Client {
+
+  private static class ResourceLoaderImpl implements ResourceLoader {
+
+    @Override
+    public InputStream getResourceAsStream( String resourceName ) throws IOException {
+      return TabrisClient.class.getClassLoader().getResourceAsStream( resourceName );
+    }
+  }
 
   public TabrisClient() {
     initializeServices();
   }
 
   private void initializeServices() {
-    getService( ClientDevice.class );
-    getService( App.class );
-    getService( ClientStore.class );
+    if( ContextProvider.hasContext() ) {
+      getService( ClientDevice.class );
+      getService( App.class );
+      getService( ClientStore.class );
+    }
+  }
+
+  /**
+   * <p>
+   * Registers themes and other resources needed for the mobile clients.
+   * </p>
+   *
+   * @since 1.0
+   */
+  public void install( Application application ) {
+    ApplicationImpl applicationImpl = ( ApplicationImpl )application;
+    applicationImpl.addClientProvider( new TabrisClientProvider() );
+    applicationImpl.addPhaseListener( new ItemDataRenderer() );
+    registerMobileThemes( application );
+    registerTabrisLoader( applicationImpl );
+  }
+
+  private void registerMobileThemes( Application application ) {
+    ResourceLoaderImpl resourceLoader = new ResourceLoaderImpl();
+    application.addStyleSheet( THEME_ID_ANDROID, THEME_PATH_ANDROID, resourceLoader );
+    application.addStyleSheet( THEME_ID_IOS, THEME_PATH_IOS, resourceLoader );
+  }
+
+  private void registerTabrisLoader( ApplicationImpl application ) {
+    TabrisResourceLoader tabrisLoader = new TabrisResourceLoader( application.getApplicationContext() );
+    application.getApplicationContext().getResourceRegistry().add( INDEX_JSON, tabrisLoader );
   }
 
   @Override

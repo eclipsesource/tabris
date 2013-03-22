@@ -12,78 +12,58 @@ package com.eclipsesource.tabris.internal.ui;
 
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.eclipse.swt.widgets.Display;
 
-import org.eclipse.swt.graphics.Color;
-
-import com.eclipsesource.tabris.ui.ActionConfiguration;
-import com.eclipsesource.tabris.ui.PageConfiguration;
-import com.eclipsesource.tabris.ui.TransitionListener;
+import com.eclipsesource.tabris.ui.ActionOperator;
+import com.eclipsesource.tabris.ui.PageOperator;
 import com.eclipsesource.tabris.ui.UI;
+import com.eclipsesource.tabris.ui.UIConfiguration;
 
 
 public class UIImpl implements UI {
 
-  private final DescriptorHolder descriptorHolder;
-  private final List<TransitionListener> transitionListeners;
-  private final RemoteUI remoteUI;
+  private final Display display;
+  private final UIConfiguration configuration;
+  private final ActionOperatorImpl actionOperator;
+  private final PageOperatorImpl pageOperator;
+  private boolean initialized;
 
-  public UIImpl( RemoteUI remoteUI ) {
-    checkArgumentNotNull( remoteUI, RemoteUI.class.getSimpleName() );
-    this.remoteUI = remoteUI;
-    this.descriptorHolder = new DescriptorHolder();
-    this.transitionListeners = new ArrayList<TransitionListener>();
-  }
-
-  public DescriptorHolder getDescriptorHolder() {
-    return descriptorHolder;
-  }
-
-  @Override
-  public UI addPage( PageConfiguration configuration ) {
-    checkArgumentNotNull( configuration, "Page Configuration" );
-    PageDescriptor descriptor = ( ( InternalPageConfiguration )configuration ).createDescriptor();
-    descriptorHolder.add( descriptor );
-    return this;
+  public UIImpl( Display display, Controller controller, UIConfiguration configuration ) {
+    checkArgumentNotNull( display, Display.class.getSimpleName() );
+    checkArgumentNotNull( controller, Controller.class.getSimpleName() );
+    checkArgumentNotNull( configuration, UIConfiguration.class.getSimpleName() );
+    this.display = display;
+    this.configuration = configuration;
+    this.actionOperator = new ActionOperatorImpl( controller );
+    this.pageOperator = new PageOperatorImpl( controller, this );
   }
 
   @Override
-  public UI addAction( ActionConfiguration configuration ) {
-    checkArgumentNotNull( configuration, "Action Configuration" );
-    ActionDescriptor descriptor = ( ( InternalActionConfiguration )configuration ).createDescriptor();
-    descriptorHolder.add( descriptor );
-    return this;
+  public Display getDisplay() {
+    return display;
   }
 
   @Override
-  public void setForeground( Color foreground ) {
-    checkArgumentNotNull( foreground, "Foreground" );
-    remoteUI.setForeground( foreground );
+  public PageOperator getPageOperator() {
+    if( initialized ) {
+      return pageOperator;
+    }
+    return null;
   }
 
   @Override
-  public void setBackground( Color background ) {
-    checkArgumentNotNull( background, "Background" );
-    remoteUI.setBackground( background );
+  public ActionOperator getActionOperator() {
+    if( initialized ) {
+      return actionOperator;
+    }
+    return null;
   }
 
-  @Override
-  public UI addTransitionListener( TransitionListener listener ) {
-    checkArgumentNotNull( listener, TransitionListener.class.getSimpleName() );
-    transitionListeners.add( listener );
-    return this;
+  UIConfiguration getConfiguration() {
+    return configuration;
   }
 
-  @Override
-  public UI removeTransitionListener( TransitionListener listener ) {
-    checkArgumentNotNull( listener, TransitionListener.class.getSimpleName() );
-    transitionListeners.remove( listener );
-    return this;
+  public void markInitialized() {
+    initialized = true;
   }
-
-  List<TransitionListener> getTransitionListeners() {
-    return transitionListeners;
-  }
-
 }

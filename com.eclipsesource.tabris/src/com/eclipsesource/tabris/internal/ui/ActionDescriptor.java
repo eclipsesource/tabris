@@ -10,8 +10,6 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
-import org.eclipse.swt.graphics.Image;
-
 import com.eclipsesource.tabris.ui.Action;
 
 
@@ -20,21 +18,21 @@ public class ActionDescriptor {
   private final String id;
   private final Action action;
   private final String title;
-  private final Image image;
   private final boolean visible;
   private final boolean enabled;
+  private final String imagePath;
 
   public ActionDescriptor( String id,
                            Action action,
                            String title,
-                           Image image,
+                           String imagePath,
                            boolean visible,
                            boolean enabled )
   {
     this.id = id;
     this.action = action;
     this.title = title;
-    this.image = image;
+    this.imagePath = imagePath;
     this.enabled = enabled;
     this.visible = visible;
   }
@@ -51,8 +49,8 @@ public class ActionDescriptor {
     return title;
   }
 
-  public Image getImage() {
-    return image;
+  public String getImagePath() {
+    return imagePath;
   }
 
   public boolean isVisible() {

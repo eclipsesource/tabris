@@ -12,6 +12,7 @@ package com.eclipsesource.tabris.ui;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -19,28 +20,22 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.internal.ui.ActionDescriptor;
-import com.eclipsesource.tabris.internal.ui.InternalPageConfiguration;
 import com.eclipsesource.tabris.internal.ui.PageDescriptor;
 import com.eclipsesource.tabris.internal.ui.TestAction;
 import com.eclipsesource.tabris.internal.ui.TestPage;
-import com.eclipsesource.tabris.internal.ui.UITestUtil;
 
 
 public class PageConfigurationTest {
 
-  private Display display;
 
   @Before
   public void setUp() {
     Fixture.setUp();
-    display = new Display();
   }
 
   @After
@@ -50,76 +45,84 @@ public class PageConfigurationTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithNullId() {
-    PageConfiguration.newPage( null, TestPage.class );
+    new PageConfiguration( null, TestPage.class );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithEmptyId() {
-    PageConfiguration.newPage( "", TestPage.class );
+    new PageConfiguration( "", TestPage.class );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithNullType() {
-    PageConfiguration.newPage( "foo", null );
+    new PageConfiguration( "foo", null );
+  }
+
+  @Test
+  public void testCanCreateDescriptor() {
+    PageConfiguration config = new PageConfiguration( "foo", TestPage.class ).setTopLevel( true );
+
+    PageDescriptor descriptor = config.getAdapter( PageDescriptor.class );
+
+    assertNotNull( descriptor );
   }
 
   @Test
   public void testSetsDefaultValues() {
-    PageConfiguration config = PageConfiguration.newPage( "foo", TestPage.class );
+    PageConfiguration config = new PageConfiguration( "foo", TestPage.class );
 
-    PageDescriptor descriptor = ( ( InternalPageConfiguration )config ).createDescriptor();
+    PageDescriptor descriptor = config.getAdapter( PageDescriptor.class );
 
     assertEquals( "foo", descriptor.getId() );
     assertSame( TestPage.class, descriptor.getPageType() );
     assertFalse( descriptor.isTopLevel() );
     assertEquals( "", descriptor.getTitle() );
-    assertNull( descriptor.getImage() );
+    assertNull( descriptor.getImagePath() );
     assertEquals( 0, descriptor.getPageStyle().length );
   }
 
   @Test
   public void testSetsTopLevel() {
-    PageConfiguration config = PageConfiguration.newPage( "foo", TestPage.class ).setTopLevel( true );
+    PageConfiguration config = new PageConfiguration( "foo", TestPage.class ).setTopLevel( true );
 
-    PageDescriptor descriptor = ( ( InternalPageConfiguration )config ).createDescriptor();
+    PageDescriptor descriptor = config.getAdapter( PageDescriptor.class );
 
     assertTrue( descriptor.isTopLevel() );
   }
 
   @Test
   public void testSetsTitle() {
-    PageConfiguration config = PageConfiguration.newPage( "foo", TestPage.class ).setTitle( "bar" );
+    PageConfiguration config = new PageConfiguration( "foo", TestPage.class ).setTitle( "bar" );
 
-    PageDescriptor descriptor = ( ( InternalPageConfiguration )config ).createDescriptor();
+    PageDescriptor descriptor = config.getAdapter( PageDescriptor.class );
 
     assertEquals( "bar", descriptor.getTitle() );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testSetTitleFailsWithNull() {
-    PageConfiguration.newPage( "foo", TestPage.class ).setTitle( null );
+    new PageConfiguration( "foo", TestPage.class ).setTitle( null );
   }
 
   @Test
   public void testSetsImage() {
-    Image image = UITestUtil.createImage( display );
-    PageConfiguration config = PageConfiguration.newPage( "foo", TestPage.class ).setImage( image );
+    PageConfiguration config = new PageConfiguration( "foo", TestPage.class ).setImage( "testImage.png" );
 
-    PageDescriptor descriptor = ( ( InternalPageConfiguration )config ).createDescriptor();
+    PageDescriptor descriptor = config.getAdapter( PageDescriptor.class );
 
-    assertSame( image, descriptor.getImage() );
+    assertSame( "testImage.png", descriptor.getImagePath() );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testSetImageFailsWithNull() {
-    PageConfiguration.newPage( "foo", TestPage.class ).setImage( null );
+    new PageConfiguration( "foo", TestPage.class ).setImage( null );
   }
 
   @Test
   public void testSetsStyle() {
-    PageConfiguration config = PageConfiguration.newPage( "foo", TestPage.class ).setStyle( PageStyle.DEFAULT, PageStyle.FULLSCREEN );
+    PageConfiguration config = new PageConfiguration( "foo", TestPage.class ).setStyle( PageStyle.DEFAULT, PageStyle.FULLSCREEN );
 
-    PageDescriptor descriptor = ( ( InternalPageConfiguration )config ).createDescriptor();
+    PageDescriptor descriptor = config.getAdapter( PageDescriptor.class );
 
     PageStyle[] pageStyle = descriptor.getPageStyle();
     assertEquals( 2, pageStyle.length );
@@ -129,10 +132,10 @@ public class PageConfigurationTest {
 
   @Test
   public void testAddsAction() {
-    ActionConfiguration actionConfig = ActionConfiguration.newAction( "bar", TestAction.class );
-    PageConfiguration config = PageConfiguration.newPage( "foo", TestPage.class ).addAction( actionConfig );
+    ActionConfiguration actionConfig = new ActionConfiguration( "bar", TestAction.class );
+    PageConfiguration config = new PageConfiguration( "foo", TestPage.class ).addActionConfiguration( actionConfig );
 
-    PageDescriptor descriptor = ( ( InternalPageConfiguration )config ).createDescriptor();
+    PageDescriptor descriptor = config.getAdapter( PageDescriptor.class );
 
     List<ActionDescriptor> actions = descriptor.getActions();
     assertEquals( 1, actions.size() );
@@ -140,8 +143,8 @@ public class PageConfigurationTest {
   }
 
   @Test( expected = IllegalArgumentException.class )
-  public void testAddActionFailsWithNullAction() {
-    PageConfiguration.newPage( "foo", TestPage.class ).addAction( null );
-  }
+    public void testAddActionConfigurationFailsWithNullAction() {
+      new PageConfiguration( "foo", TestPage.class ).addActionConfiguration( null );
+    }
 
 }

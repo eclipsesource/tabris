@@ -13,53 +13,57 @@ package com.eclipsesource.tabris.internal.ui;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 import static com.eclipsesource.tabris.internal.Preconditions.checkState;
 
-import com.eclipsesource.tabris.Store;
 import com.eclipsesource.tabris.ui.Page;
-import com.eclipsesource.tabris.ui.PageManager;
+import com.eclipsesource.tabris.ui.PageOperator;
+import com.eclipsesource.tabris.ui.PageStore;
 
 
-public class PageManagerImpl implements PageManager {
+public class PageOperatorImpl implements PageOperator {
 
   private final Controller controller;
-  private final UIContextImpl context;
+  private final UIImpl ui;
 
-  public PageManagerImpl( Controller controller, UIContextImpl context ) {
+  public PageOperatorImpl( Controller controller, UIImpl ui ) {
     checkArgumentNotNull( controller, Controller.class.getSimpleName() );
-    checkArgumentNotNull( context, UIContextImpl.class.getSimpleName() );
+    checkArgumentNotNull( ui, UIImpl.class.getSimpleName() );
     this.controller = controller;
-    this.context = context;
+    this.ui = ui;
   }
 
   @Override
-  public void showPage( String pageId ) throws IllegalStateException {
-    showPage( pageId, new Store() );
+  public void openPage( String pageId ) throws IllegalStateException {
+    openPage( pageId, new PageStore() );
   }
 
   @Override
-  public void showPage( String pageId, Store store ) throws IllegalStateException {
-    checkArgumentNotNull( store, Store.class.getSimpleName() );
-    PageDescriptor descriptor = context.getUI().getDescriptorHolder().getPageDescriptor( pageId );
+  public void openPage( String pageId, PageStore store ) throws IllegalStateException {
+    checkArgumentNotNull( store, PageStore.class.getSimpleName() );
+    UIDescriptor uiDescriptor = ui.getConfiguration().getAdapter( UIDescriptor.class );
+    PageDescriptor descriptor = uiDescriptor.getPageDescriptor( pageId );
     checkState( descriptor, "Page with id " + pageId + " does not exist." );
-    controller.show( context, descriptor, store );
+    controller.show( ui, descriptor, store );
   }
 
   @Override
-  public boolean showPreviousPage() {
-    return controller.showPreviousPage( context );
+  public void closeCurrentPage() throws IllegalStateException{
+    boolean wasClosed = controller.closeCurrentPage( ui );
+    if( !wasClosed ) {
+      throw new IllegalStateException( "Can not close top level page." );
+    }
   }
 
   @Override
-  public Page getPage() {
+  public Page getCurrentPage() {
     return controller.getCurrentPage();
   }
 
   @Override
-  public Store getPageStore() {
+  public PageStore getCurrentPageStore() {
     return controller.getCurrentStore();
   }
 
   @Override
-  public void setTitle( Page page, String title ) {
+  public void setCurrentPageTitle( Page page, String title ) {
     checkArgumentNotNull( page, Page.class.getSimpleName() );
     checkArgumentNotNull( title, "PageTitle" );
     controller.setTitle( page, title );

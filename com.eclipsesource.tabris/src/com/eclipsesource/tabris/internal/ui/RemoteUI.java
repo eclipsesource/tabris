@@ -28,7 +28,7 @@ import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Shell;
 
-import com.eclipsesource.tabris.ui.UIContext;
+import com.eclipsesource.tabris.ui.UI;
 
 
 @SuppressWarnings("restriction")
@@ -36,7 +36,7 @@ public class RemoteUI extends AbstractOperationHandler {
 
 
   private final RemoteObjectImpl remoteObject;
-  private UIContext context;
+  private UI ui;
   private Controller controller;
 
   public RemoteUI( Shell shell ) {
@@ -45,8 +45,8 @@ public class RemoteUI extends AbstractOperationHandler {
     remoteObject.set( PROPERTY_SHELL, getId( shell ) );
   }
 
-  public void setContext( UIContext context ) {
-    this.context = context;
+  public void setUi( UI ui ) {
+    this.ui = ui;
   }
 
   public void setController( Controller controller ) {
@@ -67,9 +67,9 @@ public class RemoteUI extends AbstractOperationHandler {
     if( event.equals( EVENT_SHOW_PAGE ) ) {
       String remotePageId = ( String )properties.get( PROPERTY_PAGE_ID );
       String pageId = controller.getPageId( remotePageId );
-      context.getPageManager().showPage( pageId );
+      ui.getPageOperator().openPage( pageId );
     } else if( event.equals( EVENT_SHOW_PREVIOUS_PAGE ) ) {
-      context.getPageManager().showPreviousPage();
+      ui.getPageOperator().closeCurrentPage();
     }
   }
 

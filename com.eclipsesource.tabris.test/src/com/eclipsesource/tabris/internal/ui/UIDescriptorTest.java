@@ -10,9 +10,10 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
-import static com.eclipsesource.tabris.internal.ui.UITestUtil.createImage;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import java.util.List;
@@ -23,17 +24,15 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.eclipsesource.tabris.ui.Action;
+import com.eclipsesource.tabris.ui.TransitionListener;
 
 
-public class DescriptorHolderTest {
-
-  private Display display;
+public class UIDescriptorTest {
 
   @Before
   public void setUp() {
     Fixture.setUp();
-    display = new Display();
+    new Display();
   }
 
   @After
@@ -43,21 +42,21 @@ public class DescriptorHolderTest {
 
   @Test( expected = IllegalStateException.class )
   public void testFailsAddingPageDescriptorTwice() {
-    DescriptorHolder holder = new DescriptorHolder();
+    UIDescriptor uiDescriptor = new UIDescriptor();
     PageDescriptor descriptor = createDescriptor( "foo" );
 
-    holder.add( descriptor );
-    holder.add( descriptor );
+    uiDescriptor.add( descriptor );
+    uiDescriptor.add( descriptor );
   }
 
   @Test
   public void testAddsPageDescriptor() {
-    DescriptorHolder holder = new DescriptorHolder();
+    UIDescriptor uiDescriptor = new UIDescriptor();
     PageDescriptor descriptor = createDescriptor( "foo" );
 
-    holder.add( descriptor );
+    uiDescriptor.add( descriptor );
 
-    assertSame( descriptor, holder.getPageDescriptor( "foo" ) );
+    assertSame( descriptor, uiDescriptor.getPageDescriptor( "foo" ) );
   }
 
   private PageDescriptor createDescriptor( String id ) {
@@ -66,62 +65,85 @@ public class DescriptorHolderTest {
 
   @Test
   public void testAddsAction() {
-    DescriptorHolder holder = new DescriptorHolder();
+    UIDescriptor uiDescriptor = new UIDescriptor();
     ActionDescriptor descriptor = new ActionDescriptor( "foo",
-                                                        mock( Action.class ),
+                                                        new TestAction(),
                                                         "bar",
-                                                        createImage( display ),
+                                                        "testImage.png",
                                                         true,
                                                         true );
 
-    holder.add( descriptor );
+    uiDescriptor.add( descriptor );
 
-    assertSame( descriptor, holder.getActionDescriptor( "foo" ) );
+    assertSame( descriptor, uiDescriptor.getActionDescriptor( "foo" ) );
+  }
+
+  @Test
+  public void testAddsTransistionListener() {
+    UIDescriptor uiDescriptor = new UIDescriptor();
+    TransitionListener listener = mock( TransitionListener.class );
+
+    uiDescriptor.addTransitionListener( listener );
+
+    List<TransitionListener> transitionListeners = uiDescriptor.getTransitionListeners();
+    assertTrue( transitionListeners.contains( listener ) );
+  }
+
+  @Test
+  public void testRemovesTransistionListener() {
+    UIDescriptor uiDescriptor = new UIDescriptor();
+    TransitionListener listener = mock( TransitionListener.class );
+    uiDescriptor.addTransitionListener( listener );
+
+    uiDescriptor.removeTransitionListener( listener );
+
+    List<TransitionListener> transitionListeners = uiDescriptor.getTransitionListeners();
+    assertFalse( transitionListeners.contains( listener ) );
   }
 
   @Test
   public void testGetGlobalActions() {
-    DescriptorHolder holder = new DescriptorHolder();
+    UIDescriptor uiDescriptor = new UIDescriptor();
     ActionDescriptor descriptor = new ActionDescriptor( "foo",
-                                                        mock( Action.class ),
+                                                        new TestAction(),
                                                         "bar",
-                                                        createImage( display ),
+                                                        "testImage.png",
                                                         true,
                                                         true );
 
-    holder.add( descriptor );
+    uiDescriptor.add( descriptor );
 
-    List<ActionDescriptor> actions = holder.getGlobalActions();
+    List<ActionDescriptor> actions = uiDescriptor.getGlobalActions();
     assertEquals( 1, actions.size() );
     assertSame( descriptor, actions.get( 0 ) );
   }
 
   @Test( expected = IllegalStateException.class )
   public void testAddsActionTwiceFails() {
-    DescriptorHolder holder = new DescriptorHolder();
+    UIDescriptor uiDescriptor = new UIDescriptor();
     ActionDescriptor descriptor = new ActionDescriptor( "foo",
-                                                        mock( Action.class ),
+                                                        new TestAction(),
                                                         "bar",
-                                                        createImage( display ),
+                                                        "testImage.png",
                                                         true,
                                                         true );
 
-    holder.add( descriptor );
-    holder.add( descriptor );
+    uiDescriptor.add( descriptor );
+    uiDescriptor.add( descriptor );
   }
 
   @Test
   public void testGetRootPagesReturnsOnlyRootPages() {
-    DescriptorHolder holder = new DescriptorHolder();
+    UIDescriptor uiDescriptor = new UIDescriptor();
     PageDescriptor descriptor1 = createDescriptor( "foo1", true );
     PageDescriptor descriptor2 = createDescriptor( "foo2", false );
     PageDescriptor descriptor3 = createDescriptor( "foo3", true );
 
-    holder.add( descriptor1 );
-    holder.add( descriptor2 );
-    holder.add( descriptor3 );
+    uiDescriptor.add( descriptor1 );
+    uiDescriptor.add( descriptor2 );
+    uiDescriptor.add( descriptor3 );
 
-    List<PageDescriptor> rootPages = holder.getRootPages();
+    List<PageDescriptor> rootPages = uiDescriptor.getRootPages();
     assertEquals( 2, rootPages.size() );
     assertSame( descriptor1, rootPages.get( 0 ) );
     assertSame( descriptor3, rootPages.get( 1 ) );

@@ -13,7 +13,7 @@ package com.eclipsesource.tabris.internal.ui;
 import org.eclipse.swt.widgets.Composite;
 
 import com.eclipsesource.tabris.ui.Page;
-import com.eclipsesource.tabris.ui.UIContext;
+import com.eclipsesource.tabris.ui.UI;
 
 
 public class TestPage implements Page{
@@ -23,17 +23,17 @@ public class TestPage implements Page{
   private boolean wasActivated;
 
   @Override
-  public void create( Composite parent, UIContext context ) {
+  public void createContents( Composite parent, UI ui ) {
     wasCreated = true;
   }
 
   @Override
-  public void activate( UIContext context ) {
+  public void activate() {
     wasActivated = true;
   }
 
   @Override
-  public void deactivate( UIContext context ) {
+  public void deactivate() {
     wasDeactivated = true;
   }
 

@@ -33,8 +33,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
 
-import com.eclipsesource.tabris.Store;
-import com.eclipsesource.tabris.ui.UIContext;
+import com.eclipsesource.tabris.ui.PageStore;
+import com.eclipsesource.tabris.ui.UI;
 
 
 public class PageFlowTest {
@@ -206,8 +206,8 @@ public class PageFlowTest {
 
   private RemotePage createPage() {
     PageDescriptor descriptor = spy( new PageDescriptor( "foo", TestPage.class, "", null, false ) );
-    UIContext context = mock( UIContext.class );
-    RemotePage page2 = new RemotePage( context, descriptor, "foo", mock( Store.class ) );
+    UI ui = mock( UI.class );
+    RemotePage page2 = new RemotePage( ui, descriptor, "foo", mock( PageStore.class ) );
     page2.createControl( shell );
     return spy( page2 );
   }

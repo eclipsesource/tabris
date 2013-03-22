@@ -26,7 +26,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.internal.graphics.ImageFactory;
 
-import com.eclipsesource.tabris.ui.UIContext;
+import com.eclipsesource.tabris.ui.Action;
+import com.eclipsesource.tabris.ui.UI;
 
 
 @SuppressWarnings("restriction")
@@ -34,10 +35,10 @@ public class RemoteAction extends AbstractOperationHandler {
 
   private final RemoteObject remoteObject;
   private final ActionDescriptor descriptor;
-  private final UIContext context;
+  private final UI ui;
 
-  public RemoteAction( UIContext context, ActionDescriptor descriptor, String parentId ) {
-    this.context = context;
+  public RemoteAction( UI ui, ActionDescriptor descriptor, String parentId ) {
+    this.ui = ui;
     this.descriptor = descriptor;
     this.remoteObject = RWT.getUISession().getConnection().createRemoteObject( "tabris.Action" );
     this.remoteObject.setHandler( this );
@@ -53,14 +54,23 @@ public class RemoteAction extends AbstractOperationHandler {
   }
 
   private void setImage() {
-    Image image = descriptor.getImage();
+    Image image = createImage( descriptor.getImagePath() );
     if( image != null ) {
       Rectangle bounds = image.getBounds();
-      Object[] imageData = new Object[] { getImagePath(),
+      Object[] imageData = new Object[] { ImageFactory.getImagePath( image ),
                                           Integer.valueOf( bounds.width ),
                                           Integer.valueOf( bounds.height ) };
       remoteObject.set( PROPERTY_IMAGE, imageData );
     }
+  }
+
+
+  private Image createImage( String path ) {
+    if( path != null ) {
+      Class<? extends Action> type = descriptor.getAction().getClass();
+      return new Image( ui.getDisplay(), type.getResourceAsStream( path ) );
+    }
+    return null;
   }
 
   private void setDefaultEnabled() {
@@ -85,14 +95,10 @@ public class RemoteAction extends AbstractOperationHandler {
     remoteObject.set( PROPERTY_VISIBILITY, visible );
   }
 
-  private String getImagePath() {
-    return ImageFactory.getImagePath( descriptor.getImage() );
-  }
-
   @Override
   public void handleNotify( String event, Map<String, Object> properties ) {
     if( event.equals( EVENT_SELECTION ) ) {
-      descriptor.getAction().execute( context );
+      descriptor.getAction().execute( ui );
     }
   }
 

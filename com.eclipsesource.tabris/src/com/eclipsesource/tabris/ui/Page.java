@@ -35,11 +35,11 @@ import org.eclipse.swt.widgets.Composite;
  * </p>
  * <p>
  * {@link Page} will be created while browsing forward through an app. But reused when you browse back
- * with {@link PageManager#showPreviousPage()}.
+ * with {@link PageOperator#closeCurrentPage()}.
  * </p>
  *
  * @see PageConfiguration
- * @see PageManager
+ * @see PageOperator
  *
  * @since 0.11
  */
@@ -52,26 +52,27 @@ public interface Page {
    * </p>
    *
    * @param parent the parent to use for creating SWT widgets.
-   * @param context the context to control the application flow and share data.
+   * @param ui the ui to control the application flow and share data.
+   * @since 1.0
    */
-  void create( Composite parent, UIContext context );
+  void createContents( Composite parent, UI ui );
 
   /**
    * <p>
    * Will be called every time the page will be activated regardless if the user browses forward or backward.
    * </p>
    *
-   * @param context the context to control the application flow and share data.
+   * @since 1.0
    */
-  void activate( UIContext context );
+  void activate();
 
   /**
    * <p>
    * Will be called every time the page will be deactivated regardless if the user browses forward or backward.
    * </p>
    *
-   * @param context the context to control the application flow and share data.
+   * @since 1.0
    */
-  void deactivate( UIContext context );
+  void deactivate();
 
 }

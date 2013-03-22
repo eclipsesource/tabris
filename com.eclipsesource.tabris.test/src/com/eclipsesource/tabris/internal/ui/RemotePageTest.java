@@ -10,7 +10,6 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
-import static com.eclipsesource.tabris.internal.ui.UITestUtil.createImage;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
@@ -36,12 +35,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
-import com.eclipsesource.tabris.Store;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
-import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.Page;
+import com.eclipsesource.tabris.ui.PageStore;
 import com.eclipsesource.tabris.ui.PageStyle;
-import com.eclipsesource.tabris.ui.UIContext;
+import com.eclipsesource.tabris.ui.UI;
 
 
 @SuppressWarnings("restriction")
@@ -49,7 +47,7 @@ public class RemotePageTest {
 
   private RemoteObjectImpl remoteObject;
   private PageDescriptor descriptor;
-  private UIContext context;
+  private UI ui;
   private Shell shell;
 
   @Before
@@ -58,7 +56,7 @@ public class RemotePageTest {
     Display display = new Display();
     shell = new Shell( display );
     remoteObject = ( RemoteObjectImpl )TabrisTestUtil.mockRemoteObject();
-    context = mock( UIContext.class );
+    ui = mock( UI.class );
     mockDescriptor();
   }
 
@@ -70,13 +68,13 @@ public class RemotePageTest {
     when( descriptor.getPageStyle() ).thenReturn( new PageStyle[] { PageStyle.DEFAULT } );
     List<ActionDescriptor> actions = new ArrayList<ActionDescriptor>();
     actions.add( new ActionDescriptor( "actionFoo",
-                                       mock( Action.class ),
+                                       new TestAction(),
                                        "actionBar",
-                                       createImage( shell.getDisplay() ),
+                                       "testImage.png",
                                        true,
                                        true ) );
     when( descriptor.getActions() ).thenReturn( actions );
-    when( descriptor.getImage() ).thenReturn( createImage( shell.getDisplay() ) );
+    when( descriptor.getImagePath() ).thenReturn( "testImage.png" );
     doReturn( TestPage.class ).when( descriptor ).getPageType();
   }
 
@@ -87,14 +85,14 @@ public class RemotePageTest {
 
   @Test
   public void testGetRemoteId() {
-    RemotePage page = new RemotePage( context, descriptor, "foo", mock( Store.class ) );
+    RemotePage page = new RemotePage( ui, descriptor, "foo", mock( PageStore.class ) );
 
     assertEquals( remoteObject.getId(), page.getRemotePageId() );
   }
 
   @Test
   public void testSetsDefaultAttributes() {
-    RemotePage remotePage = new RemotePage( context, descriptor, "foo1", mock( Store.class ) );
+    RemotePage remotePage = new RemotePage( ui, descriptor, "foo1", mock( PageStore.class ) );
     remotePage.createControl( shell );
 
     verify( remoteObject ).set( "parent", "foo1" );
@@ -118,7 +116,7 @@ public class RemotePageTest {
                                                                  true,
                                                                  PageStyle.FULLSCREEN );
 
-    RemotePage remotePage = new RemotePage( context, localDescriptor, "foo1", mock( Store.class ) );
+    RemotePage remotePage = new RemotePage( ui, localDescriptor, "foo1", mock( PageStore.class ) );
     remotePage.createControl( shell );
 
     verify( remoteObject ).set( "style", new String[] { "FULLSCREEN" } );
@@ -132,14 +130,14 @@ public class RemotePageTest {
                                                                  null,
                                                                  true );
 
-    new RemotePage( context, localDescriptor, "foo1", mock( Store.class ) );
+    new RemotePage( ui, localDescriptor, "foo1", mock( PageStore.class ) );
 
     verify( remoteObject, never() ).set( eq( "style" ), any( String[].class ) );
   }
 
   @Test
   public void testGetActions() {
-    RemotePage page = new RemotePage( context, descriptor, "foo", mock( Store.class ) );
+    RemotePage page = new RemotePage( ui, descriptor, "foo", mock( PageStore.class ) );
     page.createActions();
 
     List<RemoteAction> actions = page.getActions();
@@ -149,7 +147,7 @@ public class RemotePageTest {
 
   @Test
   public void testSetTitle() {
-    RemotePage page = new RemotePage( context, descriptor, "foo", mock( Store.class ) );
+    RemotePage page = new RemotePage( ui, descriptor, "foo", mock( PageStore.class ) );
 
     page.setTitle( "foo" );
 
@@ -158,15 +156,15 @@ public class RemotePageTest {
 
   @Test
   public void testGetStore() {
-    Store store = mock( Store.class );
-    RemotePage page = new RemotePage( context, descriptor, "foo", store );
+    PageStore store = mock( PageStore.class );
+    RemotePage page = new RemotePage( ui, descriptor, "foo", store );
 
     assertSame( store, page.getStore() );
   }
 
   @Test
   public void testDestroyDoesNotDestroyActions() {
-    RemotePage page = new RemotePage( context, descriptor, "foo", mock( Store.class ) );
+    RemotePage page = new RemotePage( ui, descriptor, "foo", mock( PageStore.class ) );
     page.createControl( shell );
 
     page.destroy();
@@ -176,7 +174,7 @@ public class RemotePageTest {
 
   @Test
   public void testDestroyActionsSendsDestroy() {
-    RemotePage page = new RemotePage( context, descriptor, "foo", mock( Store.class ) );
+    RemotePage page = new RemotePage( ui, descriptor, "foo", mock( PageStore.class ) );
     page.createActions();
 
     page.destroyActions();
@@ -186,14 +184,14 @@ public class RemotePageTest {
 
   @Test
   public void testGetDescriptor() {
-    RemotePage page = new RemotePage( context, descriptor, "foo", mock( Store.class ) );
+    RemotePage page = new RemotePage( ui, descriptor, "foo", mock( PageStore.class ) );
 
     assertSame( descriptor, page.getDescriptor() );
   }
 
   @Test
   public void testGetCreatesControl() {
-    RemotePage page = new RemotePage( context, descriptor, "foo", mock( Store.class ) );
+    RemotePage page = new RemotePage( ui, descriptor, "foo", mock( PageStore.class ) );
     page.createControl( shell );
 
     assertNotNull( page.getControl() );
@@ -201,7 +199,7 @@ public class RemotePageTest {
 
   @Test
   public void testDestoyDisposesControl() {
-    RemotePage page = new RemotePage( context, descriptor, "foo", mock( Store.class ) );
+    RemotePage page = new RemotePage( ui, descriptor, "foo", mock( PageStore.class ) );
     page.createControl( shell );
 
     page.destroy();
@@ -211,7 +209,7 @@ public class RemotePageTest {
 
   @Test
   public void testCreatesPage() {
-    RemotePage remotePage = new RemotePage( context, descriptor, "foo", mock( Store.class ) );
+    RemotePage remotePage = new RemotePage( ui, descriptor, "foo", mock( PageStore.class ) );
 
     Page page = remotePage.getPage();
 

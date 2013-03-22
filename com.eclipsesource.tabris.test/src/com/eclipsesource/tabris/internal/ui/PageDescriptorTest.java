@@ -18,9 +18,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,13 +28,9 @@ import com.eclipsesource.tabris.ui.PageStyle;
 
 public class PageDescriptorTest {
 
-  private Shell shell;
-
   @Before
   public void setUp() {
     Fixture.setUp();
-    Display display = new Display();
-    shell = new Shell( display );
   }
 
   @After
@@ -67,11 +60,10 @@ public class PageDescriptorTest {
   }
 
   @Test
-  public void testGetImage() {
-    Image image = UITestUtil.createImage( shell.getDisplay() );
-    PageDescriptor descriptor = new PageDescriptor( "foo", TestPage.class, "bar", image, true, PageStyle.DEFAULT );
+  public void testGetImagePath() {
+    PageDescriptor descriptor = new PageDescriptor( "foo", TestPage.class, "bar", "testImage.png", true, PageStyle.DEFAULT );
 
-    assertSame( image, descriptor.getImage() );
+    assertSame( "testImage.png", descriptor.getImagePath() );
   }
 
   @Test
@@ -94,7 +86,7 @@ public class PageDescriptorTest {
   public void testAddAction() {
     PageDescriptor descriptor = new PageDescriptor( "foo", TestPage.class, "", null, true, PageStyle.DEFAULT );
 
-    descriptor.addAction( ActionConfiguration.newAction( "foo", TestAction.class ) );
+    descriptor.addAction( new ActionConfiguration( "foo", TestAction.class ) );
 
     List<ActionDescriptor> actions = descriptor.getActions();
     assertEquals( 1, actions.size() );

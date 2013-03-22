@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="com.eclipsesource.tabris.test" version="2">
+    <resource path="src/com/eclipsesource/tabris/ui/UIConfigurationImplTest.java" type="com.eclipsesource.tabris.ui.UIConfigurationImplTest">
+        <filter id="1110441988">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.ui.UIConfigurationImplTest"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>

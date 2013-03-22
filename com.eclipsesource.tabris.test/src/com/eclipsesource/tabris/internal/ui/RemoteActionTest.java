@@ -33,7 +33,7 @@ import org.mockito.ArgumentCaptor;
 
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 import com.eclipsesource.tabris.ui.Action;
-import com.eclipsesource.tabris.ui.UIContext;
+import com.eclipsesource.tabris.ui.UI;
 
 
 @SuppressWarnings("restriction")
@@ -41,18 +41,18 @@ public class RemoteActionTest {
 
   private RemoteObjectImpl remoteObject;
   private ActionDescriptor actionDescriptor;
-  private UIContext context;
-  private Display display;
+  private UI ui;
 
   @Before
   public void setUp() {
     Fixture.setUp();
+    new Display();
     remoteObject = ( RemoteObjectImpl )TabrisTestUtil.mockRemoteObject();
-    context = mock( UIContext.class );
-    display = new Display();
+    ui = mock( UI.class );
     actionDescriptor = mock( ActionDescriptor.class );
+    when( actionDescriptor.getAction() ).thenReturn( new TestAction() );
     when( actionDescriptor.getId() ).thenReturn( "foo" );
-    when( actionDescriptor.getImage() ).thenReturn( UITestUtil.createImage( display ) );
+    when( actionDescriptor.getImagePath() ).thenReturn( "testImage.png" );
     when( actionDescriptor.getTitle() ).thenReturn( "bar" );
   }
 
@@ -63,7 +63,7 @@ public class RemoteActionTest {
 
   @Test
   public void testSetsInitialAttributes() {
-    new RemoteAction( context, actionDescriptor, "foo" );
+    new RemoteAction( ui, actionDescriptor, "foo" );
 
     verify( remoteObject ).set( "parent", "foo" );
     ArgumentCaptor<Object[]> captor = ArgumentCaptor.forClass( Object[].class );
@@ -81,7 +81,7 @@ public class RemoteActionTest {
     doReturn( Boolean.TRUE ).when( actionDescriptor ).isEnabled();
     doReturn( Boolean.TRUE ).when( actionDescriptor ).isVisible();
 
-    new RemoteAction( context, actionDescriptor, "foo" );
+    new RemoteAction( ui, actionDescriptor, "foo" );
 
     verify( remoteObject, never() ).set( "visibility", true );
     verify( remoteObject, never() ).set( "enabled", true );
@@ -89,15 +89,15 @@ public class RemoteActionTest {
 
   @Test
   public void testSetsInitialAttributesWithoutImage() {
-    when( actionDescriptor.getImage() ).thenReturn( null );
-    new RemoteAction( context, actionDescriptor, "foo" );
+    when( actionDescriptor.getImagePath() ).thenReturn( null );
+    new RemoteAction( ui, actionDescriptor, "foo" );
 
     verify( remoteObject, never() ).set( eq( "image" ), anyString() );
   }
 
   @Test
   public void testGetsDescriptor() {
-    RemoteAction remoteAction = new RemoteAction( context, actionDescriptor, "foo" );
+    RemoteAction remoteAction = new RemoteAction( ui, actionDescriptor, "foo" );
 
     ActionDescriptor actualDescriptor = remoteAction.getDescriptor();
 
@@ -106,7 +106,7 @@ public class RemoteActionTest {
 
   @Test
   public void testSetsVisible() {
-    RemoteAction remoteAction = new RemoteAction( context, actionDescriptor, "foo" );
+    RemoteAction remoteAction = new RemoteAction( ui, actionDescriptor, "foo" );
 
     remoteAction.setVisible( true );
 
@@ -115,7 +115,7 @@ public class RemoteActionTest {
 
   @Test
   public void testSetEnabled() {
-    RemoteAction remoteAction = new RemoteAction( context, actionDescriptor, "foo" );
+    RemoteAction remoteAction = new RemoteAction( ui, actionDescriptor, "foo" );
 
     remoteAction.setEnabled( true );
 
@@ -124,7 +124,7 @@ public class RemoteActionTest {
 
   @Test
   public void testDestroy() {
-    RemoteAction remoteAction = new RemoteAction( context, actionDescriptor, "foo" );
+    RemoteAction remoteAction = new RemoteAction( ui, actionDescriptor, "foo" );
 
     remoteAction.destroy();
 
@@ -133,13 +133,13 @@ public class RemoteActionTest {
 
   @Test
   public void testCallsExecuteOnEvent() {
-    RemoteAction remoteAction = new RemoteAction( context, actionDescriptor, "foo" );
+    RemoteAction remoteAction = new RemoteAction( ui, actionDescriptor, "foo" );
     Action action = mock( Action.class );
     when( remoteObject.getHandler() ).thenReturn( remoteAction );
     when( actionDescriptor.getAction() ).thenReturn( action );
 
     Fixture.dispatchNotify( remoteObject, "Selection", new HashMap<String, Object>() );
 
-    verify( action ).execute( context );
+    verify( action ).execute( ui );
   }
 }

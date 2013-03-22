@@ -10,56 +10,156 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.ui;
 
+import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
+
+import org.eclipse.rap.rwt.Adaptable;
+import org.eclipse.swt.graphics.RGB;
+
+import com.eclipsesource.tabris.internal.ui.ActionDescriptor;
+import com.eclipsesource.tabris.internal.ui.PageDescriptor;
+import com.eclipsesource.tabris.internal.ui.UIDescriptor;
+
 
 /**
  * <p>
- * A Tabris UI consists of {@link Page} and {@link Action} objects that are loosely coupled. The point where these are
- * defined is this {@link UIConfiguration} interface. The {@link UIConfiguration#configure(UI, UIContext)} method will
- * be called when the application will be created.
- * </p>
- * <p>
- * Two types of pages exist. These are top level pages and free pages. A top level page marks the beginning of an
- * application flow. E.g. when you developing a book browsing app the top level page may be your shelf from where you
- * can browse the books. Of course in such an app you will need to browse from a book to another book without the way
- * back to the shelf. This means the book page needs to be a free page that can be chained to another.</br>
- * This is what free pages are, the second type of pages. They can appear everywhere in the application. The depth
- * level of such a page is not defined.
- * </p>
- * <p>
- * Actions also exist in two types. The first type are global actions. Global actions are visible in the whole
- * application regardless on which page you are currently on. The other type of actions are page actions. These
- * actions are having the same lifecycle as a Pages and they are also only visible when the related page is visible.
- * </p>
- * <p>
- * Your responsibility as a developer is to define the different pages of your application and decide which pages
- * should be top level pages and which are free pages. This is the same with actions. When this task is done these
- * pages needs to be implemented and hooked into the Tabris UI within the
- * {@link UIConfiguration#configure(UI, UIContext)} method. An instance of a {@link UIConfiguration} implementation
- * needs to be passed into the constructor of a {@link TabrisUIEntryPoint} or {@link TabrisUI} object.
+ * For a Tabris UI one {@link UIConfiguration} object exists. Think about it as the glue between you pages and actions.
  * </p>
  *
- * @see TabrisUI
- * @see TabrisUIEntryPoint
- * @see Page
  * @see PageConfiguration
- * @see Action
+ * @see Page
  * @see ActionConfiguration
+ * @see Action
+ * @see TransitionListener
  *
- * @since 0.11
+ * @since 1.0
  */
-public interface UIConfiguration {
+public class UIConfiguration implements Adaptable {
+
+  private final UIDescriptor uiDescriptor;
+  private RGB background;
+  private RGB foreground;
+
+  public UIConfiguration() {
+    this.uiDescriptor = new UIDescriptor();
+  }
 
   /**
    * <p>
-   * When you implement a {@link UIConfiguration} you need to add your {@link Page}s and {@link Action}s to the passed
-   * in {@link UI} object. The {@link UIContext} can be used to store global data with application scope to allwo the
-   * pages/actions to share data globally.
+   * Adds a page represented by a {@link PageConfiguration} object.
    * </p>
    *
-   * @param ui the {@link UI} instance to add {@link Page}s and {@link Action}s.
-   * @param context the {@link UIContext} to store global data.
-   *
-   * @see UIContext
+   * @since 1.0
    */
-  void configure( UI ui, UIContext context );
+  public UIConfiguration addPageConfiguration( PageConfiguration configuration ) {
+    checkArgumentNotNull( configuration, "Page Configuration" );
+    PageDescriptor descriptor = configuration.getAdapter( PageDescriptor.class );
+    uiDescriptor.add( descriptor );
+    return this;
+  }
+
+  /**
+   * <p>
+   * Adds an action represented by an {@link ActionConfiguration} object.
+   * </p>
+   *
+   * @since 1.0
+   */
+  public UIConfiguration addActionConfiguration( ActionConfiguration configuration ) {
+    checkArgumentNotNull( configuration, "Action Configuration" );
+    ActionDescriptor descriptor = configuration.getAdapter( ActionDescriptor.class );
+    uiDescriptor.add( descriptor );
+    return this;
+  }
+
+  /**
+   * <p>
+   * Sets the foreground color for navigation controls and the area where those controls are located on.
+   * </p>
+   *
+   * @since 1.0
+   */
+  public UIConfiguration setForeground( RGB foreground ) {
+    checkArgumentNotNull( foreground, "Foreground" );
+    this.foreground = foreground;
+    return this;
+  }
+
+  /**
+   * <p>
+   * Sets the foreground color for navigation controls and the area where those controls are located on.
+   * </p>
+   *
+   * @since 1.0
+   */
+  public UIConfiguration setForeground( int red, int green, int blue ) {
+    return setForeground( new RGB( red, green, blue ) );
+  }
+
+  public RGB getForeground() {
+    return foreground;
+  }
+
+  /**
+   * <p>
+   * Sets the background color for navigation controls and the area where those controls are located on.
+   * </p>
+   *
+   * @since 1.0
+   */
+  public UIConfiguration setBackground( RGB background ) {
+    checkArgumentNotNull( background, "Background" );
+    this.background = background;
+    return this;
+  }
+
+  /**
+   * <p>
+   * Sets the background color for navigation controls and the area where those controls are located on.
+   * </p>
+   *
+   * @since 1.0
+   */
+  public UIConfiguration setBackground( int red, int green, int blue ) {
+    return setBackground( new RGB( red, green, blue ) );
+  }
+
+  public RGB getBackground() {
+    return background;
+  }
+
+  /**
+   * <p>
+   * Adds a {@link TransitionListener} that notifies you when a user browses from one page to another.
+   * </p>
+   *
+   * @since 1.0
+   */
+  public UIConfiguration addTransitionListener( TransitionListener listener ) {
+    checkArgumentNotNull( listener, TransitionListener.class.getSimpleName() );
+    uiDescriptor.addTransitionListener( listener );
+    return this;
+  }
+
+  /**
+   * <p>
+   * Removes a {@link TransitionListener}.
+   * </p>
+   *
+   * @since 1.0
+   */
+  public UIConfiguration removeTransitionListener( TransitionListener listener ) {
+    checkArgumentNotNull( listener, TransitionListener.class.getSimpleName() );
+    uiDescriptor.removeTransitionListener( listener );
+    return this;
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public <T> T getAdapter( Class<T> adapter ) {
+    if( adapter == UIDescriptor.class ) {
+      return ( T )uiDescriptor;
+    }
+    return null;
+  }
+
 }

@@ -15,12 +15,14 @@ import static org.eclipse.rap.rwt.internal.service.ContextProvider.getContext;
 
 import org.eclipse.rap.rwt.application.EntryPoint;
 import org.eclipse.rap.rwt.internal.theme.JsonValue;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Shell;
 
 import com.eclipsesource.tabris.internal.ZIndexStackLayout;
 import com.eclipsesource.tabris.internal.ui.Controller;
 import com.eclipsesource.tabris.internal.ui.RemoteUI;
-import com.eclipsesource.tabris.internal.ui.UIContextImpl;
+import com.eclipsesource.tabris.internal.ui.UIDescriptor;
 import com.eclipsesource.tabris.internal.ui.UIImpl;
 
 
@@ -33,7 +35,6 @@ import com.eclipsesource.tabris.internal.ui.UIImpl;
  * Usually you don't need to create with this class directly. Consider using the {@link TabrisUIEntryPoint} instead.
  * </p>
  *
- * @see UIConfiguration
  * @see TabrisUIEntryPoint
  *
  * @since 1.0
@@ -43,6 +44,9 @@ public class TabrisUI {
 
   private final UIConfiguration configuration;
 
+  /**
+   * @since 1.0
+   */
   public TabrisUI( UIConfiguration configuration ) {
     checkArgumentNotNull( configuration, UIConfiguration.class.getSimpleName() );
     getContext().getProtocolWriter().appendHead( "tabris.UI", JsonValue.valueOf( true ) );
@@ -62,31 +66,41 @@ public class TabrisUI {
     prepareShell( shell );
     RemoteUI remoteUI = new RemoteUI( shell );
     shell.setLayout( new ZIndexStackLayout() );
-    UIImpl ui = new UIImpl( remoteUI );
-    Controller controller = new Controller( shell, remoteUI, ui.getDescriptorHolder() );
-    UIContextImpl context = prepareContext( shell, remoteUI, ui, controller );
-    configure( ui, context );
-    prepareController( controller, context );
+    Controller controller = new Controller( shell, remoteUI, configuration.getAdapter( UIDescriptor.class ) );
+    UIImpl ui = prepareUi( shell, remoteUI, configuration, controller );
+    configure( configuration, ui );
+    setUiColors( shell, remoteUI, configuration );
+    prepareController( controller, ui );
   }
 
   private void prepareShell( Shell shell ) {
     shell.setMaximized( true );
   }
 
-  private UIContextImpl prepareContext( Shell shell, RemoteUI remoteUI, UIImpl ui, Controller controller ) {
-    UIContextImpl context = new UIContextImpl( shell.getDisplay(), controller, ui );
-    remoteUI.setContext( context );
+  private UIImpl prepareUi( Shell shell, RemoteUI remoteUI, UIConfiguration configuration, Controller controller ) {
+    UIImpl ui = new UIImpl( shell.getDisplay(), controller, configuration );
+    remoteUI.setUi( ui );
     remoteUI.setController( controller );
-    return context;
+    return ui;
   }
 
-  private void configure( UIImpl ui, UIContextImpl context ) {
-    configuration.configure( ui, context );
-    context.markInitialized();
+  private void configure( UIConfiguration configuration, UIImpl ui ) {
+    ui.markInitialized();
   }
 
-  private void prepareController( Controller controller, UIContextImpl context ) {
-    controller.createGlobalActions( context );
-    controller.createRootPages( context );
+  private void setUiColors( Shell shell, RemoteUI remoteUI, UIConfiguration configuration ) {
+    RGB background = configuration.getBackground();
+    if( background != null ) {
+      remoteUI.setBackground( new Color( shell.getDisplay(), background ) );
+    }
+    RGB foreground = configuration.getForeground();
+    if( foreground != null ) {
+      remoteUI.setForeground( new Color( shell.getDisplay(), foreground ) );
+    }
+  }
+
+  private void prepareController( Controller controller, UIImpl ui ) {
+    controller.createGlobalActions( ui );
+    controller.createRootPages( ui );
   }
 }

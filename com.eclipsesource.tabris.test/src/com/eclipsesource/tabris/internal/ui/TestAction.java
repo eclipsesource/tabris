@@ -11,7 +11,7 @@
 package com.eclipsesource.tabris.internal.ui;
 
 import com.eclipsesource.tabris.ui.Action;
-import com.eclipsesource.tabris.ui.UIContext;
+import com.eclipsesource.tabris.ui.UI;
 
 
 public class TestAction implements Action {
@@ -19,7 +19,7 @@ public class TestAction implements Action {
   private boolean wasExecuted;
 
   @Override
-  public void execute( UIContext context ) {
+  public void execute( UI ui ) {
     wasExecuted = true;
   }
 

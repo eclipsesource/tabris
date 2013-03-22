@@ -16,10 +16,10 @@ import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNu
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.rap.rwt.Adaptable;
 import org.eclipse.swt.widgets.Display;
 
-import com.eclipsesource.tabris.internal.ui.InternalPageConfiguration;
+import com.eclipsesource.tabris.internal.ui.PageDescriptor;
 
 
 /**
@@ -31,25 +31,23 @@ import com.eclipsesource.tabris.internal.ui.InternalPageConfiguration;
  * is also the right place to add them.
  * </p>
  * <p>
- * {@link PageConfiguration} objects will be usually created within the {@link UIConfiguration#configure(UI, UIContext)}
- * method and added to the {@link UI}.
+ * {@link PageConfiguration} objects will be usually added to the {@link UIConfiguration}.
  * </p>
  *
  * @see Page
  * @see UIConfiguration
- * @see UI
  *
  * @since 0.11
  */
-public class PageConfiguration {
+public class PageConfiguration implements Adaptable {
 
   protected final String id;
   protected final Class<? extends Page> pageType;
   protected String title;
   protected PageStyle[] style;
-  protected Image image;
   protected boolean topLevel;
   protected List<ActionConfiguration> actions;
+  private String imagePath;
 
   /**
    * <p>
@@ -60,21 +58,18 @@ public class PageConfiguration {
    * @param pageId the unique id of the {@link Page}. Must not be empty or <code>null</code>.
    * @param pageType the type of the {@link Page} to be created. Must not be <code>null</code>.
    *
-   * @see PageManager#showPage(String)
+   * @see PageOperator#openPage(String)
+   * @since 1.0
    */
-  public static PageConfiguration newPage( String pageId, Class<? extends Page> pageType ) {
+  public PageConfiguration( String pageId, Class<? extends Page> pageType ) {
     checkArgumentNotNullAndNotEmpty( pageId, "Page Id" );
     checkArgumentNotNull( pageType, "Type of Page" );
-    return new InternalPageConfiguration( pageId, pageType );
-  }
-
-  protected PageConfiguration( String id, Class<? extends Page> pageType ) {
-    this.id = id;
+    this.id = pageId;
     this.pageType = pageType;
     this.title = "";
     this.topLevel = false;
     this.style = new PageStyle[] {};
-    this.image = null;
+    this.imagePath = null;
     this.actions = new ArrayList<ActionConfiguration>();
   }
 
@@ -90,7 +85,7 @@ public class PageConfiguration {
 
   /**
    * <p>
-   * Defines the title of the page. To modify this state at runtime use {@link PageManager}.
+   * Defines the title of the page. To modify this state at runtime use {@link PageOperator}.
    * </p>
    *
    * @param title the title of the page. Must not be empty or <code>null</code>.
@@ -114,14 +109,16 @@ public class PageConfiguration {
   /**
    * <p>
    * Defines the image of a page. You will need to have a {@link Display} to create one. Take a look
-   * at {@link UIContext#getDisplay()}.
+   * at {@link UI#getDisplay()}.
    * </p>
    *
-   * @param image the image of the page. Must not be <code>null</code>.
+   * @param imagePath the image of the page. Must not be <code>null</code>.
+   *
+   * @since 1.0
    */
-  public PageConfiguration setImage( Image image ) {
-    checkArgumentNotNull( image, "Page Image" );
-    this.image = image;
+  public PageConfiguration setImage( String imagePath ) {
+    checkArgumentNotNull( imagePath, "Page Image Path" );
+    this.imagePath = imagePath;
     return this;
   }
 
@@ -131,11 +128,33 @@ public class PageConfiguration {
    * </p>
    *
    * @param configuration the configuration of the the action to add. Must not be <code>null</code>.
+   *
+   * @since 1.0
    */
-  public PageConfiguration addAction( ActionConfiguration configuration ) {
+  public PageConfiguration addActionConfiguration( ActionConfiguration configuration ) {
     checkArgumentNotNull( configuration, ActionConfiguration.class.getSimpleName() );
     actions.add( configuration );
     return this;
+  }
+
+  /**
+   * @since 1.0
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public <T> T getAdapter( Class<T> adapter ) {
+    if( adapter == PageDescriptor.class ) {
+      return ( T )createDescriptor();
+    }
+    return null;
+  }
+
+  private PageDescriptor createDescriptor() {
+    PageDescriptor pageDescriptor = new PageDescriptor( id, pageType, title, imagePath, topLevel, style );
+    for( ActionConfiguration configuration : actions ) {
+      pageDescriptor.addAction( configuration );
+    }
+    return pageDescriptor;
   }
 
 }

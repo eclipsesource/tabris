@@ -16,16 +16,16 @@ import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNu
 import java.util.HashMap;
 import java.util.Map;
 
-import com.eclipsesource.tabris.ui.ActionManager;
+import com.eclipsesource.tabris.ui.ActionOperator;
 
 
-public class ActionManagerImpl implements ActionManager {
+public class ActionOperatorImpl implements ActionOperator {
 
   private final Controller controller;
   private final Map<String, Boolean> visibility;
   private final Map<String, Boolean> enablement;
 
-  public ActionManagerImpl( Controller controller ) {
+  public ActionOperatorImpl( Controller controller ) {
     checkArgumentNotNull( controller, Controller.class.getSimpleName() );
     this.controller = controller;
     this.visibility = new HashMap<String, Boolean>();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 EclipseSource and others.
+ * Copyright (c) 2012,2013 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,40 +8,53 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.internal.bootstrap;
+package com.eclipsesource.tabris.internal;
 
+import static com.eclipsesource.tabris.internal.Constants.INDEX_JSON;
+
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Collection;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.rap.rwt.internal.application.ApplicationContextImpl;
 import org.eclipse.rap.rwt.internal.lifecycle.EntryPointManager;
 import org.eclipse.rap.rwt.internal.theme.JsonArray;
 import org.eclipse.rap.rwt.internal.theme.JsonObject;
+import org.eclipse.rap.rwt.service.ResourceLoader;
 
 
 @SuppressWarnings("restriction")
-public class EntryPointLookupServlet extends HttpServlet {
+public class TabrisResourceLoader implements ResourceLoader {
 
   static final String KEY_ENTRYPOINTS = "entrypoints";
   static final String KEY_PATH = "path";
-  private final EntryPointManager manager;
-  private static final long serialVersionUID = 1L;
+  private final EntryPointManager entryPointManager;
+  private final String contextPath;
 
-  public EntryPointLookupServlet( ApplicationContextImpl applicationContext ) {
-    manager = applicationContext.getEntryPointManager();
+  public TabrisResourceLoader( ApplicationContextImpl applicationContext ) {
+    entryPointManager = applicationContext.getEntryPointManager();
+    contextPath = applicationContext.getServletContext().getContextPath();
   }
 
   @Override
-  protected void doGet( HttpServletRequest req, HttpServletResponse resp ) throws ServletException, IOException {
-    Collection<String> servletPaths = manager.getServletPaths();
+  public InputStream getResourceAsStream( String resourceName ) throws IOException {
+    if( INDEX_JSON.equals( resourceName ) ) {
+      return getEntryPoints();
+    }
+    return null;
+  }
+
+  private InputStream getEntryPoints() {
+    Collection<String> servletPaths = entryPointManager.getServletPaths();
     JsonObject jsonObject = createMessageObject( servletPaths );
-    resp.setContentType( "application/json" );
-    resp.getWriter().write( jsonObject.toString() );
+    String json = jsonObject.toString();
+    try {
+      return new ByteArrayInputStream( json.getBytes( "utf-8" ) );
+    } catch( UnsupportedEncodingException uee ) {
+      throw new IllegalStateException( uee );
+    }
   }
 
   private JsonObject createMessageObject( Collection<String> servletPaths ) {
@@ -53,10 +66,12 @@ public class EntryPointLookupServlet extends HttpServlet {
   }
 
   private void appendPaths( Collection<String> servletPaths, JsonArray array ) {
+    String prefix = contextPath != null ? contextPath : "";
     for( String path : servletPaths ) {
       JsonObject object = new JsonObject();
-      object.append( KEY_PATH, path );
+      object.append( KEY_PATH, prefix + path );
       array.append( object );
     }
   }
+
 }

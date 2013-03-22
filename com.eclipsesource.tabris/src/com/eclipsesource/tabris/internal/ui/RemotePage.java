@@ -31,10 +31,10 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import com.eclipsesource.tabris.Store;
 import com.eclipsesource.tabris.ui.Page;
+import com.eclipsesource.tabris.ui.PageStore;
 import com.eclipsesource.tabris.ui.PageStyle;
-import com.eclipsesource.tabris.ui.UIContext;
+import com.eclipsesource.tabris.ui.UI;
 
 
 @SuppressWarnings("restriction")
@@ -43,14 +43,14 @@ public class RemotePage {
   private final PageDescriptor descriptor;
   private final RemoteObjectImpl remoteObject;
   private final List<RemoteAction> remoteActions;
-  private final UIContext context;
+  private final UI ui;
   private final String parentId;
   private final Page page;
-  private final Store store;
+  private final PageStore store;
   private Control control;
 
-  public RemotePage( UIContext context, PageDescriptor descriptor, String parentId, Store store ) {
-    this.context = context;
+  public RemotePage( UI ui, PageDescriptor descriptor, String parentId, PageStore store ) {
+    this.ui = ui;
     this.parentId = parentId;
     this.store = store;
     this.remoteObject = ( RemoteObjectImpl )RWT.getUISession().getConnection().createRemoteObject( "tabris.Page" );
@@ -85,20 +85,27 @@ public class RemotePage {
   }
 
   private void setImage() {
-    Image image = descriptor.getImage();
+    Image image = createImage( descriptor.getImagePath() );
     if( image != null ) {
       Rectangle bounds = image.getBounds();
-      Object[] imageData = new Object[] { ImageFactory.getImagePath( descriptor.getImage() ),
+      Object[] imageData = new Object[] { ImageFactory.getImagePath( image ),
                                           Integer.valueOf( bounds.width ),
                                           Integer.valueOf( bounds.height ) };
       remoteObject.set( PROPERTY_IMAGE, imageData );
     }
   }
 
+  private Image createImage( String path ) {
+    if( path != null ) {
+      return new Image( ui.getDisplay(), page.getClass().getResourceAsStream( path ) );
+    }
+    return null;
+  }
+
   public void createActions() {
     List<ActionDescriptor> actions = descriptor.getActions();
     for( ActionDescriptor actionDescriptor : actions ) {
-      remoteActions.add( new RemoteAction( context, actionDescriptor, parentId ) );
+      remoteActions.add( new RemoteAction( ui, actionDescriptor, parentId ) );
     }
   }
 
@@ -122,7 +129,7 @@ public class RemotePage {
     if( control == null ) {
       Composite container = new Composite( parent, SWT.NONE );
       container.setLayout( new FillLayout() );
-      page.create( container, context );
+      page.createContents( container, ui );
       control = container;
       remoteObject.set( PROPERTY_CONTROL, WidgetUtil.getId( control ) );
     }
@@ -132,7 +139,7 @@ public class RemotePage {
     return control;
   }
 
-  public Store getStore() {
+  public PageStore getStore() {
     return store;
   }
 

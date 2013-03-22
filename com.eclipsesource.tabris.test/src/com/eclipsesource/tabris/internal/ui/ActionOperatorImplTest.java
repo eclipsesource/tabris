@@ -18,19 +18,19 @@ import static org.mockito.Mockito.verify;
 import org.junit.Test;
 
 
-public class ActionManagerImplTest {
+public class ActionOperatorImplTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithNullController() {
-    new ActionManagerImpl( null );
+    new ActionOperatorImpl( null );
   }
 
   @Test
   public void testEnablesActionsByDefault() {
     Controller controller = mock( Controller.class );
-    ActionManagerImpl actionManager = new ActionManagerImpl( controller );
+    ActionOperatorImpl actionOperator = new ActionOperatorImpl( controller );
 
-    boolean enabled = actionManager.isActionEnabled( "foo" );
+    boolean enabled = actionOperator.isActionEnabled( "foo" );
 
     assertTrue( enabled );
   }
@@ -38,11 +38,11 @@ public class ActionManagerImplTest {
   @Test
   public void testDisbalesActions() {
     Controller controller = mock( Controller.class );
-    ActionManagerImpl actionManager = new ActionManagerImpl( controller );
+    ActionOperatorImpl actionOperator = new ActionOperatorImpl( controller );
 
-    actionManager.setActionEnabled( "foo", false );
+    actionOperator.setActionEnabled( "foo", false );
 
-    boolean enabled = actionManager.isActionEnabled( "foo" );
+    boolean enabled = actionOperator.isActionEnabled( "foo" );
     assertFalse( enabled );
     verify( controller ).setActionEnabled( "foo", false );
   }
@@ -50,25 +50,25 @@ public class ActionManagerImplTest {
   @Test( expected = IllegalArgumentException.class )
   public void testDisbalesActionFailsForNullId() {
     Controller controller = mock( Controller.class );
-    ActionManagerImpl actionManager = new ActionManagerImpl( controller );
+    ActionOperatorImpl actionOperator = new ActionOperatorImpl( controller );
 
-    actionManager.setActionEnabled( null, false );
+    actionOperator.setActionEnabled( null, false );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testDisbalesActionFailsForEmptyId() {
     Controller controller = mock( Controller.class );
-    ActionManagerImpl actionManager = new ActionManagerImpl( controller );
+    ActionOperatorImpl actionOperator = new ActionOperatorImpl( controller );
 
-    actionManager.setActionEnabled( "", false );
+    actionOperator.setActionEnabled( "", false );
   }
 
   @Test
   public void testActionIsVisibleByDefault() {
     Controller controller = mock( Controller.class );
-    ActionManagerImpl actionManager = new ActionManagerImpl( controller );
+    ActionOperatorImpl actionOperator = new ActionOperatorImpl( controller );
 
-    boolean visible = actionManager.isActionVisible( "foo" );
+    boolean visible = actionOperator.isActionVisible( "foo" );
 
     assertTrue( visible );
   }
@@ -76,59 +76,59 @@ public class ActionManagerImplTest {
   @Test( expected = IllegalArgumentException.class )
   public void testActionIsVisibleFailsWithNullId() {
     Controller controller = mock( Controller.class );
-    ActionManagerImpl actionManager = new ActionManagerImpl( controller );
+    ActionOperatorImpl actionOperator = new ActionOperatorImpl( controller );
 
-    actionManager.isActionVisible( null );
+    actionOperator.isActionVisible( null );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testActionIsVisibleFailsWithEmptyId() {
     Controller controller = mock( Controller.class );
-    ActionManagerImpl actionManager = new ActionManagerImpl( controller );
+    ActionOperatorImpl actionOperator = new ActionOperatorImpl( controller );
 
-    actionManager.isActionVisible( "" );
+    actionOperator.isActionVisible( "" );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testActionIsEnabledFailsWithNullId() {
     Controller controller = mock( Controller.class );
-    ActionManagerImpl actionManager = new ActionManagerImpl( controller );
+    ActionOperatorImpl actionOperator = new ActionOperatorImpl( controller );
 
-    actionManager.isActionEnabled( null );
+    actionOperator.isActionEnabled( null );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testActionIsEnabledFailsWithEmptyId() {
     Controller controller = mock( Controller.class );
-    ActionManagerImpl actionManager = new ActionManagerImpl( controller );
+    ActionOperatorImpl actionOperator = new ActionOperatorImpl( controller );
 
-    actionManager.isActionEnabled( "" );
+    actionOperator.isActionEnabled( "" );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testSetEnabledFailsWithNullId() {
     Controller controller = mock( Controller.class );
-    ActionManagerImpl actionManager = new ActionManagerImpl( controller );
+    ActionOperatorImpl actionOperator = new ActionOperatorImpl( controller );
 
-    actionManager.setActionEnabled( null, true );
+    actionOperator.setActionEnabled( null, true );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testSetEnabledFailsWithEmptyId() {
     Controller controller = mock( Controller.class );
-    ActionManagerImpl actionManager = new ActionManagerImpl( controller );
+    ActionOperatorImpl actionOperator = new ActionOperatorImpl( controller );
 
-    actionManager.setActionEnabled( "", true );
+    actionOperator.setActionEnabled( "", true );
   }
 
   @Test
   public void testHidesAction() {
     Controller controller = mock( Controller.class );
-    ActionManagerImpl actionManager = new ActionManagerImpl( controller );
+    ActionOperatorImpl actionOperator = new ActionOperatorImpl( controller );
 
-    actionManager.setActionVisible( "foo", false );
+    actionOperator.setActionVisible( "foo", false );
 
-    boolean visible = actionManager.isActionVisible( "foo" );
+    boolean visible = actionOperator.isActionVisible( "foo" );
     assertFalse( visible );
     verify( controller ).setActionVisible( "foo", false );
   }
