@@ -156,10 +156,10 @@ public class RemotePageTest {
 
   @Test
     public void testGetData() {
-      PageData store = mock( PageData.class );
-      RemotePage page = new RemotePage( ui, descriptor, "foo", store );
+      PageData data = mock( PageData.class );
+      RemotePage page = new RemotePage( ui, descriptor, "foo", data );
   
-      assertSame( store, page.getData() );
+      assertSame( data, page.getData() );
     }
 
   @Test

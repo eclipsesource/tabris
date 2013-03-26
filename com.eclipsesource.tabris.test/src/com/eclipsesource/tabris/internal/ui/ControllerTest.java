@@ -140,9 +140,9 @@ public class ControllerTest {
     RemoteUI remoteUI = mock( RemoteUI.class );
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
-    PageData store = mock( PageData.class );
+    PageData data = mock( PageData.class );
 
-    controller.showRoot( ui, root2, store );
+    controller.showRoot( ui, root2, data );
 
     assertTrue( getTestPage( controller, root1 ).wasDeactivated() );
     assertTrue( getTestPage( controller, root2 ).wasActivated() );
@@ -154,15 +154,15 @@ public class ControllerTest {
   }
 
   @Test
-  public void testShowRootPageActivatesPageWithPageStore() {
+  public void testShowRootPageActivatesPageWithPageData() {
     PageDescriptor root1 = createRootPage( "foo" );
     PageDescriptor root2 = createRootPage( "bar" );
     RemoteUI remoteUI = mock( RemoteUI.class );
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
-    PageData store = mock( PageData.class );
+    PageData data = mock( PageData.class );
 
-    controller.showRoot( ui, root2, store );
+    controller.showRoot( ui, root2, data );
 
     assertTrue( getTestPage( controller, root1 ).wasDeactivated() );
     assertTrue( getTestPage( controller, root2 ).wasActivated() );
@@ -246,29 +246,29 @@ public class ControllerTest {
     RemoteUI remoteUI = mock( RemoteUI.class );
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
-    PageData store = mock( PageData.class );
+    PageData data = mock( PageData.class );
 
-    TestPage page = ( TestPage )controller.showPage( ui, page2, store ).getPage();
+    TestPage page = ( TestPage )controller.showPage( ui, page2, data ).getPage();
 
     assertTrue( getTestPage( controller, root1 ).wasDeactivated() );
     assertTrue( page.wasActivated() );
-    assertSame( store, controller.getCurrentData() );
+    assertSame( data, controller.getCurrentData() );
   }
 
   @Test
-  public void testShowPageActivatesPageWithDelegatedPageStore() {
+  public void testShowPageActivatesPageWithDelegatedPageData() {
     PageDescriptor root1 = createRootPage( "foo" );
     PageDescriptor page2 = createPage( "bar" );
     RemoteUI remoteUI = mock( RemoteUI.class );
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
-    PageData store = mock( PageData.class );
+    PageData data = mock( PageData.class );
 
-    TestPage page = ( TestPage )controller.showPage( ui, page2, store ).getPage();
+    TestPage page = ( TestPage )controller.showPage( ui, page2, data ).getPage();
 
     assertTrue( getTestPage( controller, root1 ).wasDeactivated() );
     assertTrue( page.wasActivated() );
-    assertSame( store, controller.getCurrentData() );
+    assertSame( data, controller.getCurrentData() );
   }
 
   @Test
@@ -385,20 +385,20 @@ public class ControllerTest {
   }
 
   @Test
-  public void testShowPreviousDoesNotEffectPagePageStore() {
+  public void testShowPreviousDoesNotEffectPagePageData() {
     createRootPage( "foo" );
     PageDescriptor page = createPage( "bar" );
     PageDescriptor page2 = createPage( "bar2" );
     RemoteUI remoteUI = mock( RemoteUI.class );
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
-    PageData pagePageStore = mock( PageData.class );
+    PageData pagePageData = mock( PageData.class );
 
-    controller.showPage( ui, page, pagePageStore );
+    controller.showPage( ui, page, pagePageData );
     controller.showPage( ui, page2, mock( PageData.class ) );
     controller.closeCurrentPage( ui );
 
-    assertSame( pagePageStore, controller.getCurrentData() );
+    assertSame( pagePageData, controller.getCurrentData() );
   }
 
   @Test
@@ -408,9 +408,9 @@ public class ControllerTest {
     RemoteUI remoteUI = mock( RemoteUI.class );
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
-    PageData store = mock( PageData.class );
+    PageData data = mock( PageData.class );
 
-    TestPage testPage = ( TestPage )controller.showPage( ui, page, store ).getPage();
+    TestPage testPage = ( TestPage )controller.showPage( ui, page, data ).getPage();
     controller.closeCurrentPage( ui );
 
     assertTrue( testPage.wasDeactivated() );
@@ -431,17 +431,17 @@ public class ControllerTest {
   }
 
   @Test
-  public void testGetCurrentPageStore() {
+  public void testGetCurrentPageData() {
     createRootPage( "foo" );
     PageDescriptor page = createPage( "bar" );
     RemoteUI remoteUI = mock( RemoteUI.class );
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
-    PageData store = mock( PageData.class );
+    PageData data = mock( PageData.class );
 
-    controller.showPage( ui, page, store );
+    controller.showPage( ui, page, data );
 
-    assertSame( store, controller.getCurrentData() );
+    assertSame( data, controller.getCurrentData() );
   }
 
   @Test

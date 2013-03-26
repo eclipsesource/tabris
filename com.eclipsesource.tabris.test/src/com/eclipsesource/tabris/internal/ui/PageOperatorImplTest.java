@@ -67,16 +67,16 @@ public class PageOperatorImplTest {
   }
 
   @Test
-  public void testGetsPagePageStore() {
+  public void testGetsPagePageData() {
     Controller controller = mock( Controller.class );
     when( controller.getCurrentData() ).thenReturn( mock( PageData.class ) );
     UIImpl ui = new UIImpl( display, controller, mock( UIConfiguration.class ) );
 
     ui.markInitialized();
-    PageData store = ui.getPageOperator().getCurrentPageData();
+    PageData data = ui.getPageOperator().getCurrentPageData();
 
     verify( controller ).getCurrentData();
-    assertNotNull( store );
+    assertNotNull( data );
   }
 
   @Test
@@ -137,7 +137,7 @@ public class PageOperatorImplTest {
   }
 
   @Test( expected = IllegalArgumentException.class )
-  public void testShowsRootPageFailsWithNullPageStore() {
+  public void testShowsRootPageFailsWithNullPageData() {
     Controller controller = mock( Controller.class );
     UIConfiguration configuration = mock( UIConfiguration.class );
     UIDescriptor contentHolder = new UIDescriptor();
@@ -153,7 +153,7 @@ public class PageOperatorImplTest {
   }
 
   @Test
-  public void testShowsRootPageWithControllerAndPageStore() {
+  public void testShowsRootPageWithControllerAndPageData() {
     Controller controller = mock( Controller.class );
     UIConfiguration configuration = mock( UIConfiguration.class );
     UIDescriptor contentHolder = new UIDescriptor();
@@ -164,11 +164,11 @@ public class PageOperatorImplTest {
     when( configuration.getAdapter( UIDescriptor.class ) ).thenReturn( contentHolder );
     UIImpl ui = new UIImpl( display, controller, configuration );
     ui.markInitialized();
-    PageData store = mock( PageData.class );
+    PageData data = mock( PageData.class );
 
-    ui.getPageOperator().openPage( "foo", store );
+    ui.getPageOperator().openPage( "foo", data );
 
-    verify( controller ).show( ui, page, store );
+    verify( controller ).show( ui, page, data );
   }
 
   @Test
@@ -190,7 +190,7 @@ public class PageOperatorImplTest {
   }
 
   @Test( expected = IllegalArgumentException.class )
-  public void testShowsPageFailsWithNullPageStore() {
+  public void testShowsPageFailsWithNullPageData() {
     Controller controller = mock( Controller.class );
     UIConfiguration configuration = mock( UIConfiguration.class );
     UIImpl ui = new UIImpl( display, controller, configuration );
@@ -206,7 +206,7 @@ public class PageOperatorImplTest {
   }
 
   @Test
-  public void testShowsPageWithControllerAndPageStore() {
+  public void testShowsPageWithControllerAndPageData() {
     Controller controller = mock( Controller.class );
     UIConfiguration configuration = mock( UIConfiguration.class );
     UIImpl ui = new UIImpl( display, controller, configuration );
@@ -216,12 +216,12 @@ public class PageOperatorImplTest {
     doReturn( Boolean.FALSE ).when( page ).isTopLevel();
     contentHolder.add( page );
     when( configuration.getAdapter( UIDescriptor.class ) ).thenReturn( contentHolder );
-    PageData store = mock( PageData.class );
+    PageData data = mock( PageData.class );
     ui.markInitialized();
 
-    ui.getPageOperator().openPage( "foo", store );
+    ui.getPageOperator().openPage( "foo", data );
 
-    verify( controller ).show( ui, page, store );
+    verify( controller ).show( ui, page, data );
   }
 
   @Test( expected = IllegalArgumentException.class )
