@@ -40,7 +40,7 @@ import org.mockito.InOrder;
 import com.eclipsesource.tabris.internal.ZIndexStackLayout;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 import com.eclipsesource.tabris.ui.Page;
-import com.eclipsesource.tabris.ui.PageStore;
+import com.eclipsesource.tabris.ui.PageData;
 import com.eclipsesource.tabris.ui.TransitionListener;
 import com.eclipsesource.tabris.ui.UIConfiguration;
 
@@ -128,7 +128,7 @@ public class ControllerTest {
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
-    controller.showRoot( ui, root2, mock( PageStore.class ) );
+    controller.showRoot( ui, root2, mock( PageData.class ) );
 
     assertEquals( 2, shell.getChildren().length );
   }
@@ -140,7 +140,7 @@ public class ControllerTest {
     RemoteUI remoteUI = mock( RemoteUI.class );
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
-    PageStore store = mock( PageStore.class );
+    PageData store = mock( PageData.class );
 
     controller.showRoot( ui, root2, store );
 
@@ -160,7 +160,7 @@ public class ControllerTest {
     RemoteUI remoteUI = mock( RemoteUI.class );
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
-    PageStore store = mock( PageStore.class );
+    PageData store = mock( PageData.class );
 
     controller.showRoot( ui, root2, store );
 
@@ -176,7 +176,7 @@ public class ControllerTest {
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
-    controller.showRoot( ui, root2, mock( PageStore.class ) );
+    controller.showRoot( ui, root2, mock( PageData.class ) );
 
     verify( remoteUI, times( 2 ) ).activate( remoteObject.getId() );
   }
@@ -189,7 +189,7 @@ public class ControllerTest {
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
-    controller.showRoot( ui, root2, mock( PageStore.class ) );
+    controller.showRoot( ui, root2, mock( PageData.class ) );
 
     verify( layout, times( 2 ) ).setOnTopControl( any( Composite.class ) );
   }
@@ -202,7 +202,7 @@ public class ControllerTest {
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
-    controller.showRoot( ui, root2, mock( PageStore.class ) );
+    controller.showRoot( ui, root2, mock( PageData.class ) );
 
     InOrder order = inOrder( listener );
     order.verify( listener ).before( ui, getTestPage( controller, root1 ), getTestPage( controller, root2 ) );
@@ -217,7 +217,7 @@ public class ControllerTest {
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
-    TestPage testPage = ( TestPage )controller.showPage( ui, page, mock( PageStore.class ) ).getPage();
+    TestPage testPage = ( TestPage )controller.showPage( ui, page, mock( PageData.class ) ).getPage();
 
     assertTrue( getTestPage( controller, root1 ).wasCreated() );
     assertTrue( testPage.wasCreated() );
@@ -231,8 +231,8 @@ public class ControllerTest {
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
-    TestPage testPage1 = ( TestPage )controller.showPage( ui, page, mock( PageStore.class ) ).getPage();
-    TestPage testPage2 = ( TestPage )controller.showPage( ui, page, mock( PageStore.class ) ).getPage();
+    TestPage testPage1 = ( TestPage )controller.showPage( ui, page, mock( PageData.class ) ).getPage();
+    TestPage testPage2 = ( TestPage )controller.showPage( ui, page, mock( PageData.class ) ).getPage();
 
     assertTrue( getTestPage( controller, root1 ).wasCreated() );
     assertTrue( testPage1.wasCreated() );
@@ -246,13 +246,13 @@ public class ControllerTest {
     RemoteUI remoteUI = mock( RemoteUI.class );
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
-    PageStore store = mock( PageStore.class );
+    PageData store = mock( PageData.class );
 
     TestPage page = ( TestPage )controller.showPage( ui, page2, store ).getPage();
 
     assertTrue( getTestPage( controller, root1 ).wasDeactivated() );
     assertTrue( page.wasActivated() );
-    assertSame( store, controller.getCurrentStore() );
+    assertSame( store, controller.getCurrentData() );
   }
 
   @Test
@@ -262,13 +262,13 @@ public class ControllerTest {
     RemoteUI remoteUI = mock( RemoteUI.class );
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
-    PageStore store = mock( PageStore.class );
+    PageData store = mock( PageData.class );
 
     TestPage page = ( TestPage )controller.showPage( ui, page2, store ).getPage();
 
     assertTrue( getTestPage( controller, root1 ).wasDeactivated() );
     assertTrue( page.wasActivated() );
-    assertSame( store, controller.getCurrentStore() );
+    assertSame( store, controller.getCurrentData() );
   }
 
   @Test
@@ -279,7 +279,7 @@ public class ControllerTest {
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
-    controller.showPage( ui, page, mock( PageStore.class ) );
+    controller.showPage( ui, page, mock( PageData.class ) );
 
     verify( remoteUI, times( 2 ) ).activate( remoteObject.getId() );
   }
@@ -292,7 +292,7 @@ public class ControllerTest {
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
-    controller.showPage( ui, page, mock( PageStore.class ) );
+    controller.showPage( ui, page, mock( PageData.class ) );
 
     verify( layout, times( 2 ) ).setOnTopControl( any( Control.class ) );
   }
@@ -305,7 +305,7 @@ public class ControllerTest {
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
-    TestPage testPage = ( TestPage )controller.showPage( ui, page, mock( PageStore.class ) ).getPage();
+    TestPage testPage = ( TestPage )controller.showPage( ui, page, mock( PageData.class ) ).getPage();
 
     InOrder order = inOrder( listener );
     order.verify( listener ).before( ui, getTestPage( controller, root1 ), testPage );
@@ -320,7 +320,7 @@ public class ControllerTest {
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
-    controller.showRoot( ui, page, mock( PageStore.class ) );
+    controller.showRoot( ui, page, mock( PageData.class ) );
     boolean success = controller.closeCurrentPage( ui );
 
     assertFalse( success );
@@ -334,7 +334,7 @@ public class ControllerTest {
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
-    controller.showPage( ui, page, mock( PageStore.class ) );
+    controller.showPage( ui, page, mock( PageData.class ) );
     boolean success = controller.closeCurrentPage( ui );
 
     assertTrue( success );
@@ -348,7 +348,7 @@ public class ControllerTest {
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
-    TestPage testPage = ( TestPage )controller.showPage( ui, page, mock( PageStore.class ) ).getPage();
+    TestPage testPage = ( TestPage )controller.showPage( ui, page, mock( PageData.class ) ).getPage();
     controller.closeCurrentPage( ui );
 
     InOrder order = inOrder( listener );
@@ -364,7 +364,7 @@ public class ControllerTest {
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
-    controller.showPage( ui, page, mock( PageStore.class ) );
+    controller.showPage( ui, page, mock( PageData.class ) );
     controller.closeCurrentPage( ui );
 
     verify( layout, times( 3 ) ).setOnTopControl( any( Composite.class ) );
@@ -378,7 +378,7 @@ public class ControllerTest {
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
-    controller.showPage( ui, page, mock( PageStore.class ) );
+    controller.showPage( ui, page, mock( PageData.class ) );
     controller.closeCurrentPage( ui );
 
     verify( remoteObject ).destroy();
@@ -392,13 +392,13 @@ public class ControllerTest {
     RemoteUI remoteUI = mock( RemoteUI.class );
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
-    PageStore pagePageStore = mock( PageStore.class );
+    PageData pagePageStore = mock( PageData.class );
 
     controller.showPage( ui, page, pagePageStore );
-    controller.showPage( ui, page2, mock( PageStore.class ) );
+    controller.showPage( ui, page2, mock( PageData.class ) );
     controller.closeCurrentPage( ui );
 
-    assertSame( pagePageStore, controller.getCurrentStore() );
+    assertSame( pagePageStore, controller.getCurrentData() );
   }
 
   @Test
@@ -408,7 +408,7 @@ public class ControllerTest {
     RemoteUI remoteUI = mock( RemoteUI.class );
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
-    PageStore store = mock( PageStore.class );
+    PageData store = mock( PageData.class );
 
     TestPage testPage = ( TestPage )controller.showPage( ui, page, store ).getPage();
     controller.closeCurrentPage( ui );
@@ -425,7 +425,7 @@ public class ControllerTest {
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
-    controller.showPage( ui, page, mock( PageStore.class ) );
+    controller.showPage( ui, page, mock( PageData.class ) );
 
     assertTrue( controller.getCurrentPage() instanceof TestPage );
   }
@@ -437,11 +437,11 @@ public class ControllerTest {
     RemoteUI remoteUI = mock( RemoteUI.class );
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
-    PageStore store = mock( PageStore.class );
+    PageData store = mock( PageData.class );
 
     controller.showPage( ui, page, store );
 
-    assertSame( store, controller.getCurrentStore() );
+    assertSame( store, controller.getCurrentData() );
   }
 
   @Test
@@ -452,7 +452,7 @@ public class ControllerTest {
     Controller controller = new Controller( shell, remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
-    RemotePage remotePage = controller.showPage( ui, page, mock( PageStore.class ) );
+    RemotePage remotePage = controller.showPage( ui, page, mock( PageData.class ) );
     controller.setTitle( remotePage.getPage(), "foobar" );
 
     verify( remoteObject ).set( "title", "foobar" );

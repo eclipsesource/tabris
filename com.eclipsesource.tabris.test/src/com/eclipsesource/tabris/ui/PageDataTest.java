@@ -11,23 +11,23 @@ import java.util.Map;
 import org.junit.Test;
 
 
-public class PageStoreTest {
+public class PageDataTest {
 
   @Test
   public void testGetValue() {
-    PageStore store = new PageStore();
-    store.set( "foo", "bar" );
+    PageData data = new PageData();
+    data.set( "foo", "bar" );
 
-    assertEquals( "bar", store.get( "foo", String.class ) );
+    assertEquals( "bar", data.get( "foo", String.class ) );
   }
 
   @Test
   public void testGetAllValues() {
-    PageStore store = new PageStore();
-    store.set( "foo", "bar" );
-    store.set( "foo1", "bar" );
+    PageData data = new PageData();
+    data.set( "foo", "bar" );
+    data.set( "foo1", "bar" );
 
-    Map<String, Object> values = store.getAll();
+    Map<String, Object> values = data.getAll();
 
     assertEquals( "bar", values.get( "foo" ) );
     assertEquals( "bar", values.get( "foo1" ) );
@@ -36,26 +36,26 @@ public class PageStoreTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testGetValueWithWrongType() {
-    PageStore store = new PageStore();
-    store.set( "foo", "bar" );
+    PageData data = new PageData();
+    data.set( "foo", "bar" );
 
-    store.get( "foo", Integer.class );
+    data.get( "foo", Integer.class );
   }
 
   @Test
   public void testGetWithNonExistingKeyReturnsNull() {
-    PageStore store = new PageStore();
+    PageData data = new PageData();
 
-    assertNull( store.get( "foo", String.class ) );
+    assertNull( data.get( "foo", String.class ) );
   }
 
   @Test
   public void testGetList() {
-    PageStore store = new PageStore();
+    PageData data = new PageData();
     ArrayList<Object> list = new ArrayList<Object>();
 
-    store.set( "foo", list );
-    List actualList = store.get( "foo", List.class );
+    data.set( "foo", list );
+    List actualList = data.get( "foo", List.class );
 
     assertSame( list, actualList );
   }

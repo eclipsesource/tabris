@@ -15,7 +15,7 @@ import static com.eclipsesource.tabris.internal.Preconditions.checkState;
 
 import com.eclipsesource.tabris.ui.Page;
 import com.eclipsesource.tabris.ui.PageOperator;
-import com.eclipsesource.tabris.ui.PageStore;
+import com.eclipsesource.tabris.ui.PageData;
 
 
 public class PageOperatorImpl implements PageOperator {
@@ -32,16 +32,16 @@ public class PageOperatorImpl implements PageOperator {
 
   @Override
   public void openPage( String pageId ) throws IllegalStateException {
-    openPage( pageId, new PageStore() );
+    openPage( pageId, new PageData() );
   }
 
   @Override
-  public void openPage( String pageId, PageStore store ) throws IllegalStateException {
-    checkArgumentNotNull( store, PageStore.class.getSimpleName() );
+  public void openPage( String pageId, PageData data ) throws IllegalStateException {
+    checkArgumentNotNull( data, PageData.class.getSimpleName() );
     UIDescriptor uiDescriptor = ui.getConfiguration().getAdapter( UIDescriptor.class );
     PageDescriptor descriptor = uiDescriptor.getPageDescriptor( pageId );
     checkState( descriptor, "Page with id " + pageId + " does not exist." );
-    controller.show( ui, descriptor, store );
+    controller.show( ui, descriptor, data );
   }
 
   @Override
@@ -58,8 +58,8 @@ public class PageOperatorImpl implements PageOperator {
   }
 
   @Override
-  public PageStore getCurrentPageStore() {
-    return controller.getCurrentStore();
+  public PageData getCurrentPageData() {
+    return controller.getCurrentData();
   }
 
   @Override

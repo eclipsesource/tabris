@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import com.eclipsesource.tabris.ui.Page;
-import com.eclipsesource.tabris.ui.PageStore;
+import com.eclipsesource.tabris.ui.PageData;
 import com.eclipsesource.tabris.ui.PageStyle;
 import com.eclipsesource.tabris.ui.UI;
 
@@ -46,13 +46,13 @@ public class RemotePage {
   private final UI ui;
   private final String parentId;
   private final Page page;
-  private final PageStore store;
+  private final PageData data;
   private Control control;
 
-  public RemotePage( UI ui, PageDescriptor descriptor, String parentId, PageStore store ) {
+  public RemotePage( UI ui, PageDescriptor descriptor, String parentId, PageData data ) {
     this.ui = ui;
     this.parentId = parentId;
-    this.store = store;
+    this.data = data;
     this.remoteObject = ( RemoteObjectImpl )RWT.getUISession().getConnection().createRemoteObject( "tabris.Page" );
     this.descriptor = descriptor;
     this.page = InstanceCreator.createInstance( descriptor.getPageType() );
@@ -139,8 +139,8 @@ public class RemotePage {
     return control;
   }
 
-  public PageStore getStore() {
-    return store;
+  public PageData getData() {
+    return data;
   }
 
   public void destroy() {

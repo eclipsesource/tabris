@@ -66,7 +66,7 @@ public class VideoTest {
 
   @Test
   public void testGetUrl() throws MalformedURLException {
-    assertEquals( new URL( "http://test.com" ), video.getURL() );
+    assertEquals( new URL( "http://test.com" ).toString(), video.getURL().toString() );
   }
 
   @Test

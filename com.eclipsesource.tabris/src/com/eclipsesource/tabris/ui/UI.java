@@ -16,8 +16,7 @@ import org.eclipse.swt.widgets.Display;
 /**
  * <p>
  * The {@link UI} is a shared object that you will find all over the Tabris UI API. It's your control for the
- * whole UI once it was created. You can use it to store global data for using it in a {@link Page} or to navigate
- * through your application.
+ * whole UI once it was created. You can use it to navigate through your application.
  * </p>
  *
  * @since 0.11

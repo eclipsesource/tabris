@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.eclipsesource.tabris.internal.ZIndexStackLayout;
 import com.eclipsesource.tabris.ui.Page;
-import com.eclipsesource.tabris.ui.PageStore;
+import com.eclipsesource.tabris.ui.PageData;
 import com.eclipsesource.tabris.ui.TransitionListener;
 
 
@@ -47,12 +47,12 @@ public class Controller {
     List<PageDescriptor> pages = content.getRootPages();
     verifyRootPages( pages );
     createRootRemotePages( ui, pages );
-    showRoot( ui, pages.get( 0 ), new PageStore() );
+    showRoot( ui, pages.get( 0 ), new PageData() );
   }
 
   private void createRootRemotePages( UIImpl ui, List<PageDescriptor> pages ) {
     for( PageDescriptor descriptor : pages ) {
-      RemotePage remotePage = new RemotePage( ui, descriptor, remoteUI.getRemoteUIId(), new PageStore() );
+      RemotePage remotePage = new RemotePage( ui, descriptor, remoteUI.getRemoteUIId(), new PageData() );
       rootPages.put( descriptor, remotePage );
       remotePage.createControl( shell );
     }
@@ -71,18 +71,18 @@ public class Controller {
     }
   }
 
-  void show( UIImpl ui, PageDescriptor newPage, PageStore store ) {
+  void show( UIImpl ui, PageDescriptor newPage, PageData data ) {
     if( newPage.isTopLevel() ) {
-      showRoot( ui, newPage, store );
+      showRoot( ui, newPage, data );
     } else {
-      showPage( ui, newPage, store );
+      showPage( ui, newPage, data );
     }
   }
 
-  void showRoot( UIImpl ui, PageDescriptor newPage, PageStore store ) {
+  void showRoot( UIImpl ui, PageDescriptor newPage, PageData data ) {
     RemotePage oldRoot = null;
     RemotePage newRoot = rootPages.get( newPage );
-    newRoot.getStore().addStore( store );
+    newRoot.getData().addData( data );
     if( currentFlow != null ) {
       oldRoot = cleanupOldRoot( ui, newRoot );
     }
@@ -107,9 +107,9 @@ public class Controller {
     fireTransitionAfterEvent( ui, oldRoot, newRoot );
   }
 
-  RemotePage showPage( UIImpl ui, PageDescriptor newPage, PageStore store ) {
+  RemotePage showPage( UIImpl ui, PageDescriptor newPage, PageData data ) {
     RemotePage oldRemotePage = cleanupOldPage( ui );
-    return initializeNewPage( ui, newPage, oldRemotePage, store );
+    return initializeNewPage( ui, newPage, oldRemotePage, data );
   }
 
   private RemotePage cleanupOldPage( UIImpl ui ) {
@@ -122,9 +122,9 @@ public class Controller {
   private RemotePage initializeNewPage( UIImpl ui,
                                         PageDescriptor newPage,
                                         RemotePage oldRemotePage,
-                                        PageStore store )
+                                        PageData data )
   {
-    RemotePage newRemotePage = new RemotePage( ui, newPage, remoteUI.getRemoteUIId(), store );
+    RemotePage newRemotePage = new RemotePage( ui, newPage, remoteUI.getRemoteUIId(), data );
     fireTransitionBeforeEvent( ui, oldRemotePage, newRemotePage );
     currentFlow.add( newRemotePage );
     newRemotePage.createControl( shell );
@@ -201,9 +201,9 @@ public class Controller {
     return null;
   }
 
-  public PageStore getCurrentStore() {
+  public PageData getCurrentData() {
     if( currentFlow != null ) {
-      return currentFlow.getCurrentPage().getStore();
+      return currentFlow.getCurrentPage().getData();
     }
     return null;
   }

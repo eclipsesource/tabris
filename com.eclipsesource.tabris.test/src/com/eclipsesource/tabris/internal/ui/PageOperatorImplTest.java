@@ -26,7 +26,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.ui.Page;
-import com.eclipsesource.tabris.ui.PageStore;
+import com.eclipsesource.tabris.ui.PageData;
 import com.eclipsesource.tabris.ui.UIConfiguration;
 
 
@@ -69,13 +69,13 @@ public class PageOperatorImplTest {
   @Test
   public void testGetsPagePageStore() {
     Controller controller = mock( Controller.class );
-    when( controller.getCurrentStore() ).thenReturn( mock( PageStore.class ) );
+    when( controller.getCurrentData() ).thenReturn( mock( PageData.class ) );
     UIImpl ui = new UIImpl( display, controller, mock( UIConfiguration.class ) );
 
     ui.markInitialized();
-    PageStore store = ui.getPageOperator().getCurrentPageStore();
+    PageData store = ui.getPageOperator().getCurrentPageData();
 
-    verify( controller ).getCurrentStore();
+    verify( controller ).getCurrentData();
     assertNotNull( store );
   }
 
@@ -133,7 +133,7 @@ public class PageOperatorImplTest {
     ui.markInitialized();
     ui.getPageOperator().openPage( "foo" );
 
-    verify( controller ).show( eq( ui ), eq( page ), any( PageStore.class ) );
+    verify( controller ).show( eq( ui ), eq( page ), any( PageData.class ) );
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -164,7 +164,7 @@ public class PageOperatorImplTest {
     when( configuration.getAdapter( UIDescriptor.class ) ).thenReturn( contentHolder );
     UIImpl ui = new UIImpl( display, controller, configuration );
     ui.markInitialized();
-    PageStore store = mock( PageStore.class );
+    PageData store = mock( PageData.class );
 
     ui.getPageOperator().openPage( "foo", store );
 
@@ -186,7 +186,7 @@ public class PageOperatorImplTest {
     ui.markInitialized();
     ui.getPageOperator().openPage( "foo" );
 
-    verify( controller ).show( eq( ui ), eq( page ), any( PageStore.class ) );
+    verify( controller ).show( eq( ui ), eq( page ), any( PageData.class ) );
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -216,7 +216,7 @@ public class PageOperatorImplTest {
     doReturn( Boolean.FALSE ).when( page ).isTopLevel();
     contentHolder.add( page );
     when( configuration.getAdapter( UIDescriptor.class ) ).thenReturn( contentHolder );
-    PageStore store = mock( PageStore.class );
+    PageData store = mock( PageData.class );
     ui.markInitialized();
 
     ui.getPageOperator().openPage( "foo", store );

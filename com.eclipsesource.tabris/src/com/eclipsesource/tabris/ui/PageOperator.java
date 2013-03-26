@@ -40,18 +40,18 @@ public interface PageOperator {
 
   /**
    * <p>
-   * When called the specified page will be shown on the client device. The passed in store will be the page store for
-   * the new page. See {@link PageOperator#getCurrentPageStore()}.
+   * When called the specified page will be shown on the client device. The passed in data will be the page data for
+   * the new page. See {@link PageOperator#getCurrentPageData()}.
    * </p>
    *
    * @param pageId the Id of the page to show. Must not be empty or <code>null</code>.
-   * @param store the page store for the new page. Must not be <code>null</code>.
+   * @param data the page data for the new page. Must not be <code>null</code>.
    *
    * @throws IllegalStateException when no page exist for the given id.
    *
    * @since 1.0
    */
-  void openPage( String pageId, PageStore store ) throws IllegalStateException;
+  void openPage( String pageId, PageData data ) throws IllegalStateException;
 
   /**
    * <p>
@@ -75,14 +75,14 @@ public interface PageOperator {
 
   /**
    * <p>
-   * Every page has it's own {@link PageStore}. You can influence this store by calling the
-   * {@link PageOperator#openPage(String, PageStore)} method with a new {@link PageStore}. This method
-   * returns the {@link PageStore} for the current active page.
+   * Every page has it's own {@link PageData}. You can influence this data by calling the
+   * {@link PageOperator#openPage(String, PageData)} method with a new {@link PageData}. This method
+   * returns the {@link PageData} for the current active page.
    * </p>
    *
    * @since 1.0
    */
-  PageStore getCurrentPageStore();
+  PageData getCurrentPageData();
 
   /**
    * <p>
