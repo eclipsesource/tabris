@@ -23,7 +23,7 @@ public class TestPage implements Page{
   private boolean wasActivated;
 
   @Override
-  public void createContents( Composite parent, UI ui ) {
+  public void createContent( Composite parent, UI ui ) {
     wasCreated = true;
   }
 

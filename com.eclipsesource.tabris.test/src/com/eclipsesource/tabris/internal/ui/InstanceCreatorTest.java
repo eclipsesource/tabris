@@ -41,7 +41,7 @@ public class InstanceCreatorTest {
   public static class TestClass implements Page {
 
     @Override
-    public void createContents( Composite parent, UI ui ) {
+    public void createContent( Composite parent, UI ui ) {
     }
 
     @Override
@@ -60,7 +60,7 @@ public class InstanceCreatorTest {
     }
 
     @Override
-    public void createContents( Composite parent, UI ui ) {
+    public void createContent( Composite parent, UI ui ) {
     }
 
     @Override
@@ -79,7 +79,7 @@ public class InstanceCreatorTest {
     }
 
     @Override
-    public void createContents( Composite parent, UI ui ) {
+    public void createContent( Composite parent, UI ui ) {
     }
 
     @Override

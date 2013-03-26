@@ -55,7 +55,7 @@ public interface Page {
    * @param ui the ui to control the application flow and share data.
    * @since 1.0
    */
-  void createContents( Composite parent, UI ui );
+  void createContent( Composite parent, UI ui );
 
   /**
    * <p>

@@ -129,7 +129,7 @@ public class RemotePage {
     if( control == null ) {
       Composite container = new Composite( parent, SWT.NONE );
       container.setLayout( new FillLayout() );
-      page.createContents( container, ui );
+      page.createContent( container, ui );
       control = container;
       remoteObject.set( PROPERTY_CONTROL, WidgetUtil.getId( control ) );
     }
