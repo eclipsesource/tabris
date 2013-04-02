@@ -69,7 +69,7 @@ public class UIDescriptorTest {
     ActionDescriptor descriptor = new ActionDescriptor( "foo",
                                                         new TestAction(),
                                                         "bar",
-                                                        "testImage.png",
+                                                        UIDescriptorTest.class.getResourceAsStream( "testImage.png" ),
                                                         true,
                                                         true );
 
@@ -107,7 +107,7 @@ public class UIDescriptorTest {
     ActionDescriptor descriptor = new ActionDescriptor( "foo",
                                                         new TestAction(),
                                                         "bar",
-                                                        "testImage.png",
+                                                        UIDescriptorTest.class.getResourceAsStream( "testImage.png" ),
                                                         true,
                                                         true );
 
@@ -124,7 +124,7 @@ public class UIDescriptorTest {
     ActionDescriptor descriptor = new ActionDescriptor( "foo",
                                                         new TestAction(),
                                                         "bar",
-                                                        "testImage.png",
+                                                        UIDescriptorTest.class.getResourceAsStream( "testImage.png" ),
                                                         true,
                                                         true );
 

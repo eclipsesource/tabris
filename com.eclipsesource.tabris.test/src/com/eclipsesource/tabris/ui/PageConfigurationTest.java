@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.ui;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -17,6 +18,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import java.io.InputStream;
 import java.util.List;
 
 import org.eclipse.rap.rwt.testfixture.Fixture;
@@ -28,6 +30,7 @@ import com.eclipsesource.tabris.internal.ui.ActionDescriptor;
 import com.eclipsesource.tabris.internal.ui.PageDescriptor;
 import com.eclipsesource.tabris.internal.ui.TestAction;
 import com.eclipsesource.tabris.internal.ui.TestPage;
+import com.eclipsesource.tabris.internal.ui.UITestUtil;
 
 
 public class PageConfigurationTest {
@@ -77,7 +80,7 @@ public class PageConfigurationTest {
     assertSame( TestPage.class, descriptor.getPageType() );
     assertFalse( descriptor.isTopLevel() );
     assertEquals( "", descriptor.getTitle() );
-    assertNull( descriptor.getImagePath() );
+    assertNull( descriptor.getImage() );
     assertEquals( 0, descriptor.getPageStyle().length );
   }
 
@@ -106,11 +109,12 @@ public class PageConfigurationTest {
 
   @Test
   public void testSetsImage() {
-    PageConfiguration config = new PageConfiguration( "foo", TestPage.class ).setImage( "testImage.png" );
+    InputStream image = UITestUtil.class.getResourceAsStream( "testImage.png" );
+    PageConfiguration config = new PageConfiguration( "foo", TestPage.class ).setImage( image );
 
     PageDescriptor descriptor = config.getAdapter( PageDescriptor.class );
 
-    assertSame( "testImage.png", descriptor.getImagePath() );
+    assertArrayEquals( UITestUtil.getImageBytes(), descriptor.getImage() );
   }
 
   @Test( expected = IllegalArgumentException.class )

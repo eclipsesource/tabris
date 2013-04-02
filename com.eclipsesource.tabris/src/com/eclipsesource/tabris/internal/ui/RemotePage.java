@@ -17,6 +17,7 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_STYLE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TITLE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TOP_LEVEL;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,7 +86,7 @@ public class RemotePage {
   }
 
   private void setImage() {
-    Image image = createImage( descriptor.getImagePath() );
+    Image image = createImage( descriptor.getImage() );
     if( image != null ) {
       Rectangle bounds = image.getBounds();
       Object[] imageData = new Object[] { ImageFactory.getImagePath( image ),
@@ -95,9 +96,9 @@ public class RemotePage {
     }
   }
 
-  private Image createImage( String path ) {
-    if( path != null ) {
-      return new Image( ui.getDisplay(), page.getClass().getResourceAsStream( path ) );
+  private Image createImage( byte[] bytes ) {
+    if( bytes != null ) {
+      return new Image( ui.getDisplay(), new ByteArrayInputStream( bytes ) );
     }
     return null;
   }

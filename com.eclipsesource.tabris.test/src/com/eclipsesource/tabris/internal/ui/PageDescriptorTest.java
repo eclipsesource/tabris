@@ -10,11 +10,13 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import java.io.InputStream;
 import java.util.List;
 
 import org.eclipse.rap.rwt.testfixture.Fixture;
@@ -60,10 +62,11 @@ public class PageDescriptorTest {
   }
 
   @Test
-  public void testGetImagePath() {
-    PageDescriptor descriptor = new PageDescriptor( "foo", TestPage.class, "bar", "testImage.png", true, PageStyle.DEFAULT );
+  public void testGetImage() {
+    InputStream image = PageDescriptorTest.class.getResourceAsStream( "testImage.png" );
+    PageDescriptor descriptor = new PageDescriptor( "foo", TestPage.class, "bar", image, true, PageStyle.DEFAULT );
 
-    assertSame( "testImage.png", descriptor.getImagePath() );
+    assertArrayEquals( UITestUtil.getImageBytes(), descriptor.getImage() );
   }
 
   @Test

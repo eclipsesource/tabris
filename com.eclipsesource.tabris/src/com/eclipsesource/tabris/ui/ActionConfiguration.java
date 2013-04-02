@@ -13,6 +13,8 @@ package com.eclipsesource.tabris.ui;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNullAndNotEmpty;
 
+import java.io.InputStream;
+
 import org.eclipse.rap.rwt.Adaptable;
 import org.eclipse.swt.widgets.Display;
 
@@ -42,7 +44,7 @@ public class ActionConfiguration implements Adaptable {
   protected String title;
   protected boolean enabled;
   protected boolean visible;
-  private String imagePath;
+  private InputStream image;
 
   /**
    * <p>
@@ -62,7 +64,6 @@ public class ActionConfiguration implements Adaptable {
     this.actionId = actionId;
     this.actionType = actionType;
     this.title = "";
-    this.imagePath = null;
     this.enabled = true;
     this.visible = true;
   }
@@ -106,13 +107,13 @@ public class ActionConfiguration implements Adaptable {
    * at {@link UI#getDisplay()}.
    * </p>
    *
-   * @param imagePath the image of the action. Must not be <code>null</code>.
+   * @param image the image of the action. Must not be <code>null</code>.
    *
    * @since 1.0
    */
-  public ActionConfiguration setImage( String imagePath ) {
-    checkArgumentNotNull( imagePath, "Action Image" );
-    this.imagePath = imagePath;
+  public ActionConfiguration setImage( InputStream image ) {
+    checkArgumentNotNull( image, "Action Image" );
+    this.image = image;
     return this;
   }
 
@@ -130,7 +131,7 @@ public class ActionConfiguration implements Adaptable {
 
   private ActionDescriptor createDescriptor() {
     Action action = InstanceCreator.createInstance( actionType );
-    return new ActionDescriptor( actionId, action, title, imagePath, visible, enabled );
+    return new ActionDescriptor( actionId, action, title, image, visible, enabled );
   }
 
 }

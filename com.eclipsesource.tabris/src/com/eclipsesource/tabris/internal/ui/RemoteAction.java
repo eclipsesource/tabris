@@ -17,6 +17,7 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PARENT;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TITLE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_VISIBILITY;
 
+import java.io.ByteArrayInputStream;
 import java.util.Map;
 
 import org.eclipse.rap.rwt.RWT;
@@ -26,7 +27,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.internal.graphics.ImageFactory;
 
-import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.UI;
 
 
@@ -54,7 +54,7 @@ public class RemoteAction extends AbstractOperationHandler {
   }
 
   private void setImage() {
-    Image image = createImage( descriptor.getImagePath() );
+    Image image = createImage( descriptor.getImage() );
     if( image != null ) {
       Rectangle bounds = image.getBounds();
       Object[] imageData = new Object[] { ImageFactory.getImagePath( image ),
@@ -64,11 +64,9 @@ public class RemoteAction extends AbstractOperationHandler {
     }
   }
 
-
-  private Image createImage( String path ) {
-    if( path != null ) {
-      Class<? extends Action> type = descriptor.getAction().getClass();
-      return new Image( ui.getDisplay(), type.getResourceAsStream( path ) );
+  private Image createImage( byte[] bytes ) {
+    if( bytes != null ) {
+      return new Image( ui.getDisplay(), new ByteArrayInputStream( bytes ) );
     }
     return null;
   }

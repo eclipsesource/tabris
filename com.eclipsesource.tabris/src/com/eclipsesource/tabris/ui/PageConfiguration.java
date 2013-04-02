@@ -13,6 +13,7 @@ package com.eclipsesource.tabris.ui;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNullAndNotEmpty;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class PageConfiguration implements Adaptable {
   protected PageStyle[] style;
   protected boolean topLevel;
   protected List<ActionConfiguration> actions;
-  private String imagePath;
+  private InputStream image;
 
   /**
    * <p>
@@ -69,7 +70,6 @@ public class PageConfiguration implements Adaptable {
     this.title = "";
     this.topLevel = false;
     this.style = new PageStyle[] {};
-    this.imagePath = null;
     this.actions = new ArrayList<ActionConfiguration>();
   }
 
@@ -112,13 +112,13 @@ public class PageConfiguration implements Adaptable {
    * at {@link UI#getDisplay()}.
    * </p>
    *
-   * @param imagePath the image of the page. Must not be <code>null</code>.
+   * @param image the image of the page. Must not be <code>null</code>.
    *
    * @since 1.0
    */
-  public PageConfiguration setImage( String imagePath ) {
-    checkArgumentNotNull( imagePath, "Page Image Path" );
-    this.imagePath = imagePath;
+  public PageConfiguration setImage( InputStream image ) {
+    checkArgumentNotNull( image, "Page Image" );
+    this.image = image;
     return this;
   }
 
@@ -150,7 +150,7 @@ public class PageConfiguration implements Adaptable {
   }
 
   private PageDescriptor createDescriptor() {
-    PageDescriptor pageDescriptor = new PageDescriptor( id, pageType, title, imagePath, topLevel, style );
+    PageDescriptor pageDescriptor = new PageDescriptor( id, pageType, title, image, topLevel, style );
     for( ActionConfiguration configuration : actions ) {
       pageDescriptor.addAction( configuration );
     }

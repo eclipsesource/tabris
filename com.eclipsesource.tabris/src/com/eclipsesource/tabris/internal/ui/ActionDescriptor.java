@@ -10,6 +10,10 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
+import static com.eclipsesource.tabris.internal.ui.ImageUtil.getBytes;
+
+import java.io.InputStream;
+
 import com.eclipsesource.tabris.ui.Action;
 
 
@@ -20,19 +24,19 @@ public class ActionDescriptor {
   private final String title;
   private final boolean visible;
   private final boolean enabled;
-  private final String imagePath;
+  private final byte[] image;
 
   public ActionDescriptor( String id,
                            Action action,
                            String title,
-                           String imagePath,
+                           InputStream image,
                            boolean visible,
                            boolean enabled )
   {
     this.id = id;
     this.action = action;
     this.title = title;
-    this.imagePath = imagePath;
+    this.image = getBytes( image );
     this.enabled = enabled;
     this.visible = visible;
   }
@@ -49,8 +53,8 @@ public class ActionDescriptor {
     return title;
   }
 
-  public String getImagePath() {
-    return imagePath;
+  public byte[] getImage() {
+    return image;
   }
 
   public boolean isVisible() {

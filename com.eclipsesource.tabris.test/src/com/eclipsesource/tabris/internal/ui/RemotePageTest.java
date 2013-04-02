@@ -22,6 +22,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,14 +68,15 @@ public class RemotePageTest {
     doReturn( Boolean.TRUE ).when( descriptor ).isTopLevel();
     when( descriptor.getPageStyle() ).thenReturn( new PageStyle[] { PageStyle.DEFAULT } );
     List<ActionDescriptor> actions = new ArrayList<ActionDescriptor>();
+    InputStream image = RemotePageTest.class.getResourceAsStream( "testImage.png" );
     actions.add( new ActionDescriptor( "actionFoo",
                                        new TestAction(),
                                        "actionBar",
-                                       "testImage.png",
+                                       image,
                                        true,
                                        true ) );
     when( descriptor.getActions() ).thenReturn( actions );
-    when( descriptor.getImagePath() ).thenReturn( "testImage.png" );
+    when( descriptor.getImage() ).thenReturn( UITestUtil.getImageBytes() );
     doReturn( TestPage.class ).when( descriptor ).getPageType();
   }
 
@@ -158,7 +160,7 @@ public class RemotePageTest {
     public void testGetData() {
       PageData data = mock( PageData.class );
       RemotePage page = new RemotePage( ui, descriptor, "foo", data );
-  
+
       assertSame( data, page.getData() );
     }
 

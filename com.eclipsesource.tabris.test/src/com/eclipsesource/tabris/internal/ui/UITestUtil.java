@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
+import java.io.InputStream;
+
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
@@ -18,5 +20,10 @@ public class UITestUtil {
 
   public static Image createImage( Display display ) {
     return new Image( display, UITestUtil.class.getResourceAsStream( "testImage.png" ) );
+  }
+
+  public static byte[] getImageBytes() {
+    InputStream image = UITestUtil.class.getResourceAsStream( "testImage.png" );
+    return ImageUtil.getBytes( image );
   }
 }

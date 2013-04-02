@@ -21,6 +21,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.InputStream;
 import java.util.HashMap;
 
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
@@ -52,7 +53,8 @@ public class RemoteActionTest {
     actionDescriptor = mock( ActionDescriptor.class );
     when( actionDescriptor.getAction() ).thenReturn( new TestAction() );
     when( actionDescriptor.getId() ).thenReturn( "foo" );
-    when( actionDescriptor.getImagePath() ).thenReturn( "testImage.png" );
+    InputStream image = RemoteActionTest.class.getResourceAsStream( "testImage.png" );
+    when( actionDescriptor.getImage() ).thenReturn( ImageUtil.getBytes( image ) );
     when( actionDescriptor.getTitle() ).thenReturn( "bar" );
   }
 
@@ -89,7 +91,7 @@ public class RemoteActionTest {
 
   @Test
   public void testSetsInitialAttributesWithoutImage() {
-    when( actionDescriptor.getImagePath() ).thenReturn( null );
+    when( actionDescriptor.getImage() ).thenReturn( null );
     new RemoteAction( ui, actionDescriptor, "foo" );
 
     verify( remoteObject, never() ).set( eq( "image" ), anyString() );

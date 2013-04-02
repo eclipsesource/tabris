@@ -10,12 +10,14 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.ui;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+
+import java.io.InputStream;
 
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.widgets.Display;
@@ -25,6 +27,7 @@ import org.junit.Test;
 
 import com.eclipsesource.tabris.internal.ui.ActionDescriptor;
 import com.eclipsesource.tabris.internal.ui.TestAction;
+import com.eclipsesource.tabris.internal.ui.UITestUtil;
 
 
 public class ActionConfigurationTest {
@@ -73,7 +76,7 @@ public class ActionConfigurationTest {
 
     assertEquals( "foo", descriptor.getId() );
     assertTrue( descriptor.getAction() instanceof TestAction );
-    assertNull( descriptor.getImagePath() );
+    assertNull( descriptor.getImage() );
     assertEquals( "", descriptor.getTitle() );
     assertTrue( descriptor.isEnabled() );
     assertTrue( descriptor.isVisible() );
@@ -113,11 +116,12 @@ public class ActionConfigurationTest {
 
   @Test
   public void testSetsImage() {
-    ActionConfiguration configuration = new ActionConfiguration( "foo", TestAction.class ).setImage( "testImage.png" );
+    InputStream image = UITestUtil.class.getResourceAsStream( "testImage.png" );
+    ActionConfiguration configuration = new ActionConfiguration( "foo", TestAction.class ).setImage( image );
 
     ActionDescriptor descriptor = configuration.getAdapter( ActionDescriptor.class );
 
-    assertSame( "testImage.png", descriptor.getImagePath() );
+    assertArrayEquals( UITestUtil.getImageBytes(), descriptor.getImage() );
   }
 
   @Test( expected = IllegalArgumentException.class )

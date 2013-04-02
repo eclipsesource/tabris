@@ -10,10 +10,13 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+
+import java.io.InputStream;
 
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.junit.After;
@@ -37,10 +40,11 @@ public class ActionDescriptorTest {
 
   @Test
   public void testGetId() {
+    InputStream image = ActionDescriptorTest.class.getResourceAsStream( "testImage.png" );
     ActionDescriptor descriptor = new ActionDescriptor( "foo",
                                                         mock( Action.class ),
                                                         "bar",
-                                                        "testImage.png",
+                                                        image,
                                                         true,
                                                         true );
 
@@ -50,10 +54,11 @@ public class ActionDescriptorTest {
   @Test
   public void testGetAction() {
     Action action = mock( Action.class );
+    InputStream image = ActionDescriptorTest.class.getResourceAsStream( "testImage.png" );
     ActionDescriptor descriptor = new ActionDescriptor( "foo",
                                                         action,
                                                         "bar",
-                                                        "testImage.png",
+                                                        image,
                                                         true,
                                                         true );
 
@@ -63,10 +68,11 @@ public class ActionDescriptorTest {
   @Test
   public void testIsVisible() {
     Action action = mock( Action.class );
+    InputStream image = ActionDescriptorTest.class.getResourceAsStream( "testImage.png" );
     ActionDescriptor descriptor = new ActionDescriptor( "foo",
                                                         action,
                                                         "bar",
-                                                        "testImage.png",
+                                                        image,
                                                         true,
                                                         true );
 
@@ -76,10 +82,11 @@ public class ActionDescriptorTest {
   @Test
   public void testIsEnabled() {
     Action action = mock( Action.class );
+    InputStream image = ActionDescriptorTest.class.getResourceAsStream( "testImage.png" );
     ActionDescriptor descriptor = new ActionDescriptor( "foo",
                                                         action,
                                                         "bar",
-                                                        "testImage.png",
+                                                        image,
                                                         true,
                                                         true );
 
@@ -89,10 +96,11 @@ public class ActionDescriptorTest {
   @Test
   public void testGetTitle() {
     Action action = mock( Action.class );
+    InputStream image = ActionDescriptorTest.class.getResourceAsStream( "testImage.png" );
     ActionDescriptor descriptor = new ActionDescriptor( "foo",
                                                         action,
                                                         "bar",
-                                                        "testImage.png",
+                                                        image,
                                                         true,
                                                         true );
 
@@ -100,17 +108,17 @@ public class ActionDescriptorTest {
   }
 
   @Test
-    public void testGetImagePath() {
-      Action action = mock( Action.class );
-      String image = "testImage.png";
-      ActionDescriptor descriptor = new ActionDescriptor( "foo",
-                                                          action,
-                                                          "bar",
-                                                          image,
-                                                          true,
-                                                          true );
+  public void testGetImage() {
+    Action action = mock( Action.class );
+    InputStream image = ActionDescriptorTest.class.getResourceAsStream( "testImage.png" );
+    ActionDescriptor descriptor = new ActionDescriptor( "foo",
+                                                        action,
+                                                        "bar",
+                                                        image,
+                                                        true,
+                                                        true );
 
-      assertSame( image, descriptor.getImagePath() );
-    }
+    assertArrayEquals( UITestUtil.getImageBytes(), descriptor.getImage() );
+  }
 
 }
