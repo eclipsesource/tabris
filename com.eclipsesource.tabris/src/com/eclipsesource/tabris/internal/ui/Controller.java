@@ -28,23 +28,23 @@ import com.eclipsesource.tabris.ui.TransitionListener;
 
 public class Controller {
 
-  private final UIDescriptor content;
+  private final UIDescriptor uiDescriptor;
   private final Shell shell;
   private final List<RemoteAction> globalActions;
   private final Map<PageDescriptor, RemotePage> rootPages;
   private final RemoteUI remoteUI;
   private PageFlow currentFlow;
 
-  public Controller( Shell shell, RemoteUI remoteUI, UIDescriptor content ) {
+  public Controller( Shell shell, RemoteUI remoteUI, UIDescriptor uiDescriptor ) {
     this.shell = shell;
     this.remoteUI = remoteUI;
-    this.content = content;
+    this.uiDescriptor = uiDescriptor;
     this.globalActions = new ArrayList<RemoteAction>();
     this.rootPages = new HashMap<PageDescriptor, RemotePage>();
   }
 
   public void createRootPages( UIImpl ui ) {
-    List<PageDescriptor> pages = content.getRootPages();
+    List<PageDescriptor> pages = uiDescriptor.getRootPages();
     verifyRootPages( pages );
     createRootRemotePages( ui, pages );
     showRoot( ui, pages.get( 0 ), new PageData() );
@@ -59,7 +59,7 @@ public class Controller {
   }
 
   public void createGlobalActions( UIImpl ui ) {
-    List<ActionDescriptor> actions = content.getGlobalActions();
+    List<ActionDescriptor> actions = uiDescriptor.getGlobalActions();
     for( ActionDescriptor actionDescriptor : actions ) {
       globalActions.add( new RemoteAction( ui, actionDescriptor, remoteUI.getRemoteUIId() ) );
     }
@@ -127,8 +127,8 @@ public class Controller {
     RemotePage newRemotePage = new RemotePage( ui, newPage, remoteUI.getRemoteUIId(), data );
     fireTransitionBeforeEvent( ui, oldRemotePage, newRemotePage );
     currentFlow.add( newRemotePage );
-    newRemotePage.createControl( shell );
     newRemotePage.createActions();
+    newRemotePage.createControl( shell );
     remoteUI.activate( newRemotePage.getRemotePageId() );
     newRemotePage.getPage().activate();
     makeControlVisible( newRemotePage.getControl() );
