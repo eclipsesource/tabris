@@ -17,6 +17,8 @@ package com.eclipsesource.tabris.ui;
  * The {@link PageOperator} can be used to handle pages. This includes the navigation or the data transmission between
  * single pages. To get an instance use {@link UI#getPageOperator()}.
  * </p>
+ * <strong>Note:</strong> This interfaces is still considered <strong>provisional</strong>. It is
+ * expected to evolve over the next releases, which may lead to slight changes.
  *
  * @see UI
  * @see Page
@@ -91,6 +93,6 @@ public interface PageOperator {
    *
    * @since 1.0
    */
-  void setCurrentPageTitle( Page page, String title );
+  void setCurrentPageTitle( String title );
 
 }

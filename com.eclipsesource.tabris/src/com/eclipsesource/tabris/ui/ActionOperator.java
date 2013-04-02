@@ -16,6 +16,8 @@ package com.eclipsesource.tabris.ui;
  * The single purpose of the {@link ActionOperator} is to modify and get the state of {@link Action} objects at runtime.
  * this means you can influence the visibility or the enabled state of an {@link Action}.
  * </p>
+ * <strong>Note:</strong> This interfaces is still considered <strong>provisional</strong>. It is
+ * expected to evolve over the next releases, which may lead to slight changes.
  *
  * @since 1.0
  */

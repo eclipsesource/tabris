@@ -14,8 +14,8 @@ import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNu
 import static com.eclipsesource.tabris.internal.Preconditions.checkState;
 
 import com.eclipsesource.tabris.ui.Page;
-import com.eclipsesource.tabris.ui.PageOperator;
 import com.eclipsesource.tabris.ui.PageData;
+import com.eclipsesource.tabris.ui.PageOperator;
 
 
 public class PageOperatorImpl implements PageOperator {
@@ -63,9 +63,8 @@ public class PageOperatorImpl implements PageOperator {
   }
 
   @Override
-  public void setCurrentPageTitle( Page page, String title ) {
-    checkArgumentNotNull( page, Page.class.getSimpleName() );
+  public void setCurrentPageTitle( String title ) {
     checkArgumentNotNull( title, "PageTitle" );
-    controller.setTitle( page, title );
+    controller.setTitle( getCurrentPage(), title );
   }
 }

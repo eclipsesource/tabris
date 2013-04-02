@@ -16,71 +16,30 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 
-public class AbstractPageTest {
 
-  private Shell shell;
-
-  @Before
-  public void setUp() {
-    Fixture.setUp();
-    shell = new Shell( new Display() );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
-  }
+public class AbstractActionTest {
 
   @Test
   public void testRemembersUI() {
     UI ui = mock( UI.class );
-    PageOperator operator = mock( PageOperator.class );
-    PageData data = new PageData();
-    when( operator.getCurrentPageData() ).thenReturn( data );
-    when( ui.getPageOperator() ).thenReturn( operator );
-    TestAbstractPage page = new TestAbstractPage();
+    TestAbstractAction action = new TestAbstractAction();
 
-    page.createContent( shell, ui );
+    action.execute( ui );
 
-    assertSame( ui, page.getUI() );
+    assertSame( ui, action.getUI() );
   }
 
   @Test
-  public void testCanGetPageData() {
+  public void testDelegatesExecuteCall() {
     UI ui = mock( UI.class );
-    PageOperator operator = mock( PageOperator.class );
-    PageData data = new PageData();
-    when( operator.getCurrentPageData() ).thenReturn( data );
-    when( ui.getPageOperator() ).thenReturn( operator );
-    TestAbstractPage page = new TestAbstractPage();
-    page.createContent( shell, ui );
+    TestAbstractAction action = spy( new TestAbstractAction() );
 
-    PageData actualData = page.getData();
+    action.execute( ui );
 
-    assertSame( data, actualData );
-  }
-
-  @Test
-  public void testCallsCreateContentsWithPageData() {
-    UI ui = mock( UI.class );
-    PageData data = new PageData();
-    PageOperator operator = mock( PageOperator.class );
-    when( operator.getCurrentPageData() ).thenReturn( data );
-    when( ui.getPageOperator() ).thenReturn( operator );
-    TestAbstractPage page = spy( new TestAbstractPage() );
-
-    page.createContent( shell, ui );
-
-    verify( page ).createContent( shell, data );
+    verify( action ).execute();
   }
 
   @Test
@@ -88,27 +47,29 @@ public class AbstractPageTest {
     UI ui = mock( UI.class );
     PageData data = new PageData();
     PageOperator operator = mock( PageOperator.class );
+    Page page = mock( Page.class );
+    when( operator.getCurrentPage() ).thenReturn( page );
     when( operator.getCurrentPageData() ).thenReturn( data );
     when( ui.getPageOperator() ).thenReturn( operator );
-    TestAbstractPage page = spy( new TestAbstractPage() );
-    page.createContent( shell, ui );
+    TestAbstractAction action = spy( new TestAbstractAction() );
+    action.execute( ui );
 
-    page.setTitle( "foo" );
+    action.setPageTitle( "foo" );
 
     verify( operator ).setCurrentPageTitle( "foo" );
   }
 
   @Test
-  public void testClosesPage() {
+  public void testCanCloseCurrentPagePage() {
     UI ui = mock( UI.class );
     PageData data = new PageData();
     PageOperator operator = mock( PageOperator.class );
     when( operator.getCurrentPageData() ).thenReturn( data );
     when( ui.getPageOperator() ).thenReturn( operator );
-    TestAbstractPage page = spy( new TestAbstractPage() );
-    page.createContent( shell, ui );
+    TestAbstractAction action = spy( new TestAbstractAction() );
+    action.execute( ui );
 
-    page.close();
+    action.closeCurrentPage();
 
     verify( operator ).closeCurrentPage();
   }
@@ -120,10 +81,10 @@ public class AbstractPageTest {
     PageOperator operator = mock( PageOperator.class );
     when( operator.getCurrentPageData() ).thenReturn( data );
     when( ui.getPageOperator() ).thenReturn( operator );
-    TestAbstractPage page = spy( new TestAbstractPage() );
-    page.createContent( shell, ui );
+    TestAbstractAction action = spy( new TestAbstractAction() );
+    action.execute( ui );
 
-    page.openPage( "foo" );
+    action.openPage( "foo" );
 
     verify( operator ).openPage( "foo" );
   }
@@ -135,10 +96,10 @@ public class AbstractPageTest {
     PageOperator operator = mock( PageOperator.class );
     when( operator.getCurrentPageData() ).thenReturn( data );
     when( ui.getPageOperator() ).thenReturn( operator );
-    TestAbstractPage page = spy( new TestAbstractPage() );
-    page.createContent( shell, ui );
+    TestAbstractAction action = spy( new TestAbstractAction() );
+    action.execute( ui );
 
-    page.openPage( "foo", data );
+    action.openPage( "foo", data );
 
     verify( operator ).openPage( "foo", data );
   }
@@ -152,10 +113,10 @@ public class AbstractPageTest {
     when( operator.getCurrentPageData() ).thenReturn( data );
     when( ui.getPageOperator() ).thenReturn( operator );
     when( ui.getActionOperator() ).thenReturn( actionOperator );
-    TestAbstractPage page = spy( new TestAbstractPage() );
-    page.createContent( shell, ui );
+    TestAbstractAction action = spy( new TestAbstractAction() );
+    action.execute( ui );
 
-    page.setActionVisible( "foo", false );
+    action.setActionVisible( "foo", false );
 
     verify( actionOperator ).setActionVisible( "foo", false );
   }
@@ -169,18 +130,18 @@ public class AbstractPageTest {
     when( operator.getCurrentPageData() ).thenReturn( data );
     when( ui.getPageOperator() ).thenReturn( operator );
     when( ui.getActionOperator() ).thenReturn( actionOperator );
-    TestAbstractPage page = spy( new TestAbstractPage() );
-    page.createContent( shell, ui );
+    TestAbstractAction action = spy( new TestAbstractAction() );
+    action.execute( ui );
 
-    page.setActionEnabled( "foo", false );
+    action.setActionEnabled( "foo", false );
 
     verify( actionOperator ).setActionEnabled( "foo", false );
   }
 
-  private static class TestAbstractPage extends AbstractPage {
+  private static class TestAbstractAction extends AbstractAction {
 
     @Override
-    public void createContent( Composite parent, PageData data ) {
+    public void execute() {
       // nothing to do here
     }
 

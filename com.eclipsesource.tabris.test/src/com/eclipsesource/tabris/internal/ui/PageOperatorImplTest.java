@@ -225,23 +225,13 @@ public class PageOperatorImplTest {
   }
 
   @Test( expected = IllegalArgumentException.class )
-    public void testSetCurrentPageTitleFailsWithNullPage() {
-      Controller controller = mock( Controller.class );
-      when( controller.getCurrentPage() ).thenReturn( mock( Page.class ) );
-      UIImpl ui = new UIImpl( display, controller, mock( UIConfiguration.class ) );
-      ui.markInitialized();
-
-      ui.getPageOperator().setCurrentPageTitle( null, "foo" );
-    }
-
-  @Test( expected = IllegalArgumentException.class )
     public void testSetCurrentPageTitleFailsWithNullTitle() {
       Controller controller = mock( Controller.class );
       when( controller.getCurrentPage() ).thenReturn( mock( Page.class ) );
       UIImpl ui = new UIImpl( display, controller, mock( UIConfiguration.class ) );
       ui.markInitialized();
 
-      ui.getPageOperator().setCurrentPageTitle( mock( Page.class ), null );
+      ui.getPageOperator().setCurrentPageTitle( null );
     }
 
   @Test
@@ -252,7 +242,7 @@ public class PageOperatorImplTest {
       UIImpl ui = new UIImpl( display, controller, mock( UIConfiguration.class ) );
       ui.markInitialized();
 
-      ui.getPageOperator().setCurrentPageTitle( page, "foo" );
+      ui.getPageOperator().setCurrentPageTitle( "foo" );
 
       verify( controller ).setTitle( page, "foo" );
     }

@@ -10,48 +10,36 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.ui;
 
-import org.eclipse.swt.widgets.Composite;
-
 
 /**
  * @since 1.0
  */
-public abstract class AbstractPage implements Page {
+public abstract class AbstractAction implements Action {
 
   private UI ui;
 
   @Override
-  public final void createContent( Composite parent, UI ui ) {
+  public final void execute( UI ui ) {
     this.ui = ui;
-    createContent( parent, ui.getPageOperator().getCurrentPageData() );
+    execute();
   }
 
-  public abstract void createContent( Composite parent, PageData data );
-
-  @Override
-  public void activate() {
-    // to be implemented by sub classes.
-  }
-
-  @Override
-  public void deactivate() {
-    // to be implemented by sub classes.
-  }
+  public abstract void execute();
 
   public UI getUI() {
     return ui;
   }
 
-  public PageData getData() {
+  public Page getCurrentPage() {
+    return ui.getPageOperator().getCurrentPage();
+  }
+
+  public PageData getCurrentPageData() {
     return ui.getPageOperator().getCurrentPageData();
   }
 
-  public void setTitle( String title ) {
+  public void setPageTitle( String title ) {
     ui.getPageOperator().setCurrentPageTitle( title );
-  }
-
-  public void close() {
-    ui.getPageOperator().closeCurrentPage();
   }
 
   public void openPage( String pageId ) {
@@ -62,11 +50,15 @@ public abstract class AbstractPage implements Page {
     ui.getPageOperator().openPage( pageId, data );
   }
 
+  public void closeCurrentPage() {
+    ui.getPageOperator().closeCurrentPage();
+  }
+
   public void setActionVisible( String actionId, boolean visible ) {
     ui.getActionOperator().setActionVisible( actionId, visible );
   }
 
   public void setActionEnabled( String actionId, boolean enabled ) {
-    ui.getActionOperator().setActionEnabled( actionId, enabled );
+    ui.getActionOperator().setActionEnabled( "foo", enabled );
   }
 }
