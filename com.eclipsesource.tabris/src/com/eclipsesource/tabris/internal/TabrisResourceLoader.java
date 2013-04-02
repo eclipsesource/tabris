@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import org.eclipse.rap.rwt.internal.application.ApplicationContextImpl;
 import org.eclipse.rap.rwt.internal.lifecycle.EntryPointManager;
@@ -60,13 +62,14 @@ public class TabrisResourceLoader implements ResourceLoader {
   private JsonObject createMessageObject( Collection<String> servletPaths ) {
     JsonObject jsonObject = new JsonObject();
     JsonArray array = new JsonArray();
-    appendPaths( servletPaths, array );
+    appendPaths( ( List<String> )servletPaths, array );
     jsonObject.append( KEY_ENTRYPOINTS, array );
     return jsonObject;
   }
 
-  private void appendPaths( Collection<String> servletPaths, JsonArray array ) {
+  private void appendPaths( List<String> servletPaths, JsonArray array ) {
     String prefix = contextPath != null ? contextPath : "";
+    Collections.sort( servletPaths );
     for( String path : servletPaths ) {
       JsonObject object = new JsonObject();
       object.append( KEY_PATH, prefix + path );
