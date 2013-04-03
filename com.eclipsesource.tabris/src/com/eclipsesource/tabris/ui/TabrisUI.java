@@ -17,6 +17,7 @@ import org.eclipse.rap.rwt.application.EntryPoint;
 import org.eclipse.rap.rwt.internal.theme.JsonValue;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import com.eclipsesource.tabris.internal.ZIndexStackLayout;
@@ -28,11 +29,13 @@ import com.eclipsesource.tabris.internal.ui.UIImpl;
 
 /**
  * <p>
- * The {@link TabrisUI} forms the core of the Tabris UI framework. It acts as the starting point for a UI.
+ * The {@link TabrisUI} forms the core of the Tabris UI framework. It acts as the entry point for an UI.
  * The whole UI creation will be triggered from within the {@link TabrisUI#create(Shell)} method.
  * </p>
  * <p>
- * Usually you don't need to create with this class directly. Consider using the {@link TabrisUIEntryPoint} instead.
+ * Usually you don't need to create this class directly. Consider using the {@link TabrisUIEntryPoint} instead. If you
+ * are using data binding or other stuff were you need to have control over the {@link Display} the way to go is to
+ * create a {@link TabrisUI} by yourself.
  * </p>
  *
  * @see TabrisUIEntryPoint
@@ -45,6 +48,12 @@ public class TabrisUI {
   private final UIConfiguration configuration;
 
   /**
+   * <p>
+   * Creates a new {@link TabrisUI} instance.
+   * </p>
+   *
+   * @param configuration the configuration of the UI. Must not be <code>null</code>.
+   *
    * @since 1.0
    */
   public TabrisUI( UIConfiguration configuration ) {

@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Display;
 
 /**
  * <p>
- * The {@link UI} is a shared object that you will find all over the Tabris UI API. It's your control for the
+ * The {@link UI} is a shared object you will find all over the Tabris UI API. It's your handle for the
  * whole UI once it was created. You can use it to navigate through your application.
  * </p>
  *
@@ -25,7 +25,7 @@ public interface UI {
 
   /**
    * <p>
-   * Returns the {@link Display} object for the accessing user.
+   * Returns the {@link Display} object for the current user.
    * </p>
    *
    * @since 1.0
@@ -34,7 +34,7 @@ public interface UI {
 
   /**
    * <p>
-   * Returns the {@link PageOperator} for the current session. With this manage you can do all the navigation.
+   * Returns the {@link PageOperator} for the current session. With this operator you can do all the navigation.
    * </p>
    *
    * @since 1.0
@@ -43,7 +43,7 @@ public interface UI {
 
   /**
    * <p>
-   * Returns the {@link ActionOperator} for the current session. With this you can manage the state of {@link Action}
+   * Returns the {@link ActionOperator} for the current session. With this you can manipulate the state of {@link Action}
    * objects.
    * </p>
    *

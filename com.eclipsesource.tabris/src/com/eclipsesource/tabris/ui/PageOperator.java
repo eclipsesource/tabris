@@ -14,11 +14,14 @@ package com.eclipsesource.tabris.ui;
 
 /**
  * <p>
- * The {@link PageOperator} can be used to handle pages. This includes the navigation or the data transmission between
+ * The {@link PageOperator} is used to handle pages. This includes the navigation or the data transmission between
  * single pages. To get an instance use {@link UI#getPageOperator()}.
  * </p>
+ * <p>
  * <strong>Note:</strong> This interfaces is still considered <strong>provisional</strong>. It is
- * expected to evolve over the next releases, which may lead to slight changes.
+ * expected to evolve over the next releases, which may lead to slight changes. Consider using {@link AbstractPage}
+ * and it's methods.
+ * </p>
  *
  * @see UI
  * @see Page
@@ -29,10 +32,10 @@ public interface PageOperator {
 
   /**
    * <p>
-   * When called the specified page will be shown on the client device.
+   * Opens a specific page on the client device.
    * </p>
    *
-   * @param pageId the Id of the page to show. Must not be empty or <code>null</code>.
+   * @param pageId the Id of the page to open. Must not be empty or <code>null</code>.
    *
    * @throws IllegalStateException when no page exist for the given id.
    *
@@ -42,7 +45,7 @@ public interface PageOperator {
 
   /**
    * <p>
-   * When called the specified page will be shown on the client device. The passed in data will be the page data for
+   * Opens a specific page on the client device. The provided data will be the page data for
    * the new page. See {@link PageOperator#getCurrentPageData()}.
    * </p>
    *

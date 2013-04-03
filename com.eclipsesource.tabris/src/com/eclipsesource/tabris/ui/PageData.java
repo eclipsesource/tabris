@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * <p>
- * A {@link PageData} object can be used to store session specific data and pass them from one page to another.
+ * A {@link PageData} object can be used to store page specific data and pass them from one page to another.
  * This enables a loose communication between pages.
  * </p>
  *
@@ -33,7 +33,7 @@ public class PageData {
 
   /**
    * <p>
-   * Adds all values from the passed in data to this data.
+   * Adds all values from the provided data to this data.
    * </p>
    */
   public void addData( PageData data ) {
@@ -42,7 +42,7 @@ public class PageData {
 
   /**
    * <p>
-   * Gets a value from this data object, already casted to the passed in type.
+   * Returns a value from this data object, already casted to the provided type.
    * </p>
    *
    * @throws IllegalArgumentException when the data value can not be casted to the passed in type.

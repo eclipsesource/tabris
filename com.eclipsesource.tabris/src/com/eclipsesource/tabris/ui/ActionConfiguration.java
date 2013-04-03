@@ -16,7 +16,6 @@ import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNu
 import java.io.InputStream;
 
 import org.eclipse.rap.rwt.Adaptable;
-import org.eclipse.swt.widgets.Display;
 
 import com.eclipsesource.tabris.internal.ui.ActionDescriptor;
 import com.eclipsesource.tabris.internal.ui.InstanceCreator;
@@ -24,16 +23,18 @@ import com.eclipsesource.tabris.internal.ui.InstanceCreator;
 
 /**
  * <p>
- * {@link Action} objects will be instantiated by the framework. Therefore you need to be able to configure such a
- * {@link Action} before it's actually created in a convenient way. This is the single purpose of a
+ * {@link Action} objects will be instantiated by the framework. Therefore you need to be able to configure such an
+ * {@link Action} in a convenient way before it's actually created. This is the single purpose of a
  * {@link ActionConfiguration}. It provides methods to define the visual role in a UI e.g. it's image or it's text.
  * </p>
  * <p>
- * {@link ActionConfiguration} objects will be usually added to the {@link UIConfiguration}.
+ * {@link ActionConfiguration} objects will be usually added to the {@link UIConfiguration} to have a global scope. Page
+ * actions needs to be added to a {@link PageConfiguration}.
  * </p>
  *
  * @see Action
  * @see UIConfiguration
+ * @see PageConfiguration
  *
  * @since 0.11
  */
@@ -48,14 +49,13 @@ public class ActionConfiguration implements Adaptable {
 
   /**
    * <p>
-   * Creates a new {@link ActionConfiguration} object with the defined id and a {@link Action} type. The id needs to be
+   * Creates a new {@link ActionConfiguration} object with the defined id and an {@link Action} type. The id needs to be
    * unique within the Tabris UI.
    * </p>
    *
    * @param actionId the unique id of the {@link Action}. Must not be empty or <code>null</code>.
    * @param actionType the type of the {@link Action} to be created. Must not be <code>null</code>.
    *
-   * @see PageOperator#openPage(String)
    * @since 1.0
    */
   public ActionConfiguration( String actionId, Class<? extends Action> actionType ) {
@@ -83,7 +83,7 @@ public class ActionConfiguration implements Adaptable {
 
   /**
    * <p>
-   * Defines the initial visibility of the action. To modify this state at runtime use {@link ActionOperator}.
+   * Defines the initial visibility of the action.
    * </p>
    */
   public ActionConfiguration setVisible( boolean visible ) {
@@ -93,7 +93,7 @@ public class ActionConfiguration implements Adaptable {
 
   /**
    * <p>
-   * Defines the initial enabled state of the action. To modify this state at runtime use {@link ActionOperator}.
+   * Defines the initial enabled state of the action.
    * </p>
    */
   public ActionConfiguration setEnabled( boolean enabled ) {
@@ -103,8 +103,7 @@ public class ActionConfiguration implements Adaptable {
 
   /**
    * <p>
-   * Defines the image of an action. You will need to have a {@link Display} to create one. Take a look
-   * at {@link UI#getDisplay()}.
+   * Defines the image of an action.
    * </p>
    *
    * @param image the image of the action. Must not be <code>null</code>.

@@ -22,7 +22,29 @@ import com.eclipsesource.tabris.internal.ui.UIDescriptor;
 
 /**
  * <p>
- * For a Tabris UI one {@link UIConfiguration} object exists. Think about it as the glue between you pages and actions.
+ * A Tabris UI consists of {@link Page} and {@link Action} objects that are loosely coupled. The point where these are
+ * hooked together is a {@link UIConfiguration}.
+ * </p>
+ * <p>
+ * Two types of pages exist. These are top level pages and normal pages. A top level page marks the beginning of an
+ * application flow. E.g. when you developing a book browsing app the top level page may be your shelf from where you
+ * can browse the books. Of course in such an app you will need to browse from a book to another book without the way
+ * back to the shelf. This means the book page needs to be a normal pages that can be chained together.</br>
+ * This is what normal pages are, the second type of pages. They can appear everywhere in the application. The depth
+ * level of such a page is not defined.
+ * </p>
+ * <p>
+ * To add pages you need to add a {@link PageConfiguration} to a {@link UIConfiguration}. In the
+ * {@link PageConfiguration} you can define the type of the page.
+ * </p>
+ * <p>
+ * Actions also exist in two types. The first type are global actions. Global actions are visible in the whole
+ * application regardless on which page you are currently on. The other type of actions are page actions. These
+ * actions are having the same lifecycle as a Page and they are also only visible when the related page is visible.
+ * </p>
+ * <p>
+ * You can add Actions similar as Pages. To add a global {@link Action} you need to add it directly to a
+ * {@link UIConfiguration}. To add a page action you need to add it to a {@link PageConfiguration}.
  * </p>
  *
  * @see PageConfiguration
@@ -59,7 +81,7 @@ public class UIConfiguration implements Adaptable {
 
   /**
    * <p>
-   * Adds an action represented by an {@link ActionConfiguration} object.
+   * Adds a global action represented by an {@link ActionConfiguration} object.
    * </p>
    *
    * @since 1.0
@@ -123,6 +145,13 @@ public class UIConfiguration implements Adaptable {
     return setBackground( new RGB( red, green, blue ) );
   }
 
+  /**
+   * <p>
+   * Returns the background color for navigation controls and the area where those controls are located on.
+   * </p>
+   *
+   * @since 1.0
+   */
   public RGB getBackground() {
     return background;
   }

@@ -12,6 +12,13 @@ package com.eclipsesource.tabris.ui;
 
 
 /**
+ * <p>
+ * An {@link AbstractAction} is a convenience class to make the implementation of actions easier. It provides service
+ * methods to control the application flow or manipulate the action state.
+ * </p>
+ *
+ * @see Action
+ *
  * @since 1.0
  */
 public abstract class AbstractAction implements Action {
@@ -24,41 +31,112 @@ public abstract class AbstractAction implements Action {
     execute();
   }
 
+  /**
+   * <p>
+   * Will be called by the Tabris UI when a user presses the visual representation of this action.
+   * </p>
+   *
+   * @since 1.0
+   */
   public abstract void execute();
 
+  /**
+   * <p>
+   * Returns the UI instance this action lives in.
+   * </p>
+   */
   public UI getUI() {
     return ui;
   }
 
+  /**
+   * <p>
+   * Returns the current visible page.
+   * </p>
+   */
   public Page getCurrentPage() {
     return ui.getPageOperator().getCurrentPage();
   }
 
+  /**
+   * <p>
+   * Returns the {@link PageData} of the current visible page.
+   * </p>
+   */
   public PageData getCurrentPageData() {
     return ui.getPageOperator().getCurrentPageData();
   }
 
+  /**
+   * <p>
+   * Sets the title of the current visible page.
+   * </p>
+   */
   public void setPageTitle( String title ) {
     ui.getPageOperator().setCurrentPageTitle( title );
   }
 
-  public void openPage( String pageId ) {
+  /**
+   * <p>
+   * Opens a new page with the defined id.
+   * <p>
+   *
+   * @param pageId the id of the page to open. Must not be <code>null</code> or empty.
+   *
+   * @throws IllegalStateException when no page exist for the given id.
+   */
+  public void openPage( String pageId ) throws IllegalStateException {
     ui.getPageOperator().openPage( pageId );
   }
 
-  public void openPage( String pageId, PageData data ) {
+  /**
+   * <p>
+   * Opens a new page with the defined id and passes {@link PageData} to the new page.
+   * <p>
+   *
+   * @param pageId the id of the page to open. Must not be <code>null</code> or empty.
+   * @param data the data for the new page. Can be accessed using {@link AbstractPage#getData()} on the new page.
+   *
+   * @throws IllegalStateException when no page exist for the given id.
+   */
+  public void openPage( String pageId, PageData data ) throws IllegalStateException {
     ui.getPageOperator().openPage( pageId, data );
   }
 
-  public void closeCurrentPage() {
+  /**
+   * <p>
+   * Closes the current visible page.
+   * </p>
+   *
+   * @throws IllegalStateException when it's called on a top level page.
+   */
+  public void closeCurrentPage() throws IllegalStateException {
     ui.getPageOperator().closeCurrentPage();
   }
 
-  public void setActionVisible( String actionId, boolean visible ) {
+  /**
+   * <p>
+   * Manipulates the visibility of an {@link Action}.
+   * </p>
+   *
+   * @param actionId the id of the action to manipulate. Must not be <code>null</code> or empty.
+   *
+   * @throws IllegalStateException when no {@link Action} for the given id exist.
+   */
+  public void setActionVisible( String actionId, boolean visible ) throws IllegalStateException {
     ui.getActionOperator().setActionVisible( actionId, visible );
   }
 
-  public void setActionEnabled( String actionId, boolean enabled ) {
+  /**
+   * <p>
+   * Manipulates the enable state of an {@link Action}.
+   * </p>
+   *
+   * @param actionId the id of the action to manipulate. Must not be <code>null</code> or empty.
+   *
+   * @throws IllegalStateException when no {@link Action} for the given id exist.
+   */
+  public void setActionEnabled( String actionId, boolean enabled ) throws IllegalStateException {
     ui.getActionOperator().setActionEnabled( "foo", enabled );
   }
 }

@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.rap.rwt.Adaptable;
-import org.eclipse.swt.widgets.Display;
 
 import com.eclipsesource.tabris.internal.ui.PageDescriptor;
 
@@ -26,16 +25,17 @@ import com.eclipsesource.tabris.internal.ui.PageDescriptor;
 /**
  * <p>
  * {@link Page} objects will be instantiated by the framework. Therefore you need to be able to configure such a
- * {@link Page} before it's actually created in a convenient way. This is the single purpose of a
- * {@link PageConfiguration}. It provides methods to define the visual role in a UI e.g. it's image that's used in a
- * menu or if the page should be a top level page. When a {@link Page} contains actions the {@link PageConfiguration}
- * is also the right place to add them.
+ * {@link Page} in a convenient way before it's actually created. This is the single purpose of a
+ * {@link PageConfiguration}. It provides methods to define the visual role in a UI e.g. the page image that's used in a
+ * menu or if the page should be a top level page or not. When a {@link Page} contains actions the {@link PageConfiguration}
+ * is also the right place to add them represented by an {@link ActionConfiguration}.
  * </p>
  * <p>
- * {@link PageConfiguration} objects will be usually added to the {@link UIConfiguration}.
+ * {@link PageConfiguration} objects will be usually added to a {@link UIConfiguration}.
  * </p>
  *
  * @see Page
+ * @see ActionConfiguration
  * @see UIConfiguration
  *
  * @since 0.11
@@ -53,13 +53,13 @@ public class PageConfiguration implements Adaptable {
   /**
    * <p>
    * Creates a new {@link PageConfiguration} object with the defined id and a {@link Page} type. The id needs to be
-   * unique within the Tabris UI because you will need to use them to browse through the several pages.
+   * unique within the Tabris UI because you will need to use them to browse through the several pages using the
+   * {@link UI}.
    * </p>
    *
    * @param pageId the unique id of the {@link Page}. Must not be empty or <code>null</code>.
    * @param pageType the type of the {@link Page} to be created. Must not be <code>null</code>.
    *
-   * @see PageOperator#openPage(String)
    * @since 1.0
    */
   public PageConfiguration( String pageId, Class<? extends Page> pageType ) {
@@ -75,7 +75,7 @@ public class PageConfiguration implements Adaptable {
 
   /**
    * <p>
-   * Modifies the page to be a top level page or not.
+   * Modifies the page to be a top level page or not. A top level page marks the starting point of a flow.
    * </p>
    */
   public PageConfiguration setTopLevel( boolean topLevel ) {
@@ -85,7 +85,7 @@ public class PageConfiguration implements Adaptable {
 
   /**
    * <p>
-   * Defines the title of the page. To modify this state at runtime use {@link PageOperator}.
+   * Defines the title of the page.
    * </p>
    *
    * @param title the title of the page. Must not be empty or <code>null</code>.
@@ -108,8 +108,7 @@ public class PageConfiguration implements Adaptable {
 
   /**
    * <p>
-   * Defines the image of a page. You will need to have a {@link Display} to create one. Take a look
-   * at {@link UI#getDisplay()}.
+   * Defines the image of a page that is used in menus and so on.
    * </p>
    *
    * @param image the image of the page. Must not be <code>null</code>.
@@ -124,7 +123,7 @@ public class PageConfiguration implements Adaptable {
 
   /**
    * <p>
-   * Adds an action to the page. The action will only be visible on this page.
+   * Adds an action to the page. The action becomes visible when this page will be visible.
    * </p>
    *
    * @param configuration the configuration of the the action to add. Must not be <code>null</code>.
