@@ -334,14 +334,6 @@ public class VideoLifeCycleAdapterTest {
     assertNotNull( listenOperation );
   }
 
-  @Test
-  public void testDestroy() throws IOException {
-    lifeCycleAdapter.renderDispose( video );
-
-    Message message = Fixture.getProtocolMessage();
-    assertNotNull( message.findDestroyOperation( video ) );
-  }
-
   private String getId() {
     return WidgetUtil.getId( video );
   }

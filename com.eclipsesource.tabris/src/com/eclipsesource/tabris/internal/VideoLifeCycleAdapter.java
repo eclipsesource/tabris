@@ -131,11 +131,6 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA implements Serializ
     clientObject.set( PROPERTY_URL, video.getURL().toString() );
   }
 
-  @Override
-  public void renderDispose( Widget widget ) throws IOException {
-    ClientObjectFactory.getClientObject( widget ).destroy();
-  }
-
   private static Object jsonizeValue( Entry<PlaybackOptions, Object> entry ) {
     Object value = entry.getValue();
     if( value instanceof Playback || value instanceof Presentation ) {
