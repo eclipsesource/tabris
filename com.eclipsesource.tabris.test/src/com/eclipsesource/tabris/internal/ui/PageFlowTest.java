@@ -22,6 +22,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.eclipse.rap.rwt.lifecycle.PhaseId;
@@ -52,6 +53,11 @@ public class PageFlowTest {
   @After
   public void tearDown() {
     Fixture.tearDown();
+  }
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( PageFlow.class ) );
   }
 
   @Test( expected = IllegalArgumentException.class )

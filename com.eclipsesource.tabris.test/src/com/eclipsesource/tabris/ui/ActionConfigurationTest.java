@@ -18,6 +18,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.InputStream;
+import java.io.Serializable;
 
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.widgets.Display;
@@ -42,6 +43,11 @@ public class ActionConfigurationTest {
   @After
   public void tearDown() {
     Fixture.tearDown();
+  }
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( ActionConfiguration.class ) );
   }
 
   @Test( expected = IllegalArgumentException.class )

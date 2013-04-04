@@ -7,6 +7,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.camera;
 
+import java.io.Serializable;
+
 import org.eclipse.swt.graphics.Point;
 
 /**
@@ -14,11 +16,11 @@ import org.eclipse.swt.graphics.Point;
  * The <code>CameraOptions</code> is used to configure a <code>Camera</code>
  * object when taking a picture via {@link Camera#takePicture(CameraOptions)}.
  * </p>
- * 
+ *
  * @see Camera
  * @since 0.8
  */
-public class CameraOptions {
+public class CameraOptions implements Serializable {
 
   public static final CameraOptions NONE = new CameraOptions();
   private Point resolution;
@@ -29,7 +31,7 @@ public class CameraOptions {
    * Defines the preferred resolution for images. When possible images will have
    * the configured size when sending them to the server.
    * </p>
-   * 
+   *
    * @param x Preferred width. Must be positive.
    * @param y Preferred height. Must be positive.
    */

@@ -12,6 +12,7 @@ package com.eclipsesource.tabris.interaction;
 
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +32,7 @@ import java.util.Map;
  *
  * @since 0.9
  */
-public class LaunchOptions {
+public class LaunchOptions implements Serializable {
 
   public enum App {
     MAIL, BROWSER, MAPS, PHONE, SMS, TWITTER, FACEBOOK

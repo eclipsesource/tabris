@@ -13,7 +13,9 @@ package com.eclipsesource.tabris.interaction;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import org.junit.Test;
@@ -26,6 +28,11 @@ public class LaunchOptionsTest {
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithoutApp() {
     new LaunchOptions( null );
+  }
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( LaunchOptions.class ) );
   }
 
   @Test

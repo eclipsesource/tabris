@@ -28,6 +28,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.Serializable;
+
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -57,6 +59,26 @@ public class SwipeTest {
   @After
   public void tearDown() {
     Fixture.tearDown();
+  }
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( Swipe.class ) );
+  }
+
+  @Test
+  public void testSwipeListenerIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( SwipeListener.class ) );
+  }
+
+  @Test
+  public void testSwipeItemProviderIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( SwipeItemProvider.class ) );
+  }
+
+  @Test
+  public void testSwipeItemIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( SwipeItem.class ) );
   }
 
   @Test( expected = IllegalArgumentException.class )

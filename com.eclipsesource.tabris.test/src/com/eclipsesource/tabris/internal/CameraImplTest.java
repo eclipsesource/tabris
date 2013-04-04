@@ -13,6 +13,7 @@ package com.eclipsesource.tabris.internal;
 import static com.eclipsesource.tabris.test.TabrisTestUtil.mockServiceObject;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.eq;
@@ -23,6 +24,7 @@ import static org.mockito.Mockito.verify;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,6 +58,16 @@ public class CameraImplTest {
   @After
   public void tearDown() {
     Fixture.tearDown();
+  }
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( CameraImpl.class ) );
+  }
+
+  @Test
+  public void testCameraListenerIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( CameraListener.class ) );
   }
 
   @Test

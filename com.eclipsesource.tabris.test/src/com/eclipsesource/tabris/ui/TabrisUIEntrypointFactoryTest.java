@@ -12,6 +12,9 @@ package com.eclipsesource.tabris.ui;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
+
+import java.io.Serializable;
 
 import org.eclipse.rap.rwt.application.EntryPoint;
 import org.eclipse.rap.rwt.testfixture.Fixture;
@@ -30,6 +33,11 @@ public class TabrisUIEntrypointFactoryTest {
   @After
   public void tearDown() {
     Fixture.tearDown();
+  }
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( TabrisUIEntrypointFactory.class ) );
   }
 
   @Test( expected = IllegalArgumentException.class )

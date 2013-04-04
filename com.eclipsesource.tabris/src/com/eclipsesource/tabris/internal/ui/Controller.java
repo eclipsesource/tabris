@@ -12,6 +12,7 @@ package com.eclipsesource.tabris.internal.ui;
 
 import static com.eclipsesource.tabris.internal.Preconditions.checkState;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +27,7 @@ import com.eclipsesource.tabris.ui.PageData;
 import com.eclipsesource.tabris.ui.TransitionListener;
 
 
-public class Controller {
+public class Controller implements Serializable {
 
   private final UIDescriptor uiDescriptor;
   private final Shell shell;

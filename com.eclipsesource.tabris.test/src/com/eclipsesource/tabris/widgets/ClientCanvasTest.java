@@ -20,6 +20,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +38,7 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import com.eclipsesource.tabris.internal.ClientCanvasTestUtil;
+import com.eclipsesource.tabris.internal.DrawingsCache;
 
 
 public class ClientCanvasTest {
@@ -55,6 +57,21 @@ public class ClientCanvasTest {
   @After
   public void tearDown() {
     Fixture.tearDown();
+  }
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( ClientCanvas.class ) );
+  }
+
+  @Test
+  public void testClientDrawListenerIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( ClientDrawListener.class ) );
+  }
+
+  @Test
+  public void testDrawingCacheIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( DrawingsCache.class ) );
   }
 
   @Test

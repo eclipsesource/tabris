@@ -12,6 +12,8 @@ package com.eclipsesource.tabris.ui;
 
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
+import java.io.Serializable;
+
 import org.eclipse.rap.rwt.application.ApplicationConfiguration;
 import org.eclipse.rap.rwt.application.EntryPoint;
 import org.eclipse.rap.rwt.application.EntryPointFactory;
@@ -29,7 +31,7 @@ import org.eclipse.rap.rwt.application.EntryPointFactory;
  *
  * @since 1.0
  */
-public class TabrisUIEntrypointFactory implements EntryPointFactory {
+public class TabrisUIEntrypointFactory implements EntryPointFactory, Serializable {
 
   private final UIConfiguration configuration;
 

@@ -12,6 +12,7 @@ package com.eclipsesource.tabris.internal;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -19,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -49,6 +51,11 @@ public class TabrisResourceLoaderTest {
     applicationContext = mock( ApplicationContextImpl.class );
     when( applicationContext.getEntryPointManager() ).thenReturn( manager );
     when( applicationContext.getServletContext() ).thenReturn( context );
+  }
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( TabrisResourceLoader.class ) );
   }
 
   @Test

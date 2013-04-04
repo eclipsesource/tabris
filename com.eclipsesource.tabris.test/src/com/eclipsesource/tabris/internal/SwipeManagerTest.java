@@ -17,6 +17,8 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
+import java.io.Serializable;
+
 import org.eclipse.swt.SWT;
 import org.junit.Test;
 
@@ -29,6 +31,11 @@ public class SwipeManagerTest {
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithNullProvider() {
     new SwipeManager( null );
+  }
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( SwipeManager.class ) );
   }
 
   @Test

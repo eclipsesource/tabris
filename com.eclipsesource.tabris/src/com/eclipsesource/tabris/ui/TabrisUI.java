@@ -13,6 +13,8 @@ package com.eclipsesource.tabris.ui;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 import static org.eclipse.rap.rwt.internal.service.ContextProvider.getContext;
 
+import java.io.Serializable;
+
 import org.eclipse.rap.rwt.application.EntryPoint;
 import org.eclipse.rap.rwt.internal.theme.JsonValue;
 import org.eclipse.swt.graphics.Color;
@@ -43,7 +45,7 @@ import com.eclipsesource.tabris.internal.ui.UIImpl;
  * @since 1.0
  */
 @SuppressWarnings("restriction")
-public class TabrisUI {
+public class TabrisUI implements Serializable {
 
   private final UIConfiguration configuration;
 

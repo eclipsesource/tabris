@@ -15,6 +15,8 @@ import static com.eclipsesource.tabris.device.ClientDevice.Platform.IOS;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_ANDROID;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_IOS;
 
+import java.io.Serializable;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.eclipse.rap.rwt.RWT;
@@ -27,7 +29,7 @@ import com.eclipsesource.tabris.device.ClientDevice.Platform;
 
 
 @SuppressWarnings("restriction")
-public class TabrisClientProvider implements ClientProvider {
+public class TabrisClientProvider implements ClientProvider, Serializable {
 
   @Override
   public boolean accept( HttpServletRequest request ) {

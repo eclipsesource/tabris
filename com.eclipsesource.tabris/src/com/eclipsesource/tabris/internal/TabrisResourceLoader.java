@@ -15,6 +15,7 @@ import static com.eclipsesource.tabris.internal.Constants.INDEX_JSON;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.Collections;
@@ -28,7 +29,7 @@ import org.eclipse.rap.rwt.service.ResourceLoader;
 
 
 @SuppressWarnings("restriction")
-public class TabrisResourceLoader implements ResourceLoader {
+public class TabrisResourceLoader implements ResourceLoader, Serializable {
 
   static final String KEY_ENTRYPOINTS = "entrypoints";
   static final String KEY_PATH = "path";

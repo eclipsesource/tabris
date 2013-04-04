@@ -14,6 +14,8 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_FOREGROUND;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_LINE_WIDTH;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PATH;
 
+import java.io.Serializable;
+
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.RGB;
@@ -22,7 +24,7 @@ import org.json.JSONException;
 
 
 @SuppressWarnings("restriction")
-public class GCOperationDispatcher {
+public class GCOperationDispatcher implements Serializable {
 
   private final GC gc;
   private JSONArray drawings;

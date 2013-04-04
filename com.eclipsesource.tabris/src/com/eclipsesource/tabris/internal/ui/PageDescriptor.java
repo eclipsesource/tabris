@@ -13,6 +13,7 @@ package com.eclipsesource.tabris.internal.ui;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +23,7 @@ import com.eclipsesource.tabris.ui.Page;
 import com.eclipsesource.tabris.ui.PageStyle;
 
 
-public class PageDescriptor {
+public class PageDescriptor implements Serializable {
 
   private final String id;
   private final boolean isTopLevelPage;

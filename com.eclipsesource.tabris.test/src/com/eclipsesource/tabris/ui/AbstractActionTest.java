@@ -11,16 +11,24 @@
 package com.eclipsesource.tabris.ui;
 
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.io.Serializable;
 
 import org.junit.Test;
 
 
 
 public class AbstractActionTest {
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( AbstractAction.class ) );
+  }
 
   @Test
   public void testRemembersUI() {

@@ -10,16 +10,17 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class DrawingsCache {
-  
-  private List<String> cachedDrawings;
-  private List<String> removedDrawings;
-  private Object lock = new Object();
-  
+public class DrawingsCache implements Serializable {
+
+  private final List<String> cachedDrawings;
+  private final List<String> removedDrawings;
+  private final Object lock = new Object();
+
   public DrawingsCache() {
     cachedDrawings = new ArrayList<String>();
     removedDrawings = new ArrayList<String>();
@@ -31,7 +32,7 @@ public class DrawingsCache {
       removedDrawings.clear();
     }
   }
-  
+
   public void clearCachedDrawings() {
     synchronized( lock ) {
       cachedDrawings.clear();

@@ -30,6 +30,7 @@ import static com.eclipsesource.tabris.internal.SwipeUtil.notifyItemActivated;
 import static com.eclipsesource.tabris.internal.SwipeUtil.notifyItemDeactivated;
 import static com.eclipsesource.tabris.internal.SwipeUtil.notifyItemLoaded;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -69,7 +70,7 @@ import com.eclipsesource.tabris.internal.ZIndexStackLayout;
  *
  * @since 0.10
  */
-public class Swipe {
+public class Swipe implements Serializable {
 
   private final Composite container;
   private final List<SwipeListener> listeners;

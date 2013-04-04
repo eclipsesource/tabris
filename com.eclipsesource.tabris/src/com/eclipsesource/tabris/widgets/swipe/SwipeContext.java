@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.swipe;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +25,7 @@ import java.util.Map;
  *
  * @since 0.10
  */
-public class SwipeContext {
+public class SwipeContext implements Serializable {
 
   private final Map<String, Object> store;
 

@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.swipe;
 
+import java.io.Serializable;
+
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -25,7 +27,7 @@ import org.eclipse.swt.widgets.Control;
  *
  * @since 0.10
  */
-public interface SwipeItem {
+public interface SwipeItem extends Serializable {
 
   /**
    * <p>

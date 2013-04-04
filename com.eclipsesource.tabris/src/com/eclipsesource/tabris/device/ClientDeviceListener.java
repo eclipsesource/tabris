@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.device;
 
+import java.io.Serializable;
+
 import com.eclipsesource.tabris.device.ClientDevice.ConnectionType;
 import com.eclipsesource.tabris.device.ClientDevice.Orientation;
 
@@ -28,7 +30,7 @@ import com.eclipsesource.tabris.device.ClientDevice.Orientation;
  *
  * @since 1.0
  */
-public interface ClientDeviceListener {
+public interface ClientDeviceListener extends Serializable {
 
   /**
    * <p>

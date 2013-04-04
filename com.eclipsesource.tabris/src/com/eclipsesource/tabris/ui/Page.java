@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.ui;
 
+import java.io.Serializable;
+
 import org.eclipse.swt.widgets.Composite;
 
 
@@ -43,7 +45,7 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @since 0.11
  */
-public interface Page {
+public interface Page extends Serializable {
 
   /**
    * <p>

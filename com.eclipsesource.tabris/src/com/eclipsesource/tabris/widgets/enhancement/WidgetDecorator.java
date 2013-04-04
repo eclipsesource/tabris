@@ -14,13 +14,15 @@ import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.ANI
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.SHOW_TOUCH;
 import static com.eclipsesource.tabris.internal.WidgetsUtil.setData;
 
+import java.io.Serializable;
+
 import org.eclipse.swt.widgets.Widget;
 
 
 /**
  * @since 0.8
  */
-public class WidgetDecorator<T extends WidgetDecorator> {
+public class WidgetDecorator<T extends WidgetDecorator> implements Serializable {
 
   private final Widget widget;
 

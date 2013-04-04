@@ -14,6 +14,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.Serializable;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,6 +29,11 @@ public class DataWhitelistTest {
   @Before
   public void setUp() {
     whitelist = new DataWhitelist();
+  }
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( DataWhitelist.class ) );
   }
 
   @Test

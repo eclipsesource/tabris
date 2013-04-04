@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.ui;
 
+import java.io.Serializable;
+
 
 /**
  * <p>
@@ -28,7 +30,7 @@ package com.eclipsesource.tabris.ui;
  *
  * @since 0.11
  */
-public interface Action {
+public interface Action extends Serializable {
 
   /**
    * <p>

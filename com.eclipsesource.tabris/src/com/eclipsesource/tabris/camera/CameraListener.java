@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.camera;
 
+import java.io.Serializable;
+
 import org.eclipse.swt.graphics.Image;
 
 
@@ -22,7 +24,7 @@ import org.eclipse.swt.graphics.Image;
  * @see Image
  * @since 1.0
  */
-public interface CameraListener {
+public interface CameraListener extends Serializable {
 
   /**
    * <p>

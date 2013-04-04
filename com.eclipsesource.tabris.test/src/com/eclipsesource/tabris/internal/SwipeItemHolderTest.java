@@ -18,6 +18,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Composite;
@@ -35,6 +36,11 @@ public class SwipeItemHolderTest {
   @Before
   public void setUp() {
     swipeItemHolder = new SwipeItemHolder();
+  }
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( SwipeItemHolder.class ) );
   }
 
   @Test

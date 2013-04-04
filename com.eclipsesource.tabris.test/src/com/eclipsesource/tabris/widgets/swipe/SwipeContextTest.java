@@ -12,11 +12,19 @@ package com.eclipsesource.tabris.widgets.swipe;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.io.Serializable;
 
 import org.junit.Test;
 
 
 public class SwipeContextTest {
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( SwipeContext.class ) );
+  }
 
   @Test
   public void testGetValue() {

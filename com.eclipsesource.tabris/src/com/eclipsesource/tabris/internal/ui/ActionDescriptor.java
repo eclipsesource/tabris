@@ -13,11 +13,12 @@ package com.eclipsesource.tabris.internal.ui;
 import static com.eclipsesource.tabris.internal.ui.ImageUtil.getBytes;
 
 import java.io.InputStream;
+import java.io.Serializable;
 
 import com.eclipsesource.tabris.ui.Action;
 
 
-public class ActionDescriptor {
+public class ActionDescriptor implements Serializable {
 
   private final String id;
   private final Action action;

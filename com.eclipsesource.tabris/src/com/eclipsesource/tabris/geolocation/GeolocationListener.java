@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.geolocation;
 
+import java.io.Serializable;
+
 /**
  * <p>
  * The {@link GeolocationListener} is used to notify the server side about location updates from the mobile device.
@@ -20,7 +22,7 @@ package com.eclipsesource.tabris.geolocation;
  * @see Geolocation
  * @since 1.0
  */
-public interface GeolocationListener {
+public interface GeolocationListener extends Serializable {
 
   /**
    * <p>

@@ -12,13 +12,15 @@ package com.eclipsesource.tabris.internal;
 
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
+import java.io.Serializable;
+
 import org.eclipse.swt.SWT;
 
 import com.eclipsesource.tabris.widgets.swipe.SwipeContext;
 import com.eclipsesource.tabris.widgets.swipe.SwipeItemProvider;
 
 
-public class SwipeManager {
+public class SwipeManager implements Serializable {
 
   private final SwipeItemProvider provider;
   private final SwipeContext context;

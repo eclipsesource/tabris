@@ -14,6 +14,7 @@ import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNu
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNullAndNotEmpty;
 
 import java.io.InputStream;
+import java.io.Serializable;
 
 import org.eclipse.rap.rwt.Adaptable;
 
@@ -38,7 +39,7 @@ import com.eclipsesource.tabris.internal.ui.InstanceCreator;
  *
  * @since 0.11
  */
-public class ActionConfiguration implements Adaptable {
+public class ActionConfiguration implements Adaptable, Serializable {
 
   protected final String actionId;
   protected final Class<? extends Action> actionType;

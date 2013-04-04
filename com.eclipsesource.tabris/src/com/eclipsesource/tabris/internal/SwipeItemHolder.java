@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +24,7 @@ import org.eclipse.swt.widgets.Control;
 import com.eclipsesource.tabris.widgets.swipe.SwipeItem;
 
 
-public class SwipeItemHolder {
+public class SwipeItemHolder implements Serializable {
 
   private final Map<Integer, SwipeItem> items;
   private final Map<Integer, Control> contentHolder;

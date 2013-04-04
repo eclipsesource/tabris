@@ -16,6 +16,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.eclipse.rap.rwt.testfixture.Fixture;
@@ -30,7 +31,7 @@ import com.eclipsesource.tabris.internal.ui.TestPage;
 import com.eclipsesource.tabris.internal.ui.UIDescriptor;
 
 
-public class UIConfigurationImplTest {
+public class UIConfigurationTest {
 
   @Before
   public void setUp() {
@@ -40,6 +41,16 @@ public class UIConfigurationImplTest {
   @After
   public void tearDown() {
     Fixture.tearDown();
+  }
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( UIConfiguration.class ) );
+  }
+
+  @Test
+  public void testTransistionListenerIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( TransitionListener.class ) );
   }
 
   @Test( expected = IllegalStateException.class )

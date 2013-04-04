@@ -26,6 +26,7 @@ import static org.eclipse.rap.rwt.lifecycle.WidgetLCAUtil.renderProperty;
 import static org.eclipse.rap.rwt.lifecycle.WidgetUtil.getId;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -45,7 +46,7 @@ import com.eclipsesource.tabris.widgets.Video.Presentation;
 
 
 @SuppressWarnings("restriction")
-public class VideoLifeCycleAdapter extends AbstractWidgetLCA {
+public class VideoLifeCycleAdapter extends AbstractWidgetLCA implements Serializable {
 
   public enum PlaybackOptions {
     SPEED, REPEAT, CONTROLS_VISIBLE, PLAYBACK, PRESENTATION, HEAD_POSITION

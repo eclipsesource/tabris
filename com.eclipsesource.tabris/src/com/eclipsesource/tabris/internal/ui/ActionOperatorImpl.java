@@ -13,13 +13,14 @@ package com.eclipsesource.tabris.internal.ui;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNullAndNotEmpty;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.eclipsesource.tabris.ui.ActionOperator;
 
 
-public class ActionOperatorImpl implements ActionOperator {
+public class ActionOperatorImpl implements ActionOperator, Serializable {
 
   private final Controller controller;
   private final Map<String, Boolean> visibility;

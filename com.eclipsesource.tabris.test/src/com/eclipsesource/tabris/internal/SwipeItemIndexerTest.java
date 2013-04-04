@@ -12,6 +12,9 @@ package com.eclipsesource.tabris.internal;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.io.Serializable;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +27,11 @@ public class SwipeItemIndexerTest {
   @Before
   public void setUp() {
     indexer = new SwipeItemIndexer();
+  }
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( SwipeItemIndexer.class ) );
   }
 
   @Test

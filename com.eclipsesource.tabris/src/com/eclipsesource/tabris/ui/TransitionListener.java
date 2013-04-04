@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.ui;
 
+import java.io.Serializable;
+
 
 /**
  * <p>
@@ -22,7 +24,7 @@ package com.eclipsesource.tabris.ui;
  *
  * @since 0.11
  */
-public interface TransitionListener {
+public interface TransitionListener extends Serializable {
 
   /**
    * <p>

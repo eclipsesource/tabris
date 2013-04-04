@@ -10,17 +10,19 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.geolocation;
 
+import java.io.Serializable;
+
 
 /**
  * <p>
  * <code>Coordinates</code> is a wrapper for GPS positions. It's used within a <code>Position</code>
  * </p>
- * 
+ *
  * @see Position
  * @since 0.6
  */
-public class Coordinates {
-  
+public class Coordinates implements Serializable {
+
   private final double latitude;
   private final double longitude;
   private final double altitude;
@@ -28,14 +30,14 @@ public class Coordinates {
   private final double altitudeAccuracy;
   private final double heading;
   private final double speed;
-  
-  public Coordinates( double latitude, 
-                      double longitude, 
-                      double altitude, 
+
+  public Coordinates( double latitude,
+                      double longitude,
+                      double altitude,
                       double accuracy,
-                      double altitudeAccuracy, 
-                      double heading, 
-                      double speed ) 
+                      double altitudeAccuracy,
+                      double heading,
+                      double speed )
   {
     this.latitude = latitude;
     this.longitude = longitude;
@@ -57,7 +59,7 @@ public class Coordinates {
   public double getAltitude() {
     return altitude;
   }
-  
+
   public double getAccuracy() {
     return accuracy;
   }
@@ -65,13 +67,13 @@ public class Coordinates {
   public double getAltitudeAccuracy() {
     return altitudeAccuracy;
   }
-  
+
   public double getHeading() {
     return heading;
   }
-  
+
   public double getSpeed() {
     return speed;
   }
-  
+
 }

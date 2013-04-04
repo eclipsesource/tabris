@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets;
 
+import java.io.Serializable;
+
 import com.eclipsesource.tabris.widgets.Video.Presentation;
 
 
@@ -23,7 +25,7 @@ import com.eclipsesource.tabris.widgets.Video.Presentation;
  *
  * @since 1.0
  */
-public interface PresentationListener {
+public interface PresentationListener extends Serializable {
 
   /**
    * <p>

@@ -12,7 +12,10 @@ package com.eclipsesource.tabris.widgets.enhancement;
 
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.ANIMATED;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.SHOW_TOUCH;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
+
+import java.io.Serializable;
 
 import org.eclipse.swt.widgets.Widget;
 import org.junit.Before;
@@ -32,6 +35,11 @@ public class WidgetDecoratorTest {
   @Before
   public void setUp() {
     decorator = Widgets.onWidget( widget );
+  }
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( WidgetDecorator.class ) );
   }
 
   @Test

@@ -10,11 +10,13 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.app;
 
+import java.io.Serializable;
+
 
 /**
  * @since 1.0
  */
-public interface BackNavigationListener {
+public interface BackNavigationListener extends Serializable {
 
   void navigatedBack();
 }

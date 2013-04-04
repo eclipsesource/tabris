@@ -15,10 +15,17 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import java.io.Serializable;
+
 import org.junit.Test;
 
 
 public class ActionOperatorImplTest {
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( ActionOperatorImpl.class ) );
+  }
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithNullController() {

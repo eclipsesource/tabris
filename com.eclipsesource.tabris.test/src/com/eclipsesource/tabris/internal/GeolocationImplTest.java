@@ -12,10 +12,12 @@ package com.eclipsesource.tabris.internal;
 
 import static com.eclipsesource.tabris.test.TabrisTestUtil.mockServiceObject;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,6 +32,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
+import com.eclipsesource.tabris.geolocation.Coordinates;
 import com.eclipsesource.tabris.geolocation.GeolocationListener;
 import com.eclipsesource.tabris.geolocation.GeolocationOptions;
 import com.eclipsesource.tabris.geolocation.Position;
@@ -48,6 +51,21 @@ public class GeolocationImplTest {
   @After
   public void tearDown() {
     Fixture.tearDown();
+  }
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( GeolocationImpl.class ) );
+  }
+
+  @Test
+  public void testCoordinatesIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( Coordinates.class ) );
+  }
+
+  @Test
+  public void testgeolocationListenerIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( GeolocationListener.class ) );
   }
 
   @Test

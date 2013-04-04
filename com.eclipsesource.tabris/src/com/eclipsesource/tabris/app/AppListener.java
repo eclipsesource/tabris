@@ -10,11 +10,13 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.app;
 
+import java.io.Serializable;
+
 
 /**
  * @since 0.10
  */
-public interface AppListener {
-  
+public interface AppListener extends Serializable {
+
   void handleEvent( AppEvent event );
 }

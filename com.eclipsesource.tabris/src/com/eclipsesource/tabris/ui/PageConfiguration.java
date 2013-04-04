@@ -14,6 +14,7 @@ import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNu
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNullAndNotEmpty;
 
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +41,7 @@ import com.eclipsesource.tabris.internal.ui.PageDescriptor;
  *
  * @since 0.11
  */
-public class PageConfiguration implements Adaptable {
+public class PageConfiguration implements Adaptable, Serializable {
 
   protected final String id;
   protected final Class<? extends Page> pageType;

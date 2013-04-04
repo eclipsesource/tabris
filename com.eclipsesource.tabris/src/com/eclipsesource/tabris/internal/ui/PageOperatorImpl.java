@@ -13,12 +13,14 @@ package com.eclipsesource.tabris.internal.ui;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 import static com.eclipsesource.tabris.internal.Preconditions.checkState;
 
+import java.io.Serializable;
+
 import com.eclipsesource.tabris.ui.Page;
 import com.eclipsesource.tabris.ui.PageData;
 import com.eclipsesource.tabris.ui.PageOperator;
 
 
-public class PageOperatorImpl implements PageOperator {
+public class PageOperatorImpl implements PageOperator, Serializable {
 
   private final Controller controller;
   private final UIImpl ui;

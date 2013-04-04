@@ -12,6 +12,8 @@ package com.eclipsesource.tabris.ui;
 
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
+import java.io.Serializable;
+
 import org.eclipse.rap.rwt.Adaptable;
 import org.eclipse.swt.graphics.RGB;
 
@@ -55,7 +57,7 @@ import com.eclipsesource.tabris.internal.ui.UIDescriptor;
  *
  * @since 1.0
  */
-public class UIConfiguration implements Adaptable {
+public class UIConfiguration implements Adaptable, Serializable {
 
   private final UIDescriptor uiDescriptor;
   private RGB background;

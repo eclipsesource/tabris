@@ -12,39 +12,43 @@ package com.eclipsesource.tabris.app;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
 
-import com.eclipsesource.tabris.app.AppEvent;
-import com.eclipsesource.tabris.app.EventType;
-
 
 public class AppEventTest {
-  
+
   @Test( expected = IllegalArgumentException.class )
   @SuppressWarnings("unchecked")
   public void testFailsWithNullType() {
     new AppEvent( null, mock( Map.class ) );
   }
-  
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( AppEvent.class ) );
+  }
+
   @Test
   public void testReturnsNullWhenAcessingNullProperties() {
     AppEvent appEvent = new AppEvent( EventType.PAUSE, null );
-    
+
     assertNull( appEvent.getProperty( "foo" ) );
   }
-  
+
   @Test
   public void testReturnsCorrectProperty() {
     Map<String, Object> properties = new HashMap<String, Object>();
     properties.put( "foo", "bar" );
-    
+
     AppEvent appEvent = new AppEvent( EventType.PAUSE, properties );
-    
+
     assertEquals( "bar", appEvent.getProperty( "foo" ) );
   }
 }

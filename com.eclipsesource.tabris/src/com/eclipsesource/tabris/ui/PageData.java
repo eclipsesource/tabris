@@ -1,5 +1,6 @@
 package com.eclipsesource.tabris.ui;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,7 +13,7 @@ import java.util.Map;
  *
  * @since 1.0
  */
-public class PageData {
+public class PageData implements Serializable {
 
   private final Map<String, Object> data;
 

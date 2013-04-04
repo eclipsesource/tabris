@@ -12,6 +12,8 @@ package com.eclipsesource.tabris.internal.ui;
 
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
+import java.io.Serializable;
+
 import org.eclipse.swt.widgets.Display;
 
 import com.eclipsesource.tabris.ui.ActionOperator;
@@ -20,7 +22,7 @@ import com.eclipsesource.tabris.ui.UI;
 import com.eclipsesource.tabris.ui.UIConfiguration;
 
 
-public class UIImpl implements UI {
+public class UIImpl implements UI, Serializable {
 
   private final Display display;
   private final UIConfiguration configuration;

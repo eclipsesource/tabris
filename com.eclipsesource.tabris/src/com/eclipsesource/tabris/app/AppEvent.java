@@ -12,14 +12,15 @@ package com.eclipsesource.tabris.app;
 
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
+import java.io.Serializable;
 import java.util.Map;
 
 
 /**
  * @since 0.10
  */
-public class AppEvent {
-  
+public class AppEvent implements Serializable {
+
   private final EventType type;
   private final Map<String, Object> properties;
 
@@ -28,11 +29,11 @@ public class AppEvent {
     this.type = type;
     this.properties = properties;
   }
-  
+
   public EventType getType() {
     return type;
   }
-  
+
   public Object getProperty( String name ) {
     Object result = null;
     if( properties != null ) {
@@ -40,5 +41,5 @@ public class AppEvent {
     }
     return result;
   }
-  
+
 }

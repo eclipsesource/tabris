@@ -11,7 +11,9 @@
 package com.eclipsesource.tabris.geolocation;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import org.junit.Before;
@@ -19,7 +21,7 @@ import org.junit.Test;
 
 
 public class PositionTest {
-  
+
   private Date date;
   private Position position;
 
@@ -29,7 +31,12 @@ public class PositionTest {
     Coordinates coordinates = new Coordinates( 10, 11, 12, 13, 14, 15, 16 );
     position = new Position( coordinates, date );
   }
-  
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( Position.class ) );
+  }
+
   @Test
   public void testCoordinates() {
     assertEquals( 10, position.getCoords().getLatitude(), 0 );
@@ -40,7 +47,7 @@ public class PositionTest {
     assertEquals( 15, position.getCoords().getHeading(), 0 );
     assertEquals( 16, position.getCoords().getSpeed(), 0 );
   }
-  
+
   @Test
   public void testTimestamp() {
     assertEquals( date, position.getTimestamp() );

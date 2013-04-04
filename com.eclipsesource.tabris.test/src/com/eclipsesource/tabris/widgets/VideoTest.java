@@ -19,6 +19,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
@@ -62,6 +63,21 @@ public class VideoTest {
   @After
   public void tearDown() {
     Fixture.tearDown();
+  }
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( Video.class ) );
+  }
+
+  @Test
+  public void testPlaybackListenerIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( PlaybackListener.class ) );
+  }
+
+  @Test
+  public void testPresentationListenerIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( PresentationListener.class ) );
   }
 
   @Test

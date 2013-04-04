@@ -18,6 +18,7 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TITLE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TOP_LEVEL;
 
 import java.io.ByteArrayInputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +40,7 @@ import com.eclipsesource.tabris.ui.UI;
 
 
 @SuppressWarnings("restriction")
-public class RemotePage {
+public class RemotePage implements Serializable {
 
   private final PageDescriptor descriptor;
   private final RemoteObjectImpl remoteObject;

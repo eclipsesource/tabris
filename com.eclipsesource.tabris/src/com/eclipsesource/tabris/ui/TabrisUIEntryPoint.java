@@ -12,6 +12,8 @@ package com.eclipsesource.tabris.ui;
 
 import static org.eclipse.rap.rwt.internal.service.ContextProvider.getApplicationContext;
 
+import java.io.Serializable;
+
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.application.ApplicationConfiguration;
 import org.eclipse.rap.rwt.application.EntryPoint;
@@ -47,7 +49,7 @@ import com.eclipsesource.tabris.TabrisClient;
  * @since 1.0
  */
 @SuppressWarnings("restriction")
-public class TabrisUIEntryPoint implements EntryPoint {
+public class TabrisUIEntryPoint implements EntryPoint, Serializable {
 
   private final TabrisUI tabrisUI;
 

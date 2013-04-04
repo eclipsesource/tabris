@@ -3,7 +3,9 @@ package com.eclipsesource.tabris.ui;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +14,11 @@ import org.junit.Test;
 
 
 public class PageDataTest {
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( PageData.class ) );
+  }
 
   @Test
   public void testGetValue() {

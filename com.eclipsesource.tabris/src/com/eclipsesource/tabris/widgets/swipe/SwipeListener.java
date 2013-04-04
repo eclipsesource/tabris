@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.swipe;
 
+import java.io.Serializable;
+
 
 /**
  * <p>
@@ -23,7 +25,7 @@ package com.eclipsesource.tabris.widgets.swipe;
  *
  * @since 0.10
  */
-public interface SwipeListener {
+public interface SwipeListener extends Serializable {
 
   /**
    * <p>

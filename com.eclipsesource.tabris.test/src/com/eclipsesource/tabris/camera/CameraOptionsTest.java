@@ -13,6 +13,9 @@ package com.eclipsesource.tabris.camera;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.io.Serializable;
 
 import org.eclipse.swt.graphics.Point;
 import org.junit.Test;
@@ -27,6 +30,11 @@ public class CameraOptionsTest {
     cameraOptions.setResolution( 500, 500 );
 
     assertEquals( new Point( 500, 500 ), cameraOptions.getResolution() );
+  }
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( CameraOptions.class ) );
   }
 
   @Test

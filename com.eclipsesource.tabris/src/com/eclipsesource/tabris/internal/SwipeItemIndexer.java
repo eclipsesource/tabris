@@ -10,11 +10,12 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class SwipeItemIndexer {
+public class SwipeItemIndexer implements Serializable {
 
   private int currentIndex;
   private int range;

@@ -10,11 +10,13 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import java.io.Serializable;
+
 import org.eclipse.rap.rwt.internal.client.WidgetDataWhiteList;
 
 
 @SuppressWarnings("restriction")
-public class DataWhitelist implements WidgetDataWhiteList {
+public class DataWhitelist implements WidgetDataWhiteList, Serializable {
 
   public enum WhiteListEntry {
 

@@ -12,11 +12,12 @@ package com.eclipsesource.tabris.internal.ui;
 
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class PageFlow {
+public class PageFlow implements Serializable {
 
   private final List<RemotePage> pages;
 

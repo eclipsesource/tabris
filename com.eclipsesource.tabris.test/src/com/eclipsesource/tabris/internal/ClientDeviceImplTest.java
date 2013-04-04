@@ -20,6 +20,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -56,6 +57,16 @@ public class ClientDeviceImplTest {
   @After
   public void tearDown() {
     Fixture.tearDown();
+  }
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( ClientDeviceImpl.class ) );
+  }
+
+  @Test
+  public void testClientDeviceListenerIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( ClientDeviceListener.class ) );
   }
 
   @Test

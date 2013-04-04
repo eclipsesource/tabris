@@ -10,20 +10,21 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.geolocation;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * <p>
  * A <code>Position</code> will be passed as parameter when a client sends it's location to the server. See
- * <code>GelocationCallback#onSuccess</code>. A <code>Position</code> object is a combination of 
+ * <code>GelocationCallback#onSuccess</code>. A <code>Position</code> object is a combination of
  * <code>Coordinates</code> and a timestamp.
  * </p>
- * 
+ *
  * @see GeolocationListener
  * @since 0.6
  */
-public class Position {
-  
+public class Position implements Serializable {
+
   private final Coordinates coords;
   private final Date timestamp;
 
@@ -40,7 +41,7 @@ public class Position {
   public Coordinates getCoords() {
     return coords;
   }
-  
+
   /**
    * <p>
    * Returns the <code>Date</code> timestamp when this position was determined.
@@ -49,5 +50,5 @@ public class Position {
   public Date getTimestamp() {
     return new Date( timestamp.getTime() );
   }
-  
+
 }

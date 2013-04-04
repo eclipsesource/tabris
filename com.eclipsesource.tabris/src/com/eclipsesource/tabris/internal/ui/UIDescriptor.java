@@ -10,13 +10,14 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.eclipsesource.tabris.ui.TransitionListener;
 
 
-public class UIDescriptor {
+public class UIDescriptor implements Serializable {
 
   private final List<PageDescriptor> pageDescriptors;
   private final List<ActionDescriptor> actionDescriptors;

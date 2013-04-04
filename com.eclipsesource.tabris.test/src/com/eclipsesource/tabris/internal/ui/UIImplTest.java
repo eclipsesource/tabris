@@ -13,7 +13,10 @@ package com.eclipsesource.tabris.internal.ui;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+
+import java.io.Serializable;
 
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.custom.StackLayout;
@@ -45,6 +48,11 @@ public class UIImplTest {
   @After
   public void tearDown() {
     Fixture.tearDown();
+  }
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( UIImpl.class ) );
   }
 
   @Test( expected = IllegalArgumentException.class )

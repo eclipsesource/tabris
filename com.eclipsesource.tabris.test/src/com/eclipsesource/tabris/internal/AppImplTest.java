@@ -13,12 +13,14 @@ package com.eclipsesource.tabris.internal;
 import static com.eclipsesource.tabris.app.EventType.PAUSE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +51,21 @@ public class AppImplTest {
   @After
   public void tearDown() {
     Fixture.tearDown();
+  }
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( AppImpl.class ) );
+  }
+
+  @Test
+  public void testAppListenerIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( AppListener.class ) );
+  }
+
+  @Test
+  public void testBackNavigationListenerIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( BackNavigationListener.class ) );
   }
 
   @Test

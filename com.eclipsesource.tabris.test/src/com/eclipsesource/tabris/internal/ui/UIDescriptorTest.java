@@ -16,6 +16,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.eclipse.rap.rwt.testfixture.Fixture;
@@ -38,6 +39,11 @@ public class UIDescriptorTest {
   @After
   public void tearDown() {
     Fixture.tearDown();
+  }
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( UIDescriptor.class ) );
   }
 
   @Test( expected = IllegalStateException.class )

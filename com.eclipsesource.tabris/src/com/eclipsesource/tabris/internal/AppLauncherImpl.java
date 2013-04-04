@@ -10,13 +10,14 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
-import static com.eclipsesource.tabris.internal.Constants.PROPERTY_APP;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_OPEN;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_OPEN_URL;
-import static com.eclipsesource.tabris.internal.Constants.TYPE_APP_LAUNCHER;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_APP;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_URL;
+import static com.eclipsesource.tabris.internal.Constants.TYPE_APP_LAUNCHER;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -29,7 +30,7 @@ import com.eclipsesource.tabris.interaction.AppLauncher;
 import com.eclipsesource.tabris.interaction.LaunchOptions;
 
 
-public class AppLauncherImpl implements AppLauncher {
+public class AppLauncherImpl implements AppLauncher, Serializable {
 
   private final RemoteObject remoteObject;
 

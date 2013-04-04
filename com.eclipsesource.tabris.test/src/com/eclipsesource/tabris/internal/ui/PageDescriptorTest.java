@@ -17,6 +17,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.List;
 
 import org.eclipse.rap.rwt.testfixture.Fixture;
@@ -38,6 +39,11 @@ public class PageDescriptorTest {
   @After
   public void tearDown() {
     Fixture.tearDown();
+  }
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( PageDescriptor.class ) );
   }
 
   @Test
