@@ -34,11 +34,9 @@ public class TabrisResourceLoader implements ResourceLoader, Serializable {
   static final String KEY_ENTRYPOINTS = "entrypoints";
   static final String KEY_PATH = "path";
   private final EntryPointManager entryPointManager;
-  private final String contextPath;
 
   public TabrisResourceLoader( ApplicationContextImpl applicationContext ) {
     entryPointManager = applicationContext.getEntryPointManager();
-    contextPath = applicationContext.getServletContext().getContextPath();
   }
 
   @Override
@@ -69,11 +67,10 @@ public class TabrisResourceLoader implements ResourceLoader, Serializable {
   }
 
   private void appendPaths( List<String> servletPaths, JsonArray array ) {
-    String prefix = contextPath != null ? contextPath : "";
     Collections.sort( servletPaths );
     for( String path : servletPaths ) {
       JsonObject object = new JsonObject();
-      object.append( KEY_PATH, prefix + path );
+      object.append( KEY_PATH, ".." + path );
       array.append( object );
     }
   }

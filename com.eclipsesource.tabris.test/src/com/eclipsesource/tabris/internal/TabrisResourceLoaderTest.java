@@ -78,8 +78,8 @@ public class TabrisResourceLoaderTest {
     InputStream stream = loader.getResourceAsStream( "index.json" );
 
     JSONArray points = getEntryPointArray( stream );
-    assertEquals( "/test", points.getJSONObject( 0 ).getString( TabrisResourceLoader.KEY_PATH ) );
-    assertEquals( "/test2", points.getJSONObject( 1 ).getString( TabrisResourceLoader.KEY_PATH ) );
+    assertEquals( "../test", points.getJSONObject( 0 ).getString( TabrisResourceLoader.KEY_PATH ) );
+    assertEquals( "../test2", points.getJSONObject( 1 ).getString( TabrisResourceLoader.KEY_PATH ) );
     assertEquals( 2, points.length() );
   }
 
@@ -93,24 +93,9 @@ public class TabrisResourceLoaderTest {
     InputStream stream = loader.getResourceAsStream( "index.json" );
 
     JSONArray points = getEntryPointArray( stream );
-    assertEquals( "/a", points.getJSONObject( 0 ).getString( TabrisResourceLoader.KEY_PATH ) );
-    assertEquals( "/test", points.getJSONObject( 1 ).getString( TabrisResourceLoader.KEY_PATH ) );
-    assertEquals( "/test2", points.getJSONObject( 2 ).getString( TabrisResourceLoader.KEY_PATH ) );
-  }
-
-  @Test
-  public void testGetEntryPointsWithIndexJsonAndContextPath() throws IOException, JSONException {
-    when( context.getContextPath() ).thenReturn( "/foo" );
-    TabrisResourceLoader loader = new TabrisResourceLoader( applicationContext );
-    Collection<String> paths = createPathList();
-    when( manager.getServletPaths() ).thenReturn( paths );
-
-    InputStream stream = loader.getResourceAsStream( "index.json" );
-
-    JSONArray points = getEntryPointArray( stream );
-    assertEquals( "/foo/test", points.getJSONObject( 0 ).getString( TabrisResourceLoader.KEY_PATH ) );
-    assertEquals( "/foo/test2", points.getJSONObject( 1 ).getString( TabrisResourceLoader.KEY_PATH ) );
-    assertEquals( 2, points.length() );
+    assertEquals( "../a", points.getJSONObject( 0 ).getString( TabrisResourceLoader.KEY_PATH ) );
+    assertEquals( "../test", points.getJSONObject( 1 ).getString( TabrisResourceLoader.KEY_PATH ) );
+    assertEquals( "../test2", points.getJSONObject( 2 ).getString( TabrisResourceLoader.KEY_PATH ) );
   }
 
   private Collection<String> createPathList() {
