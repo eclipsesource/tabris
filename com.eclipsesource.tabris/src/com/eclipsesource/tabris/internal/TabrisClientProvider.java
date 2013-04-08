@@ -24,7 +24,6 @@ import org.eclipse.rap.rwt.client.Client;
 import org.eclipse.rap.rwt.internal.client.ClientProvider;
 import org.eclipse.rap.rwt.internal.theme.ThemeUtil;
 
-import com.eclipsesource.tabris.TabrisClient;
 import com.eclipsesource.tabris.device.ClientDevice.Platform;
 
 

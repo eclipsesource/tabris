@@ -30,7 +30,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.eclipsesource.tabris.TabrisClient;
+import com.eclipsesource.tabris.internal.TabrisClient;
 
 
 @SuppressWarnings("restriction")

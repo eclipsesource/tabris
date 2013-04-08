@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
-import com.eclipsesource.tabris.TabrisClient;
+import com.eclipsesource.tabris.internal.TabrisClient;
 
 
 /**

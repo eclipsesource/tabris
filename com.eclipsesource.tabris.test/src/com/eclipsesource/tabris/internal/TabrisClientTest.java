@@ -8,39 +8,24 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris;
+package com.eclipsesource.tabris.internal;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import javax.servlet.ServletContext;
 
 import org.eclipse.rap.rwt.client.service.ClientInfo;
-import org.eclipse.rap.rwt.internal.application.ApplicationContextImpl;
-import org.eclipse.rap.rwt.internal.application.ApplicationImpl;
 import org.eclipse.rap.rwt.internal.client.WidgetDataWhiteList;
-import org.eclipse.rap.rwt.internal.lifecycle.PhaseListenerRegistry;
-import org.eclipse.rap.rwt.internal.resources.ResourceRegistry;
-import org.eclipse.rap.rwt.internal.theme.ThemeManager;
-import org.eclipse.rap.rwt.service.ResourceLoader;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.eclipsesource.tabris.ClientStore;
 import com.eclipsesource.tabris.app.App;
 import com.eclipsesource.tabris.camera.Camera;
 import com.eclipsesource.tabris.device.ClientDevice;
 import com.eclipsesource.tabris.geolocation.Geolocation;
 import com.eclipsesource.tabris.interaction.AppLauncher;
-import com.eclipsesource.tabris.internal.Constants;
-import com.eclipsesource.tabris.internal.TabrisResourceLoader;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 
 
@@ -206,39 +191,4 @@ public class TabrisClientTest {
     assertSame( list, list2 );
   }
 
-  @Test
-  public void testRegistersTheme() {
-    ApplicationImpl application = mockConfiguration();
-    TabrisClient client = new TabrisClient();
-
-    client.install( application );
-
-    verify( application ).addStyleSheet( eq( Constants.THEME_ID_ANDROID ), anyString(), any( ResourceLoader.class ) );
-    verify( application ).addStyleSheet( eq( Constants.THEME_ID_IOS ), anyString(), any( ResourceLoader.class ) );
-  }
-
-  @Test
-  public void testRegistersTabrisLoader() {
-    ApplicationImpl application = mockConfiguration();
-    ApplicationContextImpl applicationContext = application.getApplicationContext();
-    TabrisClient client = new TabrisClient();
-
-    client.install( application );
-
-    verify( applicationContext.getResourceRegistry() ).add( eq( "index.json" ), any( TabrisResourceLoader.class ) );
-  }
-
-  private ApplicationImpl mockConfiguration() {
-    ApplicationImpl application = mock( ApplicationImpl.class );
-    ApplicationContextImpl context = mock( ApplicationContextImpl.class );
-    ThemeManager themeManager = mock( ThemeManager.class );
-    when( context.getThemeManager() ).thenReturn( themeManager );
-    PhaseListenerRegistry registry = mock( PhaseListenerRegistry.class );
-    when( context.getPhaseListenerRegistry() ).thenReturn( registry );
-    when( context.getServletContext() ).thenReturn( mock( ServletContext.class ) );
-    when( application.getApplicationContext() ).thenReturn( context );
-    ResourceRegistry resourceRegistry = mock( ResourceRegistry.class );
-    when( context.getResourceRegistry() ).thenReturn( resourceRegistry );
-    return application;
-  }
 }
