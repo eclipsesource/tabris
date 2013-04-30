@@ -2,7 +2,7 @@
 <feature
       id="com.eclipsesource.tabris.feature"
       label="Tabris Target Components"
-      version="1.0.0.qualifier"
+      version="1.1.0.qualifier"
       provider-name="EclipseSource">
 
    <description url="http://rapmobile.eclipsesource.com">
@@ -560,14 +560,6 @@
          download-size="35"
          install-size="93"
          version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.equinox.servletbridge.extensionbundle"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
          unpack="false"/>
 
    <plugin
