@@ -16,6 +16,7 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Tree;
@@ -83,6 +84,14 @@ public class Widgets {
   public static ListDecorator onList( List list ) {
     checkComponent( list );
     return new ListDecorator( list );
+  }
+
+  /**
+   * @since 1.1
+   */
+  public static TabFolderDecorator onTabFolder( TabFolder tabFolder ) {
+    checkComponent( tabFolder );
+    return new TabFolderDecorator( tabFolder );
   }
 
   private Widgets() {
