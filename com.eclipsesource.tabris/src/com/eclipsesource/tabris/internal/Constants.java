@@ -35,11 +35,16 @@ public class Constants {
   public static final String PROPERTY_LONGITUDE = "longitude";
   public static final String PROPERTY_LATITUDE = "latitude";
   public static final String PROPERTY_CONTROL = "control";
+  public static final String PROPERTY_QUERY = "query";
 
   // TabrisUI Constants
   public static final String EVENT_SHOW_PREVIOUS_PAGE = "ShowPreviousPage";
   public static final String EVENT_SHOW_PAGE = "ShowPage";
   public static final String EVENT_SELECTION = "Selection";
+  public static final String EVENT_MODIFY = "Modify";
+  public static final String EVENT_SEARCH = "Search";
+  public static final String METHOD_DEACTIVATE = "deactivate";
+  public static final String METHOD_ACTIVATE = "activate";
   public static final String PROPERTY_ACTIVE_PAGE = "activePage";
   public static final String PROPERTY_PAGE_ID = "pageId";
   public static final String PROPERTY_TITLE = "title";
@@ -50,6 +55,7 @@ public class Constants {
   public static final String PROPERTY_PROMINENCE = "prominence";
   public static final String PROPERTY_SHELL = "shell";
   public static final String PROPERTY_BACKGROUND = "background";
+  public static final String PROPERTY_PROPOSALS = "proposals";
 
   // Geolocation Constants
   public static final String TYPE_GEOLOCATION = "tabris.Geolocation";
@@ -126,7 +132,6 @@ public class Constants {
   public static final String PROPERTY_TEXT = "text";
   public static final String PROPERTY_NUMBER = "number";
   public static final String PROPERTY_ZOOM = "zoom";
-  public static final String PROPERTY_QUERY = "query";
   public static final String PROPERTY_CC = "cc";
   public static final String PROPERTY_BODY = "body";
   public static final String PROPERTY_TO = "to";

@@ -40,9 +40,13 @@ public class RemoteAction extends AbstractOperationHandler {
   public RemoteAction( UI ui, ActionDescriptor descriptor, String parentId ) {
     this.ui = ui;
     this.descriptor = descriptor;
-    this.remoteObject = RWT.getUISession().getConnection().createRemoteObject( "tabris.Action" );
+    this.remoteObject = RWT.getUISession().getConnection().createRemoteObject( getType() );
     this.remoteObject.setHandler( this );
     setAttributes( parentId );
+  }
+
+  protected String getType() {
+    return "tabris.Action";
   }
 
   private void setAttributes( String parentId ) {
@@ -106,5 +110,13 @@ public class RemoteAction extends AbstractOperationHandler {
 
   public void destroy() {
     remoteObject.destroy();
+  }
+
+  public RemoteObject getRemoteObject() {
+    return remoteObject;
+  }
+
+  public UI getUI() {
+    return ui;
   }
 }

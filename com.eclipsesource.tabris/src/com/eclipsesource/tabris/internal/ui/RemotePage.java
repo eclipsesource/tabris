@@ -16,6 +16,7 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PARENT;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_STYLE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TITLE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TOP_LEVEL;
+import static com.eclipsesource.tabris.internal.ui.RemoteActionFactory.createRemoteAction;
 
 import java.io.ByteArrayInputStream;
 import java.io.Serializable;
@@ -107,7 +108,7 @@ public class RemotePage implements Serializable {
   public void createActions() {
     List<ActionDescriptor> actions = descriptor.getActions();
     for( ActionDescriptor actionDescriptor : actions ) {
-      remoteActions.add( new RemoteAction( ui, actionDescriptor, parentId ) );
+      remoteActions.add( createRemoteAction( ui, actionDescriptor, parentId ) );
     }
   }
 

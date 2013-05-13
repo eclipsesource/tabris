@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
+import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.widgets.Display;
 import org.junit.After;
@@ -107,6 +108,15 @@ public class RemoteActionTest {
   }
 
   @Test
+  public void testGetsUI() {
+    RemoteAction remoteAction = new RemoteAction( ui, actionDescriptor, "foo" );
+
+    UI actualUi = remoteAction.getUI();
+
+    assertSame( ui, actualUi );
+  }
+
+  @Test
   public void testSetsVisible() {
     RemoteAction remoteAction = new RemoteAction( ui, actionDescriptor, "foo" );
 
@@ -131,6 +141,15 @@ public class RemoteActionTest {
     remoteAction.destroy();
 
     verify( remoteObject ).destroy();
+  }
+
+  @Test
+  public void testGetRemotObject() {
+    RemoteAction remoteAction = new RemoteAction( ui, actionDescriptor, "foo" );
+
+    RemoteObject actualRemoteObject = remoteAction.getRemoteObject();
+
+    assertSame( remoteObject, actualRemoteObject );
   }
 
   @Test

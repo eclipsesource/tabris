@@ -11,6 +11,7 @@
 package com.eclipsesource.tabris.internal.ui;
 
 import static com.eclipsesource.tabris.internal.Preconditions.checkState;
+import static com.eclipsesource.tabris.internal.ui.RemoteActionFactory.createRemoteAction;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public class Controller implements Serializable {
   public void createGlobalActions( UIImpl ui ) {
     List<ActionDescriptor> actions = uiDescriptor.getGlobalActions();
     for( ActionDescriptor actionDescriptor : actions ) {
-      globalActions.add( new RemoteAction( ui, actionDescriptor, remoteUI.getRemoteUIId() ) );
+      globalActions.add( createRemoteAction( ui, actionDescriptor, remoteUI.getRemoteUIId() ) );
     }
   }
 

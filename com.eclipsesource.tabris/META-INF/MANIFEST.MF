@@ -15,6 +15,7 @@ Export-Package: com.eclipsesource.tabris;version="1.1.0",
  com.eclipsesource.tabris.internal;version="1.1.0";x-internal:=true,
  com.eclipsesource.tabris.internal.ui;version="1.1.0";x-internal:=true,
  com.eclipsesource.tabris.ui;version="1.1.0",
+ com.eclipsesource.tabris.ui.action;version="1.1.0",
  com.eclipsesource.tabris.widgets;version="1.1.0",
  com.eclipsesource.tabris.widgets.enhancement;version="1.1.0",
  com.eclipsesource.tabris.widgets.swipe;version="1.1.0"
