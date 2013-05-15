@@ -23,10 +23,12 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.eclipse.rap.json.JsonArray;
+import org.eclipse.rap.json.JsonObject;
+import org.eclipse.rap.json.JsonValue;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.internal.remote.ConnectionImpl;
 import org.eclipse.rap.rwt.internal.service.ContextProvider;
@@ -70,27 +72,27 @@ public class ClientDeviceImpl extends AbstractOperationHandler implements Client
   }
 
   @Override
-  public void handleSet( Map<String, Object> properties ) {
-    if( properties.containsKey( PROPERTY_TIMEZONE_OFFSET ) ) {
-      timezoneOffset = ( Integer )properties.get( PROPERTY_TIMEZONE_OFFSET );
+  public void handleSet( JsonObject properties ) {
+    if( properties.get( PROPERTY_TIMEZONE_OFFSET ) != null ) {
+      timezoneOffset = Integer.valueOf( properties.get( PROPERTY_TIMEZONE_OFFSET ).asInt() );
     }
-    if( properties.containsKey( PROPERTY_CONNECTION_TYPE ) ) {
-      connectionType = ConnectionType.valueOf( ( String )properties.get( PROPERTY_CONNECTION_TYPE ) );
+    if( properties.get( PROPERTY_CONNECTION_TYPE ) != null ) {
+      connectionType = ConnectionType.valueOf( properties.get( PROPERTY_CONNECTION_TYPE ).asString() );
       fireConnectionTypeChange();
     }
-    if( properties.containsKey( PROPERTY_CAPABILITIES ) ) {
-      setCapabilities( ( Object[] )properties.get( PROPERTY_CAPABILITIES ) );
+    if( properties.get( PROPERTY_CAPABILITIES ) != null ) {
+      setCapabilities( properties.get( PROPERTY_CAPABILITIES ).asArray() );
     }
-    if( properties.containsKey( PROPERTY_ORIENTATION ) ) {
-      orientation = Orientation.valueOf( ( String )properties.get( PROPERTY_ORIENTATION ) );
+    if( properties.get( PROPERTY_ORIENTATION ) != null ) {
+      orientation = Orientation.valueOf( properties.get( PROPERTY_ORIENTATION ).asString() );
       fireOrientationChange();
     }
   }
 
-  private void setCapabilities( Object[] objects ) {
+  private void setCapabilities( JsonArray jsonArray ) {
     capabilities = new ArrayList<Capability>();
-    for( Object capability : objects ) {
-      capabilities.add( Capability.valueOf( ( String )capability ) );
+    for( JsonValue capability : jsonArray ) {
+      capabilities.add( Capability.valueOf( capability.asString() ) );
     }
   }
 

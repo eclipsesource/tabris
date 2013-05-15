@@ -21,10 +21,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
+import org.eclipse.rap.json.JsonArray;
+import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
 import org.eclipse.rap.rwt.lifecycle.PhaseId;
@@ -40,6 +40,7 @@ import com.eclipsesource.tabris.device.ClientDevice.ConnectionType;
 import com.eclipsesource.tabris.device.ClientDevice.Orientation;
 import com.eclipsesource.tabris.device.ClientDevice.Platform;
 import com.eclipsesource.tabris.device.ClientDeviceListener;
+import com.eclipsesource.tabris.test.TabrisTestUtil;
 
 
 @SuppressWarnings("restriction")
@@ -172,10 +173,10 @@ public class ClientDeviceImplTest {
   public void testGetTimezoneOffset_readsTimezoneOffsetFromHandler() {
     ClientDeviceImpl deviceImpl = new ClientDeviceImpl();
     when( serviceObject.getHandler() ).thenReturn( deviceImpl );
-    Map<String, Object> parameters = new HashMap<String, Object>();
-    parameters.put( "timezoneOffset", new Integer( -90 ) );
+    JsonObject parameters = new JsonObject();
+    parameters.add( "timezoneOffset", -90 );
 
-    Fixture.dispatchSet( serviceObject, parameters );
+    TabrisTestUtil.dispatchSet( serviceObject, parameters );
     int timezoneOffset = deviceImpl.getTimezoneOffset();
 
     assertEquals( -90, timezoneOffset );
@@ -185,9 +186,9 @@ public class ClientDeviceImplTest {
   public void testDetectsPortraitMode() {
     ClientDeviceImpl deviceImpl = new ClientDeviceImpl();
     when( serviceObject.getHandler() ).thenReturn( deviceImpl );
-    Map<String, Object> properties = new HashMap<String, Object>();
-    properties.put( "orientation", "PORTRAIT" );
-    Fixture.dispatchSet( serviceObject, properties );
+    JsonObject properties = new JsonObject();
+    properties.add( "orientation", "PORTRAIT" );
+    TabrisTestUtil.dispatchSet( serviceObject, properties );
 
     Orientation orientation = deviceImpl.getOrientation();
 
@@ -198,9 +199,9 @@ public class ClientDeviceImplTest {
   public void testDetectsLandscapeMode() {
     ClientDeviceImpl deviceImpl = new ClientDeviceImpl();
     when( serviceObject.getHandler() ).thenReturn( deviceImpl );
-    Map<String, Object> properties = new HashMap<String, Object>();
-    properties.put( "orientation", "LANDSCAPE" );
-    Fixture.dispatchSet( serviceObject, properties );
+    JsonObject properties = new JsonObject();
+    properties.add( "orientation", "LANDSCAPE" );
+    TabrisTestUtil.dispatchSet( serviceObject, properties );
 
     Orientation orientation = deviceImpl.getOrientation();
 
@@ -219,10 +220,10 @@ public class ClientDeviceImplTest {
   public void testKnowsConnectionTypeWifi() {
     ClientDeviceImpl deviceImpl = new ClientDeviceImpl();
     when( serviceObject.getHandler() ).thenReturn( deviceImpl );
-    Map<String, Object> properties = new HashMap<String, Object>();
-    properties.put( "connectionType", "WIFI" );
+    JsonObject properties = new JsonObject();
+    properties.add( "connectionType", "WIFI" );
 
-    Fixture.dispatchSet( serviceObject, properties );
+    TabrisTestUtil.dispatchSet( serviceObject, properties );
     ConnectionType connectionType = deviceImpl.getConnectionType();
 
     assertSame( ConnectionType.WIFI, connectionType );
@@ -232,10 +233,10 @@ public class ClientDeviceImplTest {
   public void testKnowsConnectionTypeCelular() {
     ClientDeviceImpl deviceImpl = new ClientDeviceImpl();
     when( serviceObject.getHandler() ).thenReturn( deviceImpl );
-    Map<String, Object> properties = new HashMap<String, Object>();
-    properties.put( "connectionType", "CELLULAR" );
+    JsonObject properties = new JsonObject();
+    properties.add( "connectionType", "CELLULAR" );
 
-    Fixture.dispatchSet( serviceObject, properties );
+    TabrisTestUtil.dispatchSet( serviceObject, properties );
     ConnectionType connectionType = deviceImpl.getConnectionType();
 
     assertSame( ConnectionType.CELLULAR, connectionType );
@@ -253,10 +254,13 @@ public class ClientDeviceImplTest {
   public void testCanFindCapabilities() {
     ClientDeviceImpl deviceImpl = new ClientDeviceImpl();
     when( serviceObject.getHandler() ).thenReturn( deviceImpl );
-    Map<String, Object> properties = new HashMap<String, Object>();
-    properties.put( "capabilities", new Object[] { "CAMERA", "LOCATION" } );
+    JsonObject properties = new JsonObject();
+    JsonArray jsonArray = new JsonArray();
+    jsonArray.add( "CAMERA" );
+    jsonArray.add( "LOCATION" );
+    properties.add( "capabilities", jsonArray );
 
-    Fixture.dispatchSet( serviceObject, properties );
+    TabrisTestUtil.dispatchSet( serviceObject, properties );
 
     assertTrue( deviceImpl.hasCapability( Capability.LOCATION ) );
     assertTrue( deviceImpl.hasCapability( Capability.CAMERA ) );
@@ -269,10 +273,16 @@ public class ClientDeviceImplTest {
   public void testCanFindAllCapabilities() {
     ClientDeviceImpl deviceImpl = new ClientDeviceImpl();
     when( serviceObject.getHandler() ).thenReturn( deviceImpl );
-    Map<String, Object> properties = new HashMap<String, Object>();
-    properties.put( "capabilities", new Object[] { "CAMERA", "LOCATION", "MAPS", "MESSAGE", "PHONE" } );
+    JsonObject properties = new JsonObject();
+    JsonArray jsonArray = new JsonArray();
+    jsonArray.add( "CAMERA" );
+    jsonArray.add( "LOCATION" );
+    jsonArray.add( "MAPS" );
+    jsonArray.add( "MESSAGE" );
+    jsonArray.add( "PHONE" );
+    properties.add( "capabilities", jsonArray );
 
-    Fixture.dispatchSet( serviceObject, properties );
+    TabrisTestUtil.dispatchSet( serviceObject, properties );
 
     assertTrue( deviceImpl.hasCapability( Capability.LOCATION ) );
     assertTrue( deviceImpl.hasCapability( Capability.CAMERA ) );
@@ -301,10 +311,10 @@ public class ClientDeviceImplTest {
     when( serviceObject.getHandler() ).thenReturn( device );
     ClientDeviceListener listener = mock( ClientDeviceListener.class );
     device.addClientDeviceListener( listener );
-    Map<String, Object> properties = new HashMap<String, Object>();
-    properties.put( "orientation", "PORTRAIT" );
+    JsonObject properties = new JsonObject();
+    properties.add( "orientation", "PORTRAIT" );
 
-    Fixture.dispatchSet( serviceObject, properties );
+    TabrisTestUtil.dispatchSet( serviceObject, properties );
 
     verify( listener ).orientationChange( Orientation.PORTRAIT );
   }
@@ -315,10 +325,10 @@ public class ClientDeviceImplTest {
     when( serviceObject.getHandler() ).thenReturn( device );
     ClientDeviceListener listener = mock( ClientDeviceListener.class );
     device.addClientDeviceListener( listener );
-    Map<String, Object> properties = new HashMap<String, Object>();
-    properties.put( "connectionType", "WIFI" );
+    JsonObject properties = new JsonObject();
+    properties.add( "connectionType", "WIFI" );
 
-    Fixture.dispatchSet( serviceObject, properties );
+    TabrisTestUtil.dispatchSet( serviceObject, properties );
 
     verify( listener ).connectionTypeChanged( ConnectionType.WIFI );
   }

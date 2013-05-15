@@ -14,8 +14,7 @@ import static com.eclipsesource.tabris.internal.Constants.EVENT_SWIPE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ITEM;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
-import java.util.Map;
-
+import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
 
 import com.eclipsesource.tabris.widgets.swipe.Swipe;
@@ -31,20 +30,20 @@ public class SwipeOperationHandler extends AbstractOperationHandler {
   }
 
   @Override
-  public void handleNotify( String event, Map<String, Object> properties ) {
+  public void handleNotify( String event, JsonObject properties ) {
     if( EVENT_SWIPE.equals( event ) ) {
       verifyHasItemProperty( properties );
-      Integer itemIndex = ( Integer )properties.get( PROPERTY_ITEM );
-      swipe.show( itemIndex.intValue() );
+      int itemIndex = properties.get( PROPERTY_ITEM ).asInt();
+      swipe.show( itemIndex );
     }
   }
 
-  private void verifyHasItemProperty( Map<String, Object> properties ) {
+  private void verifyHasItemProperty( JsonObject properties ) {
     checkArgumentNotNull( properties, "Properties" );
-    if( !properties.containsKey( PROPERTY_ITEM ) ) {
+    if( properties.get( PROPERTY_ITEM ) == null ) {
       throw new IllegalArgumentException( "Properties of " + EVENT_SWIPE + " do not contian an item." );
     }
-    if( !( properties.get( PROPERTY_ITEM ) instanceof Integer ) ) {
+    if( !properties.get( PROPERTY_ITEM ).isNumber() ) {
       throw new IllegalArgumentException( "Property item of " + EVENT_SWIPE + " is not an Integer." );
     }
   }

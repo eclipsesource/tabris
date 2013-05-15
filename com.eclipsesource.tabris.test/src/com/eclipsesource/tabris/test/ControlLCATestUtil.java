@@ -10,8 +10,9 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.test;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import java.io.IOException;
@@ -109,7 +110,7 @@ public class ControlLCATestUtil {
 
     Message message = Fixture.getProtocolMessage();
     String listenerName = getListenerName( eventType );
-    assertEquals( Boolean.TRUE, message.findListenProperty( control, listenerName ) );
+    assertTrue( message.findListenProperty( control, listenerName ).asBoolean() );
 
     control.removeListener( eventType, listener );
   }
@@ -127,7 +128,7 @@ public class ControlLCATestUtil {
 
     Message message = Fixture.getProtocolMessage();
     String listenerName = getListenerName( eventType );
-    assertEquals( Boolean.FALSE, message.findListenProperty( control, listenerName ) );
+    assertFalse( message.findListenProperty( control, listenerName ).asBoolean() );
   }
 
   private static void testRenderListenerUnchanged( Control control, int eventType )

@@ -19,6 +19,7 @@ import static org.mockito.Mockito.mock;
 
 import java.io.Serializable;
 
+import org.eclipse.rap.json.ParseException;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
@@ -70,12 +71,12 @@ public class GCOperationDispatcherTest {
     order.verify( gc ).drawPolyline( aryEq( new int[] { 0, 1, 5, 5} ) );
   }
 
-  @Test( expected = IllegalArgumentException.class )
+  @Test( expected = ParseException.class )
   public void testInvalidJson() {
     new GCOperationDispatcher( gc, "[" );
   }
 
-  @Test( expected = IllegalStateException.class )
+  @Test( expected = ParseException.class )
   public void testInvalidJsonContent() {
     GCOperationDispatcher dispatcher2 = new GCOperationDispatcher( gc, "[{ 'test' : 'test' }]" );
 

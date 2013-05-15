@@ -11,6 +11,7 @@
 package com.eclipsesource.tabris.internal.ui;
 
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PROPOSALS;
+import static com.eclipsesource.tabris.internal.JsonUtil.createJsonArray;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
 import java.util.List;
@@ -38,6 +39,7 @@ public class ProposalHandlerImpl implements ProposalHandler {
     } else {
       proposalsToSend = new String[ 0 ];
     }
-    remoteObject.set( PROPERTY_PROPOSALS, proposalsToSend );
+    remoteObject.set( PROPERTY_PROPOSALS, createJsonArray( proposalsToSend ) );
   }
+
 }

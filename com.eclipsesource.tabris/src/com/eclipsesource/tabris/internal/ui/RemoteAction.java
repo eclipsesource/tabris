@@ -18,8 +18,9 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TITLE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_VISIBILITY;
 
 import java.io.ByteArrayInputStream;
-import java.util.Map;
 
+import org.eclipse.rap.json.JsonArray;
+import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
 import org.eclipse.rap.rwt.remote.RemoteObject;
@@ -61,9 +62,10 @@ public class RemoteAction extends AbstractOperationHandler {
     Image image = createImage( descriptor.getImage() );
     if( image != null ) {
       Rectangle bounds = image.getBounds();
-      Object[] imageData = new Object[] { ImageFactory.getImagePath( image ),
-                                          Integer.valueOf( bounds.width ),
-                                          Integer.valueOf( bounds.height ) };
+      JsonArray imageData = new JsonArray();
+      imageData.add( ImageFactory.getImagePath( image ) );
+      imageData.add( bounds.width );
+      imageData.add( bounds.height );
       remoteObject.set( PROPERTY_IMAGE, imageData );
     }
   }
@@ -98,7 +100,7 @@ public class RemoteAction extends AbstractOperationHandler {
   }
 
   @Override
-  public void handleNotify( String event, Map<String, Object> properties ) {
+  public void handleNotify( String event, JsonObject properties ) {
     if( event.equals( EVENT_SELECTION ) ) {
       descriptor.getAction().execute( ui );
     }

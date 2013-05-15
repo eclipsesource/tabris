@@ -24,8 +24,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
+import org.eclipse.rap.json.JsonObject;
+import org.eclipse.rap.json.JsonValue;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.internal.remote.ConnectionImpl;
 import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
@@ -58,7 +59,7 @@ public class GeolocationImpl extends AbstractOperationHandler implements Geoloca
   }
 
   @Override
-  public void handleNotify( String event, Map<String,Object> properties ) {
+  public void handleNotify( String event, JsonObject properties ) {
     if( EVENT_LOCATION_UPDATE_EVENT.equals( event ) ) {
       Position position = getPosition( properties );
       notifyListenersWithPosition( position );
@@ -82,8 +83,8 @@ public class GeolocationImpl extends AbstractOperationHandler implements Geoloca
     }
   }
 
-  private Position getPosition( Map<String, Object> properties ) {
-    String timestampValue = ( String )properties.get( PROPERTY_TIMESTAMP );
+  private Position getPosition( JsonObject properties ) {
+    String timestampValue = properties.get( PROPERTY_TIMESTAMP ).asString();
     try {
       Date timestamp = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ" ).parse( timestampValue );
       Coordinates coordinates = getCoordinates( properties );
@@ -95,7 +96,7 @@ public class GeolocationImpl extends AbstractOperationHandler implements Geoloca
     }
   }
 
-  private Coordinates getCoordinates( Map<String, Object> properties ) {
+  private Coordinates getCoordinates( JsonObject properties ) {
     return new Coordinates( getPropertyAsDouble( properties, PROPERTY_LATITUDE ),
                             getPropertyAsDouble( properties, PROPERTY_LONGITUDE ),
                             getPropertyAsDouble( properties, PROPERTY_ALTITUDE ),
@@ -105,21 +106,19 @@ public class GeolocationImpl extends AbstractOperationHandler implements Geoloca
                             getPropertyAsDouble( properties, PROPERTY_SPEED ) );
   }
 
-  private double getPropertyAsDouble( Map<String, Object> properties, String propertyName ) {
+  private double getPropertyAsDouble( JsonObject properties, String propertyName ) {
     double result = -1;
-    Object value = properties.get( propertyName );
-    if( value instanceof Double ) {
-      result = ( ( Double )value ).doubleValue();
-    } else if( value instanceof Integer ) {
-      result = ( ( Integer )value ).doubleValue();
+    JsonValue value = properties.get( propertyName );
+    if( value.isNumber() ) {
+      result = value.asDouble();
     }
     return result;
   }
 
-  private PositionError getPositionError( Map<String, Object> properties ) {
-    String code = ( String )properties.get( PROPERTY_ERROR_CODE );
+  private PositionError getPositionError( JsonObject properties ) {
+    String code = properties.get( PROPERTY_ERROR_CODE ).asString();
     PositionErrorCode errorCode = PositionErrorCode.valueOf( code );
-    String message = ( String )properties.get( PROPERTY_ERROR_MESSAGE );
+    String message = properties.get( PROPERTY_ERROR_MESSAGE ).asString();
     PositionError positionError = new PositionError( errorCode, message );
     return positionError;
   }

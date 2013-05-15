@@ -15,8 +15,8 @@ import static org.eclipse.rap.rwt.internal.service.ContextProvider.getContext;
 
 import java.io.Serializable;
 
+import org.eclipse.rap.json.JsonValue;
 import org.eclipse.rap.rwt.application.EntryPoint;
-import org.eclipse.rap.rwt.internal.theme.JsonValue;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;

@@ -26,11 +26,10 @@ import java.util.Collection;
 
 import javax.servlet.ServletContext;
 
+import org.eclipse.rap.json.JsonArray;
+import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.internal.application.ApplicationContextImpl;
 import org.eclipse.rap.rwt.internal.lifecycle.EntryPointManager;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -70,21 +69,21 @@ public class TabrisResourceLoaderTest {
   }
 
   @Test
-  public void testGetEntryPointsWithIndexJson() throws IOException, JSONException {
+  public void testGetEntryPointsWithIndexJson() throws IOException {
     TabrisResourceLoader loader = new TabrisResourceLoader( applicationContext );
     Collection<String> paths = createPathList();
     when( manager.getServletPaths() ).thenReturn( paths );
 
     InputStream stream = loader.getResourceAsStream( "index.json" );
 
-    JSONArray points = getEntryPointArray( stream );
-    assertEquals( "../test", points.getJSONObject( 0 ).getString( TabrisResourceLoader.KEY_PATH ) );
-    assertEquals( "../test2", points.getJSONObject( 1 ).getString( TabrisResourceLoader.KEY_PATH ) );
-    assertEquals( 2, points.length() );
+    JsonArray points = getEntryPointArray( stream );
+    assertEquals( "../test", points.get( 0 ).asObject().get( TabrisResourceLoader.KEY_PATH ).asString() );
+    assertEquals( "../test2", points.get( 1 ).asObject().get( TabrisResourceLoader.KEY_PATH ).asString() );
+    assertEquals( 2, points.size() );
   }
 
   @Test
-  public void testSortsEntryPoints() throws IOException, JSONException {
+  public void testSortsEntryPoints() throws IOException {
     TabrisResourceLoader loader = new TabrisResourceLoader( applicationContext );
     Collection<String> paths = createPathList();
     paths.add( "/a" );
@@ -92,10 +91,10 @@ public class TabrisResourceLoaderTest {
 
     InputStream stream = loader.getResourceAsStream( "index.json" );
 
-    JSONArray points = getEntryPointArray( stream );
-    assertEquals( "../a", points.getJSONObject( 0 ).getString( TabrisResourceLoader.KEY_PATH ) );
-    assertEquals( "../test", points.getJSONObject( 1 ).getString( TabrisResourceLoader.KEY_PATH ) );
-    assertEquals( "../test2", points.getJSONObject( 2 ).getString( TabrisResourceLoader.KEY_PATH ) );
+    JsonArray points = getEntryPointArray( stream );
+    assertEquals( "../a", points.get( 0 ).asObject().get( TabrisResourceLoader.KEY_PATH ).asString() );
+    assertEquals( "../test", points.get( 1 ).asObject().get( TabrisResourceLoader.KEY_PATH ).asString() );
+    assertEquals( "../test2", points.get( 2 ).asObject().get( TabrisResourceLoader.KEY_PATH ).asString() );
   }
 
   private Collection<String> createPathList() {
@@ -105,9 +104,9 @@ public class TabrisResourceLoaderTest {
     return paths;
   }
 
-  private JSONArray getEntryPointArray( InputStream stream ) throws JSONException, IOException {
-    JSONObject object = new JSONObject( getJson( stream ) );
-    JSONArray points = object.getJSONArray( TabrisResourceLoader.KEY_ENTRYPOINTS );
+  private JsonArray getEntryPointArray( InputStream stream ) throws IOException {
+    JsonObject object = JsonObject.readFrom( getJson( stream ) );
+    JsonArray points = object.get( TabrisResourceLoader.KEY_ENTRYPOINTS ).asArray();
     return points;
   }
 

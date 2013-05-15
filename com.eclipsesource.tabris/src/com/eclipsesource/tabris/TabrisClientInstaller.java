@@ -25,7 +25,6 @@ import org.eclipse.rap.rwt.client.Client;
 import org.eclipse.rap.rwt.internal.application.ApplicationImpl;
 import org.eclipse.rap.rwt.service.ResourceLoader;
 
-import com.eclipsesource.tabris.internal.ItemDataRenderer;
 import com.eclipsesource.tabris.internal.TabrisClientProvider;
 import com.eclipsesource.tabris.internal.TabrisResourceLoader;
 
@@ -59,7 +58,6 @@ public class TabrisClientInstaller {
   public static void install( Application application ) {
     ApplicationImpl applicationImpl = ( ApplicationImpl )application;
     applicationImpl.addClientProvider( new TabrisClientProvider() );
-    applicationImpl.addPhaseListener( new ItemDataRenderer() );
     registerCompatibilityThemes( application );
     registerResourceLoader( applicationImpl );
   }

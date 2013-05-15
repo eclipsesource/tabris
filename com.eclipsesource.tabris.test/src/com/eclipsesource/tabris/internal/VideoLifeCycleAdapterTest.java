@@ -15,6 +15,7 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PRESENTATION;
 import static com.eclipsesource.tabris.internal.VideoLifeCycleAdapter.keyForEnum;
 import static org.eclipse.rap.rwt.testfixture.Fixture.fakeNotifyOperation;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -22,9 +23,8 @@ import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
+import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.lifecycle.AbstractWidgetLCA;
 import org.eclipse.rap.rwt.lifecycle.WidgetLifeCycleAdapter;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
@@ -99,7 +99,7 @@ public class VideoLifeCycleAdapterTest {
     lifeCycleAdapter.renderInitialization( video );
 
     CreateOperation createOperation = Fixture.getProtocolMessage().findCreateOperation( video );
-    assertEquals( video.getURL().toString(), createOperation.getProperty( Constants.PROPERTY_URL ) );
+    assertEquals( video.getURL().toString(), createOperation.getProperty( Constants.PROPERTY_URL ).asString() );
   }
 
   @Test
@@ -123,8 +123,8 @@ public class VideoLifeCycleAdapterTest {
   @Test
   public void testFiresPlaybackChange() {
     video.addPlaybackListener( playbackListener );
-    Map<String, Object> parameters = new HashMap<String, Object>();
-    parameters.put( PROPERTY_PLAYBACK, Playback.ERROR.name() );
+    JsonObject parameters = new JsonObject();
+    parameters.add( PROPERTY_PLAYBACK, Playback.ERROR.name() );
     fakeNotifyOperation( getId(), Constants.EVENT_PLAYBACK, parameters );
 
     Fixture.executeLifeCycleFromServerThread();
@@ -137,8 +137,8 @@ public class VideoLifeCycleAdapterTest {
     video.addPlaybackListener( playbackListener );
     Fixture.executeLifeCycleFromServerThread();
     Fixture.fakeNewRequest();
-    Map<String, Object> parameters = new HashMap<String, Object>();
-    parameters.put( PROPERTY_PLAYBACK, Playback.READY.name() );
+    JsonObject parameters = new JsonObject();
+    parameters.add( PROPERTY_PLAYBACK, Playback.READY.name() );
     fakeNotifyOperation( getId(), Constants.EVENT_PLAYBACK, parameters );
     Fixture.executeLifeCycleFromServerThread();
 
@@ -152,8 +152,8 @@ public class VideoLifeCycleAdapterTest {
     video.addPlaybackListener( playbackListener );
     Fixture.executeLifeCycleFromServerThread();
     Fixture.fakeNewRequest();
-    Map<String, Object> parameters = new HashMap<String, Object>();
-    parameters.put( PROPERTY_PLAYBACK, Playback.PLAY.name() );
+    JsonObject parameters = new JsonObject();
+    parameters.add( PROPERTY_PLAYBACK, Playback.PLAY.name() );
     fakeNotifyOperation( getId(), Constants.EVENT_PLAYBACK, parameters );
     Fixture.executeLifeCycleFromServerThread();
 
@@ -165,8 +165,8 @@ public class VideoLifeCycleAdapterTest {
   @Test
   public void testFiresPresentationChange() {
     video.addPresentationListener( presentationListener );
-    Map<String, Object> parameters = new HashMap<String, Object>();
-    parameters.put( PROPERTY_PRESENTATION, Presentation.FULL_SCREEN.name() );
+    JsonObject parameters = new JsonObject();
+    parameters.add( PROPERTY_PRESENTATION, Presentation.FULL_SCREEN.name() );
     fakeNotifyOperation( getId(), Constants.EVENT_PRESENTATION, parameters );
 
     Fixture.executeLifeCycleFromServerThread();
@@ -177,8 +177,8 @@ public class VideoLifeCycleAdapterTest {
   @Test
   public void testFiresPresentationChangeToFullScreen() {
     video.addPresentationListener( presentationListener );
-    Map<String, Object> parameters = new HashMap<String, Object>();
-    parameters.put( PROPERTY_PRESENTATION, Presentation.FULL_SCREEN.name() );
+    JsonObject parameters = new JsonObject();
+    parameters.add( PROPERTY_PRESENTATION, Presentation.FULL_SCREEN.name() );
     fakeNotifyOperation( getId(), Constants.EVENT_PRESENTATION, parameters );
 
     Fixture.executeLifeCycleFromServerThread();
@@ -191,8 +191,8 @@ public class VideoLifeCycleAdapterTest {
     video.addPresentationListener( presentationListener );
     Fixture.executeLifeCycleFromServerThread();
     Fixture.fakeNewRequest();
-    Map<String, Object> parameters = new HashMap<String, Object>();
-    parameters.put( PROPERTY_PRESENTATION, Presentation.FULL_SCREEN.name() );
+    JsonObject parameters = new JsonObject();
+    parameters.add( PROPERTY_PRESENTATION, Presentation.FULL_SCREEN.name() );
     fakeNotifyOperation( getId(), Constants.EVENT_PRESENTATION, parameters );
 
     Fixture.executeLifeCycleFromServerThread();
@@ -213,7 +213,7 @@ public class VideoLifeCycleAdapterTest {
 
     Message message = Fixture.getProtocolMessage();
     SetOperation operation = message.findSetOperation( video, keyForEnum( PlaybackOptions.PLAYBACK ) );
-    assertEquals( keyForEnum( Playback.PLAY ), operation.getProperty( keyForEnum( PlaybackOptions.PLAYBACK ) ) );
+    assertEquals( keyForEnum( Playback.PLAY ), operation.getProperty( keyForEnum( PlaybackOptions.PLAYBACK ) ).asString() );
   }
 
   @Test
@@ -228,7 +228,7 @@ public class VideoLifeCycleAdapterTest {
     Message message = Fixture.getProtocolMessage();
     SetOperation operation = message.findSetOperation( video, keyForEnum( PlaybackOptions.PRESENTATION ) );
     assertEquals( keyForEnum( Presentation.FULL_SCREEN ),
-                  operation.getProperty( keyForEnum( PlaybackOptions.PRESENTATION ) ) );
+                  operation.getProperty( keyForEnum( PlaybackOptions.PRESENTATION ) ).asString() );
   }
 
   @Test
@@ -242,8 +242,7 @@ public class VideoLifeCycleAdapterTest {
 
     Message message = Fixture.getProtocolMessage();
     SetOperation operation = message.findSetOperation( video, keyForEnum( PlaybackOptions.SPEED ) );
-    assertEquals( Double.valueOf( 2 ),
-                  operation.getProperty( keyForEnum( PlaybackOptions.SPEED ) ) );
+    assertEquals( 2, operation.getProperty( keyForEnum( PlaybackOptions.SPEED ) ).asDouble(), 0 );
   }
 
   @Test
@@ -257,8 +256,7 @@ public class VideoLifeCycleAdapterTest {
 
     Message message = Fixture.getProtocolMessage();
     SetOperation operation = message.findSetOperation( video, keyForEnum( PlaybackOptions.SPEED ) );
-    assertEquals( Double.valueOf( -2 ),
-                  operation.getProperty( keyForEnum( PlaybackOptions.SPEED ) ) );
+    assertEquals( -2, operation.getProperty( keyForEnum( PlaybackOptions.SPEED ) ).asDouble(), 0 );
   }
 
   @Test
@@ -272,8 +270,7 @@ public class VideoLifeCycleAdapterTest {
 
     Message message = Fixture.getProtocolMessage();
     SetOperation operation = message.findSetOperation( video, keyForEnum( PlaybackOptions.REPEAT ) );
-    assertEquals( Boolean.TRUE,
-                  operation.getProperty( keyForEnum( PlaybackOptions.REPEAT ) ) );
+    assertTrue( operation.getProperty( keyForEnum( PlaybackOptions.REPEAT ) ).asBoolean() );
   }
 
   @Test
@@ -287,8 +284,7 @@ public class VideoLifeCycleAdapterTest {
 
     Message message = Fixture.getProtocolMessage();
     SetOperation operation = message.findSetOperation( video, keyForEnum( PlaybackOptions.CONTROLS_VISIBLE ) );
-    assertEquals( Boolean.FALSE,
-                  operation.getProperty( keyForEnum( PlaybackOptions.CONTROLS_VISIBLE ) ) );
+    assertFalse( operation.getProperty( keyForEnum( PlaybackOptions.CONTROLS_VISIBLE ) ).asBoolean() );
   }
 
   @Test
@@ -302,8 +298,7 @@ public class VideoLifeCycleAdapterTest {
 
     Message message = Fixture.getProtocolMessage();
     SetOperation operation = message.findSetOperation( video, keyForEnum( PlaybackOptions.HEAD_POSITION ) );
-    assertEquals( Integer.valueOf( 23 ),
-                  operation.getProperty( keyForEnum( PlaybackOptions.HEAD_POSITION ) ) );
+    assertEquals( 23, operation.getProperty( keyForEnum( PlaybackOptions.HEAD_POSITION ) ).asInt() );
   }
 
   @Test

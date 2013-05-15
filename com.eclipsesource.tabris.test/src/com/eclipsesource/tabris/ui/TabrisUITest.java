@@ -17,6 +17,7 @@ import static org.mockito.Mockito.verify;
 
 import java.io.Serializable;
 
+import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
@@ -94,7 +95,11 @@ public class TabrisUITest {
 
     tabrisUI.create( shell );
 
-    verify( remoteObject ).set( "background", new int[] { 100, 100, 100 } );
+    JsonArray jsonArray = new JsonArray();
+    jsonArray.add( 100 );
+    jsonArray.add( 100 );
+    jsonArray.add( 100 );
+    verify( remoteObject ).set( "background", jsonArray );
   }
 
   @Test
@@ -104,7 +109,11 @@ public class TabrisUITest {
 
     tabrisUI.create( shell );
 
-    verify( remoteObject ).set( "foreground", new int[] { 200, 200, 200 } );
+    JsonArray jsonArray = new JsonArray();
+    jsonArray.add( 200 );
+    jsonArray.add( 200 );
+    jsonArray.add( 200 );
+    verify( remoteObject ).set( "foreground", jsonArray );
   }
 
   private UIConfiguration createConfiguration() {

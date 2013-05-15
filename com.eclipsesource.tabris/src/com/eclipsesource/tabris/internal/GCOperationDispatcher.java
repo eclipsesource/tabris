@@ -16,37 +16,27 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PATH;
 
 import java.io.Serializable;
 
+import org.eclipse.rap.json.JsonArray;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.RGB;
-import org.json.JSONArray;
-import org.json.JSONException;
 
 
-@SuppressWarnings("restriction")
 public class GCOperationDispatcher implements Serializable {
 
   private final GC gc;
-  private JSONArray drawings;
+  private final JsonArray drawings;
 
   public GCOperationDispatcher( GC gc, String drawings ) {
     this.gc = gc;
-    try {
-      this.drawings = new JSONArray( drawings );
-    } catch( JSONException jex ) {
-      throw new IllegalArgumentException( "Drawings are not valid json: " + drawings );
-    }
+    this.drawings = JsonArray.readFrom( drawings );
   }
 
   public void dispatch() {
-    try {
-      doDispatch();
-    } catch( JSONException e ) {
-      throw new IllegalStateException( "Drawings cannot be dispatch. Invalid format: " + drawings );
-    }
+    doDispatch();
   }
 
-  private void doDispatch() throws JSONException {
+  private void doDispatch() {
     int lineWidth = gc.getLineWidth();
     Color foreground = gc.getForeground();
     int alpha = gc.getAlpha();
@@ -54,9 +44,9 @@ public class GCOperationDispatcher implements Serializable {
     restoreLastSettings( lineWidth, foreground, alpha );
   }
 
-  private void dispatchOperations() throws JSONException {
-    for( int i = 0; i < drawings.length(); i++ ) {
-      JSONArray operation = drawings.getJSONArray( i );
+  private void dispatchOperations() {
+    for( int i = 0; i < drawings.size(); i++ ) {
+      JsonArray operation = drawings.get( i ).asArray();
       dispatchOperation( operation );
     }
   }
@@ -67,9 +57,9 @@ public class GCOperationDispatcher implements Serializable {
     gc.setAlpha( alpha );
   }
 
-  private void dispatchOperation( JSONArray operation ) throws JSONException {
-    String operationType = operation.getString( 0 );
-    JSONArray parameters = operation.getJSONArray( 1 );
+  private void dispatchOperation( JsonArray operation ) {
+    String operationType = operation.get( 0 ).asString();
+    JsonArray parameters = operation.get( 1 ).asArray();
     if( PROPERTY_LINE_WIDTH.equals( operationType ) ) {
       dispatchLineWidth( parameters );
     } else if( PROPERTY_FOREGROUND.equals( operationType ) ) {
@@ -79,24 +69,24 @@ public class GCOperationDispatcher implements Serializable {
     }
   }
 
-  private void dispatchLineWidth( JSONArray parameters ) throws JSONException {
-    int width = parameters.getInt( 0 );
+  private void dispatchLineWidth( JsonArray parameters ) {
+    int width = parameters.get( 0 ).asInt();
     gc.setLineWidth( width );
   }
 
-  private void dispatchSetForeground( JSONArray parameters ) throws JSONException {
-    int r = parameters.getInt( 0 );
-    int g = parameters.getInt( 1 );
-    int b = parameters.getInt( 2 );
-    int a = parameters.getInt( 3 );
+  private void dispatchSetForeground( JsonArray parameters ) {
+    int r = parameters.get( 0 ).asInt();
+    int g = parameters.get( 1 ).asInt();
+    int b = parameters.get( 2 ).asInt();
+    int a = parameters.get( 3 ).asInt();
     gc.setForeground( new Color( gc.getDevice(), new RGB( r, g, b ) ) );
     gc.setAlpha( a );
   }
 
-  private void dispatchDrawPolyline( JSONArray parameters ) throws JSONException {
-    int[] polyline = new int[ parameters.length() ];
-    for( int i = 0; i < parameters.length(); i++ ) {
-      polyline[ i ] = parameters.getInt( i );
+  private void dispatchDrawPolyline( JsonArray parameters ) {
+    int[] polyline = new int[ parameters.size() ];
+    for( int i = 0; i < parameters.size(); i++ ) {
+      polyline[ i ] = Double.valueOf( parameters.get( i ).asDouble() ).intValue();
     }
     gc.drawPolyline( polyline );
   }

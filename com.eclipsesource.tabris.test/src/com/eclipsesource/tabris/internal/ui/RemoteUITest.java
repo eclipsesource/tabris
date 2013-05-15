@@ -15,9 +15,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import org.eclipse.rap.json.JsonArray;
+import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.testfixture.Fixture;
@@ -94,13 +93,13 @@ public class RemoteUITest {
     PageOperator pageOperator = mock( PageOperator.class );
     when( ui.getPageOperator() ).thenReturn( pageOperator );
     RemoteUI remoteUI = createRemoteUI( ui );
-    Map<String, Object> properties = new HashMap<String, Object>();
-    properties.put( "pageId", "foo" );
+    JsonObject properties = new JsonObject();
+    properties.add( "pageId", "foo" );
     Controller controller = mock( Controller.class );
     when( controller.getPageId( "foo" ) ).thenReturn( "bar" );
     remoteUI.setController( controller );
 
-    Fixture.dispatchNotify( remoteObject, "ShowPage", properties );
+    TabrisTestUtil.dispatchNotify( remoteObject, "ShowPage", properties );
 
     verify( pageOperator ).openPage( "bar" );
   }
@@ -112,7 +111,7 @@ public class RemoteUITest {
     when( ui.getPageOperator() ).thenReturn( pageOperator );
     createRemoteUI( ui );
 
-    Fixture.dispatchNotify( remoteObject, "ShowPreviousPage", null );
+    TabrisTestUtil.dispatchNotify( remoteObject, "ShowPreviousPage", null );
 
     verify( pageOperator ).closeCurrentPage();
   }
@@ -123,7 +122,7 @@ public class RemoteUITest {
 
     remoteUI.setForeground( new Color( shell.getDisplay(), 100, 200, 150 ) );
 
-    verify( remoteObject ).set( "foreground", new int[] { 100, 200, 150 } );
+    verify( remoteObject ).set( "foreground", new JsonArray().add( 100 ).add( 200 ).add( 150 ) );
   }
 
   @Test
@@ -132,7 +131,7 @@ public class RemoteUITest {
 
     remoteUI.setBackground( new Color( shell.getDisplay(), 100, 120, 150 ) );
 
-    verify( remoteObject ).set( "background", new int[] { 100, 120, 150 } );
+    verify( remoteObject ).set( "background", new JsonArray().add( 100 ).add( 120 ).add( 150 ) );
   }
 
   private RemoteUI createRemoteUI( UI ui ) {

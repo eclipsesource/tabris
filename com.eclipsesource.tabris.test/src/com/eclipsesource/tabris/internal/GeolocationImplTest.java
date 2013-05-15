@@ -21,9 +21,8 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
+import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
@@ -38,6 +37,7 @@ import com.eclipsesource.tabris.geolocation.GeolocationOptions;
 import com.eclipsesource.tabris.geolocation.Position;
 import com.eclipsesource.tabris.geolocation.PositionError;
 import com.eclipsesource.tabris.geolocation.PositionError.PositionErrorCode;
+import com.eclipsesource.tabris.test.TabrisTestUtil;
 
 
 public class GeolocationImplTest {
@@ -143,9 +143,9 @@ public class GeolocationImplTest {
     GeolocationImpl geolocation = new GeolocationImpl();
     geolocation.addGeolocationListener( listener );
     geolocation.determineCurrentPosition( new GeolocationOptions() );
-    Map<String, Object> properties = createPositionData();
+    JsonObject properties = createPositionData();
 
-    Fixture.dispatchNotify( geolocation.getRemoteObject(), "LocationUpdate", properties );
+    TabrisTestUtil.dispatchNotify( geolocation.getRemoteObject(), "LocationUpdate", properties );
 
     ArgumentCaptor<Position> captor = ArgumentCaptor.forClass( Position.class );
     verify( listener ).positionReceived( captor.capture() );
@@ -160,9 +160,9 @@ public class GeolocationImplTest {
     geolocation.addGeolocationListener( listener1 );
     geolocation.addGeolocationListener( listener2 );
     geolocation.determineCurrentPosition( new GeolocationOptions() );
-    Map<String, Object> properties = createPositionData();
+    JsonObject properties = createPositionData();
 
-    Fixture.dispatchNotify( geolocation.getRemoteObject(), "LocationUpdate", properties );
+    TabrisTestUtil.dispatchNotify( geolocation.getRemoteObject(), "LocationUpdate", properties );
 
     ArgumentCaptor<Position> captor = ArgumentCaptor.forClass( Position.class );
     verify( listener1 ).positionReceived( captor.capture() );
@@ -177,9 +177,9 @@ public class GeolocationImplTest {
     GeolocationImpl geolocation = new GeolocationImpl();
     geolocation.addGeolocationListener( listener );
     geolocation.watchPosition( new GeolocationOptions() );
-    Map<String, Object> properties = createPositionData();
+    JsonObject properties = createPositionData();
 
-    Fixture.dispatchNotify( geolocation.getRemoteObject(), "LocationUpdate", properties );
+    TabrisTestUtil.dispatchNotify( geolocation.getRemoteObject(), "LocationUpdate", properties );
 
     ArgumentCaptor<Position> captor = ArgumentCaptor.forClass( Position.class );
     verify( listener ).positionReceived( captor.capture() );
@@ -194,9 +194,9 @@ public class GeolocationImplTest {
     geolocation.addGeolocationListener( listener1 );
     geolocation.addGeolocationListener( listener2 );
     geolocation.watchPosition( new GeolocationOptions() );
-    Map<String, Object> properties = createPositionData();
+    JsonObject properties = createPositionData();
 
-    Fixture.dispatchNotify( geolocation.getRemoteObject(), "LocationUpdate", properties );
+    TabrisTestUtil.dispatchNotify( geolocation.getRemoteObject(), "LocationUpdate", properties );
 
     ArgumentCaptor<Position> captor = ArgumentCaptor.forClass( Position.class );
     verify( listener1 ).positionReceived( captor.capture() );
@@ -205,16 +205,16 @@ public class GeolocationImplTest {
     assertPositionData( captor.getAllValues().get( 1 ) );
   }
 
-  private Map<String, Object> createPositionData() {
-    Map<String, Object> properties = new HashMap<String, Object>();
-    properties.put( "timestamp", "2012-03-12T10:40:13+0100" );
-    properties.put( "latitude", Double.valueOf( 101.1 ) );
-    properties.put( "longitude", Double.valueOf( 43.1 ) );
-    properties.put( "altitude", Integer.valueOf( 3 ) );
-    properties.put( "accuracy", Double.valueOf( 5.1 ) );
-    properties.put( "altitudeAccuracy", Double.valueOf( 1.1 ) );
-    properties.put( "heading", Double.valueOf( 21.1 ) );
-    properties.put( "speed", Double.valueOf( 216.1 ) );
+  private JsonObject createPositionData() {
+    JsonObject properties = new JsonObject();
+    properties.add( "timestamp", "2012-03-12T10:40:13+0100" );
+    properties.add( "latitude", 101.1 );
+    properties.add( "longitude", 43.1 );
+    properties.add( "altitude", 3 );
+    properties.add( "accuracy", 5.1 );
+    properties.add( "altitudeAccuracy", 1.1 );
+    properties.add( "heading", 21.1 );
+    properties.add( "speed", 216.1 );
     return properties;
   }
 
@@ -239,11 +239,11 @@ public class GeolocationImplTest {
     GeolocationImpl geolocation = new GeolocationImpl();
     geolocation.addGeolocationListener( listener );
     geolocation.determineCurrentPosition( new GeolocationOptions() );
-    Map<String, Object> properties = new HashMap<String, Object>();
-    properties.put( "errorCode", "UNKNOWN" );
-    properties.put( "errorMessage", "A Message" );
+    JsonObject properties = new JsonObject();
+    properties.add( "errorCode", "UNKNOWN" );
+    properties.add( "errorMessage", "A Message" );
 
-    Fixture.dispatchNotify( geolocation.getRemoteObject(), "LocationUpdateError", properties );
+    TabrisTestUtil.dispatchNotify( geolocation.getRemoteObject(), "LocationUpdateError", properties );
 
     ArgumentCaptor<PositionError> captor = ArgumentCaptor.forClass( PositionError.class );
     verify( listener ).errorReceived( captor.capture() );
@@ -257,11 +257,11 @@ public class GeolocationImplTest {
     GeolocationImpl geolocation = new GeolocationImpl();
     geolocation.addGeolocationListener( listener );
     geolocation.watchPosition( new GeolocationOptions() );
-    Map<String, Object> properties = new HashMap<String, Object>();
-    properties.put( "errorCode", "UNKNOWN" );
-    properties.put( "errorMessage", "A Message" );
+    JsonObject properties = new JsonObject();
+    properties.add( "errorCode", "UNKNOWN" );
+    properties.add( "errorMessage", "A Message" );
 
-    Fixture.dispatchNotify( geolocation.getRemoteObject(), "LocationUpdateError", properties );
+    TabrisTestUtil.dispatchNotify( geolocation.getRemoteObject(), "LocationUpdateError", properties );
 
     ArgumentCaptor<PositionError> captor = ArgumentCaptor.forClass( PositionError.class );
     verify( listener ).errorReceived( captor.capture() );

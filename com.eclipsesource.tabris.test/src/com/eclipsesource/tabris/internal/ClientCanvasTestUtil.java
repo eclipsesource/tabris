@@ -10,73 +10,72 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
-import org.json.JSONArray;
+import org.eclipse.rap.json.JsonArray;
 
 
-@SuppressWarnings("restriction")
 public class ClientCanvasTestUtil {
 
   public static final int LINE_WITH = 3;
 
   public static String createDrawingsWithoutLineWidth() {
-    JSONArray drawings = new JSONArray();
-    JSONArray polylineParam = createPolylineParam();
-    drawings.put( polylineParam );
-    JSONArray colorParam = createColorParam();
-    drawings.put( colorParam );
-    JSONArray polylineParam2 = createPolylineParam();
-    drawings.put( polylineParam2 );
+    JsonArray drawings = new JsonArray();
+    JsonArray polylineParam = createPolylineParam();
+    drawings.add( polylineParam );
+    JsonArray colorParam = createColorParam();
+    drawings.add( colorParam );
+    JsonArray polylineParam2 = createPolylineParam();
+    drawings.add( polylineParam2 );
     return drawings.toString();
   }
 
   public static String createDrawings( int lineWidth ) {
-    JSONArray drawings = new JSONArray();
-    JSONArray polylineParam = createPolylineParam();
-    drawings.put( polylineParam );
-    JSONArray lineWidthParam = createLineWidthParam( lineWidth );
-    drawings.put( lineWidthParam );
-    JSONArray colorParam = createColorParam();
-    drawings.put( colorParam );
-    JSONArray polylineParam2 = createPolylineParam();
-    drawings.put( polylineParam2 );
+    JsonArray drawings = new JsonArray();
+    JsonArray polylineParam = createPolylineParam();
+    drawings.add( polylineParam );
+    JsonArray lineWidthParam = createLineWidthParam( lineWidth );
+    drawings.add( lineWidthParam );
+    JsonArray colorParam = createColorParam();
+    drawings.add( colorParam );
+    JsonArray polylineParam2 = createPolylineParam();
+    drawings.add( polylineParam2 );
     return drawings.toString();
   }
 
-  private static JSONArray createPolylineParam() {
-    JSONArray drawingParam1 = new JSONArray();
-    drawingParam1.put( Constants.PROPERTY_PATH );
-    JSONArray polyline = createPolyline();
-    drawingParam1.put( polyline );
+  private static JsonArray createPolylineParam() {
+    JsonArray drawingParam1 = new JsonArray();
+    drawingParam1.add( Constants.PROPERTY_PATH );
+    JsonArray polyline = createPolyline();
+    drawingParam1.add( polyline );
     return drawingParam1;
   }
 
-  private static JSONArray createPolyline() {
-    JSONArray polyline = new JSONArray();
-    polyline.put( 0 );
-    polyline.put( 1 );
-    polyline.put( 5 );
-    polyline.put( 5 );
+  private static JsonArray createPolyline() {
+    JsonArray polyline = new JsonArray();
+    polyline.add( 0 );
+    polyline.add( 1 );
+    polyline.add( 5 );
+    polyline.add( 5 );
     return polyline;
   }
 
-  private static JSONArray createLineWidthParam( int lineWidth ) {
-    JSONArray drawingParam2 = new JSONArray();
-    drawingParam2.put( Constants.PROPERTY_LINE_WIDTH );
-    JSONArray lineWidthArray = new JSONArray();
-    lineWidthArray.put( lineWidth );
-    drawingParam2.put( lineWidthArray );
+  private static JsonArray createLineWidthParam( int lineWidth ) {
+    JsonArray drawingParam2 = new JsonArray();
+    drawingParam2.add( Constants.PROPERTY_LINE_WIDTH );
+    JsonArray lineWidthArray = new JsonArray();
+    lineWidthArray.add( lineWidth );
+    drawingParam2.add( lineWidthArray );
     return drawingParam2;
   }
 
-  private static JSONArray createColorParam() {
-    JSONArray drawingParam3 = new JSONArray();
-    drawingParam3.put( Constants.PROPERTY_FOREGROUND );
-    JSONArray color = new JSONArray();
-    color.put( 50 );
-    color.put( 100 );
-    color.put( 200 );
-    color.put( 10 ); // alpha
-    drawingParam3.put( color );
+  private static JsonArray createColorParam() {
+    JsonArray drawingParam3 = new JsonArray();
+    drawingParam3.add( Constants.PROPERTY_FOREGROUND );
+    JsonArray color = new JsonArray();
+    color.add( 50 );
+    color.add( 100 );
+    color.add( 200 );
+    color.add( 10 ); // alpha
+    drawingParam3.add( color );
     return drawingParam3;
   }
 

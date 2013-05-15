@@ -22,8 +22,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.InputStream;
-import java.util.HashMap;
 
+import org.eclipse.rap.json.JsonArray;
+import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
@@ -69,11 +70,11 @@ public class RemoteActionTest {
     new RemoteAction( ui, actionDescriptor, "foo" );
 
     verify( remoteObject ).set( "parent", "foo" );
-    ArgumentCaptor<Object[]> captor = ArgumentCaptor.forClass( Object[].class );
+    ArgumentCaptor<JsonArray> captor = ArgumentCaptor.forClass( JsonArray.class );
     verify( remoteObject ).set( eq( "image" ), captor.capture() );
-    assertTrue( captor.getValue()[ 0 ] instanceof String );
-    assertEquals( Integer.valueOf( 49 ), captor.getValue()[ 1 ] );
-    assertEquals( Integer.valueOf( 43 ), captor.getValue()[ 2 ] );
+    assertTrue( captor.getValue().get( 0 ).isString() );
+    assertEquals( 49, captor.getValue().get( 1 ).asInt() );
+    assertEquals( 43, captor.getValue().get( 2 ).asInt() );
     verify( remoteObject ).set( "title", "bar" );
     verify( remoteObject ).set( "visibility", false );
     verify( remoteObject ).set( "enabled", false );
@@ -159,7 +160,7 @@ public class RemoteActionTest {
     when( remoteObject.getHandler() ).thenReturn( remoteAction );
     when( actionDescriptor.getAction() ).thenReturn( action );
 
-    Fixture.dispatchNotify( remoteObject, "Selection", new HashMap<String, Object>() );
+    TabrisTestUtil.dispatchNotify( remoteObject, "Selection", new JsonObject() );
 
     verify( action ).execute( ui );
   }

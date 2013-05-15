@@ -16,6 +16,7 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PARENT;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_STYLE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TITLE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TOP_LEVEL;
+import static com.eclipsesource.tabris.internal.JsonUtil.createJsonArray;
 import static com.eclipsesource.tabris.internal.ui.RemoteActionFactory.createRemoteAction;
 
 import java.io.ByteArrayInputStream;
@@ -23,6 +24,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
@@ -77,23 +79,24 @@ public class RemotePage implements Serializable {
     setImage();
   }
 
-  private String[] createPageStyleParameter( PageStyle[] pageStyle ) {
+  private JsonArray createPageStyleParameter( PageStyle[] pageStyle ) {
     List<String> parameters = new ArrayList<String>();
     for( PageStyle style : pageStyle ) {
       parameters.add( style.toString() );
     }
     String[] result = new String[ parameters.size() ];
     parameters.toArray( result );
-    return result;
+    return createJsonArray( result );
   }
 
   private void setImage() {
     Image image = createImage( descriptor.getImage() );
     if( image != null ) {
       Rectangle bounds = image.getBounds();
-      Object[] imageData = new Object[] { ImageFactory.getImagePath( image ),
-                                          Integer.valueOf( bounds.width ),
-                                          Integer.valueOf( bounds.height ) };
+      JsonArray imageData = new JsonArray();
+      imageData.add( ImageFactory.getImagePath( image ) );
+      imageData.add( bounds.width );
+      imageData.add( bounds.height );
       remoteObject.set( PROPERTY_IMAGE, imageData );
     }
   }

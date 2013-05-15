@@ -21,9 +21,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
+import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -130,8 +129,8 @@ public class ClientCanvasTest {
     clientCanvas.addPaintListener( paintListener );
 
     fakeDrawEvent();
-    Map<String, Object> parameters = new HashMap<String, Object>();
-    parameters.put( ClientCanvas.DRAWINGS_PROPERTY, ClientCanvasTestUtil.createDrawingsWithoutLineWidth() );
+    JsonObject parameters = new JsonObject();
+    parameters.add( ClientCanvas.DRAWINGS_PROPERTY, ClientCanvasTestUtil.createDrawingsWithoutLineWidth() );
     Fixture.fakeNewRequest();
     Fixture.fakeNotifyOperation( getId( clientCanvas ), ClientCanvas.DRAWING_EVENT, parameters );
     Fixture.executeLifeCycleFromServerThread();
@@ -288,8 +287,8 @@ public class ClientCanvasTest {
   }
 
   private void fakeDrawEvent() {
-    Map<String, Object> parameters = new HashMap<String, Object>();
-    parameters.put( ClientCanvas.DRAWINGS_PROPERTY, ClientCanvasTestUtil.createDrawings( 2 ) );
+    JsonObject parameters = new JsonObject();
+    parameters.add( ClientCanvas.DRAWINGS_PROPERTY, ClientCanvasTestUtil.createDrawings( 2 ) );
     Fixture.fakeNewRequest();
     Fixture.fakeNotifyOperation( getId( clientCanvas ), ClientCanvas.DRAWING_EVENT, parameters );
     Fixture.executeLifeCycleFromServerThread();

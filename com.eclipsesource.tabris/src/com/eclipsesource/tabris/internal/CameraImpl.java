@@ -11,10 +11,10 @@ import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNu
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import org.eclipse.rap.json.JsonArray;
+import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.internal.remote.ConnectionImpl;
 import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
@@ -61,34 +61,37 @@ public class CameraImpl extends AbstractOperationHandler implements Camera {
   @Override
   public void takePicture( CameraOptions options ) {
     checkArgumentNotNull( options, "Options" );
-    Map<String, Object> properties = createProperties( options );
+    JsonObject properties = createProperties( options );
     remoteObject.call( METHOD_OPEN, properties );
   }
 
-  private Map<String, Object> createProperties( CameraOptions options ) {
-    Map<String, Object> properties = new HashMap<String, Object>();
+  private JsonObject createProperties( CameraOptions options ) {
+    JsonObject properties = new JsonObject();
     addResolution( properties, options );
     addSaveToAlbum( properties, options );
     return properties;
   }
 
-  private void addResolution( Map<String, Object> properties, CameraOptions options ) {
+  private void addResolution( JsonObject properties, CameraOptions options ) {
     Point resolution = options.getResolution();
     if( resolution != null ) {
-      properties.put( PROPERTY_RESOLUTION, new int[] { resolution.x, resolution.y } );
+      JsonArray jsonArray = new JsonArray();
+      jsonArray.add( resolution.x );
+      jsonArray.add( resolution.y );
+      properties.add( PROPERTY_RESOLUTION, jsonArray );
     }
   }
 
-  private void addSaveToAlbum( Map<String, Object> properties, CameraOptions options ) {
+  private void addSaveToAlbum( JsonObject properties, CameraOptions options ) {
     if( options.savesToAlbum() ) {
-      properties.put( PROPERTY_SAVE_TO_ALBUM, Boolean.TRUE );
+      properties.add( PROPERTY_SAVE_TO_ALBUM, true );
     }
   }
 
   @Override
-  public void handleNotify( String event, Map<String,Object> properties ) {
+  public void handleNotify( String event, JsonObject properties ) {
     if( EVENT_IMAGE_SELECTION.equals( event ) ) {
-      Image image = decodeImage( ( String )properties.get( PROPERTY_IMAGE ) );
+      Image image = decodeImage( properties.get( PROPERTY_IMAGE ).asString() );
       notifyListenersWithImage( image );
     } else if( EVENT_IMAGE_SELECTION_ERROR.equals( event ) ) {
       notifyListenersWithError();

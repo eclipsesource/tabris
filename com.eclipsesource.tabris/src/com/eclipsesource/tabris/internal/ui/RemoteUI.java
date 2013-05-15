@@ -21,8 +21,8 @@ import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNu
 import static org.eclipse.rap.rwt.RWT.getUISession;
 import static org.eclipse.rap.rwt.lifecycle.WidgetUtil.getId;
 
-import java.util.Map;
-
+import org.eclipse.rap.json.JsonArray;
+import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
 import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
 import org.eclipse.swt.graphics.Color;
@@ -63,9 +63,9 @@ public class RemoteUI extends AbstractOperationHandler {
   }
 
   @Override
-  public void handleNotify( String event, Map<String, Object> properties ) {
+  public void handleNotify( String event, JsonObject properties ) {
     if( event.equals( EVENT_SHOW_PAGE ) ) {
-      String remotePageId = ( String )properties.get( PROPERTY_PAGE_ID );
+      String remotePageId = properties.get( PROPERTY_PAGE_ID ).asString();
       String pageId = controller.getPageId( remotePageId );
       ui.getPageOperator().openPage( pageId );
     } else if( event.equals( EVENT_SHOW_PREVIOUS_PAGE ) ) {
@@ -82,7 +82,11 @@ public class RemoteUI extends AbstractOperationHandler {
   }
 
   private void setColor( String name, Color color ) {
-    remoteObject.set( name, new int[] { color.getRed(), color.getGreen(), color.getBlue() } );
+    JsonArray jsonArray = new JsonArray();
+    jsonArray.add( color.getRed() );
+    jsonArray.add( color.getGreen() );
+    jsonArray.add( color.getBlue() );
+    remoteObject.set( name, jsonArray );
   }
 
 }

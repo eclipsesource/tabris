@@ -21,10 +21,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.rap.json.JsonArray;
+import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.internal.application.ApplicationContextImpl;
 import org.eclipse.rap.rwt.internal.lifecycle.EntryPointManager;
-import org.eclipse.rap.rwt.internal.theme.JsonArray;
-import org.eclipse.rap.rwt.internal.theme.JsonObject;
 import org.eclipse.rap.rwt.service.ResourceLoader;
 
 
@@ -62,7 +62,7 @@ public class TabrisResourceLoader implements ResourceLoader, Serializable {
     JsonObject jsonObject = new JsonObject();
     JsonArray array = new JsonArray();
     appendPaths( ( List<String> )servletPaths, array );
-    jsonObject.append( KEY_ENTRYPOINTS, array );
+    jsonObject.add( KEY_ENTRYPOINTS, array );
     return jsonObject;
   }
 
@@ -70,8 +70,8 @@ public class TabrisResourceLoader implements ResourceLoader, Serializable {
     Collections.sort( servletPaths );
     for( String path : servletPaths ) {
       JsonObject object = new JsonObject();
-      object.append( KEY_PATH, ".." + path );
-      array.append( object );
+      object.add( KEY_PATH, ".." + path );
+      array.add( object );
     }
   }
 

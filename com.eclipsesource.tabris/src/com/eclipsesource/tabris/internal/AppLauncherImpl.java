@@ -20,9 +20,10 @@ import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNu
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 
@@ -45,9 +46,20 @@ public class AppLauncherImpl implements AppLauncher, Serializable {
   }
 
   private void createOpenCall( LaunchOptions launchOptions ) {
-    Map<String, Object> properties = new HashMap<String, Object>( launchOptions.getOptions() );
-    properties.put( PROPERTY_APP, launchOptions.getApp().toString() );
+    JsonObject properties = new JsonObject();
+    addLaunchOptions( properties, launchOptions.getOptions() );
+    properties.add( PROPERTY_APP, launchOptions.getApp().toString() );
     remoteObject.call( METHOD_OPEN, properties );
+  }
+
+  private void addLaunchOptions( JsonObject properties, Map<String, Object> options ) {
+    for( Entry<String, Object> entry : options.entrySet() ) {
+      if( entry.getValue() instanceof String ) {
+        properties.add( entry.getKey(), ( String )entry.getValue() );
+      } else if( entry.getValue() instanceof Boolean ) {
+        properties.add( entry.getKey(), ( ( Boolean )entry.getValue() ).booleanValue() );
+      }
+    }
   }
 
   @Override
@@ -66,8 +78,8 @@ public class AppLauncherImpl implements AppLauncher, Serializable {
   }
 
   private void createOpenUrlCall( String url ) {
-    HashMap<String, Object> poperties = new HashMap<String, Object>();
-    poperties.put( PROPERTY_URL, url );
+    JsonObject poperties = new JsonObject();
+    poperties.add( PROPERTY_URL, url );
     remoteObject.call( METHOD_OPEN_URL, poperties );
   }
 }

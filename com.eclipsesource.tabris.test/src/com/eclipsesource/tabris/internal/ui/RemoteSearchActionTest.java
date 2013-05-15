@@ -21,8 +21,9 @@ import static org.mockito.Mockito.when;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 
+import org.eclipse.rap.json.JsonArray;
+import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
 import org.eclipse.rap.rwt.internal.serverpush.ServerPushManager;
 import org.eclipse.rap.rwt.lifecycle.PhaseId;
@@ -73,7 +74,7 @@ public class RemoteSearchActionTest {
     RemoteSearchAction remoteAction = new RemoteSearchAction( ui, actionDescriptor, "foo" );
     when( remoteObject.getHandler() ).thenReturn( remoteAction );
 
-    Fixture.dispatchNotify( remoteObject, "Selection", new HashMap<String, Object>() );
+    TabrisTestUtil.dispatchNotify( remoteObject, "Selection", new JsonObject() );
 
     verify( action ).execute( ui );
   }
@@ -84,10 +85,10 @@ public class RemoteSearchActionTest {
     SearchAction action = mock( SearchAction.class );
     when( remoteObject.getHandler() ).thenReturn( remoteAction );
     when( actionDescriptor.getAction() ).thenReturn( action );
-    HashMap<String, Object> properties = new HashMap<String, Object>();
-    properties.put( "query", "bar" );
+    JsonObject properties = new JsonObject();
+    properties.add( "query", "bar" );
 
-    Fixture.dispatchNotify( remoteObject, "Search", properties );
+    TabrisTestUtil.dispatchNotify( remoteObject, "Search", properties );
 
     verify( action ).search( "bar" );
   }
@@ -98,10 +99,10 @@ public class RemoteSearchActionTest {
     SearchAction action = mock( SearchAction.class );
     when( remoteObject.getHandler() ).thenReturn( remoteAction );
     when( actionDescriptor.getAction() ).thenReturn( action );
-    HashMap<String, Object> properties = new HashMap<String, Object>();
-    properties.put( "query", "bar" );
+    JsonObject properties = new JsonObject();
+    properties.add( "query", "bar" );
 
-    Fixture.dispatchNotify( remoteObject, "Modify", properties );
+    TabrisTestUtil.dispatchNotify( remoteObject, "Modify", properties );
 
     verify( action ).modified( eq( "bar" ), any( ProposalHandler.class ) );
   }
@@ -115,15 +116,15 @@ public class RemoteSearchActionTest {
     ArrayList<String> proposals = new ArrayList<String>();
     proposals.add( "foo" );
     proposals.add( "bar" );
-    HashMap<String, Object> properties = new HashMap<String, Object>();
-    properties.put( "query", "bar" );
-    Fixture.dispatchNotify( remoteObject, "Modify", properties );
+    JsonObject properties = new JsonObject();
+    properties.add( "query", "bar" );
+    TabrisTestUtil.dispatchNotify( remoteObject, "Modify", properties );
     ArgumentCaptor<ProposalHandler> captor = ArgumentCaptor.forClass( ProposalHandler.class );
     verify( action ).modified( eq( "bar" ), captor.capture() );
 
     captor.getValue().setProposals( proposals );
 
-    verify( remoteObject ).set( "proposals", new String[] { "foo", "bar" } );
+    verify( remoteObject ).set( "proposals", new JsonArray().add( "foo" ).add( "bar" ) );
   }
 
   @Test
@@ -132,15 +133,15 @@ public class RemoteSearchActionTest {
     SearchAction action = mock( SearchAction.class );
     when( remoteObject.getHandler() ).thenReturn( remoteAction );
     when( actionDescriptor.getAction() ).thenReturn( action );
-    HashMap<String, Object> properties = new HashMap<String, Object>();
-    properties.put( "query", "bar" );
-    Fixture.dispatchNotify( remoteObject, "Modify", properties );
+    JsonObject properties = new JsonObject();
+    properties.add( "query", "bar" );
+    TabrisTestUtil.dispatchNotify( remoteObject, "Modify", properties );
     ArgumentCaptor<ProposalHandler> captor = ArgumentCaptor.forClass( ProposalHandler.class );
     verify( action ).modified( eq( "bar" ), captor.capture() );
 
     captor.getValue().setProposals( new ArrayList<String>() );
 
-    verify( remoteObject ).set( "proposals", new String[] {} );
+    verify( remoteObject ).set( "proposals", new JsonArray() );
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -149,9 +150,9 @@ public class RemoteSearchActionTest {
     SearchAction action = spy( new TestSearchAction() );
     when( remoteObject.getHandler() ).thenReturn( remoteAction );
     when( actionDescriptor.getAction() ).thenReturn( action );
-    HashMap<String, Object> properties = new HashMap<String, Object>();
-    properties.put( "query", "bar" );
-    Fixture.dispatchNotify( remoteObject, "Modify", properties );
+    JsonObject properties = new JsonObject();
+    properties.add( "query", "bar" );
+    TabrisTestUtil.dispatchNotify( remoteObject, "Modify", properties );
     ArgumentCaptor<ProposalHandler> captor = ArgumentCaptor.forClass( ProposalHandler.class );
     verify( action ).modified( eq( "bar" ), captor.capture() );
 

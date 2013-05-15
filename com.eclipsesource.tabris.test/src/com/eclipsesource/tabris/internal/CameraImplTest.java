@@ -11,11 +11,9 @@
 package com.eclipsesource.tabris.internal;
 
 import static com.eclipsesource.tabris.test.TabrisTestUtil.mockServiceObject;
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -25,9 +23,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
+import org.eclipse.rap.json.JsonArray;
+import org.eclipse.rap.json.JsonObject;
+import org.eclipse.rap.json.JsonValue;
 import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
@@ -43,6 +42,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.eclipsesource.tabris.camera.Camera;
 import com.eclipsesource.tabris.camera.CameraListener;
 import com.eclipsesource.tabris.camera.CameraOptions;
+import com.eclipsesource.tabris.test.TabrisTestUtil;
 
 
 @RunWith( MockitoJUnitRunner.class )
@@ -76,13 +76,12 @@ public class CameraImplTest {
 
     new CameraImpl();
 
-    verify( remoteObject, never() ).set( eq( "resolution" ), anyObject() );
-    verify( remoteObject, never() ).set( eq( "saveToAlbum" ), anyObject() );
-    verify( remoteObject, never() ).set( eq( "sourceType" ), anyObject() );
+    verify( remoteObject, never() ).set( eq( "resolution" ), any( JsonValue.class ) );
+    verify( remoteObject, never() ).set( eq( "saveToAlbum" ), any( JsonValue.class ) );
+    verify( remoteObject, never() ).set( eq( "sourceType" ), any( JsonValue.class ) );
   }
 
   @Test
-  @SuppressWarnings("unchecked")
   public void testSendsOpenWithTakePhotoCall() {
     RemoteObject remoteObject = mockServiceObject();
     Camera camera = new CameraImpl();
@@ -91,11 +90,12 @@ public class CameraImplTest {
 
     camera.takePicture( createOptions() );
 
-    ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
+    ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
     verify( remoteObject ).call( eq( "open" ), captor.capture() );
-    int[] resolution = ( int[] )captor.getValue().get( "resolution" );
-    assertArrayEquals( new int[] { 100, 100 }, resolution );
-    assertEquals( Boolean.TRUE, captor.getValue().get( "saveToAlbum" ) );
+    JsonArray resolution = captor.getValue().get( "resolution" ).asArray();
+    assertEquals( 100, resolution.get( 0 ).asInt() );
+    assertEquals( 100, resolution.get( 1 ).asInt() );
+    assertTrue( captor.getValue().get( "saveToAlbum" ).asBoolean() );
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -126,7 +126,7 @@ public class CameraImplTest {
     camera.addCameraListener( listener );
 
     camera.takePicture( createOptions() );
-    Fixture.dispatchNotify( camera.getRemoteObject(), "ImageSelectionError", null );
+    TabrisTestUtil.dispatchNotify( camera.getRemoteObject(), "ImageSelectionError", null );
 
     verify( listener ).receivedPicture( null );
   }
@@ -140,7 +140,7 @@ public class CameraImplTest {
     camera.addCameraListener( listener2 );
 
     camera.takePicture( createOptions() );
-    Fixture.dispatchNotify( camera.getRemoteObject(), "ImageSelectionError", null );
+    TabrisTestUtil.dispatchNotify( camera.getRemoteObject(), "ImageSelectionError", null );
 
     verify( listener1 ).receivedPicture( null );
     verify( listener2 ).receivedPicture( null );
@@ -155,9 +155,9 @@ public class CameraImplTest {
     camera.addCameraListener( listener );
 
     camera.takePicture( createOptions() );
-    Map<String, Object> properties = new HashMap<String, Object>();
-    properties.put( "image", encodedImage );
-    Fixture.dispatchNotify( remoteObject, "ImageSelection", properties );
+    JsonObject properties = new JsonObject();
+    properties.add( "image", encodedImage );
+    TabrisTestUtil.dispatchNotify( remoteObject, "ImageSelection", properties );
 
     verify( listener ).receivedPicture( any( Image.class ) );
   }
@@ -173,9 +173,9 @@ public class CameraImplTest {
     camera.addCameraListener( listener2 );
 
     camera.takePicture( createOptions() );
-    Map<String, Object> properties = new HashMap<String, Object>();
-    properties.put( "image", encodedImage );
-    Fixture.dispatchNotify( remoteObject, "ImageSelection", properties );
+    JsonObject properties = new JsonObject();
+    properties.add( "image", encodedImage );
+    TabrisTestUtil.dispatchNotify( remoteObject, "ImageSelection", properties );
 
     verify( listener1 ).receivedPicture( any( Image.class ) );
     verify( listener2 ).receivedPicture( any( Image.class ) );

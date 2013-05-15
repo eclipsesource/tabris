@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="com.eclipsesource.tabris" version="2">
+    <resource path="src/com/eclipsesource/tabris/app/AppEvent.java" type="com.eclipsesource.tabris.app.AppEvent">
+        <filter id="338722907">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.app.AppEvent"/>
+                <message_argument value="AppEvent(EventType, Map&lt;String,Object&gt;)"/>
+            </message_arguments>
+        </filter>
+        <filter id="338792546">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.app.AppEvent"/>
+                <message_argument value="getProperty(String)"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>

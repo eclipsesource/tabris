@@ -16,6 +16,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Random;
 
+import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.internal.remote.ConnectionImpl;
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
 import org.eclipse.rap.rwt.remote.RemoteObject;
@@ -52,6 +53,27 @@ public class TabrisTestUtil {
     String id = "w" + random.nextInt();
     when( remoteObject.getId() ).thenReturn( id );
     return remoteObject;
+  }
+
+  public static void dispatchSet( RemoteObject remoteObject, JsonObject properties ) {
+    RemoteObjectImpl remoteObjectImpl = ( RemoteObjectImpl )remoteObject;
+    remoteObjectImpl.getHandler().handleSet( properties );
+  }
+
+  public static void dispatchNotify( RemoteObject remoteObject,
+                                     String eventName,
+                                     JsonObject properties )
+  {
+    RemoteObjectImpl remoteObjectImpl = ( RemoteObjectImpl )remoteObject;
+    remoteObjectImpl.getHandler().handleNotify( eventName, properties );
+  }
+
+  public static void dispatchCall( RemoteObject remoteObject,
+                                   String methodName,
+                                   JsonObject parameters )
+  {
+    RemoteObjectImpl remoteObjectImpl = ( RemoteObjectImpl )remoteObject;
+    remoteObjectImpl.getHandler().handleCall( methodName, parameters );
   }
 
   private TabrisTestUtil() {

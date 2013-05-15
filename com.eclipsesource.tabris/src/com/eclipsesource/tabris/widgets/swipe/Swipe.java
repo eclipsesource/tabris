@@ -32,10 +32,9 @@ import static com.eclipsesource.tabris.internal.SwipeUtil.notifyItemLoaded;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.remote.RemoteObject;
@@ -43,6 +42,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+import com.eclipsesource.tabris.internal.JsonUtil;
 import com.eclipsesource.tabris.internal.SwipeItemHolder;
 import com.eclipsesource.tabris.internal.SwipeManager;
 import com.eclipsesource.tabris.internal.SwipeOperationHandler;
@@ -246,8 +246,8 @@ public class Swipe implements Serializable {
 
   private void callRemoveItems( int[] outOfRangeIndexes ) {
     if( outOfRangeIndexes.length > 0 ) {
-      Map<String, Object> properties = new HashMap<String, Object>();
-      properties.put( PROPERTY_ITEMS, outOfRangeIndexes );
+      JsonObject properties = new JsonObject();
+      properties.add( PROPERTY_ITEMS, JsonUtil.createJsonArray( outOfRangeIndexes ) );
       remoteObject.call( METHOD_REMOVE, properties );
     }
   }
@@ -328,10 +328,10 @@ public class Swipe implements Serializable {
     }
   }
 
-  private Map<String, Object> createLoadProperties( int index, Control content ) {
-    Map<String, Object> result = new HashMap<String, Object>();
-    result.put( PROPERTY_INDEX, Integer.valueOf( index ) );
-    result.put( PROPERTY_CONTROL, WidgetUtil.getId( content ) );
+  private JsonObject createLoadProperties( int index, Control content ) {
+    JsonObject result = new JsonObject();
+    result.add( PROPERTY_INDEX, index );
+    result.add( PROPERTY_CONTROL, WidgetUtil.getId( content ) );
     return result;
   }
 
@@ -403,9 +403,9 @@ public class Swipe implements Serializable {
     remoteObject.call( method, null );
   }
 
-  private Map<String, Object> createLockProperties( int direction, int index ) {
-    Map<String, Object> properties = new HashMap<String, Object>();
-    properties.put( PROPERTY_INDEX, Integer.valueOf( index ) );
+  private JsonObject createLockProperties( int direction, int index ) {
+    JsonObject properties = new JsonObject();
+    properties.add( PROPERTY_INDEX, index );
     return properties;
   }
 

@@ -15,6 +15,7 @@ import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
 
+import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.junit.Test;
 
@@ -39,7 +40,10 @@ public class ProposalHandlerImplTest {
 
     proposalHandler.setProposals( proposals );
 
-    verify( remoteObject ).set( "proposals", new String[] { "foo", "bar" } );
+    JsonArray jsonArray = new JsonArray();
+    jsonArray.add( "foo" );
+    jsonArray.add( "bar" );
+    verify( remoteObject ).set( "proposals", jsonArray );
   }
 
   @Test
@@ -49,6 +53,6 @@ public class ProposalHandlerImplTest {
 
     proposalHandler.setProposals( new ArrayList<String>() );
 
-    verify( remoteObject ).set( "proposals", new String[] {} );
+    verify( remoteObject ).set( "proposals", new JsonArray() );
   }
 }

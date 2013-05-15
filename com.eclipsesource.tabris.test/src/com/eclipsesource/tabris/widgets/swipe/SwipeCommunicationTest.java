@@ -13,9 +13,8 @@ package com.eclipsesource.tabris.widgets.swipe;
 import static com.eclipsesource.tabris.widgets.swipe.SwipeTest.mockProvider;
 import static com.eclipsesource.tabris.widgets.swipe.SwipeTest.mockProviderSize;
 import static com.eclipsesource.tabris.widgets.swipe.SwipeTest.mockSwipeItem;
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyMap;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.never;
@@ -23,8 +22,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.List;
-import java.util.Map;
 
+import org.eclipse.rap.json.JsonArray;
+import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.remote.RemoteObject;
@@ -70,7 +70,6 @@ public class SwipeCommunicationTest {
   }
 
   @Test
-  @SuppressWarnings("unchecked")
   public void testSendsMethodsOnInitialization() {
     SwipeItemProvider itemProvider = mockProvider( 2 );
     TestItem firstItem = mockSwipeItem( itemProvider, 0, true );
@@ -79,7 +78,7 @@ public class SwipeCommunicationTest {
 
     swipe.show( 0 );
 
-    ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
+    ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
     InOrder order = inOrder( remoteObject );
     order.verify( remoteObject ).call( eq( "add" ), captor.capture() );
     order.verify( remoteObject ).set( "active", 0 );
@@ -88,7 +87,6 @@ public class SwipeCommunicationTest {
   }
 
   @Test
-  @SuppressWarnings("unchecked")
   public void testSendsNotEmptyOutOfRange() {
     SwipeItemProvider itemProvider = mockProvider( 2 );
     mockSwipeItem( itemProvider, 0, true );
@@ -97,20 +95,19 @@ public class SwipeCommunicationTest {
 
     swipe.show( 0 );
 
-    verify( remoteObject, never() ).call( eq( "remove" ), anyMap() );
+    verify( remoteObject, never() ).call( eq( "remove" ), any( JsonObject.class ) );
   }
 
-  private void assertLoadProperties( List<Map> allValues, TestItem firstItem, TestItem secondItem ) {
-    Map properties1 = allValues.get( 0 );
-    assertEquals( Integer.valueOf( 0 ), properties1.get( "index" ) );
-    assertEquals( WidgetUtil.getId( firstItem.getLoadedComposite() ), properties1.get( "control" ) );
-    Map properties2 = allValues.get( 1 );
-    assertEquals( Integer.valueOf( 1 ), properties2.get( "index" ) );
-    assertEquals( WidgetUtil.getId( secondItem.getLoadedComposite() ), properties2.get( "control" ) );
+  private void assertLoadProperties( List<JsonObject> list, TestItem firstItem, TestItem secondItem ) {
+    JsonObject properties1 = list.get( 0 );
+    assertEquals( 0, properties1.get( "index" ).asInt() );
+    assertEquals( WidgetUtil.getId( firstItem.getLoadedComposite() ), properties1.get( "control" ).asString() );
+    JsonObject properties2 = list.get( 1 );
+    assertEquals( 1, properties2.get( "index" ).asInt() );
+    assertEquals( WidgetUtil.getId( secondItem.getLoadedComposite() ), properties2.get( "control" ).asString() );
   }
 
   @Test
-  @SuppressWarnings("unchecked")
   public void testSendsOutOfRangeItems() {
     SwipeItemProvider itemProvider = mockProvider( 4 );
     mockSwipeItem( itemProvider, 0, true );
@@ -122,14 +119,13 @@ public class SwipeCommunicationTest {
     swipe.show( 1 );
     swipe.show( 2 );
 
-    ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
+    ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
     verify( remoteObject ).call( eq( "remove" ), captor.capture() );
-    int[] items = ( int[] )captor.getValue().get( "items" );
-    assertArrayEquals( new int[] { 0 }, items );
+    JsonArray items = captor.getValue().get( "items" ).asArray();
+    assertEquals( new JsonArray().add( 0 ), items );
   }
 
   @Test
-  @SuppressWarnings("unchecked")
   public void testSendsLockLeft() {
     SwipeItemProvider itemProvider = mockProvider( 1 );
     mockSwipeItem( itemProvider, 0, true );
@@ -137,13 +133,12 @@ public class SwipeCommunicationTest {
 
     swipe.lock( SWT.LEFT );
 
-    ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
+    ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
     verify( remoteObject ).call( eq( "lockLeft" ), captor.capture() );
-    assertEquals( Integer.valueOf( 0 ), captor.getValue().get( "index" ) );
+    assertEquals( 0, captor.getValue().get( "index" ).asInt() );
   }
 
   @Test
-  @SuppressWarnings("unchecked")
   public void testSendsLockRight() {
     SwipeItemProvider itemProvider = mockProvider( 1 );
     mockSwipeItem( itemProvider, 0, true );
@@ -151,9 +146,9 @@ public class SwipeCommunicationTest {
 
     swipe.lock( SWT.RIGHT );
 
-    ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
+    ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
     verify( remoteObject ).call( eq( "lockRight" ), captor.capture() );
-    assertEquals( Integer.valueOf( 0 ), captor.getValue().get( "index" ) );
+    assertEquals( 0, captor.getValue().get( "index" ).asInt() );
   }
 
   @Test
@@ -196,7 +191,6 @@ public class SwipeCommunicationTest {
   }
 
   @Test
-  @SuppressWarnings("unchecked")
   public void testDoesRespectItemsSizeWhenShiftingLeft() {
     SwipeItemProvider itemProvider = mockProvider( 3 );
     mockSwipeItem( itemProvider, 0, true );
@@ -208,11 +202,10 @@ public class SwipeCommunicationTest {
     swipe.show( 2 );
     swipe.show( 1 );
 
-    verify( remoteObject, never() ).call( eq( "removeItems" ), anyMap() );
+    verify( remoteObject, never() ).call( eq( "removeItems" ), any( JsonObject.class ) );
   }
 
   @Test
-  @SuppressWarnings("unchecked")
   public void testDoesNotRemoveUnrelatedItemAndLoadsNext() {
     SwipeItemProvider itemProvider = mockProvider( 0 );
     mockSwipeItem( itemProvider, 0, true );
@@ -228,14 +221,13 @@ public class SwipeCommunicationTest {
     mockProviderSize( itemProvider, 6 );
     swipe.refresh();
 
-    verify( remoteObject, never() ).call( eq( "remove" ), anyMap() );
-    ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
+    verify( remoteObject, never() ).call( eq( "remove" ), any( JsonObject.class ) );
+    ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
     verify( remoteObject, times( 3 ) ).call( eq( "add" ), captor.capture() );
-    assertEquals( Integer.valueOf( 5 ), captor.getAllValues().get( 2 ).get( "index" ) );
+    assertEquals( 5, captor.getAllValues().get( 2 ).get( "index" ).asInt() );
   }
 
   @Test
-  @SuppressWarnings("unchecked")
   public void testJumpSkipsLoadingOfUnneededItem() {
     SwipeItemProvider itemProvider = mockProvider( 5 );
     mockSwipeItem( itemProvider, 0, true );
@@ -248,16 +240,15 @@ public class SwipeCommunicationTest {
     swipe.show( 0 );
     swipe.show( 4 );
 
-    ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
+    ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
     verify( remoteObject, times( 4 ) ).call( eq( "add" ), captor.capture() );
-    assertEquals( Integer.valueOf( 0 ), captor.getAllValues().get( 0 ).get( "index" ) );
-    assertEquals( Integer.valueOf( 1 ), captor.getAllValues().get( 1 ).get( "index" ) );
-    assertEquals( Integer.valueOf( 3 ), captor.getAllValues().get( 2 ).get( "index" ) );
-    assertEquals( Integer.valueOf( 4 ), captor.getAllValues().get( 3 ).get( "index" ) );
+    assertEquals( 0, captor.getAllValues().get( 0 ).get( "index" ).asInt() );
+    assertEquals( 1, captor.getAllValues().get( 1 ).get( "index" ).asInt() );
+    assertEquals( 3, captor.getAllValues().get( 2 ).get( "index" ).asInt() );
+    assertEquals( 4, captor.getAllValues().get( 3 ).get( "index" ).asInt() );
   }
 
   @Test
-  @SuppressWarnings("unchecked")
   public void testJumpRemovesOutOfRangeItem() {
     SwipeItemProvider itemProvider = mockProvider( 5 );
     mockSwipeItem( itemProvider, 0, true );
@@ -270,14 +261,13 @@ public class SwipeCommunicationTest {
     swipe.show( 0 );
     swipe.show( 4 );
 
-    ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
+    ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
     verify( remoteObject, times( 1 ) ).call( eq( "remove" ), captor.capture() );
-    int[] actualIndexes = ( int[] )captor.getValue().get( "items" );
-    assertArrayEquals( new int[] { 0, 1 }, actualIndexes );
+    JsonArray actualIndexes = captor.getValue().get( "items" ).asArray();
+    assertEquals( new JsonArray().add( 0 ).add( 1 ), actualIndexes );
   }
 
   @Test
-  @SuppressWarnings("unchecked")
   public void testIncrementalDeleteSendsRemoveMessages() {
     SwipeItemProvider itemProvider = mockProvider( 5 );
     mockSwipeItem( itemProvider, 0, true );
@@ -293,10 +283,10 @@ public class SwipeCommunicationTest {
     mockProviderSize( itemProvider, 1 );
     swipe.refresh();
 
-    ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
+    ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
     verify( remoteObject, times( 1 ) ).call( eq( "remove" ), captor.capture() );
-    int[] actualIndexes = ( int[] )captor.getValue().get( "items" );
-    assertArrayEquals( new int[] { 1 }, actualIndexes );
+    JsonArray actualIndexes = captor.getValue().get( "items" ).asArray();
+    assertEquals( new JsonArray().add( 1 ), actualIndexes );
   }
 
   @Test

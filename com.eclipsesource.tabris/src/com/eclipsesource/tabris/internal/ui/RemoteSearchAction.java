@@ -16,8 +16,7 @@ import static com.eclipsesource.tabris.internal.Constants.METHOD_ACTIVATE;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_DEACTIVATE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_QUERY;
 
-import java.util.Map;
-
+import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.service.ServerPushSession;
 
 import com.eclipsesource.tabris.ui.UI;
@@ -38,18 +37,18 @@ public class RemoteSearchAction extends RemoteAction {
   }
 
   @Override
-  public void handleNotify( String event, Map<String, Object> properties ) {
+  public void handleNotify( String event, JsonObject properties ) {
     super.handleNotify( event, properties );
     SearchAction action = ( SearchAction )getDescriptor().getAction();
     if( event.equals( EVENT_SEARCH ) ) {
-      action.search( ( String )properties.get( PROPERTY_QUERY ) );
+      action.search( properties.get( PROPERTY_QUERY ).asString() );
     } else if( event.equals( EVENT_MODIFY ) ) {
-      action.modified( ( String )properties.get( PROPERTY_QUERY ), new ProposalHandlerImpl( getRemoteObject() ) );
+      action.modified( properties.get( PROPERTY_QUERY ).asString(), new ProposalHandlerImpl( getRemoteObject() ) );
     }
   }
 
   @Override
-  public void handleCall( String method, Map<String, Object> parameters ) {
+  public void handleCall( String method, JsonObject parameters ) {
     if( method.equals( METHOD_ACTIVATE ) ) {
       startPush();
     } else if( method.equals( METHOD_DEACTIVATE ) ) {

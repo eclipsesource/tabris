@@ -10,7 +10,6 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
-import static com.eclipsesource.tabris.internal.Constants.TYPE_CLIENT_STORE;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_ADD;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_CLEAR;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_REMOVE;
@@ -18,13 +17,16 @@ import static com.eclipsesource.tabris.internal.Constants.METHOD_SYNCHRONIZE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_KEY;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_KEYS;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_VALUE;
+import static com.eclipsesource.tabris.internal.Constants.TYPE_CLIENT_STORE;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNullAndNotEmpty;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
+import org.eclipse.rap.json.JsonArray;
+import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.internal.remote.ConnectionImpl;
 import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
@@ -55,9 +57,9 @@ public class ClientStoreImpl extends AbstractOperationHandler implements ClientS
   }
 
   private void sendAdd( String key, String value ) {
-    Map<String, Object> properties = new HashMap<String, Object>();
-    properties.put( PROPERTY_KEY, key );
-    properties.put( PROPERTY_VALUE, value );
+    JsonObject properties = new JsonObject();
+    properties.add( PROPERTY_KEY, key );
+    properties.add( PROPERTY_VALUE, value );
     serviceObject.call( METHOD_ADD, properties );
   }
 
@@ -76,10 +78,18 @@ public class ClientStoreImpl extends AbstractOperationHandler implements ClientS
 
   private void sendRemoveKeys( String[] keys ) {
     if( keys.length > 0 ) {
-      Map<String, Object> properties = new HashMap<String, Object>();
-      properties.put( PROPERTY_KEYS, keys );
+      JsonObject properties = new JsonObject();
+      properties.add( PROPERTY_KEYS, createJsonArray( keys ) );
       serviceObject.call( METHOD_REMOVE, properties );
     }
+  }
+
+  private JsonArray createJsonArray( String[] keys ) {
+    JsonArray result = new JsonArray();
+    for( String key : keys ) {
+      result.add( key );
+    }
+    return result;
   }
 
   @Override
@@ -89,10 +99,11 @@ public class ClientStoreImpl extends AbstractOperationHandler implements ClientS
   }
 
   @Override
-  public void handleCall( String method, Map<String, Object> parameters ) {
+  public void handleCall( String method, JsonObject parameters ) {
     if( method.equals( METHOD_SYNCHRONIZE ) ) {
-      for( Entry<String, Object> entry : parameters.entrySet() ) {
-        store.put( entry.getKey(), ( String )entry.getValue() );
+      List<String> names = parameters.names();
+      for( String name : names ) {
+        store.put( name, parameters.get( name ).asString() );
       }
     }
   }

@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.internal.remote.ConnectionImpl;
 import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
@@ -78,7 +79,7 @@ public class AppImpl extends AbstractOperationHandler implements App {
   }
 
   @Override
-  public void handleNotify( String event, Map<String, Object> properties ) {
+  public void handleNotify( String event, JsonObject properties ) {
     if( event.equals( EVENT_BACK_NAVIGATION ) ) {
       notifyBackNavigationListeners();
     } else {

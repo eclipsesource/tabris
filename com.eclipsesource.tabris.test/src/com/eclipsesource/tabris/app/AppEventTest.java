@@ -16,18 +16,17 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
+import org.eclipse.rap.json.JsonObject;
+import org.eclipse.rap.json.JsonValue;
 import org.junit.Test;
 
 
 public class AppEventTest {
 
   @Test( expected = IllegalArgumentException.class )
-  @SuppressWarnings("unchecked")
   public void testFailsWithNullType() {
-    new AppEvent( null, mock( Map.class ) );
+    new AppEvent( null, mock( JsonObject.class ) );
   }
 
   @Test
@@ -44,11 +43,11 @@ public class AppEventTest {
 
   @Test
   public void testReturnsCorrectProperty() {
-    Map<String, Object> properties = new HashMap<String, Object>();
-    properties.put( "foo", "bar" );
+    JsonObject properties = new JsonObject();
+    properties.add( "foo", "bar" );
 
     AppEvent appEvent = new AppEvent( EventType.PAUSE, properties );
 
-    assertEquals( "bar", appEvent.getProperty( "foo" ) );
+    assertEquals( JsonValue.valueOf( "bar" ), appEvent.getProperty( "foo" ) );
   }
 }

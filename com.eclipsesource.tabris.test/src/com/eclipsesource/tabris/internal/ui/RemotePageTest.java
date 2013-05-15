@@ -27,6 +27,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.testfixture.Fixture;
@@ -106,13 +107,13 @@ public class RemotePageTest {
     verify( remoteObject ).set( "parent", "foo1" );
     verify( remoteObject ).set( "title", "bar" );
     verify( remoteObject ).set( "control", WidgetUtil.getId( remotePage.getControl() ) );
-    verify( remoteObject ).set( "style", new String[] { "DEFAULT" } );
+    verify( remoteObject ).set( "style", new JsonArray().add( "DEFAULT" ) );
     verify( remoteObject ).set( "topLevel", true );
-    ArgumentCaptor<Object[]> captor = ArgumentCaptor.forClass( Object[].class );
+    ArgumentCaptor<JsonArray> captor = ArgumentCaptor.forClass( JsonArray.class );
     verify( remoteObject ).set( eq( "image" ), captor.capture() );
-    assertTrue( captor.getValue()[ 0 ] instanceof String );
-    assertEquals( Integer.valueOf( 49 ), captor.getValue()[ 1 ] );
-    assertEquals( Integer.valueOf( 43 ), captor.getValue()[ 2 ] );
+    assertTrue( captor.getValue().get( 0 ).isString() );
+    assertEquals( 49, captor.getValue().get( 1 ).asInt() );
+    assertEquals( 43, captor.getValue().get( 2 ).asInt() );
   }
 
   @Test
@@ -127,7 +128,7 @@ public class RemotePageTest {
     RemotePage remotePage = new RemotePage( ui, localDescriptor, "foo1", mock( PageData.class ) );
     remotePage.createControl( shell );
 
-    verify( remoteObject ).set( "style", new String[] { "FULLSCREEN" } );
+    verify( remoteObject ).set( "style", new JsonArray().add( "FULLSCREEN" ) );
   }
 
   @Test
@@ -140,7 +141,7 @@ public class RemotePageTest {
 
     new RemotePage( ui, localDescriptor, "foo1", mock( PageData.class ) );
 
-    verify( remoteObject, never() ).set( eq( "style" ), any( String[].class ) );
+    verify( remoteObject, never() ).set( eq( "style" ), any( JsonArray.class ) );
   }
 
   @Test

@@ -21,9 +21,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
+import org.eclipse.rap.json.JsonObject;
+import org.eclipse.rap.json.JsonValue;
 import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
@@ -145,7 +145,7 @@ public class AppImplTest {
     AppListener listener = mock( AppListener.class );
     app.addEventListener( PAUSE, listener );
 
-    Fixture.dispatchNotify( app.getRemoteObject(), "Pause", null );
+    TabrisTestUtil.dispatchNotify( app.getRemoteObject(), "Pause", null );
 
     ArgumentCaptor<AppEvent> captor = ArgumentCaptor.forClass( AppEvent.class );
     verify( listener ).handleEvent( captor.capture() );
@@ -160,7 +160,7 @@ public class AppImplTest {
     app.addEventListener( PAUSE, listener );
     app.addEventListener( PAUSE, listener2 );
 
-    Fixture.dispatchNotify( app.getRemoteObject(), "Pause", null );
+    TabrisTestUtil.dispatchNotify( app.getRemoteObject(), "Pause", null );
 
     ArgumentCaptor<AppEvent> captor = ArgumentCaptor.forClass( AppEvent.class );
     verify( listener ).handleEvent( captor.capture() );
@@ -174,15 +174,15 @@ public class AppImplTest {
     AppImpl app = new AppImpl();
     AppListener listener = mock( AppListener.class );
     app.addEventListener( PAUSE, listener );
-    Map<String, Object> properties = new HashMap<String, Object>();
-    properties.put( "foo", "bar" );
+    JsonObject properties = new JsonObject();
+    properties.add( "foo", "bar" );
 
-    Fixture.dispatchNotify( app.getRemoteObject(), "Pause", properties );
+    TabrisTestUtil.dispatchNotify( app.getRemoteObject(), "Pause", properties );
 
     ArgumentCaptor<AppEvent> captor = ArgumentCaptor.forClass( AppEvent.class );
     verify( listener ).handleEvent( captor.capture() );
     assertSame( PAUSE, captor.getValue().getType() );
-    assertEquals( "bar", captor.getValue().getProperty( "foo" ) );
+    assertEquals( JsonValue.valueOf( "bar" ), captor.getValue().getProperty( "foo" ) );
   }
 
   @Test
@@ -262,7 +262,7 @@ public class AppImplTest {
     BackNavigationListener listener = mock( BackNavigationListener.class );
     app.addBackNavigationListener( listener );
 
-    Fixture.dispatchNotify( app.getRemoteObject(), "BackNavigation", null );
+    TabrisTestUtil.dispatchNotify( app.getRemoteObject(), "BackNavigation", null );
 
     verify( listener ).navigatedBack();
   }
@@ -275,7 +275,7 @@ public class AppImplTest {
     app.addBackNavigationListener( listener );
     app.addBackNavigationListener( listener2 );
 
-    Fixture.dispatchNotify( app.getRemoteObject(), "BackNavigation", null );
+    TabrisTestUtil.dispatchNotify( app.getRemoteObject(), "BackNavigation", null );
 
     verify( listener ).navigatedBack();
     verify( listener2 ).navigatedBack();

@@ -13,9 +13,7 @@ package com.eclipsesource.tabris.internal;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import org.eclipse.rap.json.JsonObject;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.widgets.swipe.Swipe;
@@ -32,8 +30,8 @@ public class SwipeOperationHandlerTest {
   public void testNotifiesAboutSwipeEvent() {
     Swipe swipe = mock( Swipe.class );
     SwipeOperationHandler handler = new SwipeOperationHandler( swipe );
-    Map<String, Object> properties = new HashMap<String, Object>();
-    properties.put( "item", Integer.valueOf( 0 ) );
+    JsonObject properties = new JsonObject();
+    properties.add( "item", 0 );
 
     handler.handleNotify( "Swipe", properties );
 
@@ -43,7 +41,7 @@ public class SwipeOperationHandlerTest {
   @Test( expected = IllegalArgumentException.class )
   public void testSwipeEventFailsWithoutItemProperty() {
     SwipeOperationHandler handler = new SwipeOperationHandler( mock( Swipe.class ) );
-    Map<String, Object> properties = new HashMap<String, Object>();
+    JsonObject properties = new JsonObject();
 
     handler.handleNotify( "Swipe", properties );
   }
@@ -51,8 +49,8 @@ public class SwipeOperationHandlerTest {
   @Test( expected = IllegalArgumentException.class )
   public void testSwipeEventFailsWithNoIntegerItemProperty() {
     SwipeOperationHandler handler = new SwipeOperationHandler( mock( Swipe.class ) );
-    Map<String, Object> properties = new HashMap<String, Object>();
-    properties.put( "item", "0" );
+    JsonObject properties = new JsonObject();
+    properties.add( "item", "0" );
 
     handler.handleNotify( "Swipe", properties );
   }

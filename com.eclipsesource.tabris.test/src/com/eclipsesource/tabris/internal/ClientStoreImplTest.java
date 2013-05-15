@@ -10,18 +10,17 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Matchers.anyMap;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import org.eclipse.rap.json.JsonArray;
+import org.eclipse.rap.json.JsonObject;
+import org.eclipse.rap.json.JsonValue;
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
@@ -102,7 +101,6 @@ public class ClientStoreImplTest {
   }
 
   @Test
-  @SuppressWarnings("unchecked")
   public void testRemoveSendsAllRemovedKeys() {
     ClientStoreImpl store = new ClientStoreImpl();
     store.add( "foo", "bar" );
@@ -110,14 +108,14 @@ public class ClientStoreImplTest {
 
     store.remove( "foo" );
 
-    ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
+    ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
     verify( serviceObject ).call( eq( "remove" ), captor.capture() );
-    String[] removedKeys = ( String[] )captor.getValue().get( "keys" );
-    assertArrayEquals( new String[] { "foo" },  removedKeys );
+    JsonArray removedKeys = captor.getValue().get( "keys" ).asArray();
+    assertEquals( JsonValue.valueOf( "foo" ), removedKeys.get( 0 ) );
+    assertEquals( 1, removedKeys.size() );
   }
 
   @Test
-  @SuppressWarnings("unchecked")
   public void testEmptyRemoveDoesntSendsRemovedKeys() {
     ClientStoreImpl store = new ClientStoreImpl();
     store.add( "foo", "bar" );
@@ -125,11 +123,10 @@ public class ClientStoreImplTest {
 
     store.remove();
 
-    verify( serviceObject, never() ).call( eq( "remove" ), anyMap() );
+    verify( serviceObject, never() ).call( eq( "remove" ), any( JsonObject.class ) );
   }
 
   @Test
-  @SuppressWarnings("unchecked")
   public void testBulkRemovesSendsAllRemovedKeys() {
     ClientStoreImpl store = new ClientStoreImpl();
     store.add( "foo", "bar" );
@@ -137,10 +134,12 @@ public class ClientStoreImplTest {
 
     store.remove( "foo" ,"foo1" );
 
-    ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
+    ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
     verify( serviceObject ).call( eq( "remove" ), captor.capture() );
-    String[] removedKeys = ( String[] )captor.getValue().get( "keys" );
-    assertArrayEquals( new String[] { "foo", "foo1" },  removedKeys );
+    JsonArray removedKeys = captor.getValue().get( "keys" ).asArray();
+    assertEquals( JsonValue.valueOf( "foo" ), removedKeys.get( 0 ) );
+    assertEquals( JsonValue.valueOf( "foo1" ), removedKeys.get( 1 ) );
+    assertEquals( 2, removedKeys.size() );
   }
 
   @Test
@@ -184,27 +183,26 @@ public class ClientStoreImplTest {
   }
 
   @Test
-  @SuppressWarnings("unchecked")
   public void testAddSendsAddCall() {
     ClientStoreImpl store = new ClientStoreImpl();
 
     store.add( "foo", "bar" );
 
-    ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
+    ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
     verify( serviceObject ).call( eq( "add" ), captor.capture() );
-    assertEquals( "foo", captor.getValue().get( "key" ) );
-    assertEquals( "bar", captor.getValue().get( "value" ) );
+    assertEquals( "foo", captor.getValue().get( "key" ).asString() );
+    assertEquals( "bar", captor.getValue().get( "value" ).asString() );
   }
 
   @Test
   public void testSynchronizeCallAddsValues() {
     ClientStoreImpl store = new ClientStoreImpl();
     when( ( ( RemoteObjectImpl )serviceObject ).getHandler() ).thenReturn( store );
-    Map<String, Object> properties = new HashMap<String, Object>();
-    properties.put( "foo", "bar" );
-    properties.put( "foo1", "bar1" );
+    JsonObject properties = new JsonObject();
+    properties.add( "foo", "bar" );
+    properties.add( "foo1", "bar1" );
 
-    Fixture.dispatchCall( serviceObject, "synchronize", properties  );
+    TabrisTestUtil.dispatchCall( serviceObject, "synchronize", properties  );
 
     assertEquals( "bar", store.get( "foo" ) );
     assertEquals( "bar1", store.get( "foo1" ) );

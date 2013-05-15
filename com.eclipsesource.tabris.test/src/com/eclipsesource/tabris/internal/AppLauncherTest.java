@@ -16,8 +16,9 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 
 import java.io.Serializable;
-import java.util.Map;
 
+import org.eclipse.rap.json.JsonObject;
+import org.eclipse.rap.json.JsonValue;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.junit.After;
@@ -57,20 +58,18 @@ public class AppLauncherTest {
   }
 
   @Test
-  @SuppressWarnings("unchecked")
   public void testOpenCreatsCallOperation() {
     RemoteObject remoteObject = TabrisTestUtil.mockRemoteObject();
     AppLauncher launcher = new AppLauncherImpl();
 
     launcher.open( new MailOptions( "foo" ) );
 
-    ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
+    ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
     verify( remoteObject ).call( eq( "open" ), captor.capture() );
-    assertEquals( App.MAIL.toString(), captor.getValue().get( "app" ) );
+    assertEquals( JsonValue.valueOf( App.MAIL.toString() ), captor.getValue().get( "app" ) );
   }
 
   @Test
-  @SuppressWarnings("unchecked")
   public void testOpenCreatsCallOperationWithProperties() {
     RemoteObject remoteObject = TabrisTestUtil.mockRemoteObject();
     AppLauncher launcher = new AppLauncherImpl();
@@ -80,23 +79,22 @@ public class AppLauncherTest {
 
     launcher.open( options );
 
-    ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
+    ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
     verify( remoteObject ).call( eq( "open" ), captor.capture() );
-    assertEquals( "bar", captor.getValue().get( "foo" ) );
-    assertEquals( "bar1", captor.getValue().get( "foo1" ) );
+    assertEquals( JsonValue.valueOf( "bar" ), captor.getValue().get( "foo" ) );
+    assertEquals( JsonValue.valueOf( "bar1" ), captor.getValue().get( "foo1" ) );
   }
 
   @Test
-  @SuppressWarnings("unchecked")
   public void testOpenUrlCreatesCallOperation() {
     RemoteObject remoteObject = TabrisTestUtil.mockRemoteObject();
     AppLauncher launcher = new AppLauncherImpl();
 
     launcher.openUrl( "http://foo.bar" );
 
-    ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
+    ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
     verify( remoteObject ).call( eq( "openUrl" ), captor.capture() );
-    assertEquals( "http://foo.bar", captor.getValue().get( "url" ) );
+    assertEquals( JsonValue.valueOf( "http://foo.bar" ), captor.getValue().get( "url" ) );
   }
 
   @Test( expected = IllegalArgumentException.class )

@@ -13,7 +13,9 @@ package com.eclipsesource.tabris.app;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
 import java.io.Serializable;
-import java.util.Map;
+
+import org.eclipse.rap.json.JsonObject;
+import org.eclipse.rap.json.JsonValue;
 
 
 /**
@@ -22,9 +24,12 @@ import java.util.Map;
 public class AppEvent implements Serializable {
 
   private final EventType type;
-  private final Map<String, Object> properties;
+  private final JsonObject properties;
 
-  public AppEvent( EventType type, Map<String, Object> properties ) {
+  /**
+   * @since 1.1
+   */
+  public AppEvent( EventType type, JsonObject properties ) {
     checkArgumentNotNull( type, "EventType" );
     this.type = type;
     this.properties = properties;
@@ -34,8 +39,11 @@ public class AppEvent implements Serializable {
     return type;
   }
 
-  public Object getProperty( String name ) {
-    Object result = null;
+  /**
+   * @since 1.1
+   */
+  public JsonValue getProperty( String name ) {
+    JsonValue result = null;
     if( properties != null ) {
       result = properties.get( name );
     }
