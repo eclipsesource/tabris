@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="Tabris Target" sequenceNumber="34">
+<?pde version="3.8"?><target name="Tabris Target" sequenceNumber="35">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="com.eclipsesource.osgi.additionals.feature.group" version="1.0.0.201207280921"/>
@@ -7,10 +7,10 @@
 </location>
 <location path="${project_loc:com.eclipsesource.tabris.target}/bundles" type="Directory"/>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.rap.equinox.target.feature.feature.group" version="2.1.0.20130506-2049"/>
-<unit id="org.eclipse.rap.sdk.feature.feature.group" version="2.1.0.20130506-1748"/>
-<unit id="org.eclipse.rap.feature.feature.group" version="2.1.0.20130506-1748"/>
-<repository location="http://download.eclipse.org/rt/rap/2.1/M2-20130506-1748"/>
+<unit id="org.eclipse.rap.examples.feature.feature.group" version="2.1.0.20130516-1457"/>
+<unit id="org.eclipse.rap.equinox.target.feature.feature.group" version="2.1.0.20130518-0755"/>
+<unit id="org.eclipse.rap.sdk.feature.feature.group" version="2.1.0.20130520-1326"/>
+<repository location="http://download.eclipse.org/rt/rap/2.1/RC1-20130520-1326"/>
 </location>
 </locations>
 </target>
