@@ -20,6 +20,6 @@ public abstract class SearchAction extends AbstractAction {
 
   public abstract void search( String query );
 
-  public abstract void modified( String query, ProposalHandler propoalHandler );
+  public abstract void modified( String query, ProposalHandler proposalHandler );
 
 }
