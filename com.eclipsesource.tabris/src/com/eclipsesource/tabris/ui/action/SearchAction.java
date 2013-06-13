@@ -12,11 +12,15 @@ package com.eclipsesource.tabris.ui.action;
 
 import com.eclipsesource.tabris.ui.AbstractAction;
 
-
 /**
  * @since 1.1
  */
 public abstract class SearchAction extends AbstractAction {
+
+  @Override
+  public void execute() {
+    // might be implemented by subclasses
+  }
 
   public abstract void search( String query );
 
