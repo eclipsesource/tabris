@@ -71,7 +71,7 @@
 		<repository>
 			<id>rap-milestone-repository</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/rt/rap/2.1/RC1-20130520-1326/</url>
+			<url>http://download.eclipse.org/rt/rap/2.1/R-20130611-2139/</url>
 		</repository>
 	</repositories>
 
