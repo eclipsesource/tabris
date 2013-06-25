@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <component id="com.eclipsesource.tabris" version="2">
+    <resource path="src/com/eclipsesource/tabris/app/App.java" type="com.eclipsesource.tabris.app.App">
+        <filter id="403804204">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.app.App"/>
+                <message_argument value="activateInactivityLock(int)"/>
+            </message_arguments>
+        </filter>
+        <filter id="403804204">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.app.App"/>
+                <message_argument value="deactivateInactivityLock()"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="src/com/eclipsesource/tabris/app/AppEvent.java" type="com.eclipsesource.tabris.app.AppEvent">
         <filter id="338722907">
             <message_arguments>

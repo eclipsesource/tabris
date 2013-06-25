@@ -39,6 +39,11 @@ public class PreconditionsTest {
     Preconditions.checkArgumentNotNullAndNotEmpty( "", "" );
   }
 
+  @Test( expected = IllegalArgumentException.class )
+  public void testCheckArgumentThrowsException() {
+    Preconditions.checkArgument( false, "" );
+  }
+
   @Test( expected = IllegalStateException.class )
   public void testCheckStateThrowsException() {
     Preconditions.checkState( null, "message" );

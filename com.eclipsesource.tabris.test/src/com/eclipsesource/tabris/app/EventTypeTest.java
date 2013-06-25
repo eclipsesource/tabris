@@ -15,23 +15,31 @@ import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
-import com.eclipsesource.tabris.app.EventType;
-
 
 public class EventTypeTest {
-  
+
   @Test
   public void testNonExsitingFromString() {
     assertNull( EventType.fromName( "hmpf" ) );
   }
-  
+
   @Test
   public void testPauseFromString() {
     assertSame( EventType.PAUSE, EventType.fromName( "Pause" ) );
   }
-  
+
   @Test
   public void testResumeFromString() {
     assertSame( EventType.RESUME, EventType.fromName( "Resume" ) );
+  }
+
+  @Test
+  public void testLockFromString() {
+    assertSame( EventType.LOCK, EventType.fromName( "Lock" ) );
+  }
+
+  @Test
+  public void testUnlockFromString() {
+    assertSame( EventType.UNLOCK, EventType.fromName( "Unlock" ) );
   }
 }

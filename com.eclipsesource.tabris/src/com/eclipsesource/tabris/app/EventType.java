@@ -14,20 +14,30 @@ package com.eclipsesource.tabris.app;
  * @since 0.10
  */
 public enum EventType {
-  
-  PAUSE( "Pause" ), 
-  RESUME( "Resume" );
-  
+
+  PAUSE( "Pause" ),
+  RESUME( "Resume" ),
+
+  /**
+   * @since 1.1
+   */
+  LOCK( "Lock" ),
+
+  /**
+   * @since 1.1
+   */
+  UNLOCK( "Unlock" );
+
   private final String name;
 
   EventType( String name ) {
     this.name = name;
   }
-  
+
   public String getName() {
     return name;
   }
-  
+
   public static EventType fromName( String name ) {
     EventType[] values = values();
     for( EventType eventType : values ) {
@@ -37,5 +47,5 @@ public enum EventType {
     }
     return null;
   }
-  
+
 }

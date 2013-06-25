@@ -26,4 +26,14 @@ public interface App extends ClientService {
 
   void removeBackNavigationListener( BackNavigationListener listener );
 
+  /**
+   * @since 1.1
+   */
+  void activateInactivityLock( int inactivityTime );
+
+  /**
+   * @since 1.1
+   */
+  void deactivateInactivityLock();
+
 }

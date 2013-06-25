@@ -14,6 +14,7 @@ import static com.eclipsesource.tabris.app.EventType.PAUSE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -279,6 +280,40 @@ public class AppImplTest {
 
     verify( listener ).navigatedBack();
     verify( listener2 ).navigatedBack();
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testInactivityTimeoutFailsWithNegativeTime() {
+    RemoteObject remoteObject = TabrisTestUtil.mockServiceObject();
+    AppImpl app = new AppImpl();
+
+    app.activateInactivityLock( -1 );
+
+    ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
+    verify( remoteObject ).call( eq( "activateInactivityLock" ), captor.capture() );
+    assertEquals( captor.getValue().get( "inactivityTime" ), JsonValue.valueOf( 10 ) );
+  }
+
+  @Test
+  public void testCallsActivateInactivityLockOnRemoteObject() {
+    RemoteObject remoteObject = TabrisTestUtil.mockServiceObject();
+    AppImpl app = new AppImpl();
+
+    app.activateInactivityLock( 10 );
+
+    ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
+    verify( remoteObject ).call( eq( "activateInactivityLock" ), captor.capture() );
+    assertEquals( captor.getValue().get( "inactivityTime" ), JsonValue.valueOf( 10 ) );
+  }
+
+  @Test
+  public void testCallsDeactivateInactivityLockOnRemoteObject() {
+    RemoteObject remoteObject = TabrisTestUtil.mockServiceObject();
+    AppImpl app = new AppImpl();
+
+    app.deactivateInactivityLock();
+
+    verify( remoteObject ).call( "deactivateInactivityLock", null );
   }
 
 }

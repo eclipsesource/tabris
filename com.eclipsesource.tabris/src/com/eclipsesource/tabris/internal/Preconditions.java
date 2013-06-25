@@ -13,6 +13,12 @@ package com.eclipsesource.tabris.internal;
 
 public class Preconditions {
 
+  public static void checkArgument( boolean expression, String message ) throws IllegalArgumentException {
+    if( !expression ) {
+      throw new IllegalArgumentException( message );
+    }
+  }
+
   public static void checkArgumentNotNull( Object object, String name ) throws IllegalArgumentException {
     if( object == null ) {
       throw new IllegalArgumentException( name + " must not be null" );
