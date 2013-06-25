@@ -1,5 +1,6 @@
 package com.eclipsesource.tabris.internal;
 
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.Constants.EVENT_IMAGE_SELECTION;
 import static com.eclipsesource.tabris.internal.Constants.EVENT_IMAGE_SELECTION_ERROR;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_OPEN;
@@ -7,7 +8,6 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_IMAGE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_RESOLUTION;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SAVE_TO_ALBUM;
 import static com.eclipsesource.tabris.internal.Constants.TYPE_CAMERA;
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
@@ -48,19 +48,19 @@ public class CameraImpl extends AbstractOperationHandler implements Camera {
 
   @Override
   public void addCameraListener( CameraListener listener ) {
-    checkArgumentNotNull( listener, CameraListener.class.getSimpleName() );
+    whenNull( listener ).thenIllegalArgument( "Listener must not be null" );
     cameraListeners.add( listener );
   }
 
   @Override
   public void removeCameraListener( CameraListener listener ) {
-    checkArgumentNotNull( listener, CameraListener.class.getSimpleName() );
+    whenNull( listener ).thenIllegalArgument( "Listener must not be null" );
     cameraListeners.remove( listener );
   }
 
   @Override
   public void takePicture( CameraOptions options ) {
-    checkArgumentNotNull( options, "Options" );
+    whenNull( options ).thenIllegalArgument( "Options must not be null" );
     JsonObject properties = createProperties( options );
     remoteObject.call( METHOD_OPEN, properties );
   }

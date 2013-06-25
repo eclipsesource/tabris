@@ -10,9 +10,9 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.interaction;
 
+import static com.eclipsesource.tabris.internal.Clauses.when;
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_NUMBER;
-
-import com.eclipsesource.tabris.internal.Preconditions;
 
 
 /**
@@ -25,7 +25,8 @@ public class PhoneOptions extends LaunchOptions {
 
   public PhoneOptions( String phoneNumber ) {
     super( App.PHONE );
-    Preconditions.checkArgumentNotNullAndNotEmpty( phoneNumber, "Number" );
+    whenNull( phoneNumber ).thenIllegalArgument( "PhoneNumber must not be null" );
+    when( phoneNumber.isEmpty() ).thenIllegalArgument( "Phone Number must not be empty" );
     add( PROPERTY_NUMBER, phoneNumber );
   }
 }

@@ -10,8 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
-import static com.eclipsesource.tabris.internal.Preconditions.checkState;
+import static com.eclipsesource.tabris.internal.Clauses.when;
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class PageFlow implements Serializable {
   private final List<RemotePage> pages;
 
   public PageFlow( RemotePage root ) {
-    checkArgumentNotNull( root, "Root" );
+    whenNull( root ).thenIllegalArgument( "Root must not be null" );
     pages = new ArrayList<RemotePage>();
     pages.add( root );
   }
@@ -49,7 +49,7 @@ public class PageFlow implements Serializable {
   }
 
   public RemotePage pop() {
-    checkState( pages.size() > 1, "Can not remove root page." );
+    when( pages.size() <= 1 ).thenIllegalState( "Can not remove root page." );
     return pages.remove( getIndexOfLastPage() );
   }
 

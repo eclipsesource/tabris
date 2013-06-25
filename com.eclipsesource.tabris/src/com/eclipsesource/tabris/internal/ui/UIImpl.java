@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
 import java.io.Serializable;
 
@@ -31,9 +31,9 @@ public class UIImpl implements UI, Serializable {
   private boolean initialized;
 
   public UIImpl( Display display, Controller controller, UIConfiguration configuration ) {
-    checkArgumentNotNull( display, Display.class.getSimpleName() );
-    checkArgumentNotNull( controller, Controller.class.getSimpleName() );
-    checkArgumentNotNull( configuration, UIConfiguration.class.getSimpleName() );
+    whenNull( display ).thenIllegalArgument( "Display must not be null" );
+    whenNull( controller ).thenIllegalArgument( "Controller must not be null" );
+    whenNull( configuration ).thenIllegalArgument( "Configuration must not be null" );
     this.display = display;
     this.configuration = configuration;
     this.actionOperator = new ActionOperatorImpl( controller );

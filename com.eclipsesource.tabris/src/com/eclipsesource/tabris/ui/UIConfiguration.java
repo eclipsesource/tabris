@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.ui;
 
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
 import java.io.Serializable;
 
@@ -75,7 +75,7 @@ public class UIConfiguration implements Adaptable, Serializable {
    * @since 1.0
    */
   public UIConfiguration addPageConfiguration( PageConfiguration configuration ) {
-    checkArgumentNotNull( configuration, "Page Configuration" );
+    whenNull( configuration ).thenIllegalArgument( "Page Configuration must not be null" );
     PageDescriptor descriptor = configuration.getAdapter( PageDescriptor.class );
     uiDescriptor.add( descriptor );
     return this;
@@ -89,7 +89,7 @@ public class UIConfiguration implements Adaptable, Serializable {
    * @since 1.0
    */
   public UIConfiguration addActionConfiguration( ActionConfiguration configuration ) {
-    checkArgumentNotNull( configuration, "Action Configuration" );
+    whenNull( configuration ).thenIllegalArgument( "Action Configuration must not be null" );
     ActionDescriptor descriptor = configuration.getAdapter( ActionDescriptor.class );
     uiDescriptor.add( descriptor );
     return this;
@@ -103,7 +103,7 @@ public class UIConfiguration implements Adaptable, Serializable {
    * @since 1.0
    */
   public UIConfiguration setForeground( RGB foreground ) {
-    checkArgumentNotNull( foreground, "Foreground" );
+    whenNull( foreground ).thenIllegalArgument( "Foreground must not be null" );
     this.foreground = foreground;
     return this;
   }
@@ -131,7 +131,7 @@ public class UIConfiguration implements Adaptable, Serializable {
    * @since 1.0
    */
   public UIConfiguration setBackground( RGB background ) {
-    checkArgumentNotNull( background, "Background" );
+    whenNull( background ).thenIllegalArgument( "Background must not be null" );
     this.background = background;
     return this;
   }
@@ -166,7 +166,7 @@ public class UIConfiguration implements Adaptable, Serializable {
    * @since 1.0
    */
   public UIConfiguration addTransitionListener( TransitionListener listener ) {
-    checkArgumentNotNull( listener, TransitionListener.class.getSimpleName() );
+    whenNull( listener ).thenIllegalArgument( "Listener must not be null" );
     uiDescriptor.addTransitionListener( listener );
     return this;
   }
@@ -179,7 +179,7 @@ public class UIConfiguration implements Adaptable, Serializable {
    * @since 1.0
    */
   public UIConfiguration removeTransitionListener( TransitionListener listener ) {
-    checkArgumentNotNull( listener, TransitionListener.class.getSimpleName() );
+    whenNull( listener ).thenIllegalArgument( "Listener must not be null" );
     uiDescriptor.removeTransitionListener( listener );
     return this;
   }

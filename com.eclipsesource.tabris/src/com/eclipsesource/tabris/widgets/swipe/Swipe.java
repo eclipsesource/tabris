@@ -10,6 +10,9 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.swipe;
 
+import static com.eclipsesource.tabris.internal.Clauses.when;
+import static com.eclipsesource.tabris.internal.Clauses.whenNot;
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_ADD;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_LOCK_LEFT;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_LOCK_RIGHT;
@@ -23,9 +26,6 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ITEMS;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PARENT;
 import static com.eclipsesource.tabris.internal.Constants.TYPE_SWIPE;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.SWIPE;
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgument;
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
-import static com.eclipsesource.tabris.internal.Preconditions.checkState;
 import static com.eclipsesource.tabris.internal.SwipeItemIndexer.getAsArray;
 import static com.eclipsesource.tabris.internal.SwipeUtil.notifyDisposed;
 import static com.eclipsesource.tabris.internal.SwipeUtil.notifyItemActivated;
@@ -80,8 +80,8 @@ public class Swipe implements Serializable {
   private final SwipeManager manager;
 
   public Swipe( Composite parent, SwipeItemProvider itemProvider ) {
-    checkArgumentNotNull( parent, "Parent" );
-    checkArgumentNotNull( itemProvider, "SwipeItemProvider" );
+    whenNull( parent ).thenIllegalArgument( "Parent must not be null" );
+    whenNull( itemProvider ).thenIllegalArgument( "SwipeItemProvider must not be null" );
     this.manager = new SwipeManager( itemProvider );
     this.listeners = new ArrayList<SwipeListener>();
     this.container = new Composite( parent, SWT.NONE );
@@ -151,8 +151,8 @@ public class Swipe implements Serializable {
 
   private void show( int index, boolean needsToShow ) {
     verifyIsNotDisposed();
-    checkState( manager.isMoveAllowed( manager.getIndexer().getCurrent(), index ),
-                "Move not allowed. Item " + index + " is locked." );
+    whenNot( manager.isMoveAllowed( manager.getIndexer().getCurrent(), index ) )
+      .thenIllegalState( "Move not allowed. Item " + index + " is locked." );
     if( isValidIndex( index ) ) {
       verifyLocks();
       showItemAtIndex( index, needsToShow );
@@ -348,7 +348,7 @@ public class Swipe implements Serializable {
    * </p>
    */
   public void removeSwipeListener( SwipeListener listener ) {
-    checkState( !container.isDisposed(), "Swipe is already disposed" );
+    when( container.isDisposed() ).thenIllegalState( "Swipe is already disposed" );
     listeners.remove( listener );
   }
 
@@ -379,8 +379,8 @@ public class Swipe implements Serializable {
    * @throws IllegalArgumentException when not SWT.LEFT or SWT.RIGHT
    */
   public void lock( int direction ) throws IllegalArgumentException {
-    checkArgument( direction == SWT.LEFT || direction == SWT.RIGHT,
-                   "Invalid lock direction. Only SWT.LEFT and SWT.RIGHT are supported." );
+    when( direction != SWT.LEFT && direction != SWT.RIGHT )
+      .thenIllegalArgument( "Invalid lock direction. Only SWT.LEFT and SWT.RIGHT are supported." );
     int indexToLock = manager.getIndexer().getCurrent();
     manager.lock( direction, indexToLock, true );
     String method = direction == SWT.LEFT ? METHOD_LOCK_LEFT : METHOD_LOCK_RIGHT;
@@ -395,8 +395,8 @@ public class Swipe implements Serializable {
    * @throws IllegalArgumentException when not SWT.LEFT or SWT.RIGHT
    */
   public void unlock( int direction ) throws IllegalArgumentException {
-    checkArgument( direction == SWT.LEFT || direction == SWT.RIGHT,
-                   "Invalid lock direction. Only SWT.LEFT and SWT.RIGHT are supported." );
+    when( direction != SWT.LEFT && direction != SWT.RIGHT )
+      .thenIllegalArgument( "Invalid lock direction. Only SWT.LEFT and SWT.RIGHT are supported." );
     manager.unlock( direction );
     String method = direction == SWT.LEFT ? METHOD_UNLOCK_LEFT : METHOD_UNLOCK_RIGHT;
     remoteObject.call( method, null );
@@ -409,7 +409,7 @@ public class Swipe implements Serializable {
   }
 
   private void verifyIsNotDisposed() {
-    checkState( !container.isDisposed(), "Swipe is already disposed" );
+    when( container.isDisposed() ).thenIllegalState( "Swipe is already disposed" );
   }
 
   /**

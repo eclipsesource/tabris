@@ -10,12 +10,11 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.interaction;
 
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_URL;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import com.eclipsesource.tabris.internal.Preconditions;
 
 
 /**
@@ -28,7 +27,7 @@ public class BrowserOptions extends LaunchOptions {
 
   public BrowserOptions( String url ) {
     super( App.BROWSER );
-    Preconditions.checkArgumentNotNull( url, "URL" );
+    whenNull( url ).thenIllegalArgument( "URL must not be null" );
     validateUrl( url );
     add( PROPERTY_URL, url );
   }

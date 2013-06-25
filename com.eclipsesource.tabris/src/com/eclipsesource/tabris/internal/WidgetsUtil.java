@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
 import org.eclipse.swt.widgets.Widget;
 
@@ -24,7 +24,7 @@ public class WidgetsUtil {
   }
 
   public static void checkComponent( Object component ) {
-    checkArgumentNotNull( component, "Widget/Item must not be null" );
+    whenNull( component ).thenIllegalArgument( "Widget/Item must not be null" );
   }
 
   private WidgetsUtil() {

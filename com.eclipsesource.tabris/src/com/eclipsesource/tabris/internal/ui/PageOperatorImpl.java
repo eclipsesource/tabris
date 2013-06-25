@@ -10,8 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
-import static com.eclipsesource.tabris.internal.Preconditions.checkState;
+import static com.eclipsesource.tabris.internal.Clauses.whenNot;
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
 import java.io.Serializable;
 
@@ -26,8 +26,8 @@ public class PageOperatorImpl implements PageOperator, Serializable {
   private final UIImpl ui;
 
   public PageOperatorImpl( Controller controller, UIImpl ui ) {
-    checkArgumentNotNull( controller, Controller.class.getSimpleName() );
-    checkArgumentNotNull( ui, UIImpl.class.getSimpleName() );
+    whenNull( controller ).thenIllegalArgument( "Controller must not be null" );
+    whenNull( ui ).thenIllegalArgument( "UI must not be null" );
     this.controller = controller;
     this.ui = ui;
   }
@@ -39,17 +39,17 @@ public class PageOperatorImpl implements PageOperator, Serializable {
 
   @Override
   public void openPage( String pageId, PageData data ) throws IllegalStateException {
-    checkArgumentNotNull( data, PageData.class.getSimpleName() );
+    whenNull( data ).thenIllegalArgument( "PageData must not be null" );
     UIDescriptor uiDescriptor = ui.getConfiguration().getAdapter( UIDescriptor.class );
     PageDescriptor descriptor = uiDescriptor.getPageDescriptor( pageId );
-    checkState( descriptor, "Page with id " + pageId + " does not exist." );
+    whenNull( descriptor ).thenIllegalState( "Page with id " + pageId + " does not exist." );
     controller.show( ui, descriptor, data );
   }
 
   @Override
   public void closeCurrentPage() throws IllegalStateException{
     boolean wasClosed = controller.closeCurrentPage( ui );
-    checkState( wasClosed, "Can not close top level page." );
+    whenNot( wasClosed ).thenIllegalState( "Can not close top level page." );
   }
 
   @Override
@@ -64,7 +64,7 @@ public class PageOperatorImpl implements PageOperator, Serializable {
 
   @Override
   public void setCurrentPageTitle( String title ) {
-    checkArgumentNotNull( title, "PageTitle" );
+    whenNull( title ).thenIllegalArgument( "Page Title must not be null" );
     controller.setTitle( getCurrentPage(), title );
   }
 }

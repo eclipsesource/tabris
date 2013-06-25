@@ -10,13 +10,12 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_CAPABILITIES;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_CONNECTION_TYPE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ORIENTATION;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TIMEZONE_OFFSET;
 import static com.eclipsesource.tabris.internal.Constants.TYPE_CLIENT_DEVICE;
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
-import static com.eclipsesource.tabris.internal.Preconditions.checkState;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -98,7 +97,7 @@ public class ClientDeviceImpl extends AbstractOperationHandler implements Client
 
   @Override
   public int getTimezoneOffset() {
-    checkState( timezoneOffset, "timezoneOffset is not set." );
+    whenNull( timezoneOffset ).thenIllegalState( "timezoneOffset is not set." );
     return timezoneOffset.intValue();
   }
 
@@ -114,31 +113,31 @@ public class ClientDeviceImpl extends AbstractOperationHandler implements Client
 
   @Override
   public Orientation getOrientation() {
-    checkState( orientation, "orientation is not set." );
+    whenNull( orientation ).thenIllegalState( "orientation is not set." );
     return orientation;
   }
 
   @Override
   public boolean hasCapability( Capability capability ) {
-    checkState( capabilities, "capabilities not set." );
+    whenNull( capabilities ).thenIllegalState( "capabilities is not set." );
     return capabilities.contains( capability );
   }
 
   @Override
   public ConnectionType getConnectionType() {
-    checkState( connectionType, "connectionType is not set." );
+    whenNull( connectionType ).thenIllegalState( "connectionType is not set." );
     return connectionType;
   }
 
   @Override
   public void addClientDeviceListener( ClientDeviceListener listener ) {
-    checkArgumentNotNull( listener, ClientDeviceListener.class.getSimpleName() );
+    whenNull( listener ).thenIllegalArgument( "listener is not set." );
     clientDeviceListeners.add( listener );
   }
 
   @Override
   public void removeClientDeviceListener( ClientDeviceListener listener ) {
-    checkArgumentNotNull( listener, ClientDeviceListener.class.getSimpleName() );
+    whenNull( listener ).thenIllegalArgument( "listener is not set." );
     clientDeviceListeners.remove( listener );
   }
 

@@ -10,10 +10,10 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import static com.eclipsesource.tabris.internal.Clauses.whenNot;
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.Constants.EVENT_SWIPE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ITEM;
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgument;
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
@@ -26,7 +26,7 @@ public class SwipeOperationHandler extends AbstractOperationHandler {
   private final Swipe swipe;
 
   public SwipeOperationHandler( Swipe swipe ) {
-    checkArgumentNotNull( swipe, "Swipe" );
+    whenNull( swipe ).thenIllegalArgument( "Swipe must not be null" );
     this.swipe = swipe;
   }
 
@@ -40,8 +40,10 @@ public class SwipeOperationHandler extends AbstractOperationHandler {
   }
 
   private void verifyHasItemProperty( JsonObject properties ) {
-    checkArgumentNotNull( properties, "Properties" );
-    checkArgumentNotNull( properties.get( PROPERTY_ITEM ), "Properties of " + EVENT_SWIPE + " do not contain an item." );
-    checkArgument( properties.get( PROPERTY_ITEM ).isNumber(), "Property item of " + EVENT_SWIPE + " is not an Integer." );
+    whenNull( properties ).thenIllegalArgument( "Properties must not be null" );
+    whenNull( properties.get( PROPERTY_ITEM ) )
+      .thenIllegalArgument( "Properties of " + EVENT_SWIPE + " do not contain an item." );
+    whenNot( properties.get( PROPERTY_ITEM ).isNumber() )
+      .thenIllegalArgument( "Property item of " + EVENT_SWIPE + " is not an Integer." );
   }
 }

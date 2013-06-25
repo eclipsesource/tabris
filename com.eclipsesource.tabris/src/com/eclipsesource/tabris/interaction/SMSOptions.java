@@ -10,9 +10,9 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.interaction;
 
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_NUMBER;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TEXT;
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
 
 /**
@@ -25,8 +25,8 @@ public class SMSOptions extends LaunchOptions {
 
   public SMSOptions( String phoneNumber, String text ) {
     super( App.SMS );
-    checkArgumentNotNull( phoneNumber, "Number" );
-    checkArgumentNotNull( text, "Text" );
+    whenNull( phoneNumber ).thenIllegalArgument( "Phone number must not be null" );
+    whenNull( text ).thenIllegalArgument( "Text must not be null" );
     add( PROPERTY_NUMBER, phoneNumber );
     add( PROPERTY_TEXT, text );
   }

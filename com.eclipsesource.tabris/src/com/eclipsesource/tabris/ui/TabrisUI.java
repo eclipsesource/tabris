@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.ui;
 
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static org.eclipse.rap.rwt.internal.service.ContextProvider.getContext;
 
 import java.io.Serializable;
@@ -59,7 +59,7 @@ public class TabrisUI implements Serializable {
    * @since 1.0
    */
   public TabrisUI( UIConfiguration configuration ) {
-    checkArgumentNotNull( configuration, UIConfiguration.class.getSimpleName() );
+    whenNull( configuration ).thenIllegalArgument( "UIConfiguration must not be null" );
     getContext().getProtocolWriter().appendHead( "tabris.UI", JsonValue.valueOf( true ) );
     this.configuration = configuration;
   }
@@ -73,7 +73,7 @@ public class TabrisUI implements Serializable {
    * @since 1.0
    */
   public void create( Shell shell ) {
-    checkArgumentNotNull( shell, Shell.class.getSimpleName() );
+    whenNull( shell ).thenIllegalArgument( "Shell must not be null" );
     prepareShell( shell );
     RemoteUI remoteUI = new RemoteUI( shell );
     shell.setLayout( new ZIndexStackLayout() );

@@ -10,8 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNullAndNotEmpty;
+import static com.eclipsesource.tabris.internal.Clauses.when;
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -27,7 +27,7 @@ public class ActionOperatorImpl implements ActionOperator, Serializable {
   private final Map<String, Boolean> enablement;
 
   public ActionOperatorImpl( Controller controller ) {
-    checkArgumentNotNull( controller, Controller.class.getSimpleName() );
+    whenNull( controller ).thenIllegalArgument( "controller must not be null" );
     this.controller = controller;
     this.visibility = new HashMap<String, Boolean>();
     this.enablement = new HashMap<String, Boolean>();
@@ -35,14 +35,16 @@ public class ActionOperatorImpl implements ActionOperator, Serializable {
 
   @Override
   public void setActionEnabled( String id, boolean enabled ) throws IllegalStateException {
-    checkArgumentNotNullAndNotEmpty( id, "Action id" );
+    whenNull( id ).thenIllegalArgument( "Id must not be null" );
+    when( id.isEmpty() ).thenIllegalArgument( "Id must not be empty" );
     controller.setActionEnabled( id, enabled );
     enablement.put( id, Boolean.valueOf( enabled ) );
   }
 
   @Override
   public boolean isActionEnabled( String id ) {
-    checkArgumentNotNullAndNotEmpty( id, "Action id" );
+    whenNull( id ).thenIllegalArgument( "Id must not be null" );
+    when( id.isEmpty() ).thenIllegalArgument( "Id must not be empty" );
     Boolean enbaled = enablement.get( id );
     if( enbaled == null || enbaled.booleanValue() ) {
       return true;
@@ -52,14 +54,16 @@ public class ActionOperatorImpl implements ActionOperator, Serializable {
 
   @Override
   public void setActionVisible( String id, boolean visible ) throws IllegalStateException {
-    checkArgumentNotNullAndNotEmpty( id, "Action id" );
+    whenNull( id ).thenIllegalArgument( "Id must not be null" );
+    when( id.isEmpty() ).thenIllegalArgument( "Id must not be empty" );
     controller.setActionVisible( id, visible );
     visibility.put( id, Boolean.valueOf( visible ) );
   }
 
   @Override
   public boolean isActionVisible( String id ) {
-    checkArgumentNotNullAndNotEmpty( id, "Action id" );
+    whenNull( id ).thenIllegalArgument( "Id must not be null" );
+    when( id.isEmpty() ).thenIllegalArgument( "Id must not be empty" );
     Boolean visible = visibility.get( id );
     if( visible == null || visible.booleanValue() ) {
       return true;

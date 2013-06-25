@@ -7,9 +7,9 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Constants.EVENT_BACK_NAVIGATION;
 import static com.eclipsesource.tabris.internal.Constants.TYPE_APP;
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgument;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -108,7 +108,7 @@ public class AppImpl extends AbstractOperationHandler implements App {
 
   @Override
   public void activateInactivityLock( int inactivityTime ) {
-    checkArgument( inactivityTime >= 0, "inactivityTime must be >= 0 but was " + inactivityTime );
+    when( inactivityTime < 0 ).thenIllegalArgument( "inactivityTime must be >= 0 but was " + inactivityTime );
     JsonObject parameters = new JsonObject();
     parameters.add( "inactivityTime", inactivityTime );
     remoteObject.call( "activateInactivityLock", parameters );

@@ -10,8 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets;
 
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgument;
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
+import static com.eclipsesource.tabris.internal.Clauses.when;
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -164,8 +164,8 @@ public class ScrollingComposite extends Composite {
   }
 
   private void checkRevealState( Control control ) {
-    checkArgumentNotNull( control, "Child to Reveal." );
-    checkArgument( containsControl( control ), "Control is not a child." );
+    whenNull( control ).thenIllegalArgument( "Child to reveal must not be null" );
+    when( !containsControl( control ) ).thenIllegalArgument( "Control is not a child" );
     checkWidget();
   }
 

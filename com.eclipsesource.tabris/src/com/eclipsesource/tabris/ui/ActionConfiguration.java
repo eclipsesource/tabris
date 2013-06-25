@@ -10,8 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.ui;
 
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNullAndNotEmpty;
+import static com.eclipsesource.tabris.internal.Clauses.when;
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
 import java.io.InputStream;
 import java.io.Serializable;
@@ -60,8 +60,9 @@ public class ActionConfiguration implements Adaptable, Serializable {
    * @since 1.0
    */
   public ActionConfiguration( String actionId, Class<? extends Action> actionType ) {
-    checkArgumentNotNullAndNotEmpty( actionId, "Action Id" );
-    checkArgumentNotNull( actionType, "Type of Action" );
+    whenNull( actionId ).thenIllegalArgument( "ActionId must not be null" );
+    when( actionId.isEmpty() ).thenIllegalArgument( "ActionId must not be empty" );
+    whenNull( actionType ).thenIllegalArgument( "Type of Action must not be null" );
     this.actionId = actionId;
     this.actionType = actionType;
     this.title = "";
@@ -77,7 +78,7 @@ public class ActionConfiguration implements Adaptable, Serializable {
    * @param title the title of the action. Must not be empty or <code>null</code>.
    */
   public ActionConfiguration setTitle( String title ) {
-    checkArgumentNotNull( title, "Action Title" );
+    whenNull( title ).thenIllegalArgument( "Action Title must not be null" );
     this.title = title;
     return this;
   }
@@ -112,7 +113,7 @@ public class ActionConfiguration implements Adaptable, Serializable {
    * @since 1.0
    */
   public ActionConfiguration setImage( InputStream image ) {
-    checkArgumentNotNull( image, "Action Image" );
+    whenNull( image ).thenIllegalArgument( "Action Image must not be null" );
     this.image = image;
     return this;
   }

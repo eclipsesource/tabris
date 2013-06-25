@@ -1,5 +1,6 @@
 package com.eclipsesource.tabris.internal;
 
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.Constants.EVENT_LOCATION_UPDATE_ERROR_EVENT;
 import static com.eclipsesource.tabris.internal.Constants.EVENT_LOCATION_UPDATE_EVENT;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ACCURACY;
@@ -17,7 +18,6 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_NEEDS_POSITIO
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SPEED;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TIMESTAMP;
 import static com.eclipsesource.tabris.internal.Constants.TYPE_GEOLOCATION;
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -134,7 +134,7 @@ public class GeolocationImpl extends AbstractOperationHandler implements Geoloca
   }
 
   private void startUpdatePosition( NeedsPositionFlavor flavor, GeolocationOptions options ) {
-    checkArgumentNotNull( options, "Options" );
+    whenNull( options ).thenIllegalArgument( "Options must not be null" );
     remoteObject.set( PROPERTY_NEEDS_POSITION, flavor.toString() );
     setOptions( options );
   }
@@ -156,13 +156,13 @@ public class GeolocationImpl extends AbstractOperationHandler implements Geoloca
 
   @Override
   public void addGeolocationListener( GeolocationListener listener ) {
-    checkArgumentNotNull( listener, GeolocationListener.class.getSimpleName() );
+    whenNull( listener ).thenIllegalArgument( "Listener must not be null" );
     geolocationListeners.add( listener );
   }
 
   @Override
   public void removeGeolocationListener( GeolocationListener listener ) {
-    checkArgumentNotNull( listener, GeolocationListener.class.getSimpleName() );
+    whenNull( listener ).thenIllegalArgument( "Listener must not be null" );
     geolocationListeners.remove( listener );
   }
 

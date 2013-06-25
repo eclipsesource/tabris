@@ -10,8 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.ui;
 
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNullAndNotEmpty;
+import static com.eclipsesource.tabris.internal.Clauses.when;
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
 import java.io.InputStream;
 import java.io.Serializable;
@@ -64,8 +64,9 @@ public class PageConfiguration implements Adaptable, Serializable {
    * @since 1.0
    */
   public PageConfiguration( String pageId, Class<? extends Page> pageType ) {
-    checkArgumentNotNullAndNotEmpty( pageId, "Page Id" );
-    checkArgumentNotNull( pageType, "Type of Page" );
+    whenNull( pageId ).thenIllegalArgument( "Page Id must not be null" );
+    when( pageId.isEmpty() ).thenIllegalArgument( "Page Id must not be empty" );
+    whenNull( pageType ).thenIllegalArgument( "Type of Page must not be null" );
     this.id = pageId;
     this.pageType = pageType;
     this.title = "";
@@ -92,7 +93,7 @@ public class PageConfiguration implements Adaptable, Serializable {
    * @param title the title of the page. Must not be empty or <code>null</code>.
    */
   public PageConfiguration setTitle( String title ) {
-    checkArgumentNotNull( title, "Page Title" );
+    whenNull( title ).thenIllegalArgument( "Page title must not be null" );
     this.title = title;
     return this;
   }
@@ -117,7 +118,7 @@ public class PageConfiguration implements Adaptable, Serializable {
    * @since 1.0
    */
   public PageConfiguration setImage( InputStream image ) {
-    checkArgumentNotNull( image, "Page Image" );
+    whenNull( image ).thenIllegalArgument( "Page image must not be null" );
     this.image = image;
     return this;
   }
@@ -132,7 +133,7 @@ public class PageConfiguration implements Adaptable, Serializable {
    * @since 1.0
    */
   public PageConfiguration addActionConfiguration( ActionConfiguration configuration ) {
-    checkArgumentNotNull( configuration, ActionConfiguration.class.getSimpleName() );
+    whenNull( configuration ).thenIllegalArgument( "Action configuration must not be null" );
     actions.add( configuration );
     return this;
   }

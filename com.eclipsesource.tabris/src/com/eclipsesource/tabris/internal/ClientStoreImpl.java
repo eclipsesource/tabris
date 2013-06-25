@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import static com.eclipsesource.tabris.internal.Clauses.when;
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_ADD;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_CLEAR;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_REMOVE;
@@ -18,8 +20,6 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_KEY;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_KEYS;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_VALUE;
 import static com.eclipsesource.tabris.internal.Constants.TYPE_CLIENT_STORE;
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNullAndNotEmpty;
 
 import java.util.HashMap;
 import java.util.List;
@@ -50,8 +50,9 @@ public class ClientStoreImpl extends AbstractOperationHandler implements ClientS
 
   @Override
   public void add( String key, String value ) {
-    checkArgumentNotNullAndNotEmpty( key, "Key" );
-    checkArgumentNotNull( value, "Value" );
+    whenNull( key ).thenIllegalArgument( "Key must not be null" );
+    when( key.isEmpty() ).thenIllegalArgument( "Key must not be empty" );
+    whenNull( value ).thenIllegalArgument( "Value must not be null" );
     store.put( key, value );
     sendAdd( key, value );
   }

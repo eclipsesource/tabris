@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
 import java.io.Serializable;
 
@@ -30,7 +30,7 @@ public class SwipeManager implements Serializable {
   private int rightLock;
 
   public SwipeManager( SwipeItemProvider provider ) {
-    checkArgumentNotNull( provider, "SwipeItemProvier" );
+    whenNull( provider ).thenIllegalArgument( "Provider must not be null" );
     this.provider = provider;
     this.context = new SwipeContext();
     this.itemHolder = new SwipeItemHolder();

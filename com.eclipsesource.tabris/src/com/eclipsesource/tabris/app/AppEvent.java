@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.app;
 
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
 import java.io.Serializable;
 
@@ -30,7 +30,7 @@ public class AppEvent implements Serializable {
    * @since 1.1
    */
   public AppEvent( EventType type, JsonObject properties ) {
-    checkArgumentNotNull( type, "EventType" );
+    whenNull( type ).thenIllegalArgument( "EventType must not be null" );
     this.type = type;
     this.properties = properties;
   }

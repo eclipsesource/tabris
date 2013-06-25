@@ -10,12 +10,12 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.interaction;
 
+import static com.eclipsesource.tabris.internal.Clauses.when;
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_LATITUDE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_LONGITUDE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_QUERY;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ZOOM;
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgument;
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNullAndNotEmpty;
 
 
 /**
@@ -41,7 +41,8 @@ public class MapsOptions extends LaunchOptions {
 
   public MapsOptions( String query ) {
     super( App.MAPS );
-    checkArgumentNotNullAndNotEmpty( query, "Query" );
+    whenNull( query ).thenIllegalArgument( "Query must not be null" );
+    when( query.isEmpty() ).thenIllegalArgument( "Query must not be empty" );
     add( PROPERTY_QUERY, query );
   }
 
@@ -52,6 +53,6 @@ public class MapsOptions extends LaunchOptions {
   }
 
   private void validateZoom( int zoomLevel ) {
-    checkArgument( zoomLevel >= 0, "Zoomlevel must not be negative but was " + zoomLevel );
+    when( zoomLevel < 0 ).thenIllegalArgument( "ZoomLevel should be >= 0 but was " + zoomLevel );
   }
 }

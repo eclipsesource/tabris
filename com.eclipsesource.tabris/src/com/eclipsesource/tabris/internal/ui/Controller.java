@@ -10,7 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
-import static com.eclipsesource.tabris.internal.Preconditions.checkState;
+import static com.eclipsesource.tabris.internal.Clauses.when;
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.ui.RemoteActionFactory.createRemoteAction;
 
 import java.io.Serializable;
@@ -47,7 +48,7 @@ public class Controller implements Serializable {
 
   public void createRootPages( UIImpl ui ) {
     List<PageDescriptor> pages = uiDescriptor.getRootPages();
-    checkState( !pages.isEmpty(), "No TopLevel Pages found." );
+    when( pages.isEmpty() ).thenIllegalState( "No TopLevel Pages found." );
     createRootRemotePages( ui, pages );
     showRoot( ui, pages.get( 0 ), new PageData() );
   }
@@ -237,7 +238,7 @@ public class Controller implements Serializable {
     if( result == null ) {
       result = findActionInPageActions( id );
     }
-    checkState( result, "Action with id " + id + " does not exist." );
+    whenNull( result ).thenIllegalState( "Action with id " + id + " does not exist." );
     return result;
   }
 

@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.interaction;
 
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -42,7 +42,7 @@ public class LaunchOptions implements Serializable {
   private final App app;
 
   LaunchOptions( App app ) {
-    checkArgumentNotNull( app, "App" );
+    whenNull( app ).thenIllegalArgument( "App must not be null" );
     this.app = app;
     this.options = new HashMap<String, Object>();
   }

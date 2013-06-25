@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
 import java.io.InputStream;
 import java.io.Serializable;
@@ -50,7 +50,7 @@ public class PageDescriptor implements Serializable {
   }
 
   public void addAction( ActionConfiguration configuration ) {
-    checkArgumentNotNull( configuration, "Action Configuration" );
+    whenNull( configuration ).thenIllegalArgument( "Action Configuration must not be null" );
     ActionDescriptor descriptor = configuration.getAdapter( ActionDescriptor.class );
     actions.add( descriptor );
   }

@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.ui;
 
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
 import java.io.Serializable;
 
@@ -43,7 +43,7 @@ public class TabrisUIEntrypointFactory implements EntryPointFactory, Serializabl
    * @param configuration the configuration for the UI. Must not be <code>null</code>.
    */
   public TabrisUIEntrypointFactory( UIConfiguration configuration ) {
-    checkArgumentNotNull( configuration, UIConfiguration.class.getName() );
+    whenNull( configuration ).thenIllegalArgument( "UIConfiguration must not be null" );
     this.configuration = configuration;
   }
 

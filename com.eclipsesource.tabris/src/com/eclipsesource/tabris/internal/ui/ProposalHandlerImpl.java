@@ -10,9 +10,9 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PROPOSALS;
 import static com.eclipsesource.tabris.internal.JsonUtil.createJsonArray;
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ public class ProposalHandlerImpl implements ProposalHandler {
 
   @Override
   public void setProposals( List<String> proposals ) {
-    checkArgumentNotNull( proposals, "Search Proposals" );
+    whenNull( proposals ).thenIllegalArgument( "Search Proposals must not be null" );
     String[] proposalsToSend;
     if( proposals != null ) {
       proposalsToSend = new String[ proposals.size() ];

@@ -7,13 +7,13 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.interaction;
 
+import static com.eclipsesource.tabris.internal.Clauses.when;
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_BODY;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_CC;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_HTML;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SUBJECT;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TO;
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNullAndNotEmpty;
 
 /**
  * <p>
@@ -26,34 +26,36 @@ public class MailOptions extends LaunchOptions {
 
   public MailOptions( String to ) {
     super( App.MAIL );
-    checkArgumentNotNullAndNotEmpty( to, "To" );
+    whenNull( to ).thenIllegalArgument( "To must not be null" );
+    when( to.isEmpty() ).thenIllegalArgument( "To must not be empty" );
     add( PROPERTY_TO, to );
   }
 
   public MailOptions( String to, String subject ) {
     this( to );
-    checkArgumentNotNull( subject, "Subject" );
+    whenNull( subject ).thenIllegalArgument( "Subject must not be null" );
     add( PROPERTY_SUBJECT, subject );
   }
 
   public MailOptions( String to, String subject, String body ) {
     this( to, subject );
-    checkArgumentNotNull( body, "Body" );
+    whenNull( body ).thenIllegalArgument( "Body must not be null" );
     add( PROPERTY_BODY, body );
   }
 
   public void setSubject( String subject ) {
-    checkArgumentNotNull( subject, "Subject" );
+    whenNull( subject ).thenIllegalArgument( "Subject must not be null" );
     add( PROPERTY_SUBJECT, subject );
   }
 
   public void setCC( String cc ) {
-    checkArgumentNotNullAndNotEmpty( cc, "CC" );
+    whenNull( cc ).thenIllegalArgument( "CC must not be null" );
+    when( cc.isEmpty() ).thenIllegalArgument( "CC must not be empty" );
     add( PROPERTY_CC, cc );
   }
 
   public void setBody( String body ) {
-    checkArgumentNotNull( body, "Body" );
+    whenNull( body ).thenIllegalArgument( "Body must not be null" );
     add( PROPERTY_BODY, body );
   }
 

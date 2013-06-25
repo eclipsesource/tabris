@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
+import static com.eclipsesource.tabris.internal.Clauses.when;
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.Constants.EVENT_SHOW_PAGE;
 import static com.eclipsesource.tabris.internal.Constants.EVENT_SHOW_PREVIOUS_PAGE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ACTIVE_PAGE;
@@ -17,7 +19,6 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_BACKGROUND;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_FOREGROUND;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PAGE_ID;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SHELL;
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNullAndNotEmpty;
 import static org.eclipse.rap.rwt.RWT.getUISession;
 import static org.eclipse.rap.rwt.lifecycle.WidgetUtil.getId;
 
@@ -58,7 +59,8 @@ public class RemoteUI extends AbstractOperationHandler {
   }
 
   public void activate( String pageId ) {
-    checkArgumentNotNullAndNotEmpty( pageId, "PageId" );
+    whenNull( pageId ).thenIllegalArgument( "PageId must not be null" );
+    when( pageId.isEmpty() ).thenIllegalArgument( "PageId must not be empty" );
     remoteObject.set( PROPERTY_ACTIVE_PAGE, pageId );
   }
 

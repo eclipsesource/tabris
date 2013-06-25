@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets;
 
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgument;
+import static com.eclipsesource.tabris.internal.Clauses.when;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -225,7 +225,7 @@ public class Video extends Composite {
    * </p>
    */
   public void fastForward( float speed ) {
-    checkArgument( speed > 1, "Speed has to be > 1 for a fast forward but was " + speed );
+    when( speed <= 1 ).thenIllegalArgument( "Speed has to be > 1 for a fast forward but was " + speed );
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( speed ) );
     Playback oldMode = ( Playback )playbackOptions.get( PlaybackOptions.PLAYBACK );
     playbackOptions.put( PlaybackOptions.PLAYBACK, Playback.FAST_FORWARD );
@@ -238,7 +238,7 @@ public class Video extends Composite {
    * </p>
    */
   public void fastBackward( float speed ) {
-    checkArgument( speed < -1, "Speed has to be < 1 for a fast backward but was " + speed );
+    when( speed >= -1 ).thenIllegalArgument( "Speed has to be < -1 for a fast backward but was " + speed );
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( speed ) );
     Playback oldMode = ( Playback )playbackOptions.get( PlaybackOptions.PLAYBACK );
     playbackOptions.put( PlaybackOptions.PLAYBACK, Playback.FAST_BACKWARD );

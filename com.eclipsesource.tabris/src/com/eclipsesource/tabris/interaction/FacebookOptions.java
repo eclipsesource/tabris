@@ -10,9 +10,9 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.interaction;
 
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TEXT;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_URL;
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -29,12 +29,12 @@ public class FacebookOptions extends LaunchOptions {
 
   public FacebookOptions( String text ) {
     super( App.FACEBOOK );
-    checkArgumentNotNull( text, "Text" );
+    whenNull( text ).thenIllegalArgument( "Text must not be null" );
     add( PROPERTY_TEXT, text );
   }
 
   public void setUrl( String url ) {
-    checkArgumentNotNull( url, "URL" );
+    whenNull( url ).thenIllegalArgument( "Url must not be null" );
     validateUrl( url );
     add( PROPERTY_URL, url );
   }

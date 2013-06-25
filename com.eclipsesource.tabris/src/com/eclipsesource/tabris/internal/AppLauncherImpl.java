@@ -10,12 +10,12 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_OPEN;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_OPEN_URL;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_APP;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_URL;
 import static com.eclipsesource.tabris.internal.Constants.TYPE_APP_LAUNCHER;
-import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
 import java.io.Serializable;
 import java.net.MalformedURLException;
@@ -41,7 +41,7 @@ public class AppLauncherImpl implements AppLauncher, Serializable {
 
   @Override
   public void open( LaunchOptions launchOptions ) {
-    checkArgumentNotNull( launchOptions, "LaunchOptions" );
+    whenNull( launchOptions ).thenIllegalArgument( "Launch Options must not be null" );
     createOpenCall( launchOptions );
   }
 
@@ -64,7 +64,7 @@ public class AppLauncherImpl implements AppLauncher, Serializable {
 
   @Override
   public void openUrl( String url ) {
-    checkArgumentNotNull( url, "URL" );
+    whenNull( url ).thenIllegalArgument( "URL must not be null" );
     validateUrl( url );
     createOpenUrlCall( url );
   }
