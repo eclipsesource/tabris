@@ -48,4 +48,9 @@ public class PreconditionsTest {
   public void testCheckStateThrowsException() {
     Preconditions.checkState( null, "message" );
   }
+
+  @Test( expected = IllegalStateException.class )
+  public void testCheckStateThrowsExceptionWithExpression() {
+    Preconditions.checkState( false, "message" );
+  }
 }

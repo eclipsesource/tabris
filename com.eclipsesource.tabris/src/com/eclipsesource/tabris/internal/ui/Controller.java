@@ -47,7 +47,7 @@ public class Controller implements Serializable {
 
   public void createRootPages( UIImpl ui ) {
     List<PageDescriptor> pages = uiDescriptor.getRootPages();
-    verifyRootPages( pages );
+    checkState( !pages.isEmpty(), "No TopLevel Pages found." );
     createRootRemotePages( ui, pages );
     showRoot( ui, pages.get( 0 ), new PageData() );
   }
@@ -64,12 +64,6 @@ public class Controller implements Serializable {
     List<ActionDescriptor> actions = uiDescriptor.getGlobalActions();
     for( ActionDescriptor actionDescriptor : actions ) {
       globalActions.add( createRemoteAction( ui, actionDescriptor, remoteUI.getRemoteUIId() ) );
-    }
-  }
-
-  private void verifyRootPages( List<PageDescriptor> pages ) {
-    if( pages.isEmpty() ) {
-      throw new IllegalStateException( "No TopLevel Pages found." );
     }
   }
 

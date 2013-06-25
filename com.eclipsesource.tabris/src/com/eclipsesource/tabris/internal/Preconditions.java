@@ -40,6 +40,12 @@ public class Preconditions {
     }
   }
 
+  public static void checkState( boolean expression, String message ) throws IllegalStateException {
+    if( !expression ) {
+      throw new IllegalStateException( message );
+    }
+  }
+
   private Preconditions() {
     // prevent instantiation
   }

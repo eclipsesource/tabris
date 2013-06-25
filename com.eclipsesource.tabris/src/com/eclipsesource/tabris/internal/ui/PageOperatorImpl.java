@@ -49,9 +49,7 @@ public class PageOperatorImpl implements PageOperator, Serializable {
   @Override
   public void closeCurrentPage() throws IllegalStateException{
     boolean wasClosed = controller.closeCurrentPage( ui );
-    if( !wasClosed ) {
-      throw new IllegalStateException( "Can not close top level page." );
-    }
+    checkState( wasClosed, "Can not close top level page." );
   }
 
   @Override

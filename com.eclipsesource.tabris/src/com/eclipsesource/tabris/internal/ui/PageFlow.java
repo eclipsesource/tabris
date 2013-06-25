@@ -11,6 +11,7 @@
 package com.eclipsesource.tabris.internal.ui;
 
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
+import static com.eclipsesource.tabris.internal.Preconditions.checkState;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -48,14 +49,8 @@ public class PageFlow implements Serializable {
   }
 
   public RemotePage pop() {
-    verifyNotPoppingRootPage();
+    checkState( pages.size() > 1, "Can not remove root page." );
     return pages.remove( getIndexOfLastPage() );
-  }
-
-  private void verifyNotPoppingRootPage() {
-    if( pages.size() <= 1 ) {
-      throw new IllegalStateException( "Can not remove root page." );
-    }
   }
 
   private int getIndexOfLastPage() {

@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import static com.eclipsesource.tabris.internal.Preconditions.checkArgument;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +35,7 @@ public class SwipeItemIndexer implements Serializable {
   }
 
   public void setRange( int range ) {
-    if( range <= 0 ) {
-      throw new IllegalArgumentException( "Range must be 0 or positive." );
-    }
+    checkArgument( range > 0, "Range must be 0 or positive but was " + range );
     this.range = range;
   }
 
@@ -45,15 +45,9 @@ public class SwipeItemIndexer implements Serializable {
 
   public void setCurrent( int index ) {
     dirty = true;
-    verifyNewIndex( index );
+    checkArgument( index >= 0, "Index must be positive but was " + index );
     oldIndex = currentIndex;
     currentIndex = index;
-  }
-
-  private void verifyNewIndex( int newIndex ) {
-    if( newIndex < 0 ) {
-      throw new IllegalArgumentException( "Index must be positive" );
-    }
   }
 
   public int getOld() {

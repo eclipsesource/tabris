@@ -14,6 +14,7 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_LATITUDE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_LONGITUDE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_QUERY;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ZOOM;
+import static com.eclipsesource.tabris.internal.Preconditions.checkArgument;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNullAndNotEmpty;
 
 
@@ -51,8 +52,6 @@ public class MapsOptions extends LaunchOptions {
   }
 
   private void validateZoom( int zoomLevel ) {
-    if( zoomLevel < 0 ) {
-      throw new IllegalArgumentException( "Zoomlevel must not be negative" );
-    }
+    checkArgument( zoomLevel >= 0, "Zoomlevel must not be negative but was " + zoomLevel );
   }
 }

@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import static com.eclipsesource.tabris.internal.Preconditions.checkState;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,9 +42,7 @@ public class SwipeItemHolder implements Serializable {
   }
 
   public void addItem( int index, SwipeItem item ) {
-    if( items.containsKey( getKey( index ) ) ) {
-      throw new IllegalStateException( "Item for index " + index + " already exists." );
-    }
+    checkState( !items.containsKey( getKey( index ) ), "Item for index " + index + " already exists." );
     items.put( getKey( index ), item );
   }
 
@@ -67,9 +67,7 @@ public class SwipeItemHolder implements Serializable {
   }
 
   public void setContentForItem( int index, Control content ) {
-    if( !items.containsKey( getKey( index ) ) ) {
-      throw new IllegalStateException( "Item for index " + index + " does not exist." );
-    }
+    checkState( items.containsKey( getKey( index ) ), "Item for index " + index + " does not exist." );
     contentHolder.put( getKey( index ), content );
   }
 

@@ -12,6 +12,7 @@ package com.eclipsesource.tabris.internal;
 
 import static com.eclipsesource.tabris.internal.Constants.EVENT_SWIPE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ITEM;
+import static com.eclipsesource.tabris.internal.Preconditions.checkArgument;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
 
 import org.eclipse.rap.json.JsonObject;
@@ -40,11 +41,7 @@ public class SwipeOperationHandler extends AbstractOperationHandler {
 
   private void verifyHasItemProperty( JsonObject properties ) {
     checkArgumentNotNull( properties, "Properties" );
-    if( properties.get( PROPERTY_ITEM ) == null ) {
-      throw new IllegalArgumentException( "Properties of " + EVENT_SWIPE + " do not contian an item." );
-    }
-    if( !properties.get( PROPERTY_ITEM ).isNumber() ) {
-      throw new IllegalArgumentException( "Property item of " + EVENT_SWIPE + " is not an Integer." );
-    }
+    checkArgumentNotNull( properties.get( PROPERTY_ITEM ), "Properties of " + EVENT_SWIPE + " do not contain an item." );
+    checkArgument( properties.get( PROPERTY_ITEM ).isNumber(), "Property item of " + EVENT_SWIPE + " is not an Integer." );
   }
 }

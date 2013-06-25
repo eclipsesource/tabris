@@ -23,7 +23,9 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ITEMS;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PARENT;
 import static com.eclipsesource.tabris.internal.Constants.TYPE_SWIPE;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.SWIPE;
+import static com.eclipsesource.tabris.internal.Preconditions.checkArgument;
 import static com.eclipsesource.tabris.internal.Preconditions.checkArgumentNotNull;
+import static com.eclipsesource.tabris.internal.Preconditions.checkState;
 import static com.eclipsesource.tabris.internal.SwipeItemIndexer.getAsArray;
 import static com.eclipsesource.tabris.internal.SwipeUtil.notifyDisposed;
 import static com.eclipsesource.tabris.internal.SwipeUtil.notifyItemActivated;
@@ -149,18 +151,13 @@ public class Swipe implements Serializable {
 
   private void show( int index, boolean needsToShow ) {
     verifyIsNotDisposed();
-    verifyMove( index );
+    checkState( manager.isMoveAllowed( manager.getIndexer().getCurrent(), index ),
+                "Move not allowed. Item " + index + " is locked." );
     if( isValidIndex( index ) ) {
       verifyLocks();
       showItemAtIndex( index, needsToShow );
     } else {
       throw new IllegalArgumentException( "Item at index " + index + " does not exist." );
-    }
-  }
-
-  private void verifyMove( int index ) {
-    if( !manager.isMoveAllowed( manager.getIndexer().getCurrent(), index ) ) {
-      throw new IllegalStateException( "Move not allowed. Item " + index + " is locked." );
     }
   }
 
@@ -351,7 +348,7 @@ public class Swipe implements Serializable {
    * </p>
    */
   public void removeSwipeListener( SwipeListener listener ) {
-    verifyIsNotDisposed();
+    checkState( !container.isDisposed(), "Swipe is already disposed" );
     listeners.remove( listener );
   }
 
@@ -382,7 +379,8 @@ public class Swipe implements Serializable {
    * @throws IllegalArgumentException when not SWT.LEFT or SWT.RIGHT
    */
   public void lock( int direction ) throws IllegalArgumentException {
-    verifyDirection( direction );
+    checkArgument( direction == SWT.LEFT || direction == SWT.RIGHT,
+                   "Invalid lock direction. Only SWT.LEFT and SWT.RIGHT are supported." );
     int indexToLock = manager.getIndexer().getCurrent();
     manager.lock( direction, indexToLock, true );
     String method = direction == SWT.LEFT ? METHOD_LOCK_LEFT : METHOD_LOCK_RIGHT;
@@ -397,7 +395,8 @@ public class Swipe implements Serializable {
    * @throws IllegalArgumentException when not SWT.LEFT or SWT.RIGHT
    */
   public void unlock( int direction ) throws IllegalArgumentException {
-    verifyDirection( direction );
+    checkArgument( direction == SWT.LEFT || direction == SWT.RIGHT,
+                   "Invalid lock direction. Only SWT.LEFT and SWT.RIGHT are supported." );
     manager.unlock( direction );
     String method = direction == SWT.LEFT ? METHOD_UNLOCK_LEFT : METHOD_UNLOCK_RIGHT;
     remoteObject.call( method, null );
@@ -409,16 +408,8 @@ public class Swipe implements Serializable {
     return properties;
   }
 
-  private void verifyDirection( int direction ) {
-    if( !( direction == SWT.LEFT || direction == SWT.RIGHT ) ) {
-      throw new IllegalArgumentException( "Invalid lock direction. Only SWT.LEFT and SWT.RIGHT are supported." );
-    }
-  }
-
   private void verifyIsNotDisposed() {
-    if( container.isDisposed() ) {
-      throw new IllegalStateException( "Swipe is already disposed" );
-    }
+    checkState( !container.isDisposed(), "Swipe is already disposed" );
   }
 
   /**
