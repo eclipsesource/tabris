@@ -31,9 +31,9 @@ public class UIImpl implements UI, Serializable {
   private boolean initialized;
 
   public UIImpl( Display display, Controller controller, UIConfiguration configuration ) {
-    whenNull( display ).thenIllegalArgument( "Display must not be null" );
-    whenNull( controller ).thenIllegalArgument( "Controller must not be null" );
-    whenNull( configuration ).thenIllegalArgument( "Configuration must not be null" );
+    whenNull( display ).throwIllegalArgument( "Display must not be null" );
+    whenNull( controller ).throwIllegalArgument( "Controller must not be null" );
+    whenNull( configuration ).throwIllegalArgument( "Configuration must not be null" );
     this.display = display;
     this.configuration = configuration;
     this.actionOperator = new ActionOperatorImpl( controller );

@@ -42,7 +42,7 @@ public class LaunchOptions implements Serializable {
   private final App app;
 
   LaunchOptions( App app ) {
-    whenNull( app ).thenIllegalArgument( "App must not be null" );
+    whenNull( app ).throwIllegalArgument( "App must not be null" );
     this.app = app;
     this.options = new HashMap<String, Object>();
   }

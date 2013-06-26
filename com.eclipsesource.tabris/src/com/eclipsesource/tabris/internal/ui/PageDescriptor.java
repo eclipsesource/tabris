@@ -50,7 +50,7 @@ public class PageDescriptor implements Serializable {
   }
 
   public void addAction( ActionConfiguration configuration ) {
-    whenNull( configuration ).thenIllegalArgument( "Action Configuration must not be null" );
+    whenNull( configuration ).throwIllegalArgument( "Action Configuration must not be null" );
     ActionDescriptor descriptor = configuration.getAdapter( ActionDescriptor.class );
     actions.add( descriptor );
   }

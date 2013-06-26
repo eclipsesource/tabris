@@ -41,8 +41,8 @@ public class MapsOptions extends LaunchOptions {
 
   public MapsOptions( String query ) {
     super( App.MAPS );
-    whenNull( query ).thenIllegalArgument( "Query must not be null" );
-    when( query.isEmpty() ).thenIllegalArgument( "Query must not be empty" );
+    whenNull( query ).throwIllegalArgument( "Query must not be null" );
+    when( query.isEmpty() ).throwIllegalArgument( "Query must not be empty" );
     add( PROPERTY_QUERY, query );
   }
 
@@ -53,6 +53,6 @@ public class MapsOptions extends LaunchOptions {
   }
 
   private void validateZoom( int zoomLevel ) {
-    when( zoomLevel < 0 ).thenIllegalArgument( "ZoomLevel should be >= 0 but was " + zoomLevel );
+    when( zoomLevel < 0 ).throwIllegalArgument( "ZoomLevel should be >= 0 but was " + zoomLevel );
   }
 }

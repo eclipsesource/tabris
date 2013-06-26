@@ -26,36 +26,36 @@ public class MailOptions extends LaunchOptions {
 
   public MailOptions( String to ) {
     super( App.MAIL );
-    whenNull( to ).thenIllegalArgument( "To must not be null" );
-    when( to.isEmpty() ).thenIllegalArgument( "To must not be empty" );
+    whenNull( to ).throwIllegalArgument( "To must not be null" );
+    when( to.isEmpty() ).throwIllegalArgument( "To must not be empty" );
     add( PROPERTY_TO, to );
   }
 
   public MailOptions( String to, String subject ) {
     this( to );
-    whenNull( subject ).thenIllegalArgument( "Subject must not be null" );
+    whenNull( subject ).throwIllegalArgument( "Subject must not be null" );
     add( PROPERTY_SUBJECT, subject );
   }
 
   public MailOptions( String to, String subject, String body ) {
     this( to, subject );
-    whenNull( body ).thenIllegalArgument( "Body must not be null" );
+    whenNull( body ).throwIllegalArgument( "Body must not be null" );
     add( PROPERTY_BODY, body );
   }
 
   public void setSubject( String subject ) {
-    whenNull( subject ).thenIllegalArgument( "Subject must not be null" );
+    whenNull( subject ).throwIllegalArgument( "Subject must not be null" );
     add( PROPERTY_SUBJECT, subject );
   }
 
   public void setCC( String cc ) {
-    whenNull( cc ).thenIllegalArgument( "CC must not be null" );
-    when( cc.isEmpty() ).thenIllegalArgument( "CC must not be empty" );
+    whenNull( cc ).throwIllegalArgument( "CC must not be null" );
+    when( cc.isEmpty() ).throwIllegalArgument( "CC must not be empty" );
     add( PROPERTY_CC, cc );
   }
 
   public void setBody( String body ) {
-    whenNull( body ).thenIllegalArgument( "Body must not be null" );
+    whenNull( body ).throwIllegalArgument( "Body must not be null" );
     add( PROPERTY_BODY, body );
   }
 

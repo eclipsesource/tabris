@@ -134,7 +134,7 @@ public class GeolocationImpl extends AbstractOperationHandler implements Geoloca
   }
 
   private void startUpdatePosition( NeedsPositionFlavor flavor, GeolocationOptions options ) {
-    whenNull( options ).thenIllegalArgument( "Options must not be null" );
+    whenNull( options ).throwIllegalArgument( "Options must not be null" );
     remoteObject.set( PROPERTY_NEEDS_POSITION, flavor.toString() );
     setOptions( options );
   }
@@ -156,13 +156,13 @@ public class GeolocationImpl extends AbstractOperationHandler implements Geoloca
 
   @Override
   public void addGeolocationListener( GeolocationListener listener ) {
-    whenNull( listener ).thenIllegalArgument( "Listener must not be null" );
+    whenNull( listener ).throwIllegalArgument( "Listener must not be null" );
     geolocationListeners.add( listener );
   }
 
   @Override
   public void removeGeolocationListener( GeolocationListener listener ) {
-    whenNull( listener ).thenIllegalArgument( "Listener must not be null" );
+    whenNull( listener ).throwIllegalArgument( "Listener must not be null" );
     geolocationListeners.remove( listener );
   }
 

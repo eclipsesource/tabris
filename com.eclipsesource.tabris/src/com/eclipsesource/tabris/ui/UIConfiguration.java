@@ -75,7 +75,7 @@ public class UIConfiguration implements Adaptable, Serializable {
    * @since 1.0
    */
   public UIConfiguration addPageConfiguration( PageConfiguration configuration ) {
-    whenNull( configuration ).thenIllegalArgument( "Page Configuration must not be null" );
+    whenNull( configuration ).throwIllegalArgument( "Page Configuration must not be null" );
     PageDescriptor descriptor = configuration.getAdapter( PageDescriptor.class );
     uiDescriptor.add( descriptor );
     return this;
@@ -89,7 +89,7 @@ public class UIConfiguration implements Adaptable, Serializable {
    * @since 1.0
    */
   public UIConfiguration addActionConfiguration( ActionConfiguration configuration ) {
-    whenNull( configuration ).thenIllegalArgument( "Action Configuration must not be null" );
+    whenNull( configuration ).throwIllegalArgument( "Action Configuration must not be null" );
     ActionDescriptor descriptor = configuration.getAdapter( ActionDescriptor.class );
     uiDescriptor.add( descriptor );
     return this;
@@ -103,7 +103,7 @@ public class UIConfiguration implements Adaptable, Serializable {
    * @since 1.0
    */
   public UIConfiguration setForeground( RGB foreground ) {
-    whenNull( foreground ).thenIllegalArgument( "Foreground must not be null" );
+    whenNull( foreground ).throwIllegalArgument( "Foreground must not be null" );
     this.foreground = foreground;
     return this;
   }
@@ -131,7 +131,7 @@ public class UIConfiguration implements Adaptable, Serializable {
    * @since 1.0
    */
   public UIConfiguration setBackground( RGB background ) {
-    whenNull( background ).thenIllegalArgument( "Background must not be null" );
+    whenNull( background ).throwIllegalArgument( "Background must not be null" );
     this.background = background;
     return this;
   }
@@ -166,7 +166,7 @@ public class UIConfiguration implements Adaptable, Serializable {
    * @since 1.0
    */
   public UIConfiguration addTransitionListener( TransitionListener listener ) {
-    whenNull( listener ).thenIllegalArgument( "Listener must not be null" );
+    whenNull( listener ).throwIllegalArgument( "Listener must not be null" );
     uiDescriptor.addTransitionListener( listener );
     return this;
   }
@@ -179,7 +179,7 @@ public class UIConfiguration implements Adaptable, Serializable {
    * @since 1.0
    */
   public UIConfiguration removeTransitionListener( TransitionListener listener ) {
-    whenNull( listener ).thenIllegalArgument( "Listener must not be null" );
+    whenNull( listener ).throwIllegalArgument( "Listener must not be null" );
     uiDescriptor.removeTransitionListener( listener );
     return this;
   }

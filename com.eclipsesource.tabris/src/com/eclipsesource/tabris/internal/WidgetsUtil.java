@@ -24,7 +24,7 @@ public class WidgetsUtil {
   }
 
   public static void checkComponent( Object component ) {
-    whenNull( component ).thenIllegalArgument( "Widget/Item must not be null" );
+    whenNull( component ).throwIllegalArgument( "Widget/Item must not be null" );
   }
 
   private WidgetsUtil() {

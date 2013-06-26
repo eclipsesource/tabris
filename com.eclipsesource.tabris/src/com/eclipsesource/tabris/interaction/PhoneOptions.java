@@ -25,8 +25,8 @@ public class PhoneOptions extends LaunchOptions {
 
   public PhoneOptions( String phoneNumber ) {
     super( App.PHONE );
-    whenNull( phoneNumber ).thenIllegalArgument( "PhoneNumber must not be null" );
-    when( phoneNumber.isEmpty() ).thenIllegalArgument( "Phone Number must not be empty" );
+    whenNull( phoneNumber ).throwIllegalArgument( "PhoneNumber must not be null" );
+    when( phoneNumber.isEmpty() ).throwIllegalArgument( "Phone Number must not be empty" );
     add( PROPERTY_NUMBER, phoneNumber );
   }
 }

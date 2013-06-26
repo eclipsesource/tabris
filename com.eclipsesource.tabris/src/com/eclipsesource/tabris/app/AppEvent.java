@@ -30,7 +30,7 @@ public class AppEvent implements Serializable {
    * @since 1.1
    */
   public AppEvent( EventType type, JsonObject properties ) {
-    whenNull( type ).thenIllegalArgument( "EventType must not be null" );
+    whenNull( type ).throwIllegalArgument( "EventType must not be null" );
     this.type = type;
     this.properties = properties;
   }

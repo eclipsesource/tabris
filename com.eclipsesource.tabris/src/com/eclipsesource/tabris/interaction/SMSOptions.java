@@ -25,8 +25,8 @@ public class SMSOptions extends LaunchOptions {
 
   public SMSOptions( String phoneNumber, String text ) {
     super( App.SMS );
-    whenNull( phoneNumber ).thenIllegalArgument( "Phone number must not be null" );
-    whenNull( text ).thenIllegalArgument( "Text must not be null" );
+    whenNull( phoneNumber ).throwIllegalArgument( "Phone number must not be null" );
+    whenNull( text ).throwIllegalArgument( "Text must not be null" );
     add( PROPERTY_NUMBER, phoneNumber );
     add( PROPERTY_TEXT, text );
   }

@@ -225,7 +225,7 @@ public class Video extends Composite {
    * </p>
    */
   public void fastForward( float speed ) {
-    when( speed <= 1 ).thenIllegalArgument( "Speed has to be > 1 for a fast forward but was " + speed );
+    when( speed <= 1 ).throwIllegalArgument( "Speed has to be > 1 for a fast forward but was " + speed );
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( speed ) );
     Playback oldMode = ( Playback )playbackOptions.get( PlaybackOptions.PLAYBACK );
     playbackOptions.put( PlaybackOptions.PLAYBACK, Playback.FAST_FORWARD );
@@ -238,7 +238,7 @@ public class Video extends Composite {
    * </p>
    */
   public void fastBackward( float speed ) {
-    when( speed >= -1 ).thenIllegalArgument( "Speed has to be < -1 for a fast backward but was " + speed );
+    when( speed >= -1 ).throwIllegalArgument( "Speed has to be < -1 for a fast backward but was " + speed );
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( speed ) );
     Playback oldMode = ( Playback )playbackOptions.get( PlaybackOptions.PLAYBACK );
     playbackOptions.put( PlaybackOptions.PLAYBACK, Playback.FAST_BACKWARD );

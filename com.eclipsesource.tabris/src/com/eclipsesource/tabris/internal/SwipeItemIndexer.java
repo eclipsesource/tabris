@@ -35,7 +35,7 @@ public class SwipeItemIndexer implements Serializable {
   }
 
   public void setRange( int range ) {
-    when( range <= 0 ).thenIllegalArgument( "Range must be 0 or positive but was " + range );
+    when( range <= 0 ).throwIllegalArgument( "Range must be 0 or positive but was " + range );
     this.range = range;
   }
 
@@ -45,7 +45,7 @@ public class SwipeItemIndexer implements Serializable {
 
   public void setCurrent( int index ) {
     dirty = true;
-    when( index < 0 ).thenIllegalArgument( "Index must be positive but was " + index );
+    when( index < 0 ).throwIllegalArgument( "Index must be positive but was " + index );
     oldIndex = currentIndex;
     currentIndex = index;
   }

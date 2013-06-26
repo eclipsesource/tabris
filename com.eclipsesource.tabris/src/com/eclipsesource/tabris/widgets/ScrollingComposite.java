@@ -164,8 +164,8 @@ public class ScrollingComposite extends Composite {
   }
 
   private void checkRevealState( Control control ) {
-    whenNull( control ).thenIllegalArgument( "Child to reveal must not be null" );
-    when( !containsControl( control ) ).thenIllegalArgument( "Control is not a child" );
+    whenNull( control ).throwIllegalArgument( "Child to reveal must not be null" );
+    when( !containsControl( control ) ).throwIllegalArgument( "Control is not a child" );
     checkWidget();
   }
 

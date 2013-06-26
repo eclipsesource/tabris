@@ -27,7 +27,7 @@ public class BrowserOptions extends LaunchOptions {
 
   public BrowserOptions( String url ) {
     super( App.BROWSER );
-    whenNull( url ).thenIllegalArgument( "URL must not be null" );
+    whenNull( url ).throwIllegalArgument( "URL must not be null" );
     validateUrl( url );
     add( PROPERTY_URL, url );
   }

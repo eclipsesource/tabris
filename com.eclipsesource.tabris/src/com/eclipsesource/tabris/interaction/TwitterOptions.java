@@ -29,12 +29,12 @@ public class TwitterOptions extends LaunchOptions {
 
   public TwitterOptions( String text ) {
     super( App.TWITTER );
-    whenNull( text ).thenIllegalArgument( "Text must not be null" );
+    whenNull( text ).throwIllegalArgument( "Text must not be null" );
     add( PROPERTY_TEXT, text );
   }
 
   public void setUrl( String url ) {
-    whenNull( url ).thenIllegalArgument( "URL must not be null" );
+    whenNull( url ).throwIllegalArgument( "URL must not be null" );
     validateUrl( url );
     add( PROPERTY_URL, url );
   }

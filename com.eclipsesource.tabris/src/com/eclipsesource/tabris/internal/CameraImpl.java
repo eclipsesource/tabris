@@ -48,19 +48,19 @@ public class CameraImpl extends AbstractOperationHandler implements Camera {
 
   @Override
   public void addCameraListener( CameraListener listener ) {
-    whenNull( listener ).thenIllegalArgument( "Listener must not be null" );
+    whenNull( listener ).throwIllegalArgument( "Listener must not be null" );
     cameraListeners.add( listener );
   }
 
   @Override
   public void removeCameraListener( CameraListener listener ) {
-    whenNull( listener ).thenIllegalArgument( "Listener must not be null" );
+    whenNull( listener ).throwIllegalArgument( "Listener must not be null" );
     cameraListeners.remove( listener );
   }
 
   @Override
   public void takePicture( CameraOptions options ) {
-    whenNull( options ).thenIllegalArgument( "Options must not be null" );
+    whenNull( options ).throwIllegalArgument( "Options must not be null" );
     JsonObject properties = createProperties( options );
     remoteObject.call( METHOD_OPEN, properties );
   }

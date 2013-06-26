@@ -60,7 +60,7 @@ public class CompositeDecorator extends WidgetDecorator<CompositeDecorator>  {
   public void addGroupedListener( int eventType, Listener listener )
     throws IllegalArgumentException, IllegalStateException
   {
-    whenNull( listener ).thenIllegalArgument( "Listener must not be null" );
+    whenNull( listener ).throwIllegalArgument( "Listener must not be null" );
     Composite facade = getFacade();
     facade.addListener( eventType, listener );
   }
@@ -75,7 +75,7 @@ public class CompositeDecorator extends WidgetDecorator<CompositeDecorator>  {
   public void removeGroupedListener( int eventType, Listener listener )
     throws IllegalArgumentException, IllegalStateException
   {
-    whenNull( listener ).thenIllegalArgument( "Listener must not be null" );
+    whenNull( listener ).throwIllegalArgument( "Listener must not be null" );
     Composite facade = findFacade();
     if( facade != null ) {
       facade.removeListener( eventType, listener );

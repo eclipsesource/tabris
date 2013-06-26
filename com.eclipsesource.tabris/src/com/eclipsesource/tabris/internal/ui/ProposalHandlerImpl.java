@@ -31,7 +31,7 @@ public class ProposalHandlerImpl implements ProposalHandler {
 
   @Override
   public void setProposals( List<String> proposals ) {
-    whenNull( proposals ).thenIllegalArgument( "Search Proposals must not be null" );
+    whenNull( proposals ).throwIllegalArgument( "Search Proposals must not be null" );
     String[] proposalsToSend;
     if( proposals != null ) {
       proposalsToSend = new String[ proposals.size() ];

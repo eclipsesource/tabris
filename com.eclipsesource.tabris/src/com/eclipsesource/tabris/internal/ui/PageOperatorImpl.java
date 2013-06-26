@@ -26,8 +26,8 @@ public class PageOperatorImpl implements PageOperator, Serializable {
   private final UIImpl ui;
 
   public PageOperatorImpl( Controller controller, UIImpl ui ) {
-    whenNull( controller ).thenIllegalArgument( "Controller must not be null" );
-    whenNull( ui ).thenIllegalArgument( "UI must not be null" );
+    whenNull( controller ).throwIllegalArgument( "Controller must not be null" );
+    whenNull( ui ).throwIllegalArgument( "UI must not be null" );
     this.controller = controller;
     this.ui = ui;
   }
@@ -39,17 +39,17 @@ public class PageOperatorImpl implements PageOperator, Serializable {
 
   @Override
   public void openPage( String pageId, PageData data ) throws IllegalStateException {
-    whenNull( data ).thenIllegalArgument( "PageData must not be null" );
+    whenNull( data ).throwIllegalArgument( "PageData must not be null" );
     UIDescriptor uiDescriptor = ui.getConfiguration().getAdapter( UIDescriptor.class );
     PageDescriptor descriptor = uiDescriptor.getPageDescriptor( pageId );
-    whenNull( descriptor ).thenIllegalState( "Page with id " + pageId + " does not exist." );
+    whenNull( descriptor ).throwIllegalState( "Page with id " + pageId + " does not exist." );
     controller.show( ui, descriptor, data );
   }
 
   @Override
   public void closeCurrentPage() throws IllegalStateException{
     boolean wasClosed = controller.closeCurrentPage( ui );
-    whenNot( wasClosed ).thenIllegalState( "Can not close top level page." );
+    whenNot( wasClosed ).throwIllegalState( "Can not close top level page." );
   }
 
   @Override
@@ -64,7 +64,7 @@ public class PageOperatorImpl implements PageOperator, Serializable {
 
   @Override
   public void setCurrentPageTitle( String title ) {
-    whenNull( title ).thenIllegalArgument( "Page Title must not be null" );
+    whenNull( title ).throwIllegalArgument( "Page Title must not be null" );
     controller.setTitle( getCurrentPage(), title );
   }
 }

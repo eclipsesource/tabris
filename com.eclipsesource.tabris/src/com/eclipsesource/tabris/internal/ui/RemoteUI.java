@@ -59,8 +59,8 @@ public class RemoteUI extends AbstractOperationHandler {
   }
 
   public void activate( String pageId ) {
-    whenNull( pageId ).thenIllegalArgument( "PageId must not be null" );
-    when( pageId.isEmpty() ).thenIllegalArgument( "PageId must not be empty" );
+    whenNull( pageId ).throwIllegalArgument( "PageId must not be null" );
+    when( pageId.isEmpty() ).throwIllegalArgument( "PageId must not be empty" );
     remoteObject.set( PROPERTY_ACTIVE_PAGE, pageId );
   }
 

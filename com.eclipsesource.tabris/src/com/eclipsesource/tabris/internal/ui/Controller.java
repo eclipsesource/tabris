@@ -48,7 +48,7 @@ public class Controller implements Serializable {
 
   public void createRootPages( UIImpl ui ) {
     List<PageDescriptor> pages = uiDescriptor.getRootPages();
-    when( pages.isEmpty() ).thenIllegalState( "No TopLevel Pages found." );
+    when( pages.isEmpty() ).throwIllegalState( "No TopLevel Pages found." );
     createRootRemotePages( ui, pages );
     showRoot( ui, pages.get( 0 ), new PageData() );
   }
@@ -238,7 +238,7 @@ public class Controller implements Serializable {
     if( result == null ) {
       result = findActionInPageActions( id );
     }
-    whenNull( result ).thenIllegalState( "Action with id " + id + " does not exist." );
+    whenNull( result ).throwIllegalState( "Action with id " + id + " does not exist." );
     return result;
   }
 

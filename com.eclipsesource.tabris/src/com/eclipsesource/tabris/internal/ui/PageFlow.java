@@ -23,7 +23,7 @@ public class PageFlow implements Serializable {
   private final List<RemotePage> pages;
 
   public PageFlow( RemotePage root ) {
-    whenNull( root ).thenIllegalArgument( "Root must not be null" );
+    whenNull( root ).throwIllegalArgument( "Root must not be null" );
     pages = new ArrayList<RemotePage>();
     pages.add( root );
   }
@@ -49,7 +49,7 @@ public class PageFlow implements Serializable {
   }
 
   public RemotePage pop() {
-    when( pages.size() <= 1 ).thenIllegalState( "Can not remove root page." );
+    when( pages.size() <= 1 ).throwIllegalState( "Can not remove root page." );
     return pages.remove( getIndexOfLastPage() );
   }
 

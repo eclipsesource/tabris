@@ -50,9 +50,9 @@ public class ClientStoreImpl extends AbstractOperationHandler implements ClientS
 
   @Override
   public void add( String key, String value ) {
-    whenNull( key ).thenIllegalArgument( "Key must not be null" );
-    when( key.isEmpty() ).thenIllegalArgument( "Key must not be empty" );
-    whenNull( value ).thenIllegalArgument( "Value must not be null" );
+    whenNull( key ).throwIllegalArgument( "Key must not be null" );
+    when( key.isEmpty() ).throwIllegalArgument( "Key must not be empty" );
+    whenNull( value ).throwIllegalArgument( "Value must not be null" );
     store.put( key, value );
     sendAdd( key, value );
   }

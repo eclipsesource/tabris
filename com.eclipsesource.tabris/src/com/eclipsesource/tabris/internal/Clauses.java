@@ -21,13 +21,13 @@ public class Clauses {
       this.condition = condition;
     }
 
-    public void thenIllegalState( String message ) {
+    public void throwIllegalState( String message ) {
       if( condition ) {
         throw new IllegalStateException( message );
       }
     }
 
-    public void thenIllegalArgument( String message ) {
+    public void throwIllegalArgument( String message ) {
       if( condition ) {
         throw new IllegalArgumentException( message );
       }

@@ -97,7 +97,7 @@ public class ClientDeviceImpl extends AbstractOperationHandler implements Client
 
   @Override
   public int getTimezoneOffset() {
-    whenNull( timezoneOffset ).thenIllegalState( "timezoneOffset is not set." );
+    whenNull( timezoneOffset ).throwIllegalState( "timezoneOffset is not set." );
     return timezoneOffset.intValue();
   }
 
@@ -113,31 +113,31 @@ public class ClientDeviceImpl extends AbstractOperationHandler implements Client
 
   @Override
   public Orientation getOrientation() {
-    whenNull( orientation ).thenIllegalState( "orientation is not set." );
+    whenNull( orientation ).throwIllegalState( "orientation is not set." );
     return orientation;
   }
 
   @Override
   public boolean hasCapability( Capability capability ) {
-    whenNull( capabilities ).thenIllegalState( "capabilities is not set." );
+    whenNull( capabilities ).throwIllegalState( "capabilities is not set." );
     return capabilities.contains( capability );
   }
 
   @Override
   public ConnectionType getConnectionType() {
-    whenNull( connectionType ).thenIllegalState( "connectionType is not set." );
+    whenNull( connectionType ).throwIllegalState( "connectionType is not set." );
     return connectionType;
   }
 
   @Override
   public void addClientDeviceListener( ClientDeviceListener listener ) {
-    whenNull( listener ).thenIllegalArgument( "listener is not set." );
+    whenNull( listener ).throwIllegalArgument( "listener is not set." );
     clientDeviceListeners.add( listener );
   }
 
   @Override
   public void removeClientDeviceListener( ClientDeviceListener listener ) {
-    whenNull( listener ).thenIllegalArgument( "listener is not set." );
+    whenNull( listener ).throwIllegalArgument( "listener is not set." );
     clientDeviceListeners.remove( listener );
   }
 

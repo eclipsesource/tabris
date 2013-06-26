@@ -43,7 +43,7 @@ public class TabrisUIEntrypointFactory implements EntryPointFactory, Serializabl
    * @param configuration the configuration for the UI. Must not be <code>null</code>.
    */
   public TabrisUIEntrypointFactory( UIConfiguration configuration ) {
-    whenNull( configuration ).thenIllegalArgument( "UIConfiguration must not be null" );
+    whenNull( configuration ).throwIllegalArgument( "UIConfiguration must not be null" );
     this.configuration = configuration;
   }
 

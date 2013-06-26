@@ -22,38 +22,38 @@ public class ClausesTest {
 
   @Test( expected = IllegalStateException.class )
   public void testThrowsISEForTrueCondition() {
-    when( true ).thenIllegalState( "" );
+    when( true ).throwIllegalState( "" );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testThrowsIAEForTrueCondition() {
-    when( true ).thenIllegalArgument( "" );
+    when( true ).throwIllegalArgument( "" );
   }
 
   @Test( expected = IllegalStateException.class )
   public void testThrowsISEForInvertedTrueCondition() {
-    whenNot( false ).thenIllegalState( "" );
+    whenNot( false ).throwIllegalState( "" );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testThrowsIAEForInvertedTrueCondition() {
-    whenNot( false ).thenIllegalArgument( "" );
+    whenNot( false ).throwIllegalArgument( "" );
   }
 
   @Test( expected = IllegalStateException.class )
   public void testThrowsISEForNullCondition() {
-    whenNull( null ).thenIllegalState( "" );
+    whenNull( null ).throwIllegalState( "" );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testThrowsIAEForNullCondition() {
-    whenNull( null ).thenIllegalArgument( "" );
+    whenNull( null ).throwIllegalArgument( "" );
   }
 
   @Test
   public void testThrowsISEWithDelegatedMessage() {
     try {
-      when( true ).thenIllegalState( "foo" );
+      when( true ).throwIllegalState( "foo" );
     } catch( IllegalStateException ise ) {
       assertEquals( "foo", ise.getMessage() );
     }
@@ -62,7 +62,7 @@ public class ClausesTest {
   @Test( expected = IllegalArgumentException.class )
   public void testThrowsIAEWithDelegatedMessage() {
     try {
-      when( true ).thenIllegalArgument( "foo" );
+      when( true ).throwIllegalArgument( "foo" );
     } catch( IllegalStateException ise ) {
       assertEquals( "foo", ise.getMessage() );
     }

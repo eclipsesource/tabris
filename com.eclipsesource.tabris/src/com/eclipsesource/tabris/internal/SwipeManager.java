@@ -30,7 +30,7 @@ public class SwipeManager implements Serializable {
   private int rightLock;
 
   public SwipeManager( SwipeItemProvider provider ) {
-    whenNull( provider ).thenIllegalArgument( "Provider must not be null" );
+    whenNull( provider ).throwIllegalArgument( "Provider must not be null" );
     this.provider = provider;
     this.context = new SwipeContext();
     this.itemHolder = new SwipeItemHolder();

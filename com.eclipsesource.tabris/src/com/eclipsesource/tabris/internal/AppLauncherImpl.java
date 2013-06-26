@@ -41,7 +41,7 @@ public class AppLauncherImpl implements AppLauncher, Serializable {
 
   @Override
   public void open( LaunchOptions launchOptions ) {
-    whenNull( launchOptions ).thenIllegalArgument( "Launch Options must not be null" );
+    whenNull( launchOptions ).throwIllegalArgument( "Launch Options must not be null" );
     createOpenCall( launchOptions );
   }
 
@@ -64,7 +64,7 @@ public class AppLauncherImpl implements AppLauncher, Serializable {
 
   @Override
   public void openUrl( String url ) {
-    whenNull( url ).thenIllegalArgument( "URL must not be null" );
+    whenNull( url ).throwIllegalArgument( "URL must not be null" );
     validateUrl( url );
     createOpenUrlCall( url );
   }

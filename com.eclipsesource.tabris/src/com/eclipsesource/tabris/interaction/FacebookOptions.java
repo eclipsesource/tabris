@@ -29,12 +29,12 @@ public class FacebookOptions extends LaunchOptions {
 
   public FacebookOptions( String text ) {
     super( App.FACEBOOK );
-    whenNull( text ).thenIllegalArgument( "Text must not be null" );
+    whenNull( text ).throwIllegalArgument( "Text must not be null" );
     add( PROPERTY_TEXT, text );
   }
 
   public void setUrl( String url ) {
-    whenNull( url ).thenIllegalArgument( "Url must not be null" );
+    whenNull( url ).throwIllegalArgument( "Url must not be null" );
     validateUrl( url );
     add( PROPERTY_URL, url );
   }

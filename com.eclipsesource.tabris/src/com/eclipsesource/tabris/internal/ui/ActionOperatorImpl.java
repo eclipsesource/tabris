@@ -27,7 +27,7 @@ public class ActionOperatorImpl implements ActionOperator, Serializable {
   private final Map<String, Boolean> enablement;
 
   public ActionOperatorImpl( Controller controller ) {
-    whenNull( controller ).thenIllegalArgument( "controller must not be null" );
+    whenNull( controller ).throwIllegalArgument( "controller must not be null" );
     this.controller = controller;
     this.visibility = new HashMap<String, Boolean>();
     this.enablement = new HashMap<String, Boolean>();
@@ -35,16 +35,16 @@ public class ActionOperatorImpl implements ActionOperator, Serializable {
 
   @Override
   public void setActionEnabled( String id, boolean enabled ) throws IllegalStateException {
-    whenNull( id ).thenIllegalArgument( "Id must not be null" );
-    when( id.isEmpty() ).thenIllegalArgument( "Id must not be empty" );
+    whenNull( id ).throwIllegalArgument( "Id must not be null" );
+    when( id.isEmpty() ).throwIllegalArgument( "Id must not be empty" );
     controller.setActionEnabled( id, enabled );
     enablement.put( id, Boolean.valueOf( enabled ) );
   }
 
   @Override
   public boolean isActionEnabled( String id ) {
-    whenNull( id ).thenIllegalArgument( "Id must not be null" );
-    when( id.isEmpty() ).thenIllegalArgument( "Id must not be empty" );
+    whenNull( id ).throwIllegalArgument( "Id must not be null" );
+    when( id.isEmpty() ).throwIllegalArgument( "Id must not be empty" );
     Boolean enbaled = enablement.get( id );
     if( enbaled == null || enbaled.booleanValue() ) {
       return true;
@@ -54,16 +54,16 @@ public class ActionOperatorImpl implements ActionOperator, Serializable {
 
   @Override
   public void setActionVisible( String id, boolean visible ) throws IllegalStateException {
-    whenNull( id ).thenIllegalArgument( "Id must not be null" );
-    when( id.isEmpty() ).thenIllegalArgument( "Id must not be empty" );
+    whenNull( id ).throwIllegalArgument( "Id must not be null" );
+    when( id.isEmpty() ).throwIllegalArgument( "Id must not be empty" );
     controller.setActionVisible( id, visible );
     visibility.put( id, Boolean.valueOf( visible ) );
   }
 
   @Override
   public boolean isActionVisible( String id ) {
-    whenNull( id ).thenIllegalArgument( "Id must not be null" );
-    when( id.isEmpty() ).thenIllegalArgument( "Id must not be empty" );
+    whenNull( id ).throwIllegalArgument( "Id must not be null" );
+    when( id.isEmpty() ).throwIllegalArgument( "Id must not be empty" );
     Boolean visible = visibility.get( id );
     if( visible == null || visible.booleanValue() ) {
       return true;

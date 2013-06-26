@@ -26,7 +26,7 @@ public class SwipeOperationHandler extends AbstractOperationHandler {
   private final Swipe swipe;
 
   public SwipeOperationHandler( Swipe swipe ) {
-    whenNull( swipe ).thenIllegalArgument( "Swipe must not be null" );
+    whenNull( swipe ).throwIllegalArgument( "Swipe must not be null" );
     this.swipe = swipe;
   }
 
@@ -40,10 +40,10 @@ public class SwipeOperationHandler extends AbstractOperationHandler {
   }
 
   private void verifyHasItemProperty( JsonObject properties ) {
-    whenNull( properties ).thenIllegalArgument( "Properties must not be null" );
+    whenNull( properties ).throwIllegalArgument( "Properties must not be null" );
     whenNull( properties.get( PROPERTY_ITEM ) )
-      .thenIllegalArgument( "Properties of " + EVENT_SWIPE + " do not contain an item." );
+      .throwIllegalArgument( "Properties of " + EVENT_SWIPE + " do not contain an item." );
     whenNot( properties.get( PROPERTY_ITEM ).isNumber() )
-      .thenIllegalArgument( "Property item of " + EVENT_SWIPE + " is not an Integer." );
+      .throwIllegalArgument( "Property item of " + EVENT_SWIPE + " is not an Integer." );
   }
 }

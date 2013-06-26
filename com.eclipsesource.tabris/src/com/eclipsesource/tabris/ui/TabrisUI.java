@@ -59,7 +59,7 @@ public class TabrisUI implements Serializable {
    * @since 1.0
    */
   public TabrisUI( UIConfiguration configuration ) {
-    whenNull( configuration ).thenIllegalArgument( "UIConfiguration must not be null" );
+    whenNull( configuration ).throwIllegalArgument( "UIConfiguration must not be null" );
     getContext().getProtocolWriter().appendHead( "tabris.UI", JsonValue.valueOf( true ) );
     this.configuration = configuration;
   }
@@ -73,7 +73,7 @@ public class TabrisUI implements Serializable {
    * @since 1.0
    */
   public void create( Shell shell ) {
-    whenNull( shell ).thenIllegalArgument( "Shell must not be null" );
+    whenNull( shell ).throwIllegalArgument( "Shell must not be null" );
     prepareShell( shell );
     RemoteUI remoteUI = new RemoteUI( shell );
     shell.setLayout( new ZIndexStackLayout() );

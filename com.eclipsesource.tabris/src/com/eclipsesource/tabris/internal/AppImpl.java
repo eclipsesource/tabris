@@ -108,7 +108,7 @@ public class AppImpl extends AbstractOperationHandler implements App {
 
   @Override
   public void activateInactivityLock( int inactivityTime ) {
-    when( inactivityTime < 0 ).thenIllegalArgument( "inactivityTime must be >= 0 but was " + inactivityTime );
+    when( inactivityTime < 0 ).throwIllegalArgument( "inactivityTime must be >= 0 but was " + inactivityTime );
     JsonObject parameters = new JsonObject();
     parameters.add( "inactivityTime", inactivityTime );
     remoteObject.call( "activateInactivityLock", parameters );

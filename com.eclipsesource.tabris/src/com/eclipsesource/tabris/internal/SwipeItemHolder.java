@@ -43,7 +43,7 @@ public class SwipeItemHolder implements Serializable {
   }
 
   public void addItem( int index, SwipeItem item ) {
-    when( items.containsKey( getKey( index ) ) ).thenIllegalState( "Item for index " + index + " already exists." );
+    when( items.containsKey( getKey( index ) ) ).throwIllegalState( "Item for index " + index + " already exists." );
     items.put( getKey( index ), item );
   }
 
@@ -68,7 +68,7 @@ public class SwipeItemHolder implements Serializable {
   }
 
   public void setContentForItem( int index, Control content ) {
-    whenNot( items.containsKey( getKey( index ) ) ).thenIllegalState( "Item for index " + index + " does not exist." );
+    whenNot( items.containsKey( getKey( index ) ) ).throwIllegalState( "Item for index " + index + " does not exist." );
     contentHolder.put( getKey( index ), content );
   }
 

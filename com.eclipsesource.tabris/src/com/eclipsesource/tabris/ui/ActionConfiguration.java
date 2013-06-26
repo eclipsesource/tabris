@@ -60,9 +60,9 @@ public class ActionConfiguration implements Adaptable, Serializable {
    * @since 1.0
    */
   public ActionConfiguration( String actionId, Class<? extends Action> actionType ) {
-    whenNull( actionId ).thenIllegalArgument( "ActionId must not be null" );
-    when( actionId.isEmpty() ).thenIllegalArgument( "ActionId must not be empty" );
-    whenNull( actionType ).thenIllegalArgument( "Type of Action must not be null" );
+    whenNull( actionId ).throwIllegalArgument( "ActionId must not be null" );
+    when( actionId.isEmpty() ).throwIllegalArgument( "ActionId must not be empty" );
+    whenNull( actionType ).throwIllegalArgument( "Type of Action must not be null" );
     this.actionId = actionId;
     this.actionType = actionType;
     this.title = "";
@@ -78,7 +78,7 @@ public class ActionConfiguration implements Adaptable, Serializable {
    * @param title the title of the action. Must not be empty or <code>null</code>.
    */
   public ActionConfiguration setTitle( String title ) {
-    whenNull( title ).thenIllegalArgument( "Action Title must not be null" );
+    whenNull( title ).throwIllegalArgument( "Action Title must not be null" );
     this.title = title;
     return this;
   }
@@ -113,7 +113,7 @@ public class ActionConfiguration implements Adaptable, Serializable {
    * @since 1.0
    */
   public ActionConfiguration setImage( InputStream image ) {
-    whenNull( image ).thenIllegalArgument( "Action Image must not be null" );
+    whenNull( image ).throwIllegalArgument( "Action Image must not be null" );
     this.image = image;
     return this;
   }
