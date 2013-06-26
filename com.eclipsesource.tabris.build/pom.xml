@@ -73,6 +73,11 @@
 			<layout>p2</layout>
 			<url>http://download.eclipse.org/rt/rap/2.1/R-20130611-2139/</url>
 		</repository>
+		<repository>
+			<id>kepler</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/releases/kepler/</url>
+		</repository>
 	</repositories>
 
 	<build>
