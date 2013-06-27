@@ -122,6 +122,10 @@ public class Constants {
   // App Constants
   public static final String TYPE_APP = "tabris.App";
   public static final String EVENT_BACK_NAVIGATION = "BackNavigation";
+  public static final String METHOD_START_INACTIVITY_TIMER = "startInactivityTimer";
+  public static final String METHOD_STOP_INACTIVITY_TIMER = "stopInactivityTimer";
+  public static final String PROPERTY_INACTIVITY_TIME = "inactivityTime";
+  public static final String PROPERTY_SCREEN_PROTECTED = "screenProtected";
 
   // AppLauncher Constants
   public static final String TYPE_APP_LAUNCHER = "tabris.AppLauncher";

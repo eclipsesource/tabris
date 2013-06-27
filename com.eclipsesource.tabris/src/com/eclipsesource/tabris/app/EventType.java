@@ -21,12 +21,7 @@ public enum EventType {
   /**
    * @since 1.1
    */
-  LOCK( "Lock" ),
-
-  /**
-   * @since 1.1
-   */
-  UNLOCK( "Unlock" );
+  INACTIVE( "Inactive" );
 
   private final String name;
 

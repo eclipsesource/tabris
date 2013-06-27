@@ -29,11 +29,21 @@ public interface App extends ClientService {
   /**
    * @since 1.1
    */
-  void activateInactivityLock( int inactivityTime );
+  void startInactivityTimer( int inactivityTime );
 
   /**
    * @since 1.1
    */
-  void deactivateInactivityLock();
+  void stopInactivityTimer();
+
+  /**
+   * @since 1.1
+   */
+  void setScreenProtected( boolean protect );
+
+  /**
+   * @since 1.1
+   */
+  boolean isScreenProtected();
 
 }

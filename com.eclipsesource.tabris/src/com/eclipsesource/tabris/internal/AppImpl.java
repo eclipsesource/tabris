@@ -9,6 +9,10 @@ package com.eclipsesource.tabris.internal;
 
 import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Constants.EVENT_BACK_NAVIGATION;
+import static com.eclipsesource.tabris.internal.Constants.METHOD_START_INACTIVITY_TIMER;
+import static com.eclipsesource.tabris.internal.Constants.METHOD_STOP_INACTIVITY_TIMER;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_INACTIVITY_TIME;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SCREEN_PROTECTED;
 import static com.eclipsesource.tabris.internal.Constants.TYPE_APP;
 
 import java.util.ArrayList;
@@ -34,6 +38,7 @@ public class AppImpl extends AbstractOperationHandler implements App {
   private final RemoteObject remoteObject;
   private final Map<EventType, List<AppListener>> eventListeners;
   private final List<BackNavigationListener> backNavigationListeners;
+  private boolean protect;
 
   public AppImpl() {
     remoteObject = ( ( ConnectionImpl )RWT.getUISession().getConnection() ).createServiceObject( TYPE_APP );
@@ -56,10 +61,12 @@ public class AppImpl extends AbstractOperationHandler implements App {
   @Override
   public void removeEventListener( EventType type, AppListener listener ) {
     List<AppListener> listeners = eventListeners.get( type );
-    listeners.remove( listener );
-    if( listeners.isEmpty() ) {
-      eventListeners.remove( type );
-      remoteObject.listen( type.getName(), false );
+    if( listeners != null ) {
+      listeners.remove( listener );
+      if( listeners.isEmpty() ) {
+        eventListeners.remove( type );
+        remoteObject.listen( type.getName(), false );
+      }
     }
   }
 
@@ -107,19 +114,32 @@ public class AppImpl extends AbstractOperationHandler implements App {
   }
 
   @Override
-  public void activateInactivityLock( int inactivityTime ) {
+  public void startInactivityTimer( int inactivityTime ) {
     when( inactivityTime < 0 ).throwIllegalArgument( "inactivityTime must be >= 0 but was " + inactivityTime );
     JsonObject parameters = new JsonObject();
-    parameters.add( "inactivityTime", inactivityTime );
-    remoteObject.call( "activateInactivityLock", parameters );
+    parameters.add( PROPERTY_INACTIVITY_TIME, inactivityTime );
+    remoteObject.call( METHOD_START_INACTIVITY_TIMER, parameters );
   }
 
   @Override
-  public void deactivateInactivityLock() {
-    remoteObject.call( "deactivateInactivityLock", null );
+  public void stopInactivityTimer() {
+    remoteObject.call( METHOD_STOP_INACTIVITY_TIMER, null );
   }
 
   RemoteObject getRemoteObject() {
     return remoteObject;
+  }
+
+  @Override
+  public void setScreenProtected( boolean protect ) {
+    if( this.protect != protect ) {
+      remoteObject.set( PROPERTY_SCREEN_PROTECTED, protect );
+      this.protect = protect;
+    }
+  }
+
+  @Override
+  public boolean isScreenProtected() {
+    return protect;
   }
 }

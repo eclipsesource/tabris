@@ -4,13 +4,25 @@
         <filter id="403804204">
             <message_arguments>
                 <message_argument value="com.eclipsesource.tabris.app.App"/>
-                <message_argument value="activateInactivityLock(int)"/>
+                <message_argument value="isScreenProtected()"/>
             </message_arguments>
         </filter>
         <filter id="403804204">
             <message_arguments>
                 <message_argument value="com.eclipsesource.tabris.app.App"/>
-                <message_argument value="deactivateInactivityLock()"/>
+                <message_argument value="setScreenProtected(boolean)"/>
+            </message_arguments>
+        </filter>
+        <filter id="403804204">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.app.App"/>
+                <message_argument value="startInactivityTimer(int)"/>
+            </message_arguments>
+        </filter>
+        <filter id="403804204">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.app.App"/>
+                <message_argument value="stopInactivityTimer()"/>
             </message_arguments>
         </filter>
     </resource>

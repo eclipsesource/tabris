@@ -34,12 +34,8 @@ public class EventTypeTest {
   }
 
   @Test
-  public void testLockFromString() {
-    assertSame( EventType.LOCK, EventType.fromName( "Lock" ) );
+  public void testInactiveFromString() {
+    assertSame( EventType.INACTIVE, EventType.fromName( "Inactive" ) );
   }
 
-  @Test
-  public void testUnlockFromString() {
-    assertSame( EventType.UNLOCK, EventType.fromName( "Unlock" ) );
-  }
 }

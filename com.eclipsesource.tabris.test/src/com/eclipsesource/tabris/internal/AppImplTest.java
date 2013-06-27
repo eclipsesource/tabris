@@ -125,6 +125,14 @@ public class AppImplTest {
   }
 
   @Test
+  public void testRemoveNonExistingEventListenersDoesNotFail() {
+    App app = new AppImpl();
+    AppListener listener = mock( AppListener.class );
+
+    app.removeEventListener( PAUSE, listener );
+  }
+
+  @Test
   public void testRemoveOneListenerDoesNotTransportsListenOperation() {
     RemoteObject remoteObject = TabrisTestUtil.mockServiceObject();
     App app = new AppImpl();
@@ -287,10 +295,10 @@ public class AppImplTest {
     RemoteObject remoteObject = TabrisTestUtil.mockServiceObject();
     AppImpl app = new AppImpl();
 
-    app.activateInactivityLock( -1 );
+    app.startInactivityTimer( -1 );
 
     ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
-    verify( remoteObject ).call( eq( "activateInactivityLock" ), captor.capture() );
+    verify( remoteObject ).call( eq( "startInactivityTimer" ), captor.capture() );
     assertEquals( captor.getValue().get( "inactivityTime" ), JsonValue.valueOf( 10 ) );
   }
 
@@ -299,10 +307,10 @@ public class AppImplTest {
     RemoteObject remoteObject = TabrisTestUtil.mockServiceObject();
     AppImpl app = new AppImpl();
 
-    app.activateInactivityLock( 10 );
+    app.startInactivityTimer( 10 );
 
     ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
-    verify( remoteObject ).call( eq( "activateInactivityLock" ), captor.capture() );
+    verify( remoteObject ).call( eq( "startInactivityTimer" ), captor.capture() );
     assertEquals( captor.getValue().get( "inactivityTime" ), JsonValue.valueOf( 10 ) );
   }
 
@@ -311,9 +319,50 @@ public class AppImplTest {
     RemoteObject remoteObject = TabrisTestUtil.mockServiceObject();
     AppImpl app = new AppImpl();
 
-    app.deactivateInactivityLock();
+    app.stopInactivityTimer();
 
-    verify( remoteObject ).call( "deactivateInactivityLock", null );
+    verify( remoteObject ).call( "stopInactivityTimer", null );
+  }
+
+  @Test
+  public void testSetProtectScreenOnRemotObjectWithTrue() {
+    RemoteObject remoteObject = TabrisTestUtil.mockServiceObject();
+    AppImpl app = new AppImpl();
+
+    app.setScreenProtected( true );
+
+    verify( remoteObject ).set( "screenProtected", true );
+  }
+
+  @Test
+  public void testSetProtectScreenOnRemotObjectOnlyOnChange() {
+    RemoteObject remoteObject = TabrisTestUtil.mockServiceObject();
+    AppImpl app = new AppImpl();
+
+    app.setScreenProtected( true );
+    app.setScreenProtected( true );
+
+    verify( remoteObject, times( 1 ) ).set( "screenProtected", true );
+  }
+
+  @Test
+  public void testSetProtectScreenOnRemotObjectWithFalse() {
+    RemoteObject remoteObject = TabrisTestUtil.mockServiceObject();
+    AppImpl app = new AppImpl();
+
+    app.setScreenProtected( true );
+    app.setScreenProtected( false );
+
+    verify( remoteObject ).set( "screenProtected", false );
+  }
+
+  @Test
+  public void testSavesScreenProtected() {
+    AppImpl app = new AppImpl();
+
+    app.setScreenProtected( true );
+
+    assertTrue( app.isScreenProtected() );
   }
 
 }
