@@ -12,7 +12,7 @@ import static com.eclipsesource.tabris.internal.Constants.EVENT_BACK_NAVIGATION;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_START_INACTIVITY_TIMER;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_STOP_INACTIVITY_TIMER;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_INACTIVITY_TIME;
-import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SCREEN_PROTECTED;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SCREEN_PROTECTION;
 import static com.eclipsesource.tabris.internal.Constants.TYPE_APP;
 
 import java.util.ArrayList;
@@ -133,7 +133,7 @@ public class AppImpl extends AbstractOperationHandler implements App {
   @Override
   public void setScreenProtection( boolean protect ) {
     if( this.protect != protect ) {
-      remoteObject.set( PROPERTY_SCREEN_PROTECTED, protect );
+      remoteObject.set( PROPERTY_SCREEN_PROTECTION, protect );
       this.protect = protect;
     }
   }
