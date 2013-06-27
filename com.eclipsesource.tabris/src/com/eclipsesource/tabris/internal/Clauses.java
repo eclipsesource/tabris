@@ -13,11 +13,11 @@ package com.eclipsesource.tabris.internal;
 
 public class Clauses {
 
-  public static class ExceptionConclusion {
+  public static class ExceptionClause {
 
     private final boolean condition;
 
-    public ExceptionConclusion( boolean condition ) {
+    public ExceptionClause( boolean condition ) {
       this.condition = condition;
     }
 
@@ -35,15 +35,15 @@ public class Clauses {
 
   }
 
-  public static ExceptionConclusion when( boolean condition ) {
-    return new ExceptionConclusion( condition );
+  public static ExceptionClause when( boolean condition ) {
+    return new ExceptionClause( condition );
   }
 
-  public static ExceptionConclusion whenNot( boolean condition ) {
+  public static ExceptionClause whenNot( boolean condition ) {
     return when( !condition );
   }
 
-  public static ExceptionConclusion whenNull( Object object ) {
+  public static ExceptionClause whenNull( Object object ) {
     return when( object == null );
   }
 
