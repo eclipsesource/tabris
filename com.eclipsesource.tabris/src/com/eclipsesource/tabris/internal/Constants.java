@@ -125,7 +125,7 @@ public class Constants {
   public static final String METHOD_START_INACTIVITY_TIMER = "startInactivityTimer";
   public static final String METHOD_STOP_INACTIVITY_TIMER = "stopInactivityTimer";
   public static final String PROPERTY_INACTIVITY_TIME = "inactivityTime";
-  public static final String PROPERTY_SCREEN_PROTECTED = "screenProtected";
+  public static final String PROPERTY_SCREEN_PROTECTED = "screenProtection";
 
   // AppLauncher Constants
   public static final String TYPE_APP_LAUNCHER = "tabris.AppLauncher";

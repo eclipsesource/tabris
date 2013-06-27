@@ -131,7 +131,7 @@ public class AppImpl extends AbstractOperationHandler implements App {
   }
 
   @Override
-  public void setScreenProtected( boolean protect ) {
+  public void setScreenProtection( boolean protect ) {
     if( this.protect != protect ) {
       remoteObject.set( PROPERTY_SCREEN_PROTECTED, protect );
       this.protect = protect;
@@ -139,7 +139,7 @@ public class AppImpl extends AbstractOperationHandler implements App {
   }
 
   @Override
-  public boolean isScreenProtected() {
+  public boolean hasScreenProtection() {
     return protect;
   }
 }

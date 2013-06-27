@@ -4,13 +4,13 @@
         <filter id="403804204">
             <message_arguments>
                 <message_argument value="com.eclipsesource.tabris.app.App"/>
-                <message_argument value="isScreenProtected()"/>
+                <message_argument value="hasScreenProtection()"/>
             </message_arguments>
         </filter>
         <filter id="403804204">
             <message_arguments>
                 <message_argument value="com.eclipsesource.tabris.app.App"/>
-                <message_argument value="setScreenProtected(boolean)"/>
+                <message_argument value="setScreenProtection(boolean)"/>
             </message_arguments>
         </filter>
         <filter id="403804204">

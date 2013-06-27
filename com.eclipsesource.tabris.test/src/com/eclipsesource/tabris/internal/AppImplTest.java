@@ -329,9 +329,9 @@ public class AppImplTest {
     RemoteObject remoteObject = TabrisTestUtil.mockServiceObject();
     AppImpl app = new AppImpl();
 
-    app.setScreenProtected( true );
+    app.setScreenProtection( true );
 
-    verify( remoteObject ).set( "screenProtected", true );
+    verify( remoteObject ).set( "screenProtection", true );
   }
 
   @Test
@@ -339,10 +339,10 @@ public class AppImplTest {
     RemoteObject remoteObject = TabrisTestUtil.mockServiceObject();
     AppImpl app = new AppImpl();
 
-    app.setScreenProtected( true );
-    app.setScreenProtected( true );
+    app.setScreenProtection( true );
+    app.setScreenProtection( true );
 
-    verify( remoteObject, times( 1 ) ).set( "screenProtected", true );
+    verify( remoteObject, times( 1 ) ).set( "screenProtection", true );
   }
 
   @Test
@@ -350,19 +350,19 @@ public class AppImplTest {
     RemoteObject remoteObject = TabrisTestUtil.mockServiceObject();
     AppImpl app = new AppImpl();
 
-    app.setScreenProtected( true );
-    app.setScreenProtected( false );
+    app.setScreenProtection( true );
+    app.setScreenProtection( false );
 
-    verify( remoteObject ).set( "screenProtected", false );
+    verify( remoteObject ).set( "screenProtection", false );
   }
 
   @Test
   public void testSavesScreenProtected() {
     AppImpl app = new AppImpl();
 
-    app.setScreenProtected( true );
+    app.setScreenProtection( true );
 
-    assertTrue( app.isScreenProtected() );
+    assertTrue( app.hasScreenProtection() );
   }
 
 }

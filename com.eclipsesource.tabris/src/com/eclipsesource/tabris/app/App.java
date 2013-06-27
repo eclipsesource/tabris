@@ -39,11 +39,11 @@ public interface App extends ClientService {
   /**
    * @since 1.1
    */
-  void setScreenProtected( boolean protect );
+  void setScreenProtection( boolean protect );
 
   /**
    * @since 1.1
    */
-  boolean isScreenProtected();
+  boolean hasScreenProtection();
 
 }
