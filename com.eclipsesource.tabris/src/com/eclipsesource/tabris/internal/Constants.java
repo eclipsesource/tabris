@@ -36,6 +36,8 @@ public class Constants {
   public static final String PROPERTY_LATITUDE = "latitude";
   public static final String PROPERTY_CONTROL = "control";
   public static final String PROPERTY_QUERY = "query";
+  public static final String PROPERTY_ERROR_MESSAGE = "errorMessage";
+  public static final String PROPERTY_ERROR_CODE = "errorCode";
 
   // TabrisUI Constants
   public static final String EVENT_SHOW_PREVIOUS_PAGE = "ShowPreviousPage";
@@ -71,8 +73,6 @@ public class Constants {
   public static final String PROPERTY_ALTITUDE_ACCURACY = "altitudeAccuracy";
   public static final String PROPERTY_ACCURACY = "accuracy";
   public static final String PROPERTY_ALTITUDE = "altitude";
-  public static final String PROPERTY_ERROR_MESSAGE = "errorMessage";
-  public static final String PROPERTY_ERROR_CODE = "errorCode";
 
   // Camera Constants
   public static final String TYPE_CAMERA = "tabris.Camera";
@@ -141,6 +141,22 @@ public class Constants {
   public static final String PROPERTY_TO = "to";
   public static final String PROPERTY_SUBJECT = "subject";
   public static final String PROPERTY_HTML = "html";
+
+  // XCallbackURL Constants
+  public static final String TYPE_XCALLBACK_URL = "tabris.XCallbackURL";
+  public static final String EVENT_ON_SUCCESS = "OnSuccess";
+  public static final String EVENT_ON_ERROR = "OnError";
+  public static final String EVENT_ON_CANCEL = "OnCancel";
+  public static final String METHOD_CALL = "call";
+  public static final String PROPERTY_PARAMETERS = "parameters";
+  public static final String PROPERTY_TARGET_SCHEME = "targetScheme";
+  public static final String PROPERTY_TARGET_ACTION = "targetAction";
+  public static final String PROPERTY_XSOURCE = "xSource";
+  public static final String PROPERTY_ACTION_PARAMETERS = "actionParameters";
+  public static final String PROPERTY_XSOURCE_NAME = "xSourceName";
+  public static final String PROPERTY_XSUCCESS_NAME = "xSuccessName";
+  public static final String PROPERTY_XERROR_NAME = "xErrorName";
+  public static final String PROPERTY_XCANCEL_NAME = "xCancelName";
 
   private Constants() {
     // prevent instantiation
