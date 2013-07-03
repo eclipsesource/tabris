@@ -17,10 +17,16 @@
 					<fileset dir="${basedir}/../../com.eclipsesource.tabris/target/classes">
 					  <exclude name="**/Base64.class" />
 					</fileset>
+					<fileset dir="${basedir}/">
+				    <exclude name="**/*Test.class" />
+					</fileset>  
 				</classfiles>
 				<sourcefiles encoding="UTF-8">
 					<fileset dir="${basedir}/../../com.eclipsesource.tabris/src">
 					  <exclude name="**/Base64.java" />
+					</fileset>	
+					<fileset dir="${basedir}/">
+					  <exclude name="**/*Test.java" />
 					</fileset>	
 				</sourcefiles>
 			</structure>
