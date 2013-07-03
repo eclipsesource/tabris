@@ -35,8 +35,11 @@ public class Clauses {
 
   }
 
+  private static Clause TRUE_CLAUSE = new Clause( true );
+  private static Clause FALSE_CLAUSE = new Clause( false );
+
   public static Clause when( boolean condition ) {
-    return new Clause( condition );
+    return condition ? TRUE_CLAUSE : FALSE_CLAUSE;
   }
 
   public static Clause whenNot( boolean condition ) {
