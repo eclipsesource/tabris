@@ -144,7 +144,7 @@ public class XCallbackTest {
     parameters.add( "foo", "bar" );
     properties.add( "parameters", parameters );
 
-    TabrisTestUtil.dispatchNotify( remoteObject, "OnSuccess", properties );
+    TabrisTestUtil.dispatchNotify( remoteObject, "Success", properties );
 
     ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
     verify( listener ).onSuccess( captor.capture() );
@@ -162,7 +162,7 @@ public class XCallbackTest {
     xCallback.addXCallbackListener( listener );
     xCallback.addXCallbackListener( listener2 );
 
-    TabrisTestUtil.dispatchNotify( remoteObject, "OnSuccess", null );
+    TabrisTestUtil.dispatchNotify( remoteObject, "Success", null );
 
     InOrder order = inOrder( listener, listener2 );
     order.verify( listener ).onSuccess( anyMap() );
@@ -179,7 +179,7 @@ public class XCallbackTest {
     parameters.add( "errorCode", "42" );
     parameters.add( "errorMessage", "foo" );
 
-    TabrisTestUtil.dispatchNotify( remoteObject, "OnError", parameters );
+    TabrisTestUtil.dispatchNotify( remoteObject, "Error", parameters );
 
     verify( listener ).onError( "42", "foo" );
   }
@@ -196,7 +196,7 @@ public class XCallbackTest {
     parameters.add( "errorCode", "42" );
     parameters.add( "errorMessage", "foo" );
 
-    TabrisTestUtil.dispatchNotify( remoteObject, "OnError", parameters );
+    TabrisTestUtil.dispatchNotify( remoteObject, "Error", parameters );
 
     InOrder order = inOrder( listener, listener2 );
     order.verify( listener ).onError( "42", "foo" );
@@ -210,7 +210,7 @@ public class XCallbackTest {
     XCallbackListener listener = mock( XCallbackListener.class );
     xCallback.addXCallbackListener( listener );
 
-    TabrisTestUtil.dispatchNotify( remoteObject, "OnCancel", null );
+    TabrisTestUtil.dispatchNotify( remoteObject, "Cancel", null );
 
     verify( listener ).onCancel();
   }
@@ -224,7 +224,7 @@ public class XCallbackTest {
     xCallback.addXCallbackListener( listener );
     xCallback.addXCallbackListener( listener2 );
 
-    TabrisTestUtil.dispatchNotify( remoteObject, "OnCancel", null );
+    TabrisTestUtil.dispatchNotify( remoteObject, "Cancel", null );
 
     InOrder order = inOrder( listener, listener2 );
     order.verify( listener ).onCancel();

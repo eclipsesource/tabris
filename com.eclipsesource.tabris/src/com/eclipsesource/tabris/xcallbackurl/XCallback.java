@@ -11,9 +11,9 @@
 package com.eclipsesource.tabris.xcallbackurl;
 
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
-import static com.eclipsesource.tabris.internal.Constants.EVENT_ON_CANCEL;
-import static com.eclipsesource.tabris.internal.Constants.EVENT_ON_ERROR;
-import static com.eclipsesource.tabris.internal.Constants.EVENT_ON_SUCCESS;
+import static com.eclipsesource.tabris.internal.Constants.EVENT_CANCEL;
+import static com.eclipsesource.tabris.internal.Constants.EVENT_ERROR;
+import static com.eclipsesource.tabris.internal.Constants.EVENT_SUCCESS;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_CALL;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ACTION_PARAMETERS;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ERROR_CODE;
@@ -63,12 +63,12 @@ public class XCallback implements Serializable {
 
       @Override
       public void handleNotify( String event, JsonObject properties ) {
-        if( event.equals( EVENT_ON_SUCCESS ) ) {
+        if( event.equals( EVENT_SUCCESS ) ) {
           dispatchOnSuccess( getParameter( properties ) );
-        } else if( event.equals( EVENT_ON_ERROR ) ) {
+        } else if( event.equals( EVENT_ERROR ) ) {
           dispatchOnError( properties.get( PROPERTY_ERROR_CODE ).asString(),
                            properties.get( PROPERTY_ERROR_MESSAGE ).asString() );
-        } else if( event.equals( EVENT_ON_CANCEL ) ) {
+        } else if( event.equals( EVENT_CANCEL ) ) {
           dispatchOnCancel();
         }
       }

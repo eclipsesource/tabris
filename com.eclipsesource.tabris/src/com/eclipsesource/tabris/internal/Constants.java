@@ -144,9 +144,9 @@ public class Constants {
 
   // XCallbackURL Constants
   public static final String TYPE_XCALLBACK = "tabris.XCallback";
-  public static final String EVENT_ON_SUCCESS = "OnSuccess";
-  public static final String EVENT_ON_ERROR = "OnError";
-  public static final String EVENT_ON_CANCEL = "OnCancel";
+  public static final String EVENT_SUCCESS = "Success";
+  public static final String EVENT_ERROR = "Error";
+  public static final String EVENT_CANCEL = "Cancel";
   public static final String METHOD_CALL = "call";
   public static final String PROPERTY_PARAMETERS = "parameters";
   public static final String PROPERTY_TARGET_SCHEME = "targetScheme";
