@@ -23,5 +23,5 @@ public interface XCallbackListener extends Serializable {
 
   void onCancel();
 
-  void onError( int errorCode, String errorMessage );
+  void onError( String errorCode, String errorMessage );
 }

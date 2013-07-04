@@ -195,12 +195,12 @@ public class XCallbackTest {
     XCallbackListener listener = mock( XCallbackListener.class );
     xCallback.addXCallbackListener( listener );
     JsonObject parameters = new JsonObject();
-    parameters.add( "errorCode", 42 );
+    parameters.add( "errorCode", "42" );
     parameters.add( "errorMessage", "foo" );
 
     TabrisTestUtil.dispatchNotify( remoteObject, "OnError", parameters );
 
-    verify( listener ).onError( 42, "foo" );
+    verify( listener ).onError( "42", "foo" );
   }
 
   @Test
@@ -212,14 +212,14 @@ public class XCallbackTest {
     xCallback.addXCallbackListener( listener );
     xCallback.addXCallbackListener( listener2 );
     JsonObject parameters = new JsonObject();
-    parameters.add( "errorCode", 42 );
+    parameters.add( "errorCode", "42" );
     parameters.add( "errorMessage", "foo" );
 
     TabrisTestUtil.dispatchNotify( remoteObject, "OnError", parameters );
 
     InOrder order = inOrder( listener, listener2 );
-    order.verify( listener ).onError( 42, "foo" );
-    order.verify( listener2 ).onError( 42, "foo" );
+    order.verify( listener ).onError( "42", "foo" );
+    order.verify( listener2 ).onError( "42", "foo" );
   }
 
   @Test

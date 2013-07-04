@@ -29,7 +29,7 @@ public class XCallbackAdapter implements XCallbackListener {
   }
 
   @Override
-  public void onError( int errorCode, String errorMessage ) {
+  public void onError( String errorCode, String errorMessage ) {
     // intended to be implemented by subclasses.
   }
 }

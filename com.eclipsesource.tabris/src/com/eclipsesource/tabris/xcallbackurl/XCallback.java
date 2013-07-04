@@ -67,7 +67,7 @@ public class XCallback implements Serializable {
         if( event.equals( EVENT_ON_SUCCESS ) ) {
           dispatchOnSuccess( getParameter( properties ) );
         } else if( event.equals( EVENT_ON_ERROR ) ) {
-          dispatchOnError( properties.get( PROPERTY_ERROR_CODE ).asInt(),
+          dispatchOnError( properties.get( PROPERTY_ERROR_CODE ).asString(),
                            properties.get( PROPERTY_ERROR_MESSAGE ).asString() );
         } else if( event.equals( EVENT_ON_CANCEL ) ) {
           dispatchOnCancel();
@@ -94,7 +94,7 @@ public class XCallback implements Serializable {
     }
   }
 
-  private void dispatchOnError( int errorCode, String errorMessage ) {
+  private void dispatchOnError( String errorCode, String errorMessage ) {
     for( XCallbackListener listener : listeners ) {
       listener.onError( errorCode, errorMessage );
     }
