@@ -21,11 +21,7 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ERROR_MESSAGE
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PARAMETERS;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TARGET_ACTION;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TARGET_SCHEME;
-import static com.eclipsesource.tabris.internal.Constants.PROPERTY_XCANCEL_NAME;
-import static com.eclipsesource.tabris.internal.Constants.PROPERTY_XERROR_NAME;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_XSOURCE;
-import static com.eclipsesource.tabris.internal.Constants.PROPERTY_XSOURCE_NAME;
-import static com.eclipsesource.tabris.internal.Constants.PROPERTY_XSUCCESS_NAME;
 import static com.eclipsesource.tabris.internal.Constants.TYPE_XCALLBACK;
 
 import java.io.Serializable;
@@ -132,10 +128,6 @@ public class XCallback implements Serializable, Adaptable {
   private void addOptionalParameter( XCallbackConfiguration configuration, JsonObject parameters ) {
     addXSource( configuration, parameters );
     addActionParameter( configuration, parameters );
-    addXSourceName( configuration, parameters );
-    addXSuccessName( configuration, parameters );
-    addXErrorName( configuration, parameters );
-    addXCancelName( configuration, parameters );
   }
 
   private void addXSource( XCallbackConfiguration configuration, JsonObject parameters ) {
@@ -153,34 +145,6 @@ public class XCallback implements Serializable, Adaptable {
         xActionParameter.add( actionParameter.getKey(), actionParameter.getValue() );
       }
       parameters.add( PROPERTY_ACTION_PARAMETERS, xActionParameter );
-    }
-  }
-
-  private void addXSourceName( XCallbackConfiguration configuration, JsonObject parameters ) {
-    String xSourceName = configuration.getXSourceName();
-    if( xSourceName != null ) {
-      parameters.add( PROPERTY_XSOURCE_NAME, xSourceName );
-    }
-  }
-
-  private void addXSuccessName( XCallbackConfiguration configuration, JsonObject parameters ) {
-    String xSuccessName = configuration.getXSuccessName();
-    if( xSuccessName != null ) {
-      parameters.add( PROPERTY_XSUCCESS_NAME, xSuccessName );
-    }
-  }
-
-  private void addXErrorName( XCallbackConfiguration configuration, JsonObject parameters ) {
-    String xErrorName = configuration.getXErrorName();
-    if( xErrorName != null ) {
-      parameters.add( PROPERTY_XERROR_NAME, xErrorName );
-    }
-  }
-
-  private void addXCancelName( XCallbackConfiguration configuration, JsonObject parameters ) {
-    String xCancelName = configuration.getXCancelName();
-    if( xCancelName != null ) {
-      parameters.add( PROPERTY_XCANCEL_NAME, xCancelName );
     }
   }
 

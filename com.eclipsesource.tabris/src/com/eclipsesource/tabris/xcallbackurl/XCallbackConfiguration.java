@@ -27,10 +27,6 @@ public class XCallbackConfiguration implements Serializable {
   private final String targetScheme;
   private final String targetAction;
   private String xSource;
-  private String xSourceName;
-  private String xSuccessName;
-  private String xErrorName;
-  private String xCancelName;
 
   public XCallbackConfiguration( String targetScheme, String targetAction ) {
     validateString( targetScheme, "Target scheme" );
@@ -65,42 +61,6 @@ public class XCallbackConfiguration implements Serializable {
 
   public String getXSource() {
     return xSource;
-  }
-
-  public void setXSuccessName( String xSuccessName ) {
-    validateString( xSuccessName, "XSuccessName" );
-    this.xSuccessName = xSuccessName;
-  }
-
-  public String getXSuccessName() {
-    return xSuccessName;
-  }
-
-  public void setXErrorName( String xErrorName ) {
-    validateString( xErrorName, "XErrorName" );
-    this.xErrorName = xErrorName;
-  }
-
-  public String getXErrorName() {
-    return xErrorName;
-  }
-
-  public void setXCancelName( String xCancelName ) {
-    validateString( xCancelName, "XCancelName" );
-    this.xCancelName = xCancelName;
-  }
-
-  public String getXCancelName() {
-    return xCancelName;
-  }
-
-  public void setXSourceName( String xSourceName ) {
-    validateString( xSourceName, "XSourceName" );
-    this.xSourceName = xSourceName;
-  }
-
-  public String getXSourceName() {
-    return xSourceName;
   }
 
   private void validateString( String string, String name ) {

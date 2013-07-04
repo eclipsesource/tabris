@@ -153,10 +153,6 @@ public class Constants {
   public static final String PROPERTY_TARGET_ACTION = "targetAction";
   public static final String PROPERTY_XSOURCE = "xSource";
   public static final String PROPERTY_ACTION_PARAMETERS = "actionParameters";
-  public static final String PROPERTY_XSOURCE_NAME = "xSourceName";
-  public static final String PROPERTY_XSUCCESS_NAME = "xSuccessName";
-  public static final String PROPERTY_XERROR_NAME = "xErrorName";
-  public static final String PROPERTY_XCANCEL_NAME = "xCancelName";
 
   private Constants() {
     // prevent instantiation
