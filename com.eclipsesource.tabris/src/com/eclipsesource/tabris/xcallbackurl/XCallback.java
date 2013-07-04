@@ -50,13 +50,14 @@ public class XCallback implements Serializable, Adaptable {
 
   private final RemoteObject remoteObject;
   private final List<XCallbackListener> listeners;
+  private final XCallbackConfiguration configuration;
 
   public XCallback( XCallbackConfiguration configuration ) {
     whenNull( configuration ).throwIllegalArgument( "Configuration must not be null" );
+    this.configuration = configuration;
     this.listeners = new ArrayList<XCallbackListener>();
     this.remoteObject = RWT.getUISession().getConnection().createRemoteObject( TYPE_XCALLBACK );
     remoteObject.setHandler( createOperationHandler() );
-    sendConfiguration( configuration );
   }
 
   private AbstractOperationHandler createOperationHandler() {
@@ -88,67 +89,6 @@ public class XCallback implements Serializable, Adaptable {
     return parameter;
   }
 
-  private void sendConfiguration( XCallbackConfiguration configuration ) {
-    remoteObject.set( PROPERTY_TARGET_SCHEME, configuration.getTargetScheme() );
-    remoteObject.set( PROPERTY_TARGET_ACTION, configuration.getTargetAction() );
-    sendOptionalParameter( configuration );
-  }
-
-  private void sendOptionalParameter( XCallbackConfiguration configuration ) {
-    sendXSource( configuration );
-    sendActionParameter( configuration );
-    sendXSourceName( configuration );
-    sendXSuccessName( configuration );
-    sendXErrorName( configuration );
-    sendXCancelName( configuration );
-  }
-
-  private void sendXSource( XCallbackConfiguration configuration ) {
-    String xSource = configuration.getXSource();
-    if( xSource != null ) {
-      remoteObject.set( PROPERTY_XSOURCE, xSource );
-    }
-  }
-
-  private void sendActionParameter( XCallbackConfiguration configuration ) {
-    Map<String, String> actionParameters = configuration.getActionParameters();
-    if( actionParameters != null && !actionParameters.isEmpty() ) {
-      JsonObject xActionParameter = new JsonObject();
-      for( Entry<String, String> actionParameter : actionParameters.entrySet() ) {
-        xActionParameter.add( actionParameter.getKey(), actionParameter.getValue() );
-      }
-      remoteObject.set( PROPERTY_ACTION_PARAMETERS, xActionParameter );
-    }
-  }
-
-  private void sendXSourceName( XCallbackConfiguration configuration ) {
-    String xSourceName = configuration.getXSourceName();
-    if( xSourceName != null ) {
-      remoteObject.set( PROPERTY_XSOURCE_NAME, xSourceName );
-    }
-  }
-
-  private void sendXSuccessName( XCallbackConfiguration configuration ) {
-    String xSuccessName = configuration.getXSuccessName();
-    if( xSuccessName != null ) {
-      remoteObject.set( PROPERTY_XSUCCESS_NAME, xSuccessName );
-    }
-  }
-
-  private void sendXErrorName( XCallbackConfiguration configuration ) {
-    String xErrorName = configuration.getXErrorName();
-    if( xErrorName != null ) {
-      remoteObject.set( PROPERTY_XERROR_NAME, xErrorName );
-    }
-  }
-
-  private void sendXCancelName( XCallbackConfiguration configuration ) {
-    String xCancelName = configuration.getXCancelName();
-    if( xCancelName != null ) {
-      remoteObject.set( PROPERTY_XCANCEL_NAME, xCancelName );
-    }
-  }
-
   private void dispatchOnSuccess( Map<String, String> parameter ) {
     for( XCallbackListener listener : listeners ) {
       listener.onSuccess( parameter );
@@ -178,7 +118,70 @@ public class XCallback implements Serializable, Adaptable {
   }
 
   public void call() {
-    remoteObject.call( METHOD_CALL, null );
+    remoteObject.call( METHOD_CALL, createParameters( configuration ) );
+  }
+
+  private JsonObject createParameters( XCallbackConfiguration configuration ) {
+    JsonObject parameters = new JsonObject();
+    parameters.add( PROPERTY_TARGET_SCHEME, configuration.getTargetScheme() );
+    parameters.add( PROPERTY_TARGET_ACTION, configuration.getTargetAction() );
+    addOptionalParameter( configuration, parameters );
+    return parameters;
+  }
+
+  private void addOptionalParameter( XCallbackConfiguration configuration, JsonObject parameters ) {
+    addXSource( configuration, parameters );
+    addActionParameter( configuration, parameters );
+    addXSourceName( configuration, parameters );
+    addXSuccessName( configuration, parameters );
+    addXErrorName( configuration, parameters );
+    addXCancelName( configuration, parameters );
+  }
+
+  private void addXSource( XCallbackConfiguration configuration, JsonObject parameters ) {
+    String xSource = configuration.getXSource();
+    if( xSource != null ) {
+      parameters.add( PROPERTY_XSOURCE, xSource );
+    }
+  }
+
+  private void addActionParameter( XCallbackConfiguration configuration, JsonObject parameters ) {
+    Map<String, String> actionParameters = configuration.getActionParameters();
+    if( actionParameters != null && !actionParameters.isEmpty() ) {
+      JsonObject xActionParameter = new JsonObject();
+      for( Entry<String, String> actionParameter : actionParameters.entrySet() ) {
+        xActionParameter.add( actionParameter.getKey(), actionParameter.getValue() );
+      }
+      parameters.add( PROPERTY_ACTION_PARAMETERS, xActionParameter );
+    }
+  }
+
+  private void addXSourceName( XCallbackConfiguration configuration, JsonObject parameters ) {
+    String xSourceName = configuration.getXSourceName();
+    if( xSourceName != null ) {
+      parameters.add( PROPERTY_XSOURCE_NAME, xSourceName );
+    }
+  }
+
+  private void addXSuccessName( XCallbackConfiguration configuration, JsonObject parameters ) {
+    String xSuccessName = configuration.getXSuccessName();
+    if( xSuccessName != null ) {
+      parameters.add( PROPERTY_XSUCCESS_NAME, xSuccessName );
+    }
+  }
+
+  private void addXErrorName( XCallbackConfiguration configuration, JsonObject parameters ) {
+    String xErrorName = configuration.getXErrorName();
+    if( xErrorName != null ) {
+      parameters.add( PROPERTY_XERROR_NAME, xErrorName );
+    }
+  }
+
+  private void addXCancelName( XCallbackConfiguration configuration, JsonObject parameters ) {
+    String xCancelName = configuration.getXCancelName();
+    if( xCancelName != null ) {
+      parameters.add( PROPERTY_XCANCEL_NAME, xCancelName );
+    }
   }
 
   RemoteObject getRemoteObject() {
@@ -190,6 +193,8 @@ public class XCallback implements Serializable, Adaptable {
   public <T> T getAdapter( Class<T> adapter ) {
     if( adapter == RemoteObject.class ) {
       return ( T )remoteObject;
+    } else if( adapter == XCallbackConfiguration.class ) {
+      return ( T )configuration;
     }
     return null;
   }
