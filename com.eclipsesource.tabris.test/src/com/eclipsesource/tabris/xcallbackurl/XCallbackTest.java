@@ -1,6 +1,7 @@
 package com.eclipsesource.tabris.xcallbackurl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.inOrder;
@@ -229,6 +230,15 @@ public class XCallbackTest {
     InOrder order = inOrder( listener, listener2 );
     order.verify( listener ).onCancel();
     order.verify( listener2 ).onCancel();
+  }
+
+  @Test
+  public void testGetsremoteObjectAsAdapter() {
+    XCallback xCallback = new XCallback( mock( XCallbackConfiguration.class ) );
+
+    RemoteObject adapter = xCallback.getAdapter( RemoteObject.class );
+
+    assertSame( adapter, xCallback.getRemoteObject() );
   }
 
 }

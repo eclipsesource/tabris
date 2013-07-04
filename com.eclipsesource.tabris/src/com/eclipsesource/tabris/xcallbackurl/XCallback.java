@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.eclipse.rap.json.JsonObject;
+import org.eclipse.rap.rwt.Adaptable;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
 import org.eclipse.rap.rwt.remote.RemoteObject;
@@ -45,7 +46,7 @@ import org.eclipse.rap.rwt.remote.RemoteObject;
  * see http://x-callback-url.com/specifications/
  * @since 1.1
  */
-public class XCallback implements Serializable {
+public class XCallback implements Serializable, Adaptable {
 
   private final RemoteObject remoteObject;
   private final List<XCallbackListener> listeners;
@@ -182,6 +183,15 @@ public class XCallback implements Serializable {
 
   RemoteObject getRemoteObject() {
     return remoteObject;
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public <T> T getAdapter( Class<T> adapter ) {
+    if( adapter == RemoteObject.class ) {
+      return ( T )remoteObject;
+    }
+    return null;
   }
 
 }
