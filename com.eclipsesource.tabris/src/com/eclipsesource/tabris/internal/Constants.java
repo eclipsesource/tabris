@@ -143,7 +143,7 @@ public class Constants {
   public static final String PROPERTY_HTML = "html";
 
   // XCallbackURL Constants
-  public static final String TYPE_XCALLBACK_URL = "tabris.XCallbackURL";
+  public static final String TYPE_XCALLBACK = "tabris.XCallback";
   public static final String EVENT_ON_SUCCESS = "OnSuccess";
   public static final String EVENT_ON_ERROR = "OnError";
   public static final String EVENT_ON_CANCEL = "OnCancel";

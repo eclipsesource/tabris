@@ -56,42 +56,35 @@ public class XCallbackTest {
   public void testUsesConfigAsCallParameter() {
     RemoteObject remoteObject = TabrisTestUtil.mockRemoteObject();
     XCallbackConfiguration configuration = new XCallbackConfiguration( "foo", "bar" );
-    XCallback xCallback = new XCallback( configuration );
 
-    xCallback.call();
+    new XCallback( configuration );
 
-    ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
-    verify( remoteObject ).call( eq( "call" ), captor.capture() );
-    assertEquals( "foo", captor.getValue().get( "targetScheme" ).asString() );
-    assertEquals( "bar", captor.getValue().get( "targetAction" ).asString() );
+    verify( remoteObject ).set( "targetScheme", "foo" );
+    verify( remoteObject ).set( "targetAction", "bar" );
   }
 
   @Test
   public void testUsesConfigAsCallParameterWithXSource() {
     RemoteObject remoteObject = TabrisTestUtil.mockRemoteObject();
     XCallbackConfiguration configuration = new XCallbackConfiguration( "foo", "bar" );
-    XCallback xCallback = new XCallback( configuration );
     configuration.setXSource( "foo" );
 
-    xCallback.call();
+    new XCallback( configuration );
 
-    ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
-    verify( remoteObject ).call( eq( "call" ), captor.capture() );
-    assertEquals( "foo", captor.getValue().get( "xSource" ).asString() );
+    verify( remoteObject ).set( "xSource", "foo" );
   }
 
   @Test
   public void testUsesConfigAsCallParameterWithActionParameters() {
     RemoteObject remoteObject = TabrisTestUtil.mockRemoteObject();
     XCallbackConfiguration configuration = new XCallbackConfiguration( "foo", "bar" );
-    XCallback xCallback = new XCallback( configuration );
     configuration.addActionParameter( "foo1", "bar1" );
 
-    xCallback.call();
+    new XCallback( configuration );
 
     ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
-    verify( remoteObject ).call( eq( "call" ), captor.capture() );
-    JsonObject parameter = captor.getValue().get( "actionParameters" ).asObject();
+    verify( remoteObject ).set( eq( "actionParameters" ), captor.capture() );
+    JsonObject parameter = captor.getValue().asObject();
     assertEquals( "bar1", parameter.get( "foo1" ).asString() );
   }
 
@@ -99,56 +92,44 @@ public class XCallbackTest {
   public void testUsesConfigAsCallParameterWithXSourceName() {
     RemoteObject remoteObject = TabrisTestUtil.mockRemoteObject();
     XCallbackConfiguration configuration = new XCallbackConfiguration( "foo", "bar" );
-    XCallback xCallback = new XCallback( configuration );
     configuration.setXSourceName( "foo1" );
 
-    xCallback.call();
+    new XCallback( configuration );
 
-    ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
-    verify( remoteObject ).call( eq( "call" ), captor.capture() );
-    assertEquals( "foo1", captor.getValue().get( "xSourceName" ).asString() );
+    verify( remoteObject ).set( "xSourceName", "foo1" );
   }
 
   @Test
   public void testUsesConfigAsCallParameterWithXSuccessName() {
     RemoteObject remoteObject = TabrisTestUtil.mockRemoteObject();
     XCallbackConfiguration configuration = new XCallbackConfiguration( "foo", "bar" );
-    XCallback xCallback = new XCallback( configuration );
     configuration.setXSuccessName( "foo1" );
 
-    xCallback.call();
+    new XCallback( configuration );
 
-    ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
-    verify( remoteObject ).call( eq( "call" ), captor.capture() );
-    assertEquals( "foo1", captor.getValue().get( "xSuccessName" ).asString() );
+    verify( remoteObject ).set( "xSuccessName", "foo1" );
   }
 
   @Test
   public void testUsesConfigAsCallParameterWithXErrorName() {
     RemoteObject remoteObject = TabrisTestUtil.mockRemoteObject();
     XCallbackConfiguration configuration = new XCallbackConfiguration( "foo", "bar" );
-    XCallback xCallback = new XCallback( configuration );
     configuration.setXErrorName( "foo1" );
 
-    xCallback.call();
+    new XCallback( configuration );
 
-    ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
-    verify( remoteObject ).call( eq( "call" ), captor.capture() );
-    assertEquals( "foo1", captor.getValue().get( "xErrorName" ).asString() );
+    verify( remoteObject ).set( "xErrorName", "foo1" );
   }
 
   @Test
   public void testUsesConfigAsCallParameterWithXCancelName() {
     RemoteObject remoteObject = TabrisTestUtil.mockRemoteObject();
     XCallbackConfiguration configuration = new XCallbackConfiguration( "foo", "bar" );
-    XCallback xCallback = new XCallback( configuration );
     configuration.setXCancelName( "foo1" );
 
-    xCallback.call();
+    new XCallback( configuration );
 
-    ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
-    verify( remoteObject ).call( eq( "call" ), captor.capture() );
-    assertEquals( "foo1", captor.getValue().get( "xCancelName" ).asString() );
+    verify( remoteObject ).set( "xCancelName", "foo1" );
   }
 
   @Test
