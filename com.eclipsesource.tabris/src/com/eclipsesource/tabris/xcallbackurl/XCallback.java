@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.xcallbackurl;
 
+import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.Constants.EVENT_CANCEL;
 import static com.eclipsesource.tabris.internal.Constants.EVENT_ERROR;
@@ -47,6 +48,7 @@ public class XCallback implements Serializable, Adaptable {
   private final RemoteObject remoteObject;
   private final List<XCallbackListener> listeners;
   private final XCallbackConfiguration configuration;
+  private boolean destroyed;
 
   public XCallback( XCallbackConfiguration configuration ) {
     whenNull( configuration ).throwIllegalArgument( "Configuration must not be null" );
@@ -114,6 +116,7 @@ public class XCallback implements Serializable, Adaptable {
   }
 
   public void call() {
+    when( destroyed ).throwIllegalState( "XCallback already disposed" );
     remoteObject.call( METHOD_CALL, createParameters( configuration ) );
   }
 
@@ -146,6 +149,12 @@ public class XCallback implements Serializable, Adaptable {
       }
       parameters.add( PROPERTY_ACTION_PARAMETERS, xActionParameter );
     }
+  }
+
+  public void dispose() {
+    when( destroyed ).throwIllegalState( "XCallback already disposed" );
+    remoteObject.destroy();
+    destroyed = true;
   }
 
   RemoteObject getRemoteObject() {

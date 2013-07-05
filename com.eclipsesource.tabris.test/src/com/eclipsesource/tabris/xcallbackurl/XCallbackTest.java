@@ -214,4 +214,33 @@ public class XCallbackTest {
     assertSame( adapter, configuration );
   }
 
+  @Test
+  public void testDisposeDestroysRemoteObject() {
+    RemoteObject remoteObject = TabrisTestUtil.mockRemoteObject();
+    XCallbackConfiguration configuration = mock( XCallbackConfiguration.class );
+    XCallback xCallback = new XCallback( configuration );
+
+    xCallback.dispose();
+
+    verify( remoteObject ).destroy();
+  }
+
+  @Test( expected = IllegalStateException.class )
+  public void testFaislWithDoubleDestroy() {
+    XCallbackConfiguration configuration = mock( XCallbackConfiguration.class );
+    XCallback xCallback = new XCallback( configuration );
+
+    xCallback.dispose();
+    xCallback.dispose();
+  }
+
+  @Test( expected = IllegalStateException.class )
+  public void testFaislCallAfterDestroy() {
+    XCallbackConfiguration configuration = mock( XCallbackConfiguration.class );
+    XCallback xCallback = new XCallback( configuration );
+
+    xCallback.dispose();
+    xCallback.call();
+  }
+
 }
