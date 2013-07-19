@@ -14,6 +14,13 @@ import java.util.Map;
 
 
 /**
+ * <p>
+ * The {@link XCallbackAdapter} is an empty implementation of the {@link XCallbackListener} that can be used
+ * for convenience.
+ * </p>
+ *
+ * @see XCallbackListener
+ *
  * @since 1.1
  */
 public class XCallbackAdapter implements XCallbackListener {

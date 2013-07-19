@@ -19,6 +19,13 @@ import org.eclipse.rap.json.JsonValue;
 
 
 /**
+ * <p>
+ * The {@link AppEvent} represents an event instance of a specific {@link EventType}. Usually an {@link AppEvent} will
+ * be passed as a parameter when notifying a {@link AppListener}.
+ * </p>
+ *
+ * @see AppListener
+ *
  * @since 0.10
  */
 public class AppEvent implements Serializable {
@@ -27,6 +34,10 @@ public class AppEvent implements Serializable {
   private final JsonObject properties;
 
   /**
+   * <p>
+   * Creates a new {@link AppEvent}.
+   * </p>
+   *
    * @since 1.1
    */
   public AppEvent( EventType type, JsonObject properties ) {
@@ -35,11 +46,20 @@ public class AppEvent implements Serializable {
     this.properties = properties;
   }
 
+  /**
+   * <p>
+   * Returns the {@link EventType} of this {@link AppEvent}.
+   * </p>
+   */
   public EventType getType() {
     return type;
   }
 
   /**
+   * <p>
+   * Returns a property of the {@link AppEvent}. If the event has properties or not depends on its {@link EventType}.
+   * </p>
+   *
    * @since 1.1
    */
   public JsonValue getProperty( String name ) {

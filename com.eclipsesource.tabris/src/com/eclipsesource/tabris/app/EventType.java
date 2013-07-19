@@ -11,14 +11,37 @@
 package com.eclipsesource.tabris.app;
 
 /**
+ * <p>
+ * The {@link EventType} is used to specify different types of events. An App can fire events for different reasons
+ * e.g. pause, resume, inactivity and more.
+ * </p>
+ *
+ * @see AppEvent
+ *
  * @since 0.10
  */
 public enum EventType {
 
+  /**
+   * <p>
+   * When an App was sent to the background a {@link EventType#PAUSE} event will be fired.
+   * </p>
+   */
   PAUSE( "Pause" ),
+
+  /**
+   * <p>
+   * When an App was paused and becomes active again a {@link EventType#RESUME} event will be fired.
+   * </p>
+   */
   RESUME( "Resume" ),
 
   /**
+   * <p>
+   * When the user has not interacted with the App for a specific time an {@link EventType#INACTIVE} event will be
+   * fired. The time that needs to pass can be specified using {@link App#startInactivityTimer(int)}.
+   * </p>
+   *
    * @since 1.1
    */
   INACTIVE( "Inactive" );

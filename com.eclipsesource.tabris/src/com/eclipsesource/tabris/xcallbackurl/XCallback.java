@@ -38,9 +38,22 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 
+import com.eclipsesource.tabris.interaction.AppLauncher;
+
 
 /**
- * see http://x-callback-url.com/specifications/
+ * <p>
+ * The {@link XCallback} represents an implementation of the x-callback-url specification
+ * (see http://x-callback-url.com/specifications/). It can be used to accomplish a two way App communication on the
+ * client's device. This means you can call another App by calling its URL and receive a call when the App has done
+ * it's work or it has failed. To react to such callbacks the {@link XCallbackListener} needs to be used.
+ *
+ * <b>Note:</b> To accomplish a one way communication the {@link AppLauncher} is the better choice.
+ * </p>
+ *
+ * @see AppLauncher
+ * @see XCallbackListener
+ *
  * @since 1.1
  */
 public class XCallback implements Serializable, Adaptable {
@@ -50,6 +63,13 @@ public class XCallback implements Serializable, Adaptable {
   private final XCallbackConfiguration configuration;
   private boolean destroyed;
 
+  /**
+   * <p>
+   * Creates a new {@link XCallback} instance with the specified configuration.
+   * </p>
+   *
+   * @see XCallbackConfiguration
+   */
   public XCallback( XCallbackConfiguration configuration ) {
     whenNull( configuration ).throwIllegalArgument( "Configuration must not be null" );
     this.configuration = configuration;
@@ -105,16 +125,37 @@ public class XCallback implements Serializable, Adaptable {
     }
   }
 
+  /**
+   * <p>
+   * Adds a {@link XCallbackListener} that will be notified when an App calls back.
+   * </p>
+   *
+   * @see XCallbackListener
+   */
   public void addXCallbackListener( XCallbackListener listener ) {
     whenNull( listener ).throwIllegalArgument( "Listener must not be null" );
     listeners.add( listener );
   }
 
+  /**
+   * <p>
+   * Removes a {@link XCallbackListener} object.
+   * </p>
+   *
+   * @see XCallbackListener
+   */
   public void removeXCallbackListener( XCallbackListener listener ) {
     whenNull( listener ).throwIllegalArgument( "Listener must not be null" );
     listeners.remove( listener );
   }
 
+  /**
+   * <p>
+   * Performs the call to the App specified in the {@link XCallbackConfiguration} which was passed into the constructor.
+   *
+   * If the call was successful, was canceled or has failed the registered {@link XCallbackListener}s will be notified.
+   * </p>
+   */
   public void call() {
     when( destroyed ).throwIllegalState( "XCallback already disposed" );
     remoteObject.call( METHOD_CALL, createParameters( configuration ) );
@@ -151,6 +192,11 @@ public class XCallback implements Serializable, Adaptable {
     }
   }
 
+  /**
+   * <p>
+   * Destroys the {@link XCallback} object. This means no further {@link XCallback#call()} can be executed.
+   * </p>
+   */
   public void dispose() {
     when( destroyed ).throwIllegalState( "XCallback already disposed" );
     remoteObject.destroy();
