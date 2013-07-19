@@ -34,10 +34,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
+import com.eclipsesource.tabris.internal.ui.action.ProposalHandler;
+import com.eclipsesource.tabris.internal.ui.action.SearchAction;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 import com.eclipsesource.tabris.ui.UI;
-import com.eclipsesource.tabris.ui.action.ProposalHandler;
-import com.eclipsesource.tabris.ui.action.SearchAction;
 
 
 @SuppressWarnings("restriction")

@@ -19,9 +19,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.eclipsesource.tabris.internal.ui.action.SearchAction;
 import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.UI;
-import com.eclipsesource.tabris.ui.action.SearchAction;
 
 
 public class RemoteActionFactoryTest {

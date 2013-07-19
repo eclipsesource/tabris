@@ -8,15 +8,22 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.ui.action;
+package com.eclipsesource.tabris.internal.ui.action;
 
-import java.util.List;
-
+import com.eclipsesource.tabris.ui.AbstractAction;
 
 /**
  * @since 1.1
  */
-public interface ProposalHandler {
+public abstract class SearchAction extends AbstractAction {
 
-  void setProposals( List<String> proposals );
+  @Override
+  public void execute() {
+    // might be implemented by subclasses
+  }
+
+  public abstract void search( String query );
+
+  public abstract void modified( String query, ProposalHandler proposalHandler );
+
 }

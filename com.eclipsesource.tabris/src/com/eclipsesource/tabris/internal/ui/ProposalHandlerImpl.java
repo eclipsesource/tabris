@@ -18,7 +18,7 @@ import java.util.List;
 
 import org.eclipse.rap.rwt.remote.RemoteObject;
 
-import com.eclipsesource.tabris.ui.action.ProposalHandler;
+import com.eclipsesource.tabris.internal.ui.action.ProposalHandler;
 
 
 public class ProposalHandlerImpl implements ProposalHandler {
