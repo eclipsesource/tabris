@@ -13,7 +13,7 @@ Additional Features
 * Widgets API, API to control keyboard styles, animations, local touch behavior and so on.
 * Implementation of the ClientInfo Interface provided by RAP 2.0.
 * AppLauncher, API to launch other Apps on the device like Mail, Browser or Maps and others.
-* Swipe, UI component based on Composites to allow swipping.
+* Swipe, UI component based on Composites to allow swiping.
 * GroupedEvents, API to add a listener to a group of widgets to emulate one widget.
 * AppEvents, to detect events that happened within the app like moving to background and so on.
 * ClientStore, to store data on the accessing device. Comparable with cookies for the browser.
@@ -22,7 +22,7 @@ Additional Features
 
 Demos
 -----
-Demos using these features are located in the [tabris-demos repository](https://github.com/eclipsesource/rap-mobile-demos).
+Demos using these features are located in the [tabris-demos repository](https://github.com/eclipsesource/tabris-demos).
 
 License
 -------
