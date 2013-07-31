@@ -44,6 +44,11 @@ Tree[BORDER] {
   border: 0px;
 }
 
+Tree-Cell {
+  spacing: 0;
+  padding: 0px;
+}
+
 List {
   font: 20px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
   background-color: #ffffff;
