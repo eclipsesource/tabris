@@ -19,8 +19,8 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_QUERY;
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.service.ServerPushSession;
 
-import com.eclipsesource.tabris.internal.ui.action.SearchAction;
 import com.eclipsesource.tabris.ui.UI;
+import com.eclipsesource.tabris.ui.action.SearchAction;
 
 
 public class RemoteSearchAction extends RemoteAction {

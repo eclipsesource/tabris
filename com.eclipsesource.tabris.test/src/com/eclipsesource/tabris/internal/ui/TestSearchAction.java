@@ -10,8 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
-import com.eclipsesource.tabris.internal.ui.action.ProposalHandler;
-import com.eclipsesource.tabris.internal.ui.action.SearchAction;
+import com.eclipsesource.tabris.ui.action.ProposalHandler;
+import com.eclipsesource.tabris.ui.action.SearchAction;
 
 
 public class TestSearchAction extends SearchAction {
