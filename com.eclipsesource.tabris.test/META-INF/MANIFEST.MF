@@ -2,9 +2,9 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Tabris Server Components Tests
 Bundle-SymbolicName: com.eclipsesource.tabris.test
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 1.2.0.qualifier
 Bundle-Vendor: EclipseSource
-Fragment-Host: com.eclipsesource.tabris;bundle-version="1.1.0"
+Fragment-Host: com.eclipsesource.tabris;bundle-version="1.2.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.junit;bundle-version="[4.10.0,5.0.0)",
  org.eclipse.rap.rwt.testfixture;bundle-version="[2.1.0,2.2.0)",

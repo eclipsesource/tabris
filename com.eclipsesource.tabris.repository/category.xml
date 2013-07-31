@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/com.eclipsesource.tabris.feature_1.1.0.qualifier.jar" id="com.eclipsesource.tabris.feature" version="1.1.0.qualifier">
+   <feature url="features/com.eclipsesource.tabris.feature_1.2.0.qualifier.jar" id="com.eclipsesource.tabris.feature" version="1.2.0.qualifier">
       <category name="com.eclipsesource.tabris"/>
    </feature>
    <category-def name="com.eclipsesource.tabris" label="Tabris"/>

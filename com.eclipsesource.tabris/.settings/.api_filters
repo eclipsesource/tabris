@@ -1,45 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <component id="com.eclipsesource.tabris" version="2">
-    <resource path="src/com/eclipsesource/tabris/app/App.java" type="com.eclipsesource.tabris.app.App">
-        <filter id="403804204">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.app.App"/>
-                <message_argument value="hasScreenProtection()"/>
-            </message_arguments>
-        </filter>
-        <filter id="403804204">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.app.App"/>
-                <message_argument value="setScreenProtection(boolean)"/>
-            </message_arguments>
-        </filter>
-        <filter id="403804204">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.app.App"/>
-                <message_argument value="startInactivityTimer(int)"/>
-            </message_arguments>
-        </filter>
-        <filter id="403804204">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.app.App"/>
-                <message_argument value="stopInactivityTimer()"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="src/com/eclipsesource/tabris/app/AppEvent.java" type="com.eclipsesource.tabris.app.AppEvent">
-        <filter id="338722907">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.app.AppEvent"/>
-                <message_argument value="AppEvent(EventType, Map&lt;String,Object&gt;)"/>
-            </message_arguments>
-        </filter>
-        <filter id="338792546">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.app.AppEvent"/>
-                <message_argument value="getProperty(String)"/>
-            </message_arguments>
-        </filter>
-    </resource>
     <resource path="src/com/eclipsesource/tabris/internal/AppImpl.java" type="com.eclipsesource.tabris.internal.AppImpl">
         <filter id="574668824">
             <message_arguments>
