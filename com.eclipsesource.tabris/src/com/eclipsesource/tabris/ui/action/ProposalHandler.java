@@ -14,7 +14,7 @@ import java.util.List;
 
 
 /**
- * @since 1.1
+ * @since 1.2
  */
 public interface ProposalHandler {
 

@@ -13,7 +13,7 @@ package com.eclipsesource.tabris.ui.action;
 import com.eclipsesource.tabris.ui.AbstractAction;
 
 /**
- * @since 1.1
+ * @since 1.2
  */
 public abstract class SearchAction extends AbstractAction {
 
