@@ -37,8 +37,8 @@ public class RemoteSearchAction extends RemoteAction {
     Action action = descriptor.getAction();
     if( action instanceof SearchAction ) {
       SearchAction searchAction = ( SearchAction )action;
-      RemoteObjectHolder remoteObjectHolder = searchAction.getAdapter( RemoteObjectHolder.class );
-      remoteObjectHolder.setRemotObject( getRemoteObject() );
+      RemoteActionHolder remoteObjectHolder = searchAction.getAdapter( RemoteActionHolder.class );
+      remoteObjectHolder.setRemoteAction( this );
     }
   }
 

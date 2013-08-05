@@ -10,18 +10,16 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
-import org.eclipse.rap.rwt.remote.RemoteObject;
 
+public class RemoteActionHolder {
 
-public class RemoteObjectHolder {
+  private RemoteAction remoteAction;
 
-  private RemoteObject remoteObject;
-
-  public RemoteObject getRemoteObject() {
-    return remoteObject;
+  public RemoteAction getRemoteAction() {
+    return remoteAction;
   }
 
-  public void setRemotObject( RemoteObject remoteObject ) {
-    this.remoteObject = remoteObject;
+  public void setRemoteAction( RemoteAction remoteAction ) {
+    this.remoteAction = remoteAction;
   }
 }

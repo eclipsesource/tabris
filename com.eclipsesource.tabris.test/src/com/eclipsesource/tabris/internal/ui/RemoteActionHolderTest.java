@@ -14,29 +14,28 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
 
-import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.junit.Test;
 
 
-public class RemoteObjectHolderTest {
+public class RemoteActionHolderTest {
 
   @Test
   public void testRemoteObjectIsNullBydefault() {
-    RemoteObjectHolder remoteObjectHolder = new RemoteObjectHolder();
+    RemoteActionHolder remoteActionHolder = new RemoteActionHolder();
 
-    RemoteObject remoteObject = remoteObjectHolder.getRemoteObject();
+    RemoteAction remoteAction = remoteActionHolder.getRemoteAction();
 
-    assertNull( remoteObject );
+    assertNull( remoteAction );
   }
 
   @Test
   public void testSavesRemoteObject() {
-    RemoteObjectHolder remoteObjectHolder = new RemoteObjectHolder();
-    RemoteObject remoteObject = mock( RemoteObject.class );
+    RemoteActionHolder remoteObjectHolder = new RemoteActionHolder();
+    RemoteAction remoteAction = mock( RemoteAction.class );
 
-    remoteObjectHolder.setRemotObject( remoteObject );
-    RemoteObject actualRemoteObject = remoteObjectHolder.getRemoteObject();
+    remoteObjectHolder.setRemoteAction( remoteAction );
+    RemoteAction actualRemoteAction = remoteObjectHolder.getRemoteAction();
 
-    assertSame( remoteObject, actualRemoteObject );
+    assertSame( remoteAction, actualRemoteAction );
   }
 }

@@ -15,7 +15,7 @@ import static com.eclipsesource.tabris.internal.Constants.METHOD_OPEN;
 
 import org.eclipse.rap.rwt.Adaptable;
 
-import com.eclipsesource.tabris.internal.ui.RemoteObjectHolder;
+import com.eclipsesource.tabris.internal.ui.RemoteActionHolder;
 import com.eclipsesource.tabris.ui.AbstractAction;
 
 /**
@@ -23,10 +23,10 @@ import com.eclipsesource.tabris.ui.AbstractAction;
  */
 public abstract class SearchAction extends AbstractAction implements Adaptable {
 
-  private final RemoteObjectHolder remoteObjectHolder;
+  private final RemoteActionHolder remoteObjectHolder;
 
   public SearchAction() {
-    remoteObjectHolder = new RemoteObjectHolder();
+    remoteObjectHolder = new RemoteActionHolder();
   }
 
   @Override
@@ -39,26 +39,27 @@ public abstract class SearchAction extends AbstractAction implements Adaptable {
   public abstract void modified( String query, ProposalHandler proposalHandler );
 
   public final void open() {
-    whenNull( remoteObjectHolder.getRemoteObject() ).throwIllegalState( "RemoteObject not set" );
-    remoteObjectHolder.getRemoteObject().call( METHOD_OPEN, null );
+    whenNull( remoteObjectHolder.getRemoteAction() ).throwIllegalState( "RemoteAction not set" );
+    execute( remoteObjectHolder.getRemoteAction().getUI() );
+    remoteObjectHolder.getRemoteAction().getRemoteObject().call( METHOD_OPEN, null );
   }
 
   public void setQuery( String query ) {
     whenNull( query ).throwIllegalArgument( "Query must not be null" );
-    whenNull( remoteObjectHolder.getRemoteObject() ).throwIllegalState( "RemoteObject not set" );
-    remoteObjectHolder.getRemoteObject().set( "query", query );
+    whenNull( remoteObjectHolder.getRemoteAction() ).throwIllegalState( "RemoteAction not set" );
+    remoteObjectHolder.getRemoteAction().getRemoteObject().set( "query", query );
   }
 
   public void setMessage( String message ) {
     whenNull( message ).throwIllegalArgument( "Message must not be null" );
-    whenNull( remoteObjectHolder.getRemoteObject() ).throwIllegalState( "RemoteObject not set" );
-    remoteObjectHolder.getRemoteObject().set( "message", message );
+    whenNull( remoteObjectHolder.getRemoteAction() ).throwIllegalState( "RemoteAction not set" );
+    remoteObjectHolder.getRemoteAction().getRemoteObject().set( "message", message );
   }
 
   @Override
   @SuppressWarnings("unchecked")
   public <T> T getAdapter( Class<T> adapter ) {
-    if( adapter == RemoteObjectHolder.class ) {
+    if( adapter == RemoteActionHolder.class ) {
       return ( T )remoteObjectHolder;
     }
     return null;

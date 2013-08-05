@@ -74,8 +74,8 @@ public class RemoteSearchActionTest {
 
     new RemoteSearchAction( ui, actionDescriptor, "foo" );
 
-    RemoteObjectHolder remoteObjectHolder = action.getAdapter( RemoteObjectHolder.class );
-    assertSame( remoteObjectHolder.getRemoteObject(), remoteObject );
+    RemoteActionHolder remoteObjectHolder = action.getAdapter( RemoteActionHolder.class );
+    assertSame( remoteObjectHolder.getRemoteAction().getRemoteObject(), remoteObject );
   }
 
   @Test
