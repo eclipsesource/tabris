@@ -52,6 +52,10 @@ public class InstanceCreatorTest {
     public void deactivate() {
     }
 
+    @Override
+    public void destroy() {
+    }
+
   }
 
   public static class TestClassWithoutNoArgumentConstructor implements Page {
@@ -71,6 +75,10 @@ public class InstanceCreatorTest {
     public void deactivate() {
     }
 
+    @Override
+    public void destroy() {
+    }
+
   }
 
   public static class TestClassWithPrivateConstructor implements Page {
@@ -88,6 +96,10 @@ public class InstanceCreatorTest {
 
     @Override
     public void deactivate() {
+    }
+
+    @Override
+    public void destroy() {
     }
 
   }

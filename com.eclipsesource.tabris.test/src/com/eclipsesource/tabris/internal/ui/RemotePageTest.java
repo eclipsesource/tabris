@@ -164,12 +164,12 @@ public class RemotePageTest {
   }
 
   @Test
-    public void testGetData() {
-      PageData data = mock( PageData.class );
-      RemotePage page = new RemotePage( ui, descriptor, "foo", data );
+  public void testGetData() {
+    PageData data = mock( PageData.class );
+    RemotePage page = new RemotePage( ui, descriptor, "foo", data );
 
-      assertSame( data, page.getData() );
-    }
+    assertSame( data, page.getData() );
+  }
 
   @Test
   public void testDestroyDoesNotDestroyActions() {
@@ -183,6 +183,17 @@ public class RemotePageTest {
 
   @Test
   public void testDestroyActionsSendsDestroy() {
+    RemotePage remotePage = new RemotePage( ui, descriptor, "foo", mock( PageData.class ) );
+    remotePage.createControl( shell );
+
+    remotePage.destroy();
+
+    TestPage page = ( TestPage )remotePage.getPage();
+    assertTrue( page.wasDestroyed() );
+  }
+
+  @Test
+  public void testDestroyCallsDestroyOnPage() {
     RemotePage page = new RemotePage( ui, descriptor, "foo", mock( PageData.class ) );
     page.createActions();
 

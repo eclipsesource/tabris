@@ -50,8 +50,8 @@ public class RemotePage implements Serializable {
   private final List<RemoteAction> remoteActions;
   private final UI ui;
   private final String parentId;
-  private final Page page;
   private final PageData data;
+  private final Page page;
   private Control control;
 
   public RemotePage( UI ui, PageDescriptor descriptor, String parentId, PageData data ) {
@@ -150,6 +150,7 @@ public class RemotePage implements Serializable {
   }
 
   public void destroy() {
+    page.destroy();
     control.dispose();
     remoteObject.destroy();
   }

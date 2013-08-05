@@ -71,4 +71,12 @@
             </message_arguments>
         </filter>
     </resource>
+    <resource path="src/com/eclipsesource/tabris/ui/Page.java" type="com.eclipsesource.tabris.ui.Page">
+        <filter id="403804204">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.ui.Page"/>
+                <message_argument value="destroy()"/>
+            </message_arguments>
+        </filter>
+    </resource>
 </component>

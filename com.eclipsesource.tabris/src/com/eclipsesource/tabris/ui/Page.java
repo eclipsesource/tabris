@@ -77,4 +77,9 @@ public interface Page extends Serializable {
    */
   void deactivate();
 
+  /**
+   * @since 1.2
+   */
+  void destroy();
+
 }

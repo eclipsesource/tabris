@@ -55,6 +55,14 @@ public abstract class AbstractPage implements Page {
   }
 
   /**
+   * @since 1.2
+   */
+  @Override
+  public void destroy() {
+    // to be implemented by sub classes.
+  }
+
+  /**
    * <p>
    * Returns the UI instance this page lives in.
    * </p>

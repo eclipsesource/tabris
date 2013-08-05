@@ -21,6 +21,7 @@ public class TestPage implements Page{
   private boolean wasCreated;
   private boolean wasDeactivated;
   private boolean wasActivated;
+  private boolean wasDestroyed;
 
   @Override
   public void createContent( Composite parent, UI ui ) {
@@ -47,6 +48,15 @@ public class TestPage implements Page{
 
   public boolean wasActivated() {
     return wasActivated;
+  }
+
+  @Override
+  public void destroy() {
+    wasDestroyed = true;
+  }
+
+  public boolean wasDestroyed() {
+    return wasDestroyed;
   }
 
 }
