@@ -233,7 +233,7 @@ public class Controller implements Serializable {
     action.setVisible( visible );
   }
 
-  private RemoteAction findRemoteAction( String id ) {
+  RemoteAction findRemoteAction( String id ) {
     RemoteAction result = findActionInGlobalActions( id );
     if( result == null ) {
       result = findActionInPageActions( id );

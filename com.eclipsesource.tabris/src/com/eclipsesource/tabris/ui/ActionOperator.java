@@ -66,4 +66,9 @@ public interface ActionOperator {
    */
   boolean isActionVisible( String id );
 
+  /**
+   * @since 1.2
+   */
+  Action getAction( String id );
+
 }

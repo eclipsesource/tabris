@@ -11,13 +11,17 @@
 package com.eclipsesource.tabris.internal.ui;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.io.Serializable;
 
 import org.junit.Test;
+
+import com.eclipsesource.tabris.ui.Action;
 
 
 public class ActionOperatorImplTest {
@@ -30,6 +34,36 @@ public class ActionOperatorImplTest {
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithNullController() {
     new ActionOperatorImpl( null );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testgetActionFailsWithNullId() {
+    ActionOperatorImpl actionOperator = new ActionOperatorImpl( mock( Controller.class ) );
+
+    actionOperator.getAction( null );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testgetActionFailsWithEmptyId() {
+    ActionOperatorImpl actionOperator = new ActionOperatorImpl( mock( Controller.class ) );
+
+    actionOperator.getAction( "" );
+  }
+
+  @Test
+  public void testFindsAction() {
+    Controller controller = mock( Controller.class );
+    RemoteAction remoteAction = mock( RemoteAction.class );
+    ActionDescriptor descriptor = mock( ActionDescriptor.class );
+    Action action = mock( Action.class );
+    when( descriptor.getAction() ).thenReturn( action );
+    when( remoteAction.getDescriptor() ).thenReturn( descriptor );
+    when( controller.findRemoteAction( "foo" ) ).thenReturn( remoteAction );
+    ActionOperatorImpl actionOperator = new ActionOperatorImpl( controller );
+
+    Action actualAction = actionOperator.getAction( "foo" );
+
+    assertSame( action, actualAction );
   }
 
   @Test
