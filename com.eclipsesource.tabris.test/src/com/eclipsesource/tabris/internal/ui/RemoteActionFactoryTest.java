@@ -10,7 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -21,7 +22,6 @@ import org.junit.Test;
 
 import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.UI;
-import com.eclipsesource.tabris.ui.action.SearchAction;
 
 
 public class RemoteActionFactoryTest {
@@ -49,7 +49,7 @@ public class RemoteActionFactoryTest {
   @Test
   public void testCreatesSearchRemoteAction() {
     ActionDescriptor descriptor= mock( ActionDescriptor.class );
-    when( descriptor.getAction() ).thenReturn( mock( SearchAction.class ) );
+    when( descriptor.getAction() ).thenReturn( new TestSearchAction() );
 
     RemoteAction remoteAction = RemoteActionFactory.createRemoteAction( mock( UI.class ), descriptor, "foo" );
 

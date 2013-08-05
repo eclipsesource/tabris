@@ -10,12 +10,24 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.ui.action;
 
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
+import static com.eclipsesource.tabris.internal.Constants.METHOD_OPEN;
+
+import org.eclipse.rap.rwt.Adaptable;
+
+import com.eclipsesource.tabris.internal.ui.RemoteObjectHolder;
 import com.eclipsesource.tabris.ui.AbstractAction;
 
 /**
  * @since 1.2
  */
-public abstract class SearchAction extends AbstractAction {
+public abstract class SearchAction extends AbstractAction implements Adaptable {
+
+  private final RemoteObjectHolder remoteObjectHolder;
+
+  public SearchAction() {
+    remoteObjectHolder = new RemoteObjectHolder();
+  }
 
   @Override
   public void execute() {
@@ -25,5 +37,31 @@ public abstract class SearchAction extends AbstractAction {
   public abstract void search( String query );
 
   public abstract void modified( String query, ProposalHandler proposalHandler );
+
+  public final void open() {
+    whenNull( remoteObjectHolder.getRemoteObject() ).throwIllegalState( "RemoteObject not set" );
+    remoteObjectHolder.getRemoteObject().call( METHOD_OPEN, null );
+  }
+
+  public void setQuery( String query ) {
+    whenNull( query ).throwIllegalArgument( "Query must not be null" );
+    whenNull( remoteObjectHolder.getRemoteObject() ).throwIllegalState( "RemoteObject not set" );
+    remoteObjectHolder.getRemoteObject().set( "query", query );
+  }
+
+  public void setMessage( String message ) {
+    whenNull( message ).throwIllegalArgument( "Message must not be null" );
+    whenNull( remoteObjectHolder.getRemoteObject() ).throwIllegalState( "RemoteObject not set" );
+    remoteObjectHolder.getRemoteObject().set( "message", message );
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public <T> T getAdapter( Class<T> adapter ) {
+    if( adapter == RemoteObjectHolder.class ) {
+      return ( T )remoteObjectHolder;
+    }
+    return null;
+  }
 
 }

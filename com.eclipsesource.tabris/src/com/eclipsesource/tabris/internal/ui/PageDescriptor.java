@@ -34,11 +34,11 @@ public class PageDescriptor implements Serializable {
   private final byte[] image;
 
   public PageDescriptor( String id,
-                             Class<? extends Page> pageType,
-                             String title,
-                             InputStream image,
-                             boolean isTopLevelPage,
-                             PageStyle... style )
+                         Class<? extends Page> pageType,
+                         String title,
+                         InputStream image,
+                         boolean isTopLevelPage,
+                         PageStyle... style )
   {
     this.actions = new ArrayList<ActionDescriptor>();
     this.id = id;

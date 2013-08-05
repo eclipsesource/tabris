@@ -19,6 +19,7 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_QUERY;
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.service.ServerPushSession;
 
+import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.UI;
 import com.eclipsesource.tabris.ui.action.SearchAction;
 
@@ -29,6 +30,16 @@ public class RemoteSearchAction extends RemoteAction {
 
   public RemoteSearchAction( UI ui, ActionDescriptor descriptor, String parentId ) {
     super( ui, descriptor, parentId );
+    setRemoteObject( descriptor );
+  }
+
+  private void setRemoteObject( ActionDescriptor descriptor ) {
+    Action action = descriptor.getAction();
+    if( action instanceof SearchAction ) {
+      SearchAction searchAction = ( SearchAction )action;
+      RemoteObjectHolder remoteObjectHolder = searchAction.getAdapter( RemoteObjectHolder.class );
+      remoteObjectHolder.setRemotObject( getRemoteObject() );
+    }
   }
 
   @Override
@@ -41,10 +52,22 @@ public class RemoteSearchAction extends RemoteAction {
     super.handleNotify( event, properties );
     SearchAction action = ( SearchAction )getDescriptor().getAction();
     if( event.equals( EVENT_SEARCH ) ) {
-      action.search( properties.get( PROPERTY_QUERY ).asString() );
+      executeSearch( properties, action );
     } else if( event.equals( EVENT_MODIFY ) ) {
-      action.modified( properties.get( PROPERTY_QUERY ).asString(), new ProposalHandlerImpl( getRemoteObject() ) );
+      executeModified( properties, action );
     }
+  }
+
+  private void executeSearch( JsonObject properties, SearchAction action ) {
+    String query = properties.get( PROPERTY_QUERY ).asString();
+    action.setQuery( query );
+    action.search( query );
+  }
+
+  private void executeModified( JsonObject properties, SearchAction action ) {
+    String query = properties.get( PROPERTY_QUERY ).asString();
+    action.setQuery( query );
+    action.modified( query, new ProposalHandlerImpl( getRemoteObject() ) );
   }
 
   @Override
