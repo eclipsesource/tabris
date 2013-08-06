@@ -52,22 +52,10 @@ public class RemoteSearchAction extends RemoteAction {
     super.handleNotify( event, properties );
     SearchAction action = ( SearchAction )getDescriptor().getAction();
     if( event.equals( EVENT_SEARCH ) ) {
-      executeSearch( properties, action );
+      action.search( properties.get( PROPERTY_QUERY ).asString() );
     } else if( event.equals( EVENT_MODIFY ) ) {
-      executeModified( properties, action );
+      action.modified( properties.get( PROPERTY_QUERY ).asString(), new ProposalHandlerImpl( getRemoteObject() ) );
     }
-  }
-
-  private void executeSearch( JsonObject properties, SearchAction action ) {
-    String query = properties.get( PROPERTY_QUERY ).asString();
-    action.setQuery( query );
-    action.search( query );
-  }
-
-  private void executeModified( JsonObject properties, SearchAction action ) {
-    String query = properties.get( PROPERTY_QUERY ).asString();
-    action.setQuery( query );
-    action.modified( query, new ProposalHandlerImpl( getRemoteObject() ) );
   }
 
   @Override

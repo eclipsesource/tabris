@@ -91,20 +91,6 @@ public class RemoteSearchActionTest {
   }
 
   @Test
-  public void testCallsSetQueryOnSearchEvent() {
-    SearchAction action = spy( new TestSearchAction() );
-    when( actionDescriptor.getAction() ).thenReturn( action );
-    RemoteSearchAction remoteAction = new RemoteSearchAction( ui, actionDescriptor, "foo" );
-    when( remoteObject.getHandler() ).thenReturn( remoteAction );
-    JsonObject properties = new JsonObject();
-    properties.add( "query", "bar" );
-
-    TabrisTestUtil.dispatchNotify( remoteObject, "Search", properties );
-
-    verify( action ).setQuery( "bar" );
-  }
-
-  @Test
   public void testCallsSearchOnSearchEvent() {
     SearchAction action = spy( new TestSearchAction() );
     when( actionDescriptor.getAction() ).thenReturn( action );
@@ -116,20 +102,6 @@ public class RemoteSearchActionTest {
     TabrisTestUtil.dispatchNotify( remoteObject, "Search", properties );
 
     verify( action ).search( "bar" );
-  }
-
-  @Test
-  public void testSetsQueryOnModifyEvent() {
-    SearchAction action = spy( new TestSearchAction() );
-    when( actionDescriptor.getAction() ).thenReturn( action );
-    RemoteSearchAction remoteAction = new RemoteSearchAction( ui, actionDescriptor, "foo" );
-    when( remoteObject.getHandler() ).thenReturn( remoteAction );
-    JsonObject properties = new JsonObject();
-    properties.add( "query", "bar" );
-
-    TabrisTestUtil.dispatchNotify( remoteObject, "Modify", properties );
-
-    verify( action ).setQuery( "bar" );
   }
 
   @Test
