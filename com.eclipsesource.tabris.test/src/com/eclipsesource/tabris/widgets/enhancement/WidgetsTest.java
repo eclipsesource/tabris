@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Tree;
@@ -146,7 +147,7 @@ public class WidgetsTest {
   }
 
   @Test( expected = IllegalArgumentException.class )
-  public void testOnTabFolerCompositeWithNull() {
+  public void testOnTabFolderCompositeWithNull() {
     Widgets.onTabFolder( null );
   }
 
@@ -159,6 +160,27 @@ public class WidgetsTest {
 
     assertNotSame( decorator1, decorator2 );
   }
+
+  @Test
+  public void testOnTabItem() {
+    assertNotNull( Widgets.onTabItem( mock( TabItem.class ) ) );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testOnTabItemWithNull() {
+    Widgets.onTabItem( null );
+  }
+
+  @Test
+  public void testOnTabItemDoesNotCache() {
+    TabItem widget = mock( TabItem.class );
+
+    TabItemDecorator decorator1 = Widgets.onTabItem( widget );
+    TabItemDecorator decorator2 = Widgets.onTabItem( widget );
+
+    assertNotSame( decorator1, decorator2 );
+  }
+
 
   @Test
   public void testOnToolItem() {

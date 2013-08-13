@@ -126,6 +126,7 @@ public class Constants {
   public static final String METHOD_STOP_INACTIVITY_TIMER = "stopInactivityTimer";
   public static final String PROPERTY_INACTIVITY_TIME = "inactivityTime";
   public static final String PROPERTY_SCREEN_PROTECTION = "screenProtection";
+  public static final String PROPERTY_BADGE_NUMBER = "badgeNumber";
 
   // AppLauncher Constants
   public static final String TYPE_APP_LAUNCHER = "tabris.AppLauncher";

@@ -29,7 +29,8 @@ public class DataWhitelist implements WidgetDataWhiteList, Serializable {
     BACK_FOCUS( "backFocus" ),
     CLIENT_CANVAS( "clientCanvas" ),
     SWIPE( "swipe" ),
-    SHOW_TOUCH( "showTouch" );
+    SHOW_TOUCH( "showTouch" ),
+    BADGE_VALUE( "badgeValue" );
 
     private final String key;
 

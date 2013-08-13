@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Tree;
@@ -92,6 +93,14 @@ public class Widgets {
   public static TabFolderDecorator onTabFolder( TabFolder tabFolder ) {
     checkComponent( tabFolder );
     return new TabFolderDecorator( tabFolder );
+  }
+
+  /**
+   * @since 1.2
+   */
+  public static TabItemDecorator onTabItem( TabItem tabItem ) {
+    checkComponent( tabItem );
+    return new TabItemDecorator( tabItem );
   }
 
   private Widgets() {

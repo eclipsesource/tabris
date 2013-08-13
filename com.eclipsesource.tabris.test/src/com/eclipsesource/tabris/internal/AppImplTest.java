@@ -28,6 +28,7 @@ import org.eclipse.rap.json.JsonValue;
 import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
+import org.eclipse.swt.SWT;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -363,6 +364,70 @@ public class AppImplTest {
     app.setScreenProtection( true );
 
     assertTrue( app.hasScreenProtection() );
+  }
+
+  @Test
+  public void testDefaultBadgeNumber() {
+    AppImpl app = new AppImpl();
+
+    assertEquals( 0, app.getBadgeNumber() );
+  }
+
+  @Test
+  public void testSetBadgeNumber() {
+    RemoteObject remoteObject = TabrisTestUtil.mockServiceObject();
+    AppImpl app = new AppImpl();
+
+    app.setBadgeNumber( 42 );
+
+    verify( remoteObject ).set( "badgeNumber", 42 );
+  }
+
+  @Test
+  public void testSetBadgeNumberOnRemotObjectOnlyOnChange() {
+    RemoteObject remoteObject = TabrisTestUtil.mockServiceObject();
+    AppImpl app = new AppImpl();
+
+    app.setBadgeNumber( 42 );
+    app.setBadgeNumber( 42 );
+
+    verify( remoteObject, times( 1 ) ).set( "badgeNumber", 42 );
+  }
+
+  @Test
+  public void testSetBadgeNumberOnRemotObjectWithChangedValue() {
+    RemoteObject remoteObject = TabrisTestUtil.mockServiceObject();
+    AppImpl app = new AppImpl();
+
+    app.setBadgeNumber( 42 );
+    app.setBadgeNumber( 666 );
+
+    verify( remoteObject ).set( "badgeNumber", 666 );
+  }
+
+  @Test
+  public void testDisablesBadgeNumber() {
+    AppImpl app = new AppImpl();
+
+    app.setBadgeNumber( SWT.NONE );
+
+    assertEquals( 0, app.getBadgeNumber() );
+  }
+
+  @Test
+  public void testSavesBadgeNumber() {
+    AppImpl app = new AppImpl();
+
+    app.setBadgeNumber( 42 );
+
+    assertEquals( 42, app.getBadgeNumber() );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testBadgeNumberFailsWithNegativeNumber() {
+    AppImpl app = new AppImpl();
+
+    app.setBadgeNumber( -1 );
   }
 
 }

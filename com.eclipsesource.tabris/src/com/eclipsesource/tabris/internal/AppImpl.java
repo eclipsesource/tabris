@@ -11,6 +11,7 @@ import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Constants.EVENT_BACK_NAVIGATION;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_START_INACTIVITY_TIMER;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_STOP_INACTIVITY_TIMER;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_BADGE_NUMBER;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_INACTIVITY_TIME;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SCREEN_PROTECTION;
 import static com.eclipsesource.tabris.internal.Constants.TYPE_APP;
@@ -25,6 +26,7 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.internal.remote.ConnectionImpl;
 import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
 import org.eclipse.rap.rwt.remote.RemoteObject;
+import org.eclipse.swt.SWT;
 
 import com.eclipsesource.tabris.app.App;
 import com.eclipsesource.tabris.app.AppEvent;
@@ -39,12 +41,14 @@ public class AppImpl extends AbstractOperationHandler implements App {
   private final Map<EventType, List<AppListener>> eventListeners;
   private final List<BackNavigationListener> backNavigationListeners;
   private boolean protect;
+  private int badgeNumber;
 
   public AppImpl() {
     remoteObject = ( ( ConnectionImpl )RWT.getUISession().getConnection() ).createServiceObject( TYPE_APP );
     remoteObject.setHandler( this );
     eventListeners = new HashMap<EventType, List<AppListener>>();
     backNavigationListeners = new ArrayList<BackNavigationListener>();
+    badgeNumber = SWT.NONE;
   }
 
   @Override
@@ -141,5 +145,19 @@ public class AppImpl extends AbstractOperationHandler implements App {
   @Override
   public boolean hasScreenProtection() {
     return protect;
+  }
+
+  @Override
+  public void setBadgeNumber( int badgeNumber ) {
+    when( badgeNumber < 0 ).throwIllegalArgument( "badgeNumber must be >= 0 but was " + badgeNumber );
+    if( this.badgeNumber != badgeNumber ) {
+      remoteObject.set( PROPERTY_BADGE_NUMBER, badgeNumber );
+      this.badgeNumber = badgeNumber;
+    }
+  }
+
+  @Override
+  public int getBadgeNumber() {
+    return badgeNumber;
   }
 }

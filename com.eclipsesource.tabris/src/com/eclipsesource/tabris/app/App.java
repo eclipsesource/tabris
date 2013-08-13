@@ -103,4 +103,24 @@ public interface App extends ClientService {
    */
   boolean hasScreenProtection();
 
+  /**
+   * <p>
+   * Instructs the client to set the given number >= 0 as badge on the application icon.
+   * Set to {@link SWT.NONE} to hide.
+   * Not all clients support badges on the application icon.
+   * </p>
+   *
+   * @since 1.2
+   */
+  public void setBadgeNumber( int badgeNumber );
+
+  /**
+   * <p>
+   * Returns the number which should be set in the application icon badge.
+   * </p>
+   *
+   * @since 1.2
+   */
+  public int getBadgeNumber();
+
 }
