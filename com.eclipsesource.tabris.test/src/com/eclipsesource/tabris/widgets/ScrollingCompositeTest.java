@@ -96,9 +96,10 @@ public class ScrollingCompositeTest {
   }
 
   @Test
-  public void testSetsMinsize() {
-    ScrollingComposite composite = new ScrollingComposite( shell, SWT.H_SCROLL );
+  public void testSetsVerticalAndHorizontalMinSize() {
+    ScrollingComposite composite = new ScrollingComposite( shell, SWT.H_SCROLL | SWT.V_SCROLL );
     ScrolledComposite scrolledComposite = ( ScrolledComposite )composite.getParent();
+    scrolledComposite.setBounds( 0, 0, 200, 300 );
     Point size = composite.computeSize( SWT.DEFAULT, SWT.DEFAULT );
 
     int minWidth = scrolledComposite.getMinWidth();
@@ -109,7 +110,21 @@ public class ScrollingCompositeTest {
   }
 
   @Test
-  public void testSetsMinsizeOnResize() {
+  public void testSetsHorizontalMinSize() {
+    ScrollingComposite composite = new ScrollingComposite( shell, SWT.H_SCROLL );
+    ScrolledComposite scrolledComposite = ( ScrolledComposite )composite.getParent();
+    scrolledComposite.setBounds( 0, 0, 200, 300 );
+    Point size = composite.computeSize( SWT.DEFAULT, SWT.DEFAULT );
+
+    int minWidth = scrolledComposite.getMinWidth();
+    int minHeight = scrolledComposite.getMinHeight();
+
+    assertEquals( size.x, minWidth );
+    assertEquals( 300, minHeight );
+  }
+
+  @Test
+  public void testSetsHorizontalMinSizeOnResize() {
     ScrollingComposite composite = new ScrollingComposite( shell, SWT.H_SCROLL );
     ScrolledComposite scrolledComposite = ( ScrolledComposite )composite.getParent();
     scrolledComposite.setSize( 100, 100 );
@@ -119,6 +134,34 @@ public class ScrollingCompositeTest {
     int minHeight = scrolledComposite.getMinHeight();
 
     assertEquals( size.x, minWidth );
+    assertEquals( 100, minHeight );
+  }
+
+  @Test
+  public void testSetsVerticalMinSize() {
+    ScrollingComposite composite = new ScrollingComposite( shell, SWT.V_SCROLL );
+    ScrolledComposite scrolledComposite = ( ScrolledComposite )composite.getParent();
+    scrolledComposite.setBounds( 0, 0, 200, 300 );
+    Point size = composite.computeSize( SWT.DEFAULT, SWT.DEFAULT );
+
+    int minWidth = scrolledComposite.getMinWidth();
+    int minHeight = scrolledComposite.getMinHeight();
+
+    assertEquals( 200, minWidth );
+    assertEquals( size.y, minHeight );
+  }
+
+  @Test
+  public void testSetsVerticalMinSizeOnResize() {
+    ScrollingComposite composite = new ScrollingComposite( shell, SWT.V_SCROLL );
+    ScrolledComposite scrolledComposite = ( ScrolledComposite )composite.getParent();
+    scrolledComposite.setSize( 100, 100 );
+    Point size = composite.computeSize( SWT.DEFAULT, SWT.DEFAULT );
+
+    int minWidth = scrolledComposite.getMinWidth();
+    int minHeight = scrolledComposite.getMinHeight();
+
+    assertEquals( 100, minWidth );
     assertEquals( size.y, minHeight );
   }
 

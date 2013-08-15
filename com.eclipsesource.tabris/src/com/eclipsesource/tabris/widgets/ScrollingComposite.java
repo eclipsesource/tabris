@@ -114,9 +114,47 @@ public class ScrollingComposite extends Composite {
 
   @Override
   public Point computeSize( int wHint, int hHint, boolean changed ) {
-    Point size = super.computeSize( wHint, hHint, changed );
-    scrolledComposite.setMinSize( size );
-    return size;
+    Point resultSize = null;
+    if( hasStyle( SWT.V_SCROLL ) && hasStyle( SWT.H_SCROLL ) ) {
+      resultSize = super.computeSize( SWT.DEFAULT, SWT.DEFAULT, changed );
+      setMinSize( resultSize.x, resultSize.y );
+    } else if( hasStyle( SWT.H_SCROLL ) ) {
+      resultSize = calculateHorizontalSize( changed );
+      setMinSize( resultSize.x, scrolledComposite.getClientArea().height );
+    } else if( hasStyle( SWT.V_SCROLL ) ) {
+      resultSize = calculateVerticalSize( changed );
+      setMinSize( scrolledComposite.getClientArea().width, resultSize.y );
+    }
+    return resultSize;
+  }
+
+  private boolean hasStyle( int flag ) {
+    return ( getStyle() & flag ) == flag;
+  }
+
+  private Point calculateVerticalSize( boolean changed ) {
+    Point resultSize = super.computeSize( SWT.DEFAULT, SWT.DEFAULT, changed );
+    int clientAreaWidth = scrolledComposite.getClientArea().width;
+    Point widthSize = super.computeSize( clientAreaWidth, SWT.DEFAULT, changed );
+    if( widthSize.y > resultSize.y ) {
+      resultSize = widthSize;
+    }
+    return resultSize;
+  }
+
+  private Point calculateHorizontalSize( boolean changed ) {
+    Point resultSize = super.computeSize( SWT.DEFAULT, SWT.DEFAULT, changed );
+    int clientAreaHeight = scrolledComposite.getClientArea().height;
+    Point heightSize = super.computeSize( SWT.DEFAULT, clientAreaHeight, changed );
+    if( heightSize.x > resultSize.x ) {
+      resultSize = heightSize;
+    }
+    return resultSize;
+  }
+
+  private void setMinSize( int width, int height ) {
+    scrolledComposite.setMinHeight( height );
+    scrolledComposite.setMinWidth( width );
   }
 
   @Override
