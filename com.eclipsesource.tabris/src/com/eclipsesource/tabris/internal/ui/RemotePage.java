@@ -17,7 +17,6 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_STYLE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TITLE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TOP_LEVEL;
 import static com.eclipsesource.tabris.internal.JsonUtil.createJsonArray;
-import static com.eclipsesource.tabris.internal.ui.RemoteActionFactory.createRemoteAction;
 
 import java.io.ByteArrayInputStream;
 import java.io.Serializable;
@@ -36,6 +35,9 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+import com.eclipsesource.tabris.internal.ui.rendering.ActionRenderer;
+import com.eclipsesource.tabris.internal.ui.rendering.PageRenderer;
+import com.eclipsesource.tabris.internal.ui.rendering.RendererFactory;
 import com.eclipsesource.tabris.ui.Page;
 import com.eclipsesource.tabris.ui.PageData;
 import com.eclipsesource.tabris.ui.PageStyle;
@@ -43,11 +45,11 @@ import com.eclipsesource.tabris.ui.UI;
 
 
 @SuppressWarnings("restriction")
-public class RemotePage implements Serializable {
+public class RemotePage implements Serializable, PageRenderer {
 
   private final PageDescriptor descriptor;
   private final RemoteObjectImpl remoteObject;
-  private final List<RemoteAction> remoteActions;
+  private final List<ActionRenderer> remoteActions;
   private final UI ui;
   private final String parentId;
   private final PageData data;
@@ -61,12 +63,13 @@ public class RemotePage implements Serializable {
     this.remoteObject = ( RemoteObjectImpl )RWT.getUISession().getConnection().createRemoteObject( "tabris.Page" );
     this.descriptor = descriptor;
     this.page = InstanceCreator.createInstance( descriptor.getPageType() );
-    this.remoteActions = new ArrayList<RemoteAction>();
+    this.remoteActions = new ArrayList<ActionRenderer>();
     setTitle( descriptor.getTitle() );
     setAttributes();
   }
 
-  public String getRemotePageId() {
+  @Override
+  public String getId() {
     return remoteObject.getId();
   }
 
@@ -108,29 +111,37 @@ public class RemotePage implements Serializable {
     return null;
   }
 
-  public void createActions() {
+  @Override
+  public void createActions( RendererFactory rendererFactory, Composite uiParent ) {
     List<ActionDescriptor> actions = descriptor.getActions();
     for( ActionDescriptor actionDescriptor : actions ) {
-      remoteActions.add( createRemoteAction( ui, actionDescriptor, parentId ) );
+      ActionRenderer renderer = rendererFactory.createActionRenderer( ui, actionDescriptor, parentId );
+      remoteActions.add( renderer );
+      renderer.createUi( uiParent );
     }
   }
 
+  @Override
   public void setTitle( String title ) {
     remoteObject.set( PROPERTY_TITLE, title );
   }
 
-  public List<RemoteAction> getActions() {
+  @Override
+  public List<ActionRenderer> getActionRenderers() {
     return remoteActions;
   }
 
+  @Override
   public PageDescriptor getDescriptor() {
     return descriptor;
   }
 
+  @Override
   public Page getPage() {
     return page;
   }
 
+  @Override
   public void createControl( Composite parent ) {
     if( control == null ) {
       Composite container = new Composite( parent, SWT.NONE );
@@ -141,22 +152,26 @@ public class RemotePage implements Serializable {
     }
   }
 
+  @Override
   public Control getControl() {
     return control;
   }
 
+  @Override
   public PageData getData() {
     return data;
   }
 
+  @Override
   public void destroy() {
     page.destroy();
     control.dispose();
     remoteObject.destroy();
   }
 
+  @Override
   public void destroyActions() {
-    for( RemoteAction action : remoteActions ) {
+    for( ActionRenderer action : remoteActions ) {
       action.destroy();
     }
     remoteActions.clear();

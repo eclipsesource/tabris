@@ -44,7 +44,9 @@ public class PageOperatorImplTest {
     display = new Display();
     Shell shell = new Shell( display );
     shell.setLayout( new StackLayout() );
-    controller = new Controller( shell, mock( RemoteUI.class ), mock( UIDescriptor.class ) );
+    RemoteUI uiRenderer = mock( RemoteUI.class );
+    when( uiRenderer.getPageParent() ).thenReturn( shell );
+    controller = new Controller( uiRenderer, mock( UIDescriptor.class ) );
   }
 
   @Test

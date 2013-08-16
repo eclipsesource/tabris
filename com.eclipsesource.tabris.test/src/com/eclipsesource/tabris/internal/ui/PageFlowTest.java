@@ -34,6 +34,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
 
+import com.eclipsesource.tabris.internal.ui.rendering.PageRenderer;
 import com.eclipsesource.tabris.ui.PageData;
 import com.eclipsesource.tabris.ui.UI;
 
@@ -66,60 +67,59 @@ public class PageFlowTest {
   }
 
   @Test
-  public void testGetRootPage() {
+  public void testGetRootRenderer() {
     RemotePage rootPage = mock( RemotePage.class );
     PageFlow flow = new PageFlow( rootPage );
 
-    assertSame( rootPage, flow.getRootPage() );
+    assertSame( rootPage, flow.getRootRenderer() );
   }
 
-
   @Test
-  public void testgetCurrentPage() {
+  public void testGetCurrentRenderer() {
     RemotePage rootPage = mock( RemotePage.class );
     PageFlow flow = new PageFlow( rootPage );
     RemotePage currentPage = mock( RemotePage.class );
 
     flow.add( currentPage );
 
-    assertSame( currentPage, flow.getCurrentPage() );
+    assertSame( currentPage, flow.getCurrentRenderer() );
   }
 
   @Test
-  public void testgetPreviousPage() {
+  public void testGetPreviousRenderer() {
     RemotePage previousPage = mock( RemotePage.class );
     PageFlow flow = new PageFlow( previousPage );
     RemotePage currentPage = mock( RemotePage.class );
 
     flow.add( currentPage );
 
-    assertSame( previousPage, flow.getPreviousPage() );
+    assertSame( previousPage, flow.getPreviousRenderer() );
   }
 
   @Test
-  public void testAddTwoPagesSetsCurrentToLast() {
+  public void testAddTwoRenderersSetsCurrentToLast() {
     PageFlow flow = new PageFlow( mock( RemotePage.class ) );
-    RemotePage page1 = mock( RemotePage.class );
-    RemotePage page2 = mock( RemotePage.class );
+    RemotePage renderer1 = mock( RemotePage.class );
+    RemotePage renderer2 = mock( RemotePage.class );
 
-    flow.add( page1 );
-    flow.add( page2 );
+    flow.add( renderer1 );
+    flow.add( renderer2 );
 
-    assertSame( page2, flow.getCurrentPage() );
+    assertSame( renderer2, flow.getCurrentRenderer() );
   }
 
   @Test
-  public void testAddTwoPageWithPopSetsCurrentToFirst() {
+  public void testAddTwoRendererWithPopSetsCurrentToFirst() {
     PageFlow flow = new PageFlow( mock( RemotePage.class ) );
-    RemotePage page1 = mock( RemotePage.class );
-    RemotePage page2 = createPage();
+    RemotePage renderer1 = mock( RemotePage.class );
+    RemotePage renderer2 = createPage();
 
-    flow.add( page1 );
-    flow.add( page2 );
-    RemotePage popedDescriptor = flow.pop();
+    flow.add( renderer1 );
+    flow.add( renderer2 );
+    PageRenderer popedDescriptor = flow.pop();
 
-    assertSame( page1, flow.getCurrentPage() );
-    assertSame( page2, popedDescriptor );
+    assertSame( renderer1, flow.getCurrentRenderer() );
+    assertSame( renderer2, popedDescriptor );
   }
 
   @Test( expected = IllegalStateException.class )
@@ -136,34 +136,34 @@ public class PageFlowTest {
     doReturn( Boolean.TRUE ).when( descriptor ).isTopLevel();
     when( root.getDescriptor() ).thenReturn( descriptor );
     PageFlow flow = new PageFlow( root );
-    RemotePage page1 = createPage();
-    RemotePage page2 = createPage();
-    flow.add( page1 );
-    flow.add( page2 );
+    RemotePage renderer1 = createPage();
+    RemotePage renderer2 = createPage();
+    flow.add( renderer1 );
+    flow.add( renderer2 );
 
     flow.destroy();
 
-    assertTrue( page1.getControl().isDisposed() );
-    assertTrue( page2.getControl().isDisposed() );
+    assertTrue( renderer1.getControl().isDisposed() );
+    assertTrue( renderer2.getControl().isDisposed() );
   }
 
   @Test
-  public void testDestroyDestroysRemotePages() {
+  public void testDestroyDestroysPageRenderes() {
     RemotePage root = mock( RemotePage.class );
     PageDescriptor descriptor = mock( PageDescriptor.class );
     doReturn( Boolean.TRUE ).when( descriptor ).isTopLevel();
     when( root.getDescriptor() ).thenReturn( descriptor );
     PageFlow flow = new PageFlow( root );
-    RemotePage page1 = createPage();
-    RemotePage page2 = createPage();
-    flow.add( page1 );
-    flow.add( page2 );
+    RemotePage renderer1 = createPage();
+    RemotePage renderer2 = createPage();
+    flow.add( renderer1 );
+    flow.add( renderer2 );
 
     flow.destroy();
 
-    InOrder order = inOrder( page1, page2 );
-    order.verify( page1 ).destroy();
-    order.verify( page2 ).destroy();
+    InOrder order = inOrder( renderer1, renderer2 );
+    order.verify( renderer1 ).destroy();
+    order.verify( renderer2 ).destroy();
   }
 
   @Test
@@ -179,7 +179,7 @@ public class PageFlowTest {
   }
 
   @Test
-  public void testDestroyDoesNotDestroyRootRemotePage() {
+  public void testDestroyDoesNotDestroyRootPageRenderer() {
     RemotePage root = createPage();
     PageDescriptor descriptor = root.getDescriptor();
     doReturn( Boolean.TRUE ).when( descriptor ).isTopLevel();
@@ -191,30 +191,30 @@ public class PageFlowTest {
   }
 
   @Test
-  public void testGetAllPages() {
-    RemotePage root = mock( RemotePage.class );
-    PageDescriptor descriptor = mock( PageDescriptor.class );
-    doReturn( Boolean.TRUE ).when( descriptor ).isTopLevel();
-    when( root.getDescriptor() ).thenReturn( descriptor );
-    PageFlow flow = new PageFlow( root );
-    RemotePage page1 = createPage();
-    RemotePage page2 = createPage();
-    flow.add( page1 );
-    flow.add( page2 );
+    public void testGetAllRenderers() {
+      RemotePage root = mock( RemotePage.class );
+      PageDescriptor descriptor = mock( PageDescriptor.class );
+      doReturn( Boolean.TRUE ).when( descriptor ).isTopLevel();
+      when( root.getDescriptor() ).thenReturn( descriptor );
+      PageFlow flow = new PageFlow( root );
+      RemotePage renderer1 = createPage();
+      RemotePage renderer2 = createPage();
+      flow.add( renderer1 );
+      flow.add( renderer2 );
 
-    List<RemotePage> allPages = flow.getAllPages();
+      List<PageRenderer> allPages = flow.getAllRenderers();
 
-    assertEquals( 3, allPages.size() );
-    assertSame( root, allPages.get( 0 ) );
-    assertSame( page1, allPages.get( 1 ) );
-    assertSame( page2, allPages.get( 2 ) );
-  }
+      assertEquals( 3, allPages.size() );
+      assertSame( root, allPages.get( 0 ) );
+      assertSame( renderer1, allPages.get( 1 ) );
+      assertSame( renderer2, allPages.get( 2 ) );
+    }
 
   private RemotePage createPage() {
     PageDescriptor descriptor = spy( new PageDescriptor( "foo", TestPage.class, "", null, false ) );
     UI ui = mock( UI.class );
-    RemotePage page2 = new RemotePage( ui, descriptor, "foo", mock( PageData.class ) );
-    page2.createControl( shell );
-    return spy( page2 );
+    RemotePage renderer2 = new RemotePage( ui, descriptor, "foo", mock( PageData.class ) );
+    renderer2.createControl( shell );
+    return spy( renderer2 );
   }
 }

@@ -11,6 +11,7 @@
 package com.eclipsesource.tabris.internal.ui;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -21,6 +22,7 @@ import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
@@ -76,6 +78,15 @@ public class RemoteUITest {
     RemoteUI remoteUI = new RemoteUI( shell );
 
     assertEquals( remoteObject.getId(), remoteUI.getRemoteUIId() );
+  }
+
+  @Test
+  public void testGetUIParent() {
+    RemoteUI remoteUI = new RemoteUI( shell );
+
+    Composite uiParent = remoteUI.getPageParent();
+
+    assertSame( shell, uiParent );
   }
 
   @Test

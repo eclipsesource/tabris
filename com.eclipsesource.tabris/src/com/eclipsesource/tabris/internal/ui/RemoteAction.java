@@ -27,12 +27,14 @@ import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.internal.graphics.ImageFactory;
+import org.eclipse.swt.widgets.Composite;
 
+import com.eclipsesource.tabris.internal.ui.rendering.ActionRenderer;
 import com.eclipsesource.tabris.ui.UI;
 
 
 @SuppressWarnings("restriction")
-public class RemoteAction extends AbstractOperationHandler {
+public class RemoteAction extends AbstractOperationHandler implements ActionRenderer {
 
   private final RemoteObject remoteObject;
   private final ActionDescriptor descriptor;
@@ -91,10 +93,12 @@ public class RemoteAction extends AbstractOperationHandler {
     }
   }
 
+  @Override
   public void setEnabled( boolean enabled ) {
     remoteObject.set( PROPERTY_ENABLED, enabled );
   }
 
+  @Override
   public void setVisible( boolean visible ) {
     remoteObject.set( PROPERTY_VISIBILITY, visible );
   }
@@ -106,10 +110,12 @@ public class RemoteAction extends AbstractOperationHandler {
     }
   }
 
+  @Override
   public ActionDescriptor getDescriptor() {
     return descriptor;
   }
 
+  @Override
   public void destroy() {
     remoteObject.destroy();
   }
@@ -118,7 +124,13 @@ public class RemoteAction extends AbstractOperationHandler {
     return remoteObject;
   }
 
+  @Override
   public UI getUI() {
     return ui;
+  }
+
+  @Override
+  public void createUi( Composite uiParent ) {
+    // remote actions do not need an UI
   }
 }

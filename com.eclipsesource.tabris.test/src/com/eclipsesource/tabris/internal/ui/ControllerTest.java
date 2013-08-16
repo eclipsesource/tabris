@@ -15,9 +15,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -39,10 +41,13 @@ import org.junit.Test;
 import org.mockito.InOrder;
 
 import com.eclipsesource.tabris.internal.ZIndexStackLayout;
+import com.eclipsesource.tabris.internal.ui.rendering.ActionRenderer;
+import com.eclipsesource.tabris.internal.ui.rendering.PageRenderer;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 import com.eclipsesource.tabris.ui.Page;
 import com.eclipsesource.tabris.ui.PageData;
 import com.eclipsesource.tabris.ui.TransitionListener;
+import com.eclipsesource.tabris.ui.UI;
 import com.eclipsesource.tabris.ui.UIConfiguration;
 
 
@@ -63,7 +68,7 @@ public class ControllerTest {
     shell = new Shell( display );
     layout = mock( ZIndexStackLayout.class );
     shell.setLayout( layout );
-    uiDescriptor = new UIDescriptor();
+    uiDescriptor = spy( new UIDescriptor() );
     ui = mock( UIImpl.class );
     mockUI();
     remoteObject = ( RemoteObjectImpl )TabrisTestUtil.mockRemoteObject();
@@ -95,7 +100,8 @@ public class ControllerTest {
     doReturn( Boolean.FALSE ).when( descriptor ).isTopLevel();
     uiDescriptor.add( descriptor );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
 
     controller.createRootPages( ui );
   }
@@ -106,7 +112,8 @@ public class ControllerTest {
     doReturn( TestPage.class ).when( descriptor ).getPageType();
 
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
 
     controller.createRootPages( ui );
 
@@ -119,7 +126,8 @@ public class ControllerTest {
     when( descriptor.getTitle() ).thenReturn( "foo" );
     uiDescriptor.add( descriptor );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
 
     controller.createGlobalActions( ui );
 
@@ -127,11 +135,30 @@ public class ControllerTest {
   }
 
   @Test
+  public void testCreatesGlobalActionsWithUI() {
+    ActionRenderer renderer = mock( ActionRenderer.class );
+    RemoteRendererFactory factory = mock( RemoteRendererFactory.class );
+    when( factory.createActionRenderer( any( UI.class ), any( ActionDescriptor.class ), anyString() ) ).thenReturn( renderer );
+    when( uiDescriptor.getRendererFactory() ).thenReturn( factory );
+    ActionDescriptor descriptor = mock( ActionDescriptor.class );
+    when( descriptor.getTitle() ).thenReturn( "foo" );
+    uiDescriptor.add( descriptor );
+    RemoteUI remoteUI = mock( RemoteUI.class );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
+
+    controller.createGlobalActions( ui );
+
+    verify( renderer ).createUi( shell );
+  }
+
+  @Test
   public void testShowRootPageCreatesControl() {
     createRootPage( "foo" );
     PageDescriptor root2 = createRootPage( "bar" );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
     controller.showRoot( ui, root2, mock( PageData.class ) );
@@ -144,7 +171,8 @@ public class ControllerTest {
     PageDescriptor root1 = createRootPage( "foo" );
     PageDescriptor root2 = createRootPage( "bar" );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createRootPages( ui );
     PageData data = mock( PageData.class );
 
@@ -155,7 +183,7 @@ public class ControllerTest {
   }
 
   private TestPage getTestPage( Controller controller, PageDescriptor descriptor ) {
-    RemotePage remotePage = controller.getRootPages().get( descriptor );
+    PageRenderer remotePage = controller.getRootPages().get( descriptor );
     return ( TestPage )remotePage.getPage();
   }
 
@@ -164,7 +192,8 @@ public class ControllerTest {
     PageDescriptor root1 = createRootPage( "foo" );
     PageDescriptor root2 = createRootPage( "bar" );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createRootPages( ui );
     PageData data = mock( PageData.class );
 
@@ -179,7 +208,8 @@ public class ControllerTest {
     createRootPage( "foo" );
     PageDescriptor root2 = createRootPage( "bar" );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
     controller.showRoot( ui, root2, mock( PageData.class ) );
@@ -192,7 +222,8 @@ public class ControllerTest {
     createRootPage( "foo" );
     PageDescriptor root2 = createRootPage( "bar" );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
     controller.showRoot( ui, root2, mock( PageData.class ) );
@@ -205,7 +236,8 @@ public class ControllerTest {
     PageDescriptor root1 = createRootPage( "foo" );
     PageDescriptor root2 = createRootPage( "bar" );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
     controller.showRoot( ui, root2, mock( PageData.class ) );
@@ -220,7 +252,8 @@ public class ControllerTest {
     PageDescriptor root1 = createRootPage( "foo" );
     PageDescriptor page = createPage( "bar" );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
     TestPage testPage = ( TestPage )controller.showPage( ui, page, mock( PageData.class ) ).getPage();
@@ -234,7 +267,8 @@ public class ControllerTest {
     PageDescriptor root1 = createRootPage( "foo" );
     PageDescriptor page = createPage( "bar" );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
     TestPage testPage1 = ( TestPage )controller.showPage( ui, page, mock( PageData.class ) ).getPage();
@@ -250,7 +284,8 @@ public class ControllerTest {
     PageDescriptor root1 = createRootPage( "foo" );
     PageDescriptor page2 = createPage( "bar" );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createRootPages( ui );
     PageData data = mock( PageData.class );
 
@@ -266,7 +301,8 @@ public class ControllerTest {
     PageDescriptor root1 = createRootPage( "foo" );
     PageDescriptor page2 = createPage( "bar" );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createRootPages( ui );
     PageData data = mock( PageData.class );
 
@@ -282,7 +318,8 @@ public class ControllerTest {
     createRootPage( "foo" );
     PageDescriptor page = createPage( "bar" );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
     controller.showPage( ui, page, mock( PageData.class ) );
@@ -295,7 +332,8 @@ public class ControllerTest {
     createRootPage( "foo" );
     PageDescriptor page = createPage( "bar" );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
     controller.showPage( ui, page, mock( PageData.class ) );
@@ -308,7 +346,8 @@ public class ControllerTest {
     PageDescriptor root1 = createRootPage( "foo" );
     PageDescriptor page = createPage( "bar" );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
     TestPage testPage = ( TestPage )controller.showPage( ui, page, mock( PageData.class ) ).getPage();
@@ -323,7 +362,8 @@ public class ControllerTest {
     createRootPage( "foo" );
     PageDescriptor page = createRootPage( "bar" );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
     controller.showRoot( ui, page, mock( PageData.class ) );
@@ -337,7 +377,8 @@ public class ControllerTest {
     createRootPage( "foo" );
     PageDescriptor page = createPage( "bar" );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
     controller.showPage( ui, page, mock( PageData.class ) );
@@ -351,7 +392,8 @@ public class ControllerTest {
     PageDescriptor rootPage = createRootPage( "foo" );
     PageDescriptor page = createPage( "bar" );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
     TestPage testPage = ( TestPage )controller.showPage( ui, page, mock( PageData.class ) ).getPage();
@@ -367,7 +409,8 @@ public class ControllerTest {
     createRootPage( "foo" );
     PageDescriptor page = createPage( "bar" );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
     controller.showPage( ui, page, mock( PageData.class ) );
@@ -381,7 +424,8 @@ public class ControllerTest {
     createRootPage( "foo" );
     PageDescriptor page = createPage( "bar" );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
     controller.showPage( ui, page, mock( PageData.class ) );
@@ -396,7 +440,8 @@ public class ControllerTest {
     PageDescriptor page = createPage( "bar" );
     PageDescriptor page2 = createPage( "bar2" );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createRootPages( ui );
     PageData pagePageData = mock( PageData.class );
 
@@ -412,7 +457,8 @@ public class ControllerTest {
     PageDescriptor rootPage = createRootPage( "foo" );
     PageDescriptor page = createPage( "bar" );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createRootPages( ui );
     PageData data = mock( PageData.class );
 
@@ -428,7 +474,8 @@ public class ControllerTest {
     createRootPage( "foo" );
     PageDescriptor page = createPage( "bar" );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
     controller.showPage( ui, page, mock( PageData.class ) );
@@ -441,7 +488,8 @@ public class ControllerTest {
     createRootPage( "foo" );
     PageDescriptor page = createPage( "bar" );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createRootPages( ui );
     PageData data = mock( PageData.class );
 
@@ -455,10 +503,12 @@ public class ControllerTest {
     createRootPage( "foo" );
     PageDescriptor page = createPage( "bar" );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
-    RemotePage remotePage = controller.showPage( ui, page, mock( PageData.class ) );
+    PageRenderer remotePage = controller.showPage( ui, page, mock( PageData.class ) );
     controller.setTitle( remotePage.getPage(), "foobar" );
 
     verify( remoteObject ).set( "title", "foobar" );
@@ -468,7 +518,8 @@ public class ControllerTest {
   public void testSetTitleFailsWithNonExistingPage() {
     createRootPage( "foo" );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
     controller.setTitle( mock( Page.class ), "foobar" );
@@ -480,7 +531,8 @@ public class ControllerTest {
     when( descriptor.getId() ).thenReturn( "foo" );
     uiDescriptor.add( descriptor );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createGlobalActions( ui );
 
     controller.setActionVisible( "foo", true );
@@ -494,7 +546,8 @@ public class ControllerTest {
     when( descriptor.getId() ).thenReturn( "foo" );
     uiDescriptor.add( descriptor );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createGlobalActions( ui );
 
     controller.setActionVisible( "foo2", true );
@@ -506,7 +559,8 @@ public class ControllerTest {
     when( descriptor.getId() ).thenReturn( "foo" );
     uiDescriptor.add( descriptor );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createGlobalActions( ui );
 
     controller.setActionEnabled( "foo", true );
@@ -520,7 +574,8 @@ public class ControllerTest {
     when( descriptor.getId() ).thenReturn( "foo" );
     uiDescriptor.add( descriptor );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createGlobalActions( ui );
 
     controller.setActionEnabled( "foo2", true );
@@ -536,7 +591,8 @@ public class ControllerTest {
     when( rootPage.getActions() ).thenReturn( actions );
     uiDescriptor.add( descriptor );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
     controller.setActionVisible( "foo", true );
@@ -554,7 +610,8 @@ public class ControllerTest {
     when( rootPage.getActions() ).thenReturn( actions );
     uiDescriptor.add( descriptor );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
     controller.setActionEnabled( "foo", true );
@@ -566,7 +623,8 @@ public class ControllerTest {
   public void testFindsPageIdByRemoteId() {
     createRootPage( "foo" );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    Controller controller = new Controller( shell, remoteUI, uiDescriptor );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createRootPages( ui );
 
     String pageId = controller.getPageId( remoteObject.getId() );

@@ -12,7 +12,6 @@ package com.eclipsesource.tabris.internal.ui;
 
 import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
-import static com.eclipsesource.tabris.internal.ui.RemoteActionFactory.createRemoteAction;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,10 +19,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Shell;
 
 import com.eclipsesource.tabris.internal.ZIndexStackLayout;
+import com.eclipsesource.tabris.internal.ui.rendering.ActionRenderer;
+import com.eclipsesource.tabris.internal.ui.rendering.PageRenderer;
+import com.eclipsesource.tabris.internal.ui.rendering.RendererFactory;
+import com.eclipsesource.tabris.internal.ui.rendering.UIRenderer;
 import com.eclipsesource.tabris.ui.Page;
 import com.eclipsesource.tabris.ui.PageData;
 import com.eclipsesource.tabris.ui.TransitionListener;
@@ -32,53 +35,57 @@ import com.eclipsesource.tabris.ui.TransitionListener;
 public class Controller implements Serializable {
 
   private final UIDescriptor uiDescriptor;
-  private final Shell shell;
-  private final List<RemoteAction> globalActions;
-  private final Map<PageDescriptor, RemotePage> rootPages;
-  private final RemoteUI remoteUI;
+  private final Composite pageParent;
+  private final UIRenderer uiRenderer;
+  private final List<ActionRenderer> globalActionRenderers;
+  private final Map<PageDescriptor, PageRenderer> topLevelPageRenderers;
   private PageFlow currentFlow;
 
-  public Controller( Shell shell, RemoteUI remoteUI, UIDescriptor uiDescriptor ) {
-    this.shell = shell;
-    this.remoteUI = remoteUI;
+  public Controller( UIRenderer uiRenderer, UIDescriptor uiDescriptor ) {
+    this.uiRenderer = uiRenderer;
+    this.pageParent = uiRenderer.getPageParent();
     this.uiDescriptor = uiDescriptor;
-    this.globalActions = new ArrayList<RemoteAction>();
-    this.rootPages = new HashMap<PageDescriptor, RemotePage>();
+    this.globalActionRenderers = new ArrayList<ActionRenderer>();
+    this.topLevelPageRenderers = new HashMap<PageDescriptor, PageRenderer>();
   }
 
   public void createRootPages( UIImpl ui ) {
-    List<PageDescriptor> pages = uiDescriptor.getRootPages();
-    when( pages.isEmpty() ).throwIllegalState( "No TopLevel Pages found." );
-    createRootRemotePages( ui, pages );
-    showRoot( ui, pages.get( 0 ), new PageData() );
+    List<PageDescriptor> pageDescriptors = uiDescriptor.getRootPages();
+    when( pageDescriptors.isEmpty() ).throwIllegalState( "No TopLevel Pages found." );
+    createTopLevelPageRenderer( ui, pageDescriptors );
+    showRoot( ui, pageDescriptors.get( 0 ), new PageData() );
   }
 
-  private void createRootRemotePages( UIImpl ui, List<PageDescriptor> pages ) {
+  private void createTopLevelPageRenderer( UIImpl ui, List<PageDescriptor> pages ) {
     for( PageDescriptor descriptor : pages ) {
-      RemotePage remotePage = new RemotePage( ui, descriptor, remoteUI.getRemoteUIId(), new PageData() );
-      rootPages.put( descriptor, remotePage );
-      remotePage.createControl( shell );
+      RendererFactory rendererFactory = uiDescriptor.getRendererFactory();
+      PageRenderer renderer = rendererFactory.createPageRenderer( ui, descriptor, uiRenderer.getRemoteUIId(), new PageData() );
+      topLevelPageRenderers.put( descriptor, renderer );
+      renderer.createControl( pageParent );
     }
   }
 
   public void createGlobalActions( UIImpl ui ) {
-    List<ActionDescriptor> actions = uiDescriptor.getGlobalActions();
-    for( ActionDescriptor actionDescriptor : actions ) {
-      globalActions.add( createRemoteAction( ui, actionDescriptor, remoteUI.getRemoteUIId() ) );
+    List<ActionDescriptor> actionDescriptors = uiDescriptor.getGlobalActions();
+    for( ActionDescriptor actionDescriptor : actionDescriptors ) {
+      RendererFactory rendererFactory = uiDescriptor.getRendererFactory();
+      ActionRenderer renderer = rendererFactory.createActionRenderer( ui, actionDescriptor, uiRenderer.getRemoteUIId() );
+      renderer.createUi( pageParent );
+      globalActionRenderers.add( renderer );
     }
   }
 
-  void show( UIImpl ui, PageDescriptor newPage, PageData data ) {
-    if( newPage.isTopLevel() ) {
-      showRoot( ui, newPage, data );
+  void show( UIImpl ui, PageDescriptor newPageDescriptor, PageData data ) {
+    if( newPageDescriptor.isTopLevel() ) {
+      showRoot( ui, newPageDescriptor, data );
     } else {
-      showPage( ui, newPage, data );
+      showPage( ui, newPageDescriptor, data );
     }
   }
 
-  void showRoot( UIImpl ui, PageDescriptor newPage, PageData data ) {
-    RemotePage oldRoot = null;
-    RemotePage newRoot = rootPages.get( newPage );
+  void showRoot( UIImpl ui, PageDescriptor newPageDescriptor, PageData data ) {
+    PageRenderer oldRoot = null;
+    PageRenderer newRoot = topLevelPageRenderers.get( newPageDescriptor );
     newRoot.getData().addData( data );
     if( currentFlow != null ) {
       oldRoot = cleanupOldRoot( ui, newRoot );
@@ -86,8 +93,8 @@ public class Controller implements Serializable {
     initializeNewRoot( ui, oldRoot, newRoot );
   }
 
-  private RemotePage cleanupOldRoot( UIImpl ui, RemotePage root ) {
-    RemotePage oldRoot = currentFlow.getCurrentPage();
+  private PageRenderer cleanupOldRoot( UIImpl ui, PageRenderer root ) {
+    PageRenderer oldRoot = currentFlow.getCurrentRenderer();
     fireTransitionBeforeEvent( ui, oldRoot, root );
     oldRoot.destroyActions();
     oldRoot.getPage().deactivate();
@@ -95,95 +102,96 @@ public class Controller implements Serializable {
     return oldRoot;
   }
 
-  private void initializeNewRoot( UIImpl ui, RemotePage oldRoot, RemotePage newRoot ) {
+  private void initializeNewRoot( UIImpl ui, PageRenderer oldRoot, PageRenderer newRoot ) {
     currentFlow = new PageFlow( newRoot );
-    remoteUI.activate( newRoot.getRemotePageId() );
-    newRoot.createActions();
+    uiRenderer.activate( newRoot.getId() );
+    newRoot.createActions( uiDescriptor.getRendererFactory(), pageParent );
     newRoot.getPage().activate();
-    makeControlVisible( currentFlow.getCurrentPage().getControl() );
+    makeControlVisible( currentFlow.getCurrentRenderer().getControl() );
     fireTransitionAfterEvent( ui, oldRoot, newRoot );
   }
 
-  RemotePage showPage( UIImpl ui, PageDescriptor newPage, PageData data ) {
-    RemotePage oldRemotePage = cleanupOldPage( ui );
-    return initializeNewPage( ui, newPage, oldRemotePage, data );
+  PageRenderer showPage( UIImpl ui, PageDescriptor newPage, PageData data ) {
+    PageRenderer oldPageRenderer = cleanupOldPageRenderer( ui );
+    return initializeNewPage( ui, newPage, oldPageRenderer, data );
   }
 
-  private RemotePage cleanupOldPage( UIImpl ui ) {
-    RemotePage oldPage = currentFlow.getCurrentPage();
-    oldPage.destroyActions();
-    oldPage.getPage().deactivate();
-    return oldPage;
+  private PageRenderer cleanupOldPageRenderer( UIImpl ui ) {
+    PageRenderer oldPageRenderer = currentFlow.getCurrentRenderer();
+    oldPageRenderer.destroyActions();
+    oldPageRenderer.getPage().deactivate();
+    return oldPageRenderer;
   }
 
-  private RemotePage initializeNewPage( UIImpl ui,
-                                        PageDescriptor newPage,
-                                        RemotePage oldRemotePage,
-                                        PageData data )
+  private PageRenderer initializeNewPage( UIImpl ui,
+                                          PageDescriptor newPage,
+                                          PageRenderer oldPageRenderer,
+                                          PageData data )
   {
-    RemotePage newRemotePage = new RemotePage( ui, newPage, remoteUI.getRemoteUIId(), data );
-    fireTransitionBeforeEvent( ui, oldRemotePage, newRemotePage );
-    currentFlow.add( newRemotePage );
-    newRemotePage.createActions();
-    newRemotePage.createControl( shell );
-    remoteUI.activate( newRemotePage.getRemotePageId() );
-    newRemotePage.getPage().activate();
-    makeControlVisible( newRemotePage.getControl() );
-    fireTransitionAfterEvent( ui, oldRemotePage, newRemotePage );
-    return newRemotePage;
+    RendererFactory rendererFactory = uiDescriptor.getRendererFactory();
+    PageRenderer newPageRenderer = rendererFactory.createPageRenderer( ui, newPage, uiRenderer.getRemoteUIId(), data  );
+    fireTransitionBeforeEvent( ui, oldPageRenderer, newPageRenderer );
+    currentFlow.add( newPageRenderer );
+    newPageRenderer.createActions( uiDescriptor.getRendererFactory(), pageParent );
+    newPageRenderer.createControl( pageParent );
+    uiRenderer.activate( newPageRenderer.getId() );
+    newPageRenderer.getPage().activate();
+    makeControlVisible( newPageRenderer.getControl() );
+    fireTransitionAfterEvent( ui, oldPageRenderer, newPageRenderer );
+    return newPageRenderer;
   }
 
   boolean closeCurrentPage( UIImpl ui ) {
-    if( currentFlow != null && currentFlow.getPreviousPage() != null ) {
-      restorePreviousPage( ui, currentFlow.getPreviousPage() );
+    if( currentFlow != null && currentFlow.getPreviousRenderer() != null ) {
+      restorePreviousPage( ui, currentFlow.getPreviousRenderer() );
       return true;
     }
     return false;
   }
 
-  private void restorePreviousPage( UIImpl ui, RemotePage previousPage ) {
-    RemotePage removedPage = cleanUpCurrentPage( ui );
-    fireTransitionBeforeEvent( ui, removedPage, previousPage );
-    initializePreviousPage( ui, previousPage );
-    fireTransitionAfterEvent( ui, removedPage, previousPage );
+  private void restorePreviousPage( UIImpl ui, PageRenderer previousPageRenderer ) {
+    PageRenderer removedPage = cleanUpCurrentPage( ui );
+    fireTransitionBeforeEvent( ui, removedPage, previousPageRenderer );
+    initializePreviousPage( ui, previousPageRenderer );
+    fireTransitionAfterEvent( ui, removedPage, previousPageRenderer );
   }
 
-  private RemotePage cleanUpCurrentPage( UIImpl ui ) {
-    RemotePage removedPage = currentFlow.pop();
+  private PageRenderer cleanUpCurrentPage( UIImpl ui ) {
+    PageRenderer removedPage = currentFlow.pop();
     removedPage.destroy();
     removedPage.destroyActions();
     removedPage.getPage().deactivate();
     return removedPage;
   }
 
-  private void initializePreviousPage( UIImpl ui, RemotePage previousPage ) {
-    remoteUI.activate( previousPage.getRemotePageId() );
-    previousPage.createActions();
+  private void initializePreviousPage( UIImpl ui, PageRenderer previousPage ) {
+    uiRenderer.activate( previousPage.getId() );
+    previousPage.createActions( uiDescriptor.getRendererFactory(), pageParent );
     previousPage.getPage().activate();
     makeControlVisible( previousPage.getControl() );
   }
 
   private void makeControlVisible( Control control ) {
-    ZIndexStackLayout stack = ( ZIndexStackLayout )shell.getLayout();
+    ZIndexStackLayout stack = ( ZIndexStackLayout )pageParent.getLayout();
     stack.setOnTopControl( control );
-    shell.layout( true );
+    pageParent.layout( true );
   }
 
   public void setTitle( Page page, String title ) {
     if( currentFlow != null ) {
-      RemotePage remotePageToModify = null;
-      List<RemotePage> allPages = currentFlow.getAllPages();
-      for( RemotePage remotePage : allPages ) {
-        if( remotePage.getPage().equals( page ) ) {
-          remotePageToModify = remotePage;
+      PageRenderer rendererToModify = null;
+      List<PageRenderer> allPageRenderes = currentFlow.getAllRenderers();
+      for( PageRenderer renderer : allPageRenderes ) {
+        if( renderer.getPage().equals( page ) ) {
+          rendererToModify = renderer;
           break;
         }
       }
-      setPageTitle( remotePageToModify, title );
+      setPageTitle( rendererToModify, title );
     }
   }
 
-  private void setPageTitle( RemotePage remotePage, String title ) {
+  private void setPageTitle( PageRenderer remotePage, String title ) {
     if( remotePage != null ) {
       remotePage.setTitle( title );
     } else {
@@ -193,48 +201,48 @@ public class Controller implements Serializable {
 
   public Page getCurrentPage() {
     if( currentFlow != null ) {
-      return currentFlow.getCurrentPage().getPage();
+      return currentFlow.getCurrentRenderer().getPage();
     }
     return null;
   }
 
   public PageData getCurrentData() {
     if( currentFlow != null ) {
-      return currentFlow.getCurrentPage().getData();
+      return currentFlow.getCurrentRenderer().getData();
     }
     return null;
   }
 
-  public String getPageId( String remotePageId ) {
-    List<RemotePage> pages = getAllPages();
-    for( RemotePage remotePage : pages ) {
-      if( remotePage.getRemotePageId().equals( remotePageId ) ) {
-        return remotePage.getDescriptor().getId();
+  public String getPageId( String pageRendererId ) {
+    List<PageRenderer> pageRenderers = getAllPages();
+    for( PageRenderer pageRenderer : pageRenderers ) {
+      if( pageRenderer.getId().equals( pageRendererId ) ) {
+        return pageRenderer.getDescriptor().getId();
       }
     }
-    throw new IllegalStateException( "RemotePage with id " + remotePageId + " does not exist." );
+    throw new IllegalStateException( "RemotePage with id " + pageRendererId + " does not exist." );
   }
 
-  private List<RemotePage> getAllPages() {
-    List<RemotePage> pages = new ArrayList<RemotePage>( rootPages.values() );
+  private List<PageRenderer> getAllPages() {
+    List<PageRenderer> pages = new ArrayList<PageRenderer>( topLevelPageRenderers.values() );
     if( currentFlow != null ) {
-      pages.addAll( currentFlow.getAllPages() );
+      pages.addAll( currentFlow.getAllRenderers() );
     }
     return pages;
   }
 
   public void setActionEnabled( String id, boolean enabled ) {
-    RemoteAction action = findRemoteAction( id );
+    ActionRenderer action = findRemoteAction( id );
     action.setEnabled( enabled );
   }
 
   public void setActionVisible( String id, boolean visible ) {
-    RemoteAction action = findRemoteAction( id );
+    ActionRenderer action = findRemoteAction( id );
     action.setVisible( visible );
   }
 
-  RemoteAction findRemoteAction( String id ) {
-    RemoteAction result = findActionInGlobalActions( id );
+  ActionRenderer findRemoteAction( String id ) {
+    ActionRenderer result = findActionInGlobalActions( id );
     if( result == null ) {
       result = findActionInPageActions( id );
     }
@@ -242,8 +250,8 @@ public class Controller implements Serializable {
     return result;
   }
 
-  private RemoteAction findActionInGlobalActions( String id ) {
-    for( RemoteAction action : globalActions ) {
+  private ActionRenderer findActionInGlobalActions( String id ) {
+    for( ActionRenderer action : globalActionRenderers ) {
       if( action.getDescriptor().getId().equals( id ) ) {
         return action;
       }
@@ -251,27 +259,27 @@ public class Controller implements Serializable {
     return null;
   }
 
-  private RemoteAction findActionInPageActions( String id ) {
+  private ActionRenderer findActionInPageActions( String id ) {
     if( currentFlow != null ) {
       return findActionInCurrentFlow( id );
     }
     return null;
   }
 
-  private RemoteAction findActionInCurrentFlow( String id ) {
-    List<RemotePage> allPages = currentFlow.getAllPages();
-    for( RemotePage page : allPages ) {
-      List<RemoteAction> actions = page.getActions();
-      for( RemoteAction remoteAction : actions ) {
-        if( remoteAction.getDescriptor().getId().equals( id ) ) {
-          return remoteAction;
+  private ActionRenderer findActionInCurrentFlow( String id ) {
+    List<PageRenderer> allPageRenderers = currentFlow.getAllRenderers();
+    for( PageRenderer pageRenderer : allPageRenderers ) {
+      List<ActionRenderer> actionRenderers = pageRenderer.getActionRenderers();
+      for( ActionRenderer actionRenderer : actionRenderers ) {
+        if( actionRenderer.getDescriptor().getId().equals( id ) ) {
+          return actionRenderer;
         }
       }
     }
     return null;
   }
 
-  void fireTransitionBeforeEvent( UIImpl ui, RemotePage from, RemotePage to ) {
+  void fireTransitionBeforeEvent( UIImpl ui, PageRenderer from, PageRenderer to ) {
     UIDescriptor uiDescriptor = ui.getConfiguration().getAdapter( UIDescriptor.class );
     List<TransitionListener> listeners = new ArrayList<TransitionListener>( uiDescriptor.getTransitionListeners() );
     for( TransitionListener listener : listeners ) {
@@ -281,7 +289,7 @@ public class Controller implements Serializable {
     }
   }
 
-  void fireTransitionAfterEvent( UIImpl ui, RemotePage from, RemotePage to ) {
+  void fireTransitionAfterEvent( UIImpl ui, PageRenderer from, PageRenderer to ) {
     UIDescriptor uiDescriptor = ui.getConfiguration().getAdapter( UIDescriptor.class );
     List<TransitionListener> listeners = new ArrayList<TransitionListener>( uiDescriptor.getTransitionListeners() );
     for( TransitionListener listener : listeners ) {
@@ -291,8 +299,8 @@ public class Controller implements Serializable {
     }
   }
 
-  Map<PageDescriptor, RemotePage> getRootPages() {
-    return rootPages;
+  Map<PageDescriptor, PageRenderer> getRootPages() {
+    return topLevelPageRenderers;
   }
 
 }

@@ -61,7 +61,7 @@ public class TabrisUIIntegrationTest {
     configuration.addPageConfiguration( new PageConfiguration( "foo", pageType )
       .addActionConfiguration( actionConfiguration ) );
     RemoteUI remoteUI = new RemoteUI( shell );
-    Controller controller = new Controller( shell, remoteUI, configuration.getAdapter( UIDescriptor.class ) );
+    Controller controller = new Controller( remoteUI, configuration.getAdapter( UIDescriptor.class ) );
     UIImpl ui = new UIImpl( shell.getDisplay(), controller, configuration );
     remoteUI.setController( controller );
     remoteUI.setUi( ui );

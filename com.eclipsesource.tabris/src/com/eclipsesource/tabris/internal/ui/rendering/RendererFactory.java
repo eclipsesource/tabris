@@ -8,22 +8,22 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.internal.ui;
+package com.eclipsesource.tabris.internal.ui.rendering;
 
+import org.eclipse.swt.widgets.Shell;
+
+import com.eclipsesource.tabris.internal.ui.ActionDescriptor;
+import com.eclipsesource.tabris.internal.ui.PageDescriptor;
+import com.eclipsesource.tabris.ui.PageData;
 import com.eclipsesource.tabris.ui.UI;
-import com.eclipsesource.tabris.ui.action.SearchAction;
 
 
-public class RemoteActionFactory {
+public interface RendererFactory {
 
-  public static RemoteAction createRemoteAction( UI ui, ActionDescriptor descriptor, String parent ) {
-    if( descriptor.getAction() instanceof SearchAction ) {
-      return new RemoteSearchAction( ui, descriptor, parent );
-    }
-    return new RemoteAction( ui, descriptor, parent );
-  }
+  UIRenderer createUIRenderer( Shell shell );
 
-  private RemoteActionFactory() {
-    // prevent instantiation
-  }
+  PageRenderer createPageRenderer( UI ui, PageDescriptor descriptor, String parentId, PageData data );
+
+  ActionRenderer createActionRenderer( UI ui, ActionDescriptor descriptor, String parentId );
+
 }

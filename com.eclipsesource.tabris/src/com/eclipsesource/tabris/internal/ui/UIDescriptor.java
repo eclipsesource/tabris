@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.eclipsesource.tabris.internal.ui.rendering.RendererFactory;
 import com.eclipsesource.tabris.ui.TransitionListener;
 
 
@@ -22,11 +23,13 @@ public class UIDescriptor implements Serializable {
   private final List<PageDescriptor> pageDescriptors;
   private final List<ActionDescriptor> actionDescriptors;
   private final List<TransitionListener> transitionListeners;
+  private final RendererFactory rendererFactory;
 
   public UIDescriptor() {
     pageDescriptors = new ArrayList<PageDescriptor>();
     actionDescriptors = new ArrayList<ActionDescriptor>();
     transitionListeners = new ArrayList<TransitionListener>();
+    rendererFactory = new RemoteRendererFactory();
   }
 
   public void add( PageDescriptor descriptor ) {
@@ -97,5 +100,9 @@ public class UIDescriptor implements Serializable {
 
   public List<TransitionListener> getTransitionListeners() {
     return transitionListeners;
+  }
+
+  public RendererFactory getRendererFactory() {
+    return rendererFactory;
   }
 }

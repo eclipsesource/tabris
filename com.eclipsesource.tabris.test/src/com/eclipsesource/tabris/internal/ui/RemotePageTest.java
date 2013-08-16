@@ -15,6 +15,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -38,6 +39,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
+import com.eclipsesource.tabris.internal.ui.rendering.ActionRenderer;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 import com.eclipsesource.tabris.ui.Page;
 import com.eclipsesource.tabris.ui.PageData;
@@ -96,7 +98,7 @@ public class RemotePageTest {
   public void testGetRemoteId() {
     RemotePage page = new RemotePage( ui, descriptor, "foo", mock( PageData.class ) );
 
-    assertEquals( remoteObject.getId(), page.getRemotePageId() );
+    assertEquals( remoteObject.getId(), page.getId() );
   }
 
   @Test
@@ -145,11 +147,24 @@ public class RemotePageTest {
   }
 
   @Test
-  public void testGetActions() {
-    RemotePage page = new RemotePage( ui, descriptor, "foo", mock( PageData.class ) );
-    page.createActions();
+    public void testGetActionRenderers() {
+      RemotePage page = new RemotePage( ui, descriptor, "foo", mock( PageData.class ) );
+      ActionRenderer renderer = mock( ActionRenderer.class );
+      RemoteRendererFactory factory = mock( RemoteRendererFactory.class );
+      when( factory.createActionRenderer( any( UI.class ), any( ActionDescriptor.class ), anyString() ) ).thenReturn( renderer );
+  
+      page.createActions( factory, shell );
+  
+      verify( renderer ).createUi( shell );
+    }
 
-    List<RemoteAction> actions = page.getActions();
+  @Test
+  public void testCreateActionsCallsActionCreateUi() {
+    RemotePage page = new RemotePage( ui, descriptor, "foo", mock( PageData.class ) );
+    page.createActions( new RemoteRendererFactory(), shell );
+
+    List<ActionRenderer> actions = page.getActionRenderers();
+
     assertEquals( 1, actions.size() );
     assertEquals( "actionFoo", actions.get( 0 ).getDescriptor().getId() );
   }
@@ -195,7 +210,7 @@ public class RemotePageTest {
   @Test
   public void testDestroyCallsDestroyOnPage() {
     RemotePage page = new RemotePage( ui, descriptor, "foo", mock( PageData.class ) );
-    page.createActions();
+    page.createActions( new RemoteRendererFactory(), shell );
 
     page.destroyActions();
 

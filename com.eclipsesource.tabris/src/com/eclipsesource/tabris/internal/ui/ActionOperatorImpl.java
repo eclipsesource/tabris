@@ -17,6 +17,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.eclipsesource.tabris.internal.ui.rendering.ActionRenderer;
 import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.ActionOperator;
 
@@ -76,7 +77,7 @@ public class ActionOperatorImpl implements ActionOperator, Serializable {
   public Action getAction( String id ) {
     whenNull( id ).throwIllegalArgument( "Id must not be null" );
     when( id.isEmpty() ).throwIllegalArgument( "Id must not be empty" );
-    RemoteAction remoteAction = controller.findRemoteAction( id );
+    ActionRenderer remoteAction = controller.findRemoteAction( id );
     if( remoteAction != null ) {
       return remoteAction.getDescriptor().getAction();
     }

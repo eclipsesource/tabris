@@ -27,37 +27,49 @@ import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
 import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
+import com.eclipsesource.tabris.internal.ui.rendering.UIRenderer;
 import com.eclipsesource.tabris.ui.UI;
 
 
 @SuppressWarnings("restriction")
-public class RemoteUI extends AbstractOperationHandler {
-
+public class RemoteUI extends AbstractOperationHandler implements UIRenderer {
 
   private final RemoteObjectImpl remoteObject;
+  private final Shell shell;
   private UI ui;
   private Controller controller;
 
   public RemoteUI( Shell shell ) {
-    remoteObject = ( RemoteObjectImpl )getUISession().getConnection().createRemoteObject( "tabris.UI" );
-    remoteObject.setHandler( this );
-    remoteObject.set( PROPERTY_SHELL, getId( shell ) );
+    this.shell = shell;
+    this.remoteObject = ( RemoteObjectImpl )getUISession().getConnection().createRemoteObject( "tabris.UI" );
+    this.remoteObject.setHandler( this );
+    this.remoteObject.set( PROPERTY_SHELL, getId( shell ) );
   }
 
+  @Override
   public void setUi( UI ui ) {
     this.ui = ui;
   }
 
+  @Override
   public void setController( Controller controller ) {
     this.controller = controller;
   }
 
+  @Override
+  public Composite getPageParent() {
+    return shell;
+  }
+
+  @Override
   public String getRemoteUIId() {
     return remoteObject.getId();
   }
 
+  @Override
   public void activate( String pageId ) {
     whenNull( pageId ).throwIllegalArgument( "PageId must not be null" );
     when( pageId.isEmpty() ).throwIllegalArgument( "PageId must not be empty" );
@@ -75,10 +87,12 @@ public class RemoteUI extends AbstractOperationHandler {
     }
   }
 
+  @Override
   public void setForeground( Color color ) {
     setColor( PROPERTY_FOREGROUND, color );
   }
 
+  @Override
   public void setBackground( Color color ) {
     setColor( PROPERTY_BACKGROUND, color );
   }

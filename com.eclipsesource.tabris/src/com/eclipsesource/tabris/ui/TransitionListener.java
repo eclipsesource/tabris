@@ -37,7 +37,7 @@ public interface TransitionListener extends Serializable {
 
   /**
    * <p>
-   * Will be called after the new {@link Page} will was activated.
+   * Will be called after the new {@link Page} was activated.
    * </p>
    *
    * @since 1.0

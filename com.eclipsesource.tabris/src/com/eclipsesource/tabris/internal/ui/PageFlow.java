@@ -17,58 +17,60 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.eclipsesource.tabris.internal.ui.rendering.PageRenderer;
+
 
 public class PageFlow implements Serializable {
 
-  private final List<RemotePage> pages;
+  private final List<PageRenderer> renderers;
 
-  public PageFlow( RemotePage root ) {
+  public PageFlow( PageRenderer root ) {
     whenNull( root ).throwIllegalArgument( "Root must not be null" );
-    pages = new ArrayList<RemotePage>();
-    pages.add( root );
+    renderers = new ArrayList<PageRenderer>();
+    renderers.add( root );
   }
 
-  public RemotePage getCurrentPage() {
-    return pages.get( getIndexOfLastPage() );
+  public PageRenderer getCurrentRenderer() {
+    return renderers.get( getIndexOfLastRenderer() );
   }
 
-  public RemotePage getPreviousPage() {
-    int indexOfLastPage = getIndexOfLastPage();
+  public PageRenderer getPreviousRenderer() {
+    int indexOfLastPage = getIndexOfLastRenderer();
     if( indexOfLastPage > 0 ) {
-      return pages.get( indexOfLastPage - 1 );
+      return renderers.get( indexOfLastPage - 1 );
     }
     return null;
   }
 
-  public RemotePage getRootPage() {
-    return pages.get( 0 );
+  public PageRenderer getRootRenderer() {
+    return renderers.get( 0 );
   }
 
-  public void add( RemotePage page ) {
-    pages.add( page );
+  public void add( PageRenderer renderer ) {
+    renderers.add( renderer );
   }
 
-  public RemotePage pop() {
-    when( pages.size() <= 1 ).throwIllegalState( "Can not remove root page." );
-    return pages.remove( getIndexOfLastPage() );
+  public PageRenderer pop() {
+    when( renderers.size() <= 1 ).throwIllegalState( "Can not remove root page." );
+    return renderers.remove( getIndexOfLastRenderer() );
   }
 
-  private int getIndexOfLastPage() {
-    return pages.size() - 1;
+  private int getIndexOfLastRenderer() {
+    return renderers.size() - 1;
   }
 
   public void destroy() {
-    for( RemotePage page : pages ) {
-      PageDescriptor descriptor = page.getDescriptor();
+    for( PageRenderer renderer : renderers ) {
+      PageDescriptor descriptor = renderer.getDescriptor();
       if( !descriptor.isTopLevel() ) {
-        page.destroy();
+        renderer.destroy();
       }
     }
-    pages.clear();
+    renderers.clear();
   }
 
-  public List<RemotePage> getAllPages() {
-    return pages;
+  public List<PageRenderer> getAllRenderers() {
+    return renderers;
   }
 
 }

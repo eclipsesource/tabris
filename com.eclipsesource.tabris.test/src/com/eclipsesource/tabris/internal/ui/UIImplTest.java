@@ -15,6 +15,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.Serializable;
 
@@ -42,7 +43,9 @@ public class UIImplTest {
     display = new Display();
     Shell shell = new Shell( display );
     shell.setLayout( new StackLayout() );
-    controller = new Controller( shell, mock( RemoteUI.class ), mock( UIDescriptor.class ) );
+    RemoteUI uiRenderer = mock( RemoteUI.class );
+    when( uiRenderer.getPageParent() ).thenReturn( shell );
+    controller = new Controller( uiRenderer, mock( UIDescriptor.class ) );
   }
 
   @After
