@@ -20,6 +20,7 @@ import org.eclipse.rap.rwt.client.service.ClientService;
  * The {@link App} provides facilities to accomplish these tasks.
  * </p>
  *
+ * @noimplement
  * @since 0.10
  */
 public interface App extends ClientService {
@@ -106,13 +107,13 @@ public interface App extends ClientService {
   /**
    * <p>
    * Instructs the client to set the given number >= 0 as badge on the application icon.
-   * Set to {@link SWT.NONE} to hide.
+   * Set to {see SWT.NONE} to hide.
    * Not all clients support badges on the application icon.
    * </p>
    *
    * @since 1.2
    */
-  public void setBadgeNumber( int badgeNumber );
+  void setBadgeNumber( int badgeNumber );
 
   /**
    * <p>
@@ -121,6 +122,6 @@ public interface App extends ClientService {
    *
    * @since 1.2
    */
-  public int getBadgeNumber();
+  int getBadgeNumber();
 
 }

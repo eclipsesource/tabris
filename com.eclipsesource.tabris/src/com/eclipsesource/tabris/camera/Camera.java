@@ -26,6 +26,7 @@ import org.eclipse.rap.rwt.client.service.ClientService;
  * @see CameraOptions
  * @see Client
  *
+ * @noimplement
  * @since 0.8
  */
 public interface Camera extends ClientService {

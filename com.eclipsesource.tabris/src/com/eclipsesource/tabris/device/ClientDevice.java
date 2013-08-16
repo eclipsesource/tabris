@@ -27,6 +27,7 @@ import org.eclipse.rap.rwt.client.service.ClientInfo;
  * @see ConnectionType
  * @see Client
  *
+ * @noimplement
  * @since 0.11
  */
 public interface ClientDevice extends ClientInfo {

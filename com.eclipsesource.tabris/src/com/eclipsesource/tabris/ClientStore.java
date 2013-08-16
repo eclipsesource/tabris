@@ -24,6 +24,7 @@ import org.eclipse.rap.rwt.client.service.ClientService;
  *       persistent store on the server side.
  * </p>
  *
+ * @noimplement
  * @since 0.11
  */
 public interface ClientStore extends ClientService {
