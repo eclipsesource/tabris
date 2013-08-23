@@ -1,12 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2013 EclipseSource and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    EclipseSource - initial API and implementation
+ * Copyright (c) 2013 EclipseSource and others. All rights reserved. This
+ * program and the accompanying materials are made available under the terms of
+ * the Eclipse Public License v1.0 which accompanies this distribution, and is
+ * available at http://www.eclipse.org/legal/epl-v10.html Contributors:
+ * EclipseSource - initial API and implementation
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets;
 
@@ -23,32 +20,32 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-
 /**
  * <p>
- * A {@link ScrollingComposite} can be used the same way as a simple {@link Composite}. The difference between
- * a {@link Composite} and a {@link ScrollingComposite} is that a {@link ScrollingComposite} shows scrollbars
- * automatically when it's content becomes to big.
+ * A {@link ScrollingComposite} can be used the same way as a simple
+ * {@link Composite}. The difference between a {@link Composite} and a
+ * {@link ScrollingComposite} is that a {@link ScrollingComposite} shows
+ * scrollbars automatically when it's content becomes to big.
  * </p>
  * <p>
- * You may noticed that there is a {@link ScrolledComposite}. A {@link ScrolledComposite} is not an easy widget. In
- * most cases it's enough to have just a scrollable container for some content that grows dynamically.
- * This task can not be accomplished easily with the {@link ScrolledComposite}. Thus the {@link ScrollingComposite}
- * was created to make just the described task easy and nothing more.
+ * You may noticed that there is a {@link ScrolledComposite}. A
+ * {@link ScrolledComposite} is not an easy widget. In most cases it's enough to
+ * have just a scrollable container for some content that grows dynamically.
+ * This task can not be accomplished easily with the {@link ScrolledComposite}.
+ * Thus the {@link ScrollingComposite} was created to make just the described
+ * task easy and nothing more.
  * </p>
- *
  * <p>
- * Please note: A {@link ScrollingComposite} uses a {@link ScrolledComposite} as it's parent. So, if you need to get the
- * {@link ScrolledComposite} use the {@link ScrollingComposite#getParent()} method.
+ * Please note: A {@link ScrollingComposite} uses a {@link ScrolledComposite} as
+ * it's parent. So, if you need to get the {@link ScrolledComposite} use the
+ * {@link ScrollingComposite#getParent()} method.
  * </p>
- *
  * <p>
  * <b>Styles:</b> H_SCROLL, V_SCROLL
  * </p>
- *
+ * 
  * @see Composite
  * @see ScrolledComposite
- *
  * @since 1.0
  */
 public class ScrollingComposite extends Composite {
@@ -57,10 +54,11 @@ public class ScrollingComposite extends Composite {
 
   /**
    * <p>
-   * Constructs a new {@link ScrollingComposite}. See {@link Composite#Composite(Composite, int)} for a more detailed
+   * Constructs a new {@link ScrollingComposite}. See
+   * {@link Composite#Composite(Composite, int)} for a more detailed
    * description.
    * </p>
-   *
+   * 
    * @see Composite#Composite(Composite, int)
    */
   public ScrollingComposite( Composite parent, int style ) {
@@ -76,6 +74,7 @@ public class ScrollingComposite extends Composite {
 
   private static ScrolledComposite createScrolledComposite( Composite parent, int style ) {
     ScrolledComposite scrolledComposite = new ScrolledComposite( parent, style ) {
+
       @Override
       public void layout( boolean changed, boolean all ) {
         super.layout( changed, all );
@@ -94,6 +93,7 @@ public class ScrollingComposite extends Composite {
     scrolledComposite.setContent( this );
     handleScrollbars();
     scrolledComposite.addControlListener( new ControlAdapter() {
+
       @Override
       public void controlResized( ControlEvent event ) {
         handleScrollbars();
@@ -114,9 +114,8 @@ public class ScrollingComposite extends Composite {
 
   @Override
   public Point computeSize( int wHint, int hHint, boolean changed ) {
-    Point resultSize = null;
+    Point resultSize = super.computeSize( SWT.DEFAULT, SWT.DEFAULT, changed );
     if( hasStyle( SWT.V_SCROLL ) && hasStyle( SWT.H_SCROLL ) ) {
-      resultSize = super.computeSize( SWT.DEFAULT, SWT.DEFAULT, changed );
       setMinSize( resultSize.x, resultSize.y );
     } else if( hasStyle( SWT.H_SCROLL ) ) {
       resultSize = calculateHorizontalSize( changed );
@@ -167,11 +166,10 @@ public class ScrollingComposite extends Composite {
    * <p>
    * Scrolls to the defined control until it's visible.
    * </p>
-   *
+   * 
    * @param control the control to scroll to. Must not be <code>null</code>.
-   *
-   * @exception IllegalArgumentException when the defined control is <code>null</code> or not a children of
-   *                                     this Composite.
+   * @exception IllegalArgumentException when the defined control is
+   *              <code>null</code> or not a children of this Composite.
    */
   public void reveal( Control control ) {
     checkRevealState( control );
@@ -180,14 +178,14 @@ public class ScrollingComposite extends Composite {
 
   /**
    * <p>
-   * Checks if a control is visible within the visible area. The control needs to be completely visible for a
-   * <code>true</code> result.
+   * Checks if a control is visible within the visible area. The control needs
+   * to be completely visible for a <code>true</code> result.
    * </p>
-   *
-   * @param control the control to check the visibility. Must not be <code>null</code>.
-   *
-   * @exception IllegalArgumentException when the defined control is <code>null</code> or not a children of
-   *                                     this Composite.
+   * 
+   * @param control the control to check the visibility. Must not be
+   *          <code>null</code>.
+   * @exception IllegalArgumentException when the defined control is
+   *              <code>null</code> or not a children of this Composite.
    */
   public boolean isRevealed( Control control ) {
     checkRevealState( control );
@@ -195,9 +193,10 @@ public class ScrollingComposite extends Composite {
     Rectangle clientArea = scrolledComposite.getClientArea();
     Rectangle controlBounds = control.getBounds();
     boolean verticalVisible = ( clientArea.height + origin.y - controlBounds.y - controlBounds.height ) >= 0
-                              && clientArea.height + origin.y <= controlBounds.y + clientArea.height;
+                              && clientArea.height + origin.y <= controlBounds.y
+                                                                 + clientArea.height;
     boolean horizontalVisible = ( clientArea.width + origin.x - control.getLocation().x - controlBounds.width ) >= 0
-                                && ( clientArea.width + origin.x ) <= ( control.getLocation().x  + clientArea.width );
+                                && ( clientArea.width + origin.x ) <= ( control.getLocation().x + clientArea.width );
     return horizontalVisible && verticalVisible;
   }
 
@@ -229,5 +228,4 @@ public class ScrollingComposite extends Composite {
     }
     super.dispose();
   }
-
 }

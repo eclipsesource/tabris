@@ -12,6 +12,7 @@ package com.eclipsesource.tabris.widgets;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -248,5 +249,14 @@ public class ScrollingCompositeTest {
 
     composite.dispose();
     composite.dispose();
+  }
+
+  @Test
+  public void testComputeSizeIsNeverNull() {
+    ScrollingComposite composite = new ScrollingComposite( shell, SWT.NONE );
+
+    Point size = composite.computeSize( SWT.DEFAULT, SWT.DEFAULT );
+
+    assertNotNull( size );
   }
 }
