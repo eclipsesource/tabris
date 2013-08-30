@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui.rendering;
 
+import java.io.Serializable;
+
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 
@@ -17,19 +19,20 @@ import com.eclipsesource.tabris.internal.ui.Controller;
 import com.eclipsesource.tabris.ui.UI;
 
 
-public interface UIRenderer {
+public interface UIRenderer extends Serializable {
 
   void setUi( UI ui );
 
   void setController( Controller controller );
 
-  String getRemoteUIId();
-
-  void activate( String pageId );
+  void activate( PageRenderer page );
 
   void setForeground( Color color );
 
   void setBackground( Color color ) ;
 
   Composite getPageParent();
+
+  Composite getActionsParent();
+
 }

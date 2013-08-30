@@ -213,7 +213,9 @@ public class PageFlowTest {
   private RemotePage createPage() {
     PageDescriptor descriptor = spy( new PageDescriptor( "foo", TestPage.class, "", null, false ) );
     UI ui = mock( UI.class );
-    RemotePage renderer2 = new RemotePage( ui, descriptor, "foo", mock( PageData.class ) );
+    RemoteUI uiRenderer = mock( RemoteUI.class );
+    when( uiRenderer.getRemoteUIId() ).thenReturn( "foo" );
+    RemotePage renderer2 = new RemotePage( ui, uiRenderer , descriptor, mock( PageData.class ) );
     renderer2.createControl( shell );
     return spy( renderer2 );
   }

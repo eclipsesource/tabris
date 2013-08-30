@@ -8,7 +8,7 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.internal.ui;
+package com.eclipsesource.tabris.internal.ui.web;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -23,6 +23,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.eclipsesource.tabris.internal.ui.ActionDescriptor;
+import com.eclipsesource.tabris.internal.ui.PageDescriptor;
+import com.eclipsesource.tabris.internal.ui.TestPage;
+import com.eclipsesource.tabris.internal.ui.TestSearchAction;
 import com.eclipsesource.tabris.internal.ui.rendering.ActionRenderer;
 import com.eclipsesource.tabris.internal.ui.rendering.PageRenderer;
 import com.eclipsesource.tabris.internal.ui.rendering.UIRenderer;
@@ -31,18 +35,20 @@ import com.eclipsesource.tabris.ui.PageData;
 import com.eclipsesource.tabris.ui.UI;
 
 
-public class RemoteRendererFactoryTest {
+public class WebRendererFactoryTest {
 
-  private RemoteRendererFactory rendererFactory;
+  private WebRendererFactory rendererFactory;
+  private Shell shell;
   private UI ui;
-  private RemoteUI uiRenderer;
+  private WebUI uiRenderer;
 
   @Before
   public void setUp() {
     Fixture.setUp();
-    rendererFactory = ( RemoteRendererFactory )RemoteRendererFactory.getInstance();
+    shell = new Shell( new Display() );
+    rendererFactory = ( WebRendererFactory )WebRendererFactory.getInstance();
     ui = mock( UI.class );
-    uiRenderer = mock( RemoteUI.class );
+    uiRenderer = mock( WebUI.class );
   }
 
   @After
@@ -51,42 +57,40 @@ public class RemoteRendererFactoryTest {
   }
 
   @Test
-  public void testCreatesRemoteUi() {
-    Shell shell = new Shell( new Display() );
+  public void testCreateUIRenderer() {
+    UIRenderer renderer = rendererFactory.createUIRenderer( shell );
 
-    UIRenderer uiRenderer = rendererFactory.createUIRenderer( shell );
-
-    assertTrue( uiRenderer instanceof RemoteUI );
+    assertTrue( renderer instanceof WebUI );
   }
 
   @Test
-  public void testCreatesRemotePage() {
+  public void testCreatePageRenderer() {
     PageDescriptor descriptor = mock( PageDescriptor.class );
     doReturn( TestPage.class ).when( descriptor ).getPageType();
 
     PageRenderer renderer = rendererFactory.createPageRenderer( ui, uiRenderer, descriptor, new PageData() );
 
-    assertTrue( renderer instanceof RemotePage );
+    assertTrue( renderer instanceof WebPage );
   }
 
   @Test
-  public void testCreatesRegularRemoteAction() {
+  public void testCreateActionRenderer_regular() {
     ActionDescriptor descriptor = mock( ActionDescriptor.class );
     when( descriptor.getAction() ).thenReturn( mock( Action.class ) );
 
-    ActionRenderer remoteAction = rendererFactory.createActionRenderer( ui, uiRenderer, descriptor );
+    ActionRenderer renderer = rendererFactory.createActionRenderer( ui, uiRenderer, descriptor );
 
-    assertFalse( remoteAction instanceof RemoteSearchAction );
+    assertFalse( renderer instanceof WebSearchAction );
   }
 
   @Test
-  public void testCreatesSearchRemoteAction() {
+  public void testCreateActionRenderer_search() {
     ActionDescriptor descriptor = mock( ActionDescriptor.class );
     when( descriptor.getAction() ).thenReturn( new TestSearchAction() );
 
-    ActionRenderer remoteAction = rendererFactory.createActionRenderer( ui, uiRenderer, descriptor );
+    ActionRenderer renderer = rendererFactory.createActionRenderer( ui, uiRenderer, descriptor );
 
-    assertTrue( remoteAction instanceof RemoteSearchAction );
+    assertTrue( renderer instanceof WebSearchAction );
   }
 
 }

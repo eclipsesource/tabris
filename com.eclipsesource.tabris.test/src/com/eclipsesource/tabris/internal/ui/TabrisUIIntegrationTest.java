@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
+import static org.mockito.Mockito.mock;
+
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -18,6 +20,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.eclipsesource.tabris.internal.TabrisClient;
 import com.eclipsesource.tabris.internal.ZIndexStackLayout;
 import com.eclipsesource.tabris.ui.AbstractPage;
 import com.eclipsesource.tabris.ui.ActionConfiguration;
@@ -31,6 +34,7 @@ public class TabrisUIIntegrationTest {
   @Before
   public void setUp() {
     Fixture.setUp();
+    Fixture.fakeClient( mock( TabrisClient.class ) );
   }
 
   @After

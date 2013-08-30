@@ -14,7 +14,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.rap.rwt.RWT;
+
+import com.eclipsesource.tabris.internal.TabrisClient;
 import com.eclipsesource.tabris.internal.ui.rendering.RendererFactory;
+import com.eclipsesource.tabris.internal.ui.web.WebRendererFactory;
 import com.eclipsesource.tabris.ui.TransitionListener;
 
 
@@ -23,13 +27,11 @@ public class UIDescriptor implements Serializable {
   private final List<PageDescriptor> pageDescriptors;
   private final List<ActionDescriptor> actionDescriptors;
   private final List<TransitionListener> transitionListeners;
-  private final RendererFactory rendererFactory;
 
   public UIDescriptor() {
     pageDescriptors = new ArrayList<PageDescriptor>();
     actionDescriptors = new ArrayList<ActionDescriptor>();
     transitionListeners = new ArrayList<TransitionListener>();
-    rendererFactory = new RemoteRendererFactory();
   }
 
   public void add( PageDescriptor descriptor ) {
@@ -103,6 +105,9 @@ public class UIDescriptor implements Serializable {
   }
 
   public RendererFactory getRendererFactory() {
-    return rendererFactory;
+    if( RWT.getClient() instanceof TabrisClient ) {
+      return RemoteRendererFactory.getInstance();
+    }
+    return WebRendererFactory.getInstance();
   }
 }

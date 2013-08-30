@@ -12,9 +12,14 @@ package com.eclipsesource.tabris.internal.ui;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
@@ -29,6 +34,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.eclipsesource.tabris.internal.ui.rendering.PageRenderer;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 import com.eclipsesource.tabris.ui.PageOperator;
 import com.eclipsesource.tabris.ui.UI;
@@ -59,13 +65,6 @@ public class RemoteUITest {
     remoteUI.activate( null );
   }
 
-  @Test( expected = IllegalArgumentException.class )
-  public void testActivateFailsWithEmptyId() {
-    RemoteUI remoteUI = new RemoteUI( shell );
-
-    remoteUI.activate( "" );
-  }
-
   @Test
   public void testSetsShellIdId() {
     new RemoteUI( shell );
@@ -81,10 +80,19 @@ public class RemoteUITest {
   }
 
   @Test
-  public void testGetUIParent() {
+  public void testGetPageParent() {
     RemoteUI remoteUI = new RemoteUI( shell );
 
-    Composite uiParent = remoteUI.getPageParent();
+    Composite pageParent = remoteUI.getPageParent();
+
+    assertSame( shell, pageParent );
+  }
+
+  @Test
+  public void testGetActionsParent() {
+    RemoteUI remoteUI = new RemoteUI( shell );
+
+    Composite uiParent = remoteUI.getActionsParent();
 
     assertSame( shell, uiParent );
   }
@@ -92,8 +100,10 @@ public class RemoteUITest {
   @Test
   public void testActivateAddsActivateCall() {
     RemoteUI remoteUI = new RemoteUI( shell );
+    RemotePage page = mock( RemotePage.class );
+    when( page.getId() ).thenReturn( "foo" );
 
-    remoteUI.activate( "foo" );
+    remoteUI.activate( page );
 
     verify( remoteObject ).set( "activePage", "foo" );
   }
@@ -103,13 +113,13 @@ public class RemoteUITest {
     UI ui = mock( UI.class );
     PageOperator pageOperator = mock( PageOperator.class );
     when( ui.getPageOperator() ).thenReturn( pageOperator );
-    RemoteUI remoteUI = createRemoteUI( ui );
-    JsonObject properties = new JsonObject();
-    properties.add( "pageId", "foo" );
-    Controller controller = mock( Controller.class );
-    when( controller.getPageId( "foo" ) ).thenReturn( "bar" );
-    remoteUI.setController( controller );
+    RemoteUI remoteUI = spy( new RemoteUI( shell ) );
+    remoteUI.setUi( ui );
+    remoteUI.setController( mock( Controller.class ) );
+    when( remoteObject.getHandler() ).thenReturn( remoteUI );
+    doReturn( "bar" ).when( remoteUI ).getPageId( "foo" );
 
+    JsonObject properties = new JsonObject().add( "pageId", "foo" );
     TabrisTestUtil.dispatchNotify( remoteObject, "ShowPage", properties );
 
     verify( pageOperator ).openPage( "bar" );
@@ -145,10 +155,30 @@ public class RemoteUITest {
     verify( remoteObject ).set( "background", new JsonArray().add( 100 ).add( 120 ).add( 150 ) );
   }
 
+  @Test
+  public void testFindsPageIdByRemoteId() {
+    RemoteUI remoteUI = createRemoteUI( mock( UI.class ) );
+    RemotePage remotePage = mock( RemotePage.class );
+    Controller controller = mock( Controller.class );
+    List<PageRenderer> pages = new ArrayList<PageRenderer>();
+    pages.add( remotePage );
+    when( controller.getAllPages() ).thenReturn( pages  );
+    remoteUI.setController( controller );
+    PageDescriptor pageDescriptor = mock( PageDescriptor.class );
+    when( pageDescriptor.getId() ).thenReturn( "bar" );
+    when( remotePage.getDescriptor() ).thenReturn( pageDescriptor );
+    when( remotePage.getId() ).thenReturn( "foo" );
+
+    String pageId = remoteUI.getPageId( "foo" );
+
+    assertEquals( "bar", pageId );
+  }
+
   private RemoteUI createRemoteUI( UI ui ) {
     RemoteUI remoteUI = new RemoteUI( shell );
     when( remoteObject.getHandler() ).thenReturn( remoteUI );
     remoteUI.setUi( ui );
     return remoteUI;
   }
+
 }

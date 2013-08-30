@@ -43,7 +43,7 @@ import org.eclipse.swt.widgets.Shell;
  * <p>
  * <b>Styles:</b> H_SCROLL, V_SCROLL
  * </p>
- * 
+ *
  * @see Composite
  * @see ScrolledComposite
  * @since 1.0
@@ -58,7 +58,7 @@ public class ScrollingComposite extends Composite {
    * {@link Composite#Composite(Composite, int)} for a more detailed
    * description.
    * </p>
-   * 
+   *
    * @see Composite#Composite(Composite, int)
    */
   public ScrollingComposite( Composite parent, int style ) {
@@ -166,7 +166,7 @@ public class ScrollingComposite extends Composite {
    * <p>
    * Scrolls to the defined control until it's visible.
    * </p>
-   * 
+   *
    * @param control the control to scroll to. Must not be <code>null</code>.
    * @exception IllegalArgumentException when the defined control is
    *              <code>null</code> or not a children of this Composite.
@@ -181,7 +181,7 @@ public class ScrollingComposite extends Composite {
    * Checks if a control is visible within the visible area. The control needs
    * to be completely visible for a <code>true</code> result.
    * </p>
-   * 
+   *
    * @param control the control to check the visibility. Must not be
    *          <code>null</code>.
    * @exception IllegalArgumentException when the defined control is

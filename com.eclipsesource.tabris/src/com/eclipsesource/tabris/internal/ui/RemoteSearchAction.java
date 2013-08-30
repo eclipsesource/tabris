@@ -14,22 +14,26 @@ import static com.eclipsesource.tabris.internal.Constants.EVENT_MODIFY;
 import static com.eclipsesource.tabris.internal.Constants.EVENT_SEARCH;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_ACTIVATE;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_DEACTIVATE;
+import static com.eclipsesource.tabris.internal.Constants.METHOD_OPEN;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_MESSAGE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_QUERY;
 
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.service.ServerPushSession;
 
+import com.eclipsesource.tabris.internal.ui.rendering.SearchActionRenderer;
+import com.eclipsesource.tabris.internal.ui.rendering.SearchActionRendererHolder;
 import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.UI;
 import com.eclipsesource.tabris.ui.action.SearchAction;
 
 
-public class RemoteSearchAction extends RemoteAction {
+public class RemoteSearchAction extends RemoteAction implements SearchActionRenderer {
 
   private ServerPushSession pushSession;
 
-  public RemoteSearchAction( UI ui, ActionDescriptor descriptor, String parentId ) {
-    super( ui, descriptor, parentId );
+  public RemoteSearchAction( UI ui, RemoteUI uiRenderer, ActionDescriptor descriptor ) {
+    super( ui, uiRenderer, descriptor );
     setRemoteObject( descriptor );
   }
 
@@ -37,14 +41,29 @@ public class RemoteSearchAction extends RemoteAction {
     Action action = descriptor.getAction();
     if( action instanceof SearchAction ) {
       SearchAction searchAction = ( SearchAction )action;
-      RemoteActionHolder remoteObjectHolder = searchAction.getAdapter( RemoteActionHolder.class );
-      remoteObjectHolder.setRemoteAction( this );
+      SearchActionRendererHolder remoteSearchActionHolder = searchAction.getAdapter( SearchActionRendererHolder.class );
+      remoteSearchActionHolder.setSearchActionRenderer( this );
     }
   }
 
   @Override
   protected String getType() {
     return "tabris.SearchAction";
+  }
+
+  @Override
+  public void open() {
+    getRemoteObject().call( METHOD_OPEN, null );
+  }
+
+  @Override
+  public void setQuery( String query ) {
+    getRemoteObject().set( PROPERTY_QUERY, query );
+  }
+
+  @Override
+  public void setMessage( String message ) {
+    getRemoteObject().set( PROPERTY_MESSAGE, message );
   }
 
   @Override

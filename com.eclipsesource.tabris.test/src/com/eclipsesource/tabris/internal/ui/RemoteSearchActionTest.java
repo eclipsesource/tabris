@@ -35,6 +35,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
+import com.eclipsesource.tabris.internal.ui.rendering.SearchActionRendererHolder;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 import com.eclipsesource.tabris.ui.UI;
 import com.eclipsesource.tabris.ui.action.ProposalHandler;
@@ -47,6 +48,7 @@ public class RemoteSearchActionTest {
   private RemoteObjectImpl remoteObject;
   private ActionDescriptor actionDescriptor;
   private UI ui;
+  private RemoteUI uiRenderer;
 
   @Before
   public void setUp() {
@@ -54,6 +56,8 @@ public class RemoteSearchActionTest {
     Display display = new Display();
     remoteObject = ( RemoteObjectImpl )TabrisTestUtil.mockRemoteObject();
     ui = mock( UI.class );
+    uiRenderer = mock( RemoteUI.class );
+    when( uiRenderer.getRemoteUIId() ).thenReturn( "foo" );
     when( ui.getDisplay() ).thenReturn( display );
     actionDescriptor = mock( ActionDescriptor.class );
     when( actionDescriptor.getId() ).thenReturn( "foo" );
@@ -68,21 +72,21 @@ public class RemoteSearchActionTest {
   }
 
   @Test
-  public void testSetsRemoteObjectOnSerachAction() {
+  public void testSetsRendererOnSerachAction() {
     SearchAction action = spy( new TestSearchAction() );
     when( actionDescriptor.getAction() ).thenReturn( action );
 
-    new RemoteSearchAction( ui, actionDescriptor, "foo" );
+    RemoteSearchAction renderer = new RemoteSearchAction( ui, uiRenderer, actionDescriptor );
 
-    RemoteActionHolder remoteObjectHolder = action.getAdapter( RemoteActionHolder.class );
-    assertSame( remoteObjectHolder.getRemoteAction().getRemoteObject(), remoteObject );
+    SearchActionRendererHolder holder = action.getAdapter( SearchActionRendererHolder.class );
+    assertSame( holder.getSearchActionRenderer(), renderer );
   }
 
   @Test
   public void testCallsExecuteOnSelectionEvent() {
     SearchAction action = spy( new TestSearchAction() );
     when( actionDescriptor.getAction() ).thenReturn( action );
-    RemoteSearchAction remoteAction = new RemoteSearchAction( ui, actionDescriptor, "foo" );
+    RemoteSearchAction remoteAction = new RemoteSearchAction( ui, uiRenderer, actionDescriptor );
     when( remoteObject.getHandler() ).thenReturn( remoteAction );
 
     TabrisTestUtil.dispatchNotify( remoteObject, "Selection", new JsonObject() );
@@ -94,7 +98,7 @@ public class RemoteSearchActionTest {
   public void testCallsSearchOnSearchEvent() {
     SearchAction action = spy( new TestSearchAction() );
     when( actionDescriptor.getAction() ).thenReturn( action );
-    RemoteSearchAction remoteAction = new RemoteSearchAction( ui, actionDescriptor, "foo" );
+    RemoteSearchAction remoteAction = new RemoteSearchAction( ui, uiRenderer, actionDescriptor );
     when( remoteObject.getHandler() ).thenReturn( remoteAction );
     JsonObject properties = new JsonObject();
     properties.add( "query", "bar" );
@@ -108,7 +112,7 @@ public class RemoteSearchActionTest {
   public void testCallsGetProposalsOnModifyEvent() {
     SearchAction action = spy( new TestSearchAction() );
     when( actionDescriptor.getAction() ).thenReturn( action );
-    RemoteSearchAction remoteAction = new RemoteSearchAction( ui, actionDescriptor, "foo" );
+    RemoteSearchAction remoteAction = new RemoteSearchAction( ui, uiRenderer, actionDescriptor );
     when( remoteObject.getHandler() ).thenReturn( remoteAction );
     JsonObject properties = new JsonObject();
     properties.add( "query", "bar" );
@@ -122,7 +126,7 @@ public class RemoteSearchActionTest {
   public void testSendsProposals() {
     SearchAction action = spy( new TestSearchAction() );
     when( actionDescriptor.getAction() ).thenReturn( action );
-    RemoteSearchAction remoteAction = new RemoteSearchAction( ui, actionDescriptor, "foo" );
+    RemoteSearchAction remoteAction = new RemoteSearchAction( ui, uiRenderer, actionDescriptor );
     when( remoteObject.getHandler() ).thenReturn( remoteAction );
     ArrayList<String> proposals = new ArrayList<String>();
     proposals.add( "foo" );
@@ -142,7 +146,7 @@ public class RemoteSearchActionTest {
   public void testSendsNullProposalsAsEmptyArray() {
     SearchAction action = spy( new TestSearchAction() );
     when( actionDescriptor.getAction() ).thenReturn( action );
-    RemoteSearchAction remoteAction = new RemoteSearchAction( ui, actionDescriptor, "foo" );
+    RemoteSearchAction remoteAction = new RemoteSearchAction( ui, uiRenderer, actionDescriptor );
     when( remoteObject.getHandler() ).thenReturn( remoteAction );
     JsonObject properties = new JsonObject();
     properties.add( "query", "bar" );
@@ -159,7 +163,7 @@ public class RemoteSearchActionTest {
   public void testFailsWithNullProposals() {
     SearchAction action = spy( new TestSearchAction() );
     when( actionDescriptor.getAction() ).thenReturn( action );
-    RemoteSearchAction remoteAction = new RemoteSearchAction( ui, actionDescriptor, "foo" );
+    RemoteSearchAction remoteAction = new RemoteSearchAction( ui, uiRenderer, actionDescriptor );
     when( remoteObject.getHandler() ).thenReturn( remoteAction );
     when( actionDescriptor.getAction() ).thenReturn( action );
     JsonObject properties = new JsonObject();
@@ -174,7 +178,7 @@ public class RemoteSearchActionTest {
   @Test
   public void testActivatesServerPushSessionOnActivate() {
     Fixture.fakePhase( PhaseId.PROCESS_ACTION );
-    RemoteSearchAction remoteAction = new RemoteSearchAction( ui, actionDescriptor, "foo" );
+    RemoteSearchAction remoteAction = new RemoteSearchAction( ui, uiRenderer, actionDescriptor );
     SearchAction action = spy( new TestSearchAction() );
     when( remoteObject.getHandler() ).thenReturn( remoteAction );
     when( actionDescriptor.getAction() ).thenReturn( action );
@@ -187,7 +191,7 @@ public class RemoteSearchActionTest {
   @Test
   public void testDeactivatesServerPushSessionOnDeactivate() {
     Fixture.fakePhase( PhaseId.PROCESS_ACTION );
-    RemoteSearchAction remoteAction = new RemoteSearchAction( ui, actionDescriptor, "foo" );
+    RemoteSearchAction remoteAction = new RemoteSearchAction( ui, uiRenderer, actionDescriptor );
     when( remoteObject.getHandler() ).thenReturn( remoteAction );
     remoteAction.handleCall( "activate", null );
 

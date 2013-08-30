@@ -10,7 +10,6 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
-import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.Constants.EVENT_SHOW_PAGE;
 import static com.eclipsesource.tabris.internal.Constants.EVENT_SHOW_PREVIOUS_PAGE;
@@ -22,6 +21,8 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SHELL;
 import static org.eclipse.rap.rwt.RWT.getUISession;
 import static org.eclipse.rap.rwt.lifecycle.WidgetUtil.getId;
 
+import java.util.List;
+
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
@@ -30,6 +31,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
+import com.eclipsesource.tabris.internal.ui.rendering.PageRenderer;
 import com.eclipsesource.tabris.internal.ui.rendering.UIRenderer;
 import com.eclipsesource.tabris.ui.UI;
 
@@ -65,22 +67,20 @@ public class RemoteUI extends AbstractOperationHandler implements UIRenderer {
   }
 
   @Override
-  public String getRemoteUIId() {
-    return remoteObject.getId();
+  public Composite getActionsParent() {
+    return shell;
   }
 
   @Override
-  public void activate( String pageId ) {
-    whenNull( pageId ).throwIllegalArgument( "PageId must not be null" );
-    when( pageId.isEmpty() ).throwIllegalArgument( "PageId must not be empty" );
-    remoteObject.set( PROPERTY_ACTIVE_PAGE, pageId );
+  public void activate( PageRenderer page ) {
+    whenNull( page ).throwIllegalArgument( "Page must not be null" );
+    remoteObject.set( PROPERTY_ACTIVE_PAGE, ( ( RemotePage )page ).getId() );
   }
 
   @Override
   public void handleNotify( String event, JsonObject properties ) {
     if( event.equals( EVENT_SHOW_PAGE ) ) {
-      String remotePageId = properties.get( PROPERTY_PAGE_ID ).asString();
-      String pageId = controller.getPageId( remotePageId );
+      String pageId = getPageId( properties.get( PROPERTY_PAGE_ID ).asString() );
       ui.getPageOperator().openPage( pageId );
     } else if( event.equals( EVENT_SHOW_PREVIOUS_PAGE ) ) {
       ui.getPageOperator().closeCurrentPage();
@@ -95,6 +95,21 @@ public class RemoteUI extends AbstractOperationHandler implements UIRenderer {
   @Override
   public void setBackground( Color color ) {
     setColor( PROPERTY_BACKGROUND, color );
+  }
+
+  String getRemoteUIId() {
+    return remoteObject.getId();
+  }
+
+  String getPageId( String pageRendererId ) {
+    List<PageRenderer> pageRenderers = controller.getAllPages();
+    for( PageRenderer pageRenderer : pageRenderers ) {
+      RemotePage remotePage = ( RemotePage )pageRenderer;
+      if( remotePage.getId().equals( pageRendererId ) ) {
+        return remotePage.getDescriptor().getId();
+      }
+    }
+    throw new IllegalStateException( "RemotePage with id " + pageRendererId + " does not exist." );
   }
 
   private void setColor( String name, Color color ) {

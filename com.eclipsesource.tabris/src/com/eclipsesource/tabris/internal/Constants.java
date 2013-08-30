@@ -21,7 +21,9 @@ public class Constants {
   public static final String THEME_ID_ANDROID = "com.eclipsesource.rap.mobile.theme.android";
   public static final String THEME_PATH_IOS = "theme/ios.css";
   public static final String THEME_PATH_ANDROID = "theme/theme-android-holo.css";
+  public static final String THEME_PATH_WEB = "theme/web.css";
   public static final String INDEX_JSON = "index.json";
+  public static final String CUSTOM_VARIANT_TABRIS_UI = "tabrisUI";
 
   // Common Constants
   public static final String METHOD_OPEN = "open";
@@ -36,6 +38,7 @@ public class Constants {
   public static final String PROPERTY_LATITUDE = "latitude";
   public static final String PROPERTY_CONTROL = "control";
   public static final String PROPERTY_QUERY = "query";
+  public static final String PROPERTY_MESSAGE = "message";
   public static final String PROPERTY_ERROR_MESSAGE = "errorMessage";
   public static final String PROPERTY_ERROR_CODE = "errorCode";
 

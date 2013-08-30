@@ -8,10 +8,12 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.internal.ui;
+package com.eclipsesource.tabris.internal.ui.web;
 
 import org.eclipse.swt.widgets.Shell;
 
+import com.eclipsesource.tabris.internal.ui.ActionDescriptor;
+import com.eclipsesource.tabris.internal.ui.PageDescriptor;
 import com.eclipsesource.tabris.internal.ui.rendering.ActionRenderer;
 import com.eclipsesource.tabris.internal.ui.rendering.PageRenderer;
 import com.eclipsesource.tabris.internal.ui.rendering.RendererFactory;
@@ -21,36 +23,36 @@ import com.eclipsesource.tabris.ui.UI;
 import com.eclipsesource.tabris.ui.action.SearchAction;
 
 
-public class RemoteRendererFactory implements RendererFactory {
+public class WebRendererFactory implements RendererFactory {
 
   private static RendererFactory instance;
 
   public static RendererFactory getInstance() {
     if( instance == null ) {
-      instance = new RemoteRendererFactory();
+      instance = new WebRendererFactory();
     }
     return instance;
   }
 
   @Override
   public UIRenderer createUIRenderer( Shell shell ) {
-    return new RemoteUI( shell );
+    return new WebUI( shell );
   }
 
   @Override
   public PageRenderer createPageRenderer( UI ui, UIRenderer uiRenderer, PageDescriptor descriptor, PageData data ) {
-    return new RemotePage( ui, ( RemoteUI )uiRenderer, descriptor, data );
+    return new WebPage( ui, ( WebUI )uiRenderer, descriptor, data );
   }
 
   @Override
   public ActionRenderer createActionRenderer( UI ui, UIRenderer uiRenderer, ActionDescriptor descriptor ) {
     if( descriptor.getAction() instanceof SearchAction ) {
-      return new RemoteSearchAction( ui, ( RemoteUI )uiRenderer, descriptor );
+      return new WebSearchAction( ui, ( WebUI )uiRenderer, descriptor );
     }
-    return new RemoteAction( ui, ( RemoteUI )uiRenderer, descriptor );
+    return new WebAction( ui, ( WebUI )uiRenderer, descriptor );
   }
 
-  private RemoteRendererFactory() {
+  private WebRendererFactory() {
     // prevent instantiation
   }
 

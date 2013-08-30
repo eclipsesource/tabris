@@ -19,6 +19,7 @@ import static org.mockito.Mockito.when;
 
 import javax.servlet.ServletContext;
 
+import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.internal.application.ApplicationContextImpl;
 import org.eclipse.rap.rwt.internal.application.ApplicationImpl;
 import org.eclipse.rap.rwt.internal.lifecycle.PhaseListenerRegistry;
@@ -58,6 +59,7 @@ public class TabrisClientInstallerTest {
 
     verify( application ).addStyleSheet( eq( Constants.THEME_ID_ANDROID ), anyString(), any( ResourceLoader.class ) );
     verify( application ).addStyleSheet( eq( Constants.THEME_ID_IOS ), anyString(), any( ResourceLoader.class ) );
+    verify( application ).addStyleSheet( eq( RWT.DEFAULT_THEME_ID ), anyString(), any( ResourceLoader.class ) );
   }
 
   @Test

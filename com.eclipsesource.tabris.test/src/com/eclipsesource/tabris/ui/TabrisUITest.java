@@ -28,6 +28,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.eclipsesource.tabris.internal.TabrisClient;
 import com.eclipsesource.tabris.internal.ZIndexStackLayout;
 import com.eclipsesource.tabris.internal.ui.TestPage;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
@@ -41,6 +42,7 @@ public class TabrisUITest {
   @Before
   public void setUp() {
     Fixture.setUp();
+    Fixture.fakeClient( mock( TabrisClient.class ) );
     Display display = new Display();
     shell = new Shell( display );
     Fixture.fakePhase( PhaseId.PROCESS_ACTION );

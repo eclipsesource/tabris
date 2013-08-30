@@ -10,13 +10,14 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.ui.action;
 
+import java.io.Serializable;
 import java.util.List;
 
 
 /**
  * @since 1.2
  */
-public interface ProposalHandler {
+public interface ProposalHandler extends Serializable {
 
   void setProposals( List<String> proposals );
 }

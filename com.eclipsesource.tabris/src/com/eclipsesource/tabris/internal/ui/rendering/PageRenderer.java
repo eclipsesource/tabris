@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui.rendering;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Composite;
@@ -20,11 +21,9 @@ import com.eclipsesource.tabris.ui.Page;
 import com.eclipsesource.tabris.ui.PageData;
 
 
-public interface PageRenderer {
+public interface PageRenderer extends Serializable {
 
   void createActions( RendererFactory rendererFactory, Composite uiParent );
-
-  String getId();
 
   void setTitle( String title );
 

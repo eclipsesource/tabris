@@ -17,35 +17,40 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.eclipse.rap.rwt.remote.RemoteObject;
+import org.junit.Before;
 import org.junit.Test;
 
-import com.eclipsesource.tabris.internal.ui.RemoteAction;
-import com.eclipsesource.tabris.internal.ui.RemoteActionHolder;
 import com.eclipsesource.tabris.internal.ui.TestSearchAction;
+import com.eclipsesource.tabris.internal.ui.rendering.SearchActionRenderer;
+import com.eclipsesource.tabris.internal.ui.rendering.SearchActionRendererHolder;
 import com.eclipsesource.tabris.ui.UI;
 
 public class SearchActionTest {
 
+  private TestSearchAction searchAction;
+  private SearchActionRenderer searchActionRenderer;
+
+  @Before
+  public void setUp() {
+    searchAction = new TestSearchAction();
+    searchActionRenderer = mock( SearchActionRenderer.class );
+  }
+
   @Test
   public void testCallsOpenWithoutQuery() {
-    RemoteObject remoteObject = mock( RemoteObject.class );
-    TestSearchAction searchAction = new TestSearchAction();
-    searchAction.getAdapter( RemoteActionHolder.class ).setRemoteAction( createAction( remoteObject ) );
+    searchAction.getAdapter( SearchActionRendererHolder.class ).setSearchActionRenderer( searchActionRenderer );
 
     searchAction.open();
 
-    verify( remoteObject ).call( "open", null );
+    verify( searchActionRenderer ).open();
   }
 
   @Test
   public void testCallsExecuteOnOpen() {
-    RemoteObject remoteObject = mock( RemoteObject.class );
-    TestSearchAction searchAction = spy( new TestSearchAction() );
-    RemoteAction remoteAction = createAction( remoteObject );
+    searchAction = spy( new TestSearchAction() );
     UI ui = mock( UI.class );
-    when( remoteAction.getUI() ).thenReturn( ui );
-    searchAction.getAdapter( RemoteActionHolder.class ).setRemoteAction( remoteAction );
+    when( searchActionRenderer.getUI() ).thenReturn( ui );
+    searchAction.getAdapter( SearchActionRendererHolder.class ).setSearchActionRenderer( searchActionRenderer );
 
     searchAction.open();
 
@@ -54,66 +59,49 @@ public class SearchActionTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testSetMessageFailsWithNull() {
-    RemoteObject remoteObject = mock( RemoteObject.class );
-    TestSearchAction searchAction = new TestSearchAction();
-    searchAction.getAdapter( RemoteActionHolder.class ).setRemoteAction( createAction( remoteObject ) );
+    searchAction.getAdapter( SearchActionRendererHolder.class ).setSearchActionRenderer( searchActionRenderer );
 
     searchAction.setMessage( null );
   }
 
   @Test
   public void testSetMessage() {
-    RemoteObject remoteObject = mock( RemoteObject.class );
-    TestSearchAction searchAction = new TestSearchAction();
-    searchAction.getAdapter( RemoteActionHolder.class ).setRemoteAction( createAction( remoteObject ) );
+    searchAction.getAdapter( SearchActionRendererHolder.class ).setSearchActionRenderer( searchActionRenderer );
 
     searchAction.setMessage( "foo" );
 
-    verify( remoteObject ).set( "message", "foo" );
+    verify( searchActionRenderer ).setMessage( "foo" );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testSetQueryFailsWithNull() {
-    RemoteObject remoteObject = mock( RemoteObject.class );
-    TestSearchAction searchAction = new TestSearchAction();
-    searchAction.getAdapter( RemoteActionHolder.class ).setRemoteAction( createAction( remoteObject ) );
+    searchAction.getAdapter( SearchActionRendererHolder.class ).setSearchActionRenderer( searchActionRenderer );
 
     searchAction.setQuery( null );
   }
 
   @Test
   public void testSetQuery() {
-    RemoteObject remoteObject = mock( RemoteObject.class );
-    TestSearchAction searchAction = new TestSearchAction();
-    searchAction.getAdapter( RemoteActionHolder.class ).setRemoteAction( createAction( remoteObject ) );
+    searchAction.getAdapter( SearchActionRendererHolder.class ).setSearchActionRenderer( searchActionRenderer );
 
     searchAction.setQuery( "foo" );
 
-    verify( remoteObject ).set( "query", "foo" );
+    verify( searchActionRenderer ).setQuery( "foo" );
   }
 
   @Test
-  public void testHasRemoteObjectHolder() {
-    TestSearchAction searchAction = new TestSearchAction();
+  public void testHasRendererHolder() {
+    SearchActionRendererHolder rendererHolder = searchAction.getAdapter( SearchActionRendererHolder.class );
 
-    RemoteActionHolder remoteObjectHolder = searchAction.getAdapter( RemoteActionHolder.class );
-
-    assertNotNull( remoteObjectHolder );
+    assertNotNull( rendererHolder );
   }
 
   @Test
   public void testHasOneRemoteObjectHolder() {
-    TestSearchAction searchAction = new TestSearchAction();
-
-    RemoteActionHolder remoteObjectHolder = searchAction.getAdapter( RemoteActionHolder.class );
-    RemoteActionHolder remoteObjectHolder2 = searchAction.getAdapter( RemoteActionHolder.class );
+    SearchActionRendererHolder remoteObjectHolder = searchAction.getAdapter( SearchActionRendererHolder.class );
+    SearchActionRendererHolder remoteObjectHolder2 = searchAction.getAdapter( SearchActionRendererHolder.class );
 
     assertSame( remoteObjectHolder, remoteObjectHolder2 );
   }
 
-  private RemoteAction createAction( RemoteObject remoteObject ) {
-    RemoteAction action = mock( RemoteAction.class );
-    when( action.getRemoteObject() ).thenReturn( remoteObject );
-    return action;
-  }
 }

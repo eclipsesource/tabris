@@ -8,18 +8,21 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.internal.ui;
+package com.eclipsesource.tabris.internal.ui.rendering;
+
+import java.io.Serializable;
 
 
-public class RemoteActionHolder {
+public class SearchActionRendererHolder implements Serializable {
 
-  private RemoteAction remoteAction;
+  private SearchActionRenderer searchActionRenderer;
 
-  public RemoteAction getRemoteAction() {
-    return remoteAction;
+  public SearchActionRenderer getSearchActionRenderer() {
+    return searchActionRenderer;
   }
 
-  public void setRemoteAction( RemoteAction remoteAction ) {
-    this.remoteAction = remoteAction;
+  public void setSearchActionRenderer( SearchActionRenderer searchActionRenderer ) {
+    this.searchActionRenderer = searchActionRenderer;
   }
+
 }

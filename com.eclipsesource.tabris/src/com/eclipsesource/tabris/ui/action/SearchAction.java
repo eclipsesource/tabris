@@ -11,11 +11,10 @@
 package com.eclipsesource.tabris.ui.action;
 
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
-import static com.eclipsesource.tabris.internal.Constants.METHOD_OPEN;
 
 import org.eclipse.rap.rwt.Adaptable;
 
-import com.eclipsesource.tabris.internal.ui.RemoteActionHolder;
+import com.eclipsesource.tabris.internal.ui.rendering.SearchActionRendererHolder;
 import com.eclipsesource.tabris.ui.AbstractAction;
 
 /**
@@ -23,10 +22,10 @@ import com.eclipsesource.tabris.ui.AbstractAction;
  */
 public abstract class SearchAction extends AbstractAction implements Adaptable {
 
-  private final RemoteActionHolder remoteObjectHolder;
+  private final SearchActionRendererHolder rendererHolder;
 
   public SearchAction() {
-    remoteObjectHolder = new RemoteActionHolder();
+    rendererHolder = new SearchActionRendererHolder();
   }
 
   @Override
@@ -39,28 +38,28 @@ public abstract class SearchAction extends AbstractAction implements Adaptable {
   public abstract void modified( String query, ProposalHandler proposalHandler );
 
   public final void open() {
-    whenNull( remoteObjectHolder.getRemoteAction() ).throwIllegalState( "RemoteAction not set" );
-    execute( remoteObjectHolder.getRemoteAction().getUI() );
-    remoteObjectHolder.getRemoteAction().getRemoteObject().call( METHOD_OPEN, null );
+    whenNull( rendererHolder.getSearchActionRenderer() ).throwIllegalState( "SearchActionRenderer not set" );
+    execute( rendererHolder.getSearchActionRenderer().getUI() );
+    rendererHolder.getSearchActionRenderer().open();
   }
 
   public void setQuery( String query ) {
     whenNull( query ).throwIllegalArgument( "Query must not be null" );
-    whenNull( remoteObjectHolder.getRemoteAction() ).throwIllegalState( "RemoteAction not set" );
-    remoteObjectHolder.getRemoteAction().getRemoteObject().set( "query", query );
+    whenNull( rendererHolder.getSearchActionRenderer() ).throwIllegalState( "SearchActionRenderer not set" );
+    rendererHolder.getSearchActionRenderer().setQuery( query );
   }
 
   public void setMessage( String message ) {
     whenNull( message ).throwIllegalArgument( "Message must not be null" );
-    whenNull( remoteObjectHolder.getRemoteAction() ).throwIllegalState( "RemoteAction not set" );
-    remoteObjectHolder.getRemoteAction().getRemoteObject().set( "message", message );
+    whenNull( rendererHolder.getSearchActionRenderer() ).throwIllegalState( "SearchActionRenderer not set" );
+    rendererHolder.getSearchActionRenderer().setMessage( message );
   }
 
   @Override
   @SuppressWarnings("unchecked")
   public <T> T getAdapter( Class<T> adapter ) {
-    if( adapter == RemoteActionHolder.class ) {
-      return ( T )remoteObjectHolder;
+    if( adapter == SearchActionRendererHolder.class ) {
+      return ( T )rendererHolder;
     }
     return null;
   }

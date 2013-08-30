@@ -10,25 +10,13 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui.rendering;
 
-import java.io.Serializable;
 
-import org.eclipse.swt.widgets.Composite;
+public interface SearchActionRenderer extends ActionRenderer {
 
-import com.eclipsesource.tabris.internal.ui.ActionDescriptor;
-import com.eclipsesource.tabris.ui.UI;
+  void open();
 
+  void setQuery( String query );
 
-public interface ActionRenderer extends Serializable {
+  void setMessage( String message );
 
-  void createUi( Composite uiParent );
-
-  void setEnabled( boolean enabled );
-
-  void setVisible( boolean visible );
-
-  void destroy();
-
-  ActionDescriptor getDescriptor();
-
-  UI getUI();
 }

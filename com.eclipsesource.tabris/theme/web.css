@@ -1,0 +1,66 @@
+Composite.groupedEventComposite {
+  background-color: transparent;
+}
+
+Composite.tabrisUI {
+  background-color: #aaaaaa;
+  color: #000000;
+}
+
+Text[BORDER].tabrisUI {
+  border-radius: 0;
+}
+
+Text[BORDER].tabrisUI:focused {
+  border: 1px solid #aaaaaa;
+  box-shadow: inset 0 0 3px #bdbdbd;
+}
+
+Menu.tabrisUI {
+  border: none;
+  background-color: #aaaaaa;
+  background-image: none;
+}
+
+MenuItem.tabrisUI {
+  background-color: transparent;
+  color: #ffffff;
+}
+
+MenuItem.tabrisUI:hover {
+  color: #ffffff;
+}
+
+ToolBar.tabrisUI {
+  color: #ffffff;
+}
+
+ToolItem.tabrisUI {
+  background-color: transparent;
+  color: inherit;
+  padding: 8px;
+}
+
+ToolItem.tabrisUI:hover {
+  background-image: none;
+  border: none;
+}
+
+ToolItem.tabrisUI:pressed {
+  padding: 8px;
+}
+
+ToolItem-DropDownIcon.tabrisUI:hover {
+  border: none;
+}
+
+Button[PUSH].tabrisUI {
+  background-color: transparent;
+  background-image: none;
+  padding: 0px;
+  border: none;
+}
+
+Button-FocusIndicator[PUSH].tabrisUI {
+  border: none;
+}

@@ -45,6 +45,7 @@ public class RemoteActionTest {
   private RemoteObjectImpl remoteObject;
   private ActionDescriptor actionDescriptor;
   private UI ui;
+  private RemoteUI uiRenderer;
 
   @Before
   public void setUp() {
@@ -52,6 +53,8 @@ public class RemoteActionTest {
     new Display();
     remoteObject = ( RemoteObjectImpl )TabrisTestUtil.mockRemoteObject();
     ui = mock( UI.class );
+    uiRenderer = mock( RemoteUI.class );
+    when( uiRenderer.getRemoteUIId() ).thenReturn( "foo" );
     actionDescriptor = mock( ActionDescriptor.class );
     when( actionDescriptor.getAction() ).thenReturn( new TestAction() );
     when( actionDescriptor.getId() ).thenReturn( "foo" );
@@ -67,7 +70,7 @@ public class RemoteActionTest {
 
   @Test
   public void testSetsInitialAttributes() {
-    new RemoteAction( ui, actionDescriptor, "foo" );
+    new RemoteAction( ui, uiRenderer, actionDescriptor );
 
     verify( remoteObject ).set( "parent", "foo" );
     ArgumentCaptor<JsonArray> captor = ArgumentCaptor.forClass( JsonArray.class );
@@ -85,7 +88,7 @@ public class RemoteActionTest {
     doReturn( Boolean.TRUE ).when( actionDescriptor ).isEnabled();
     doReturn( Boolean.TRUE ).when( actionDescriptor ).isVisible();
 
-    new RemoteAction( ui, actionDescriptor, "foo" );
+    new RemoteAction( ui, uiRenderer, actionDescriptor );
 
     verify( remoteObject, never() ).set( "visibility", true );
     verify( remoteObject, never() ).set( "enabled", true );
@@ -94,14 +97,14 @@ public class RemoteActionTest {
   @Test
   public void testSetsInitialAttributesWithoutImage() {
     when( actionDescriptor.getImage() ).thenReturn( null );
-    new RemoteAction( ui, actionDescriptor, "foo" );
+    new RemoteAction( ui, uiRenderer, actionDescriptor );
 
     verify( remoteObject, never() ).set( eq( "image" ), anyString() );
   }
 
   @Test
   public void testGetsDescriptor() {
-    RemoteAction remoteAction = new RemoteAction( ui, actionDescriptor, "foo" );
+    RemoteAction remoteAction = new RemoteAction( ui, uiRenderer, actionDescriptor );
 
     ActionDescriptor actualDescriptor = remoteAction.getDescriptor();
 
@@ -110,7 +113,7 @@ public class RemoteActionTest {
 
   @Test
   public void testGetsUI() {
-    RemoteAction remoteAction = new RemoteAction( ui, actionDescriptor, "foo" );
+    RemoteAction remoteAction = new RemoteAction( ui, uiRenderer, actionDescriptor );
 
     UI actualUi = remoteAction.getUI();
 
@@ -119,7 +122,7 @@ public class RemoteActionTest {
 
   @Test
   public void testSetsVisible() {
-    RemoteAction remoteAction = new RemoteAction( ui, actionDescriptor, "foo" );
+    RemoteAction remoteAction = new RemoteAction( ui, uiRenderer, actionDescriptor );
 
     remoteAction.setVisible( true );
 
@@ -128,7 +131,7 @@ public class RemoteActionTest {
 
   @Test
   public void testSetEnabled() {
-    RemoteAction remoteAction = new RemoteAction( ui, actionDescriptor, "foo" );
+    RemoteAction remoteAction = new RemoteAction( ui, uiRenderer, actionDescriptor );
 
     remoteAction.setEnabled( true );
 
@@ -137,7 +140,7 @@ public class RemoteActionTest {
 
   @Test
   public void testDestroy() {
-    RemoteAction remoteAction = new RemoteAction( ui, actionDescriptor, "foo" );
+    RemoteAction remoteAction = new RemoteAction( ui, uiRenderer, actionDescriptor );
 
     remoteAction.destroy();
 
@@ -146,7 +149,7 @@ public class RemoteActionTest {
 
   @Test
   public void testGetRemotObject() {
-    RemoteAction remoteAction = new RemoteAction( ui, actionDescriptor, "foo" );
+    RemoteAction remoteAction = new RemoteAction( ui, uiRenderer, actionDescriptor );
 
     RemoteObject actualRemoteObject = remoteAction.getRemoteObject();
 
@@ -155,7 +158,7 @@ public class RemoteActionTest {
 
   @Test
   public void testCallsExecuteOnEvent() {
-    RemoteAction remoteAction = new RemoteAction( ui, actionDescriptor, "foo" );
+    RemoteAction remoteAction = new RemoteAction( ui, uiRenderer, actionDescriptor );
     Action action = mock( Action.class );
     when( remoteObject.getHandler() ).thenReturn( remoteAction );
     when( actionDescriptor.getAction() ).thenReturn( action );

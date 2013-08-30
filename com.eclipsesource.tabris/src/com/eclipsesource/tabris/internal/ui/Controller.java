@@ -36,6 +36,7 @@ public class Controller implements Serializable {
 
   private final UIDescriptor uiDescriptor;
   private final Composite pageParent;
+  private final Composite actionsParent;
   private final UIRenderer uiRenderer;
   private final List<ActionRenderer> globalActionRenderers;
   private final Map<PageDescriptor, PageRenderer> topLevelPageRenderers;
@@ -44,6 +45,7 @@ public class Controller implements Serializable {
   public Controller( UIRenderer uiRenderer, UIDescriptor uiDescriptor ) {
     this.uiRenderer = uiRenderer;
     this.pageParent = uiRenderer.getPageParent();
+    this.actionsParent = uiRenderer.getActionsParent();
     this.uiDescriptor = uiDescriptor;
     this.globalActionRenderers = new ArrayList<ActionRenderer>();
     this.topLevelPageRenderers = new HashMap<PageDescriptor, PageRenderer>();
@@ -59,7 +61,7 @@ public class Controller implements Serializable {
   private void createTopLevelPageRenderer( UIImpl ui, List<PageDescriptor> pages ) {
     for( PageDescriptor descriptor : pages ) {
       RendererFactory rendererFactory = uiDescriptor.getRendererFactory();
-      PageRenderer renderer = rendererFactory.createPageRenderer( ui, descriptor, uiRenderer.getRemoteUIId(), new PageData() );
+      PageRenderer renderer = rendererFactory.createPageRenderer( ui, uiRenderer, descriptor, new PageData() );
       topLevelPageRenderers.put( descriptor, renderer );
       renderer.createControl( pageParent );
     }
@@ -69,8 +71,8 @@ public class Controller implements Serializable {
     List<ActionDescriptor> actionDescriptors = uiDescriptor.getGlobalActions();
     for( ActionDescriptor actionDescriptor : actionDescriptors ) {
       RendererFactory rendererFactory = uiDescriptor.getRendererFactory();
-      ActionRenderer renderer = rendererFactory.createActionRenderer( ui, actionDescriptor, uiRenderer.getRemoteUIId() );
-      renderer.createUi( pageParent );
+      ActionRenderer renderer = rendererFactory.createActionRenderer( ui, uiRenderer, actionDescriptor );
+      renderer.createUi( actionsParent );
       globalActionRenderers.add( renderer );
     }
   }
@@ -104,8 +106,8 @@ public class Controller implements Serializable {
 
   private void initializeNewRoot( UIImpl ui, PageRenderer oldRoot, PageRenderer newRoot ) {
     currentFlow = new PageFlow( newRoot );
-    uiRenderer.activate( newRoot.getId() );
-    newRoot.createActions( uiDescriptor.getRendererFactory(), pageParent );
+    newRoot.createActions( uiDescriptor.getRendererFactory(), actionsParent );
+    uiRenderer.activate( newRoot );
     newRoot.getPage().activate();
     makeControlVisible( currentFlow.getCurrentRenderer().getControl() );
     fireTransitionAfterEvent( ui, oldRoot, newRoot );
@@ -129,12 +131,12 @@ public class Controller implements Serializable {
                                           PageData data )
   {
     RendererFactory rendererFactory = uiDescriptor.getRendererFactory();
-    PageRenderer newPageRenderer = rendererFactory.createPageRenderer( ui, newPage, uiRenderer.getRemoteUIId(), data  );
+    PageRenderer newPageRenderer = rendererFactory.createPageRenderer( ui, uiRenderer, newPage, data  );
     fireTransitionBeforeEvent( ui, oldPageRenderer, newPageRenderer );
     currentFlow.add( newPageRenderer );
-    newPageRenderer.createActions( uiDescriptor.getRendererFactory(), pageParent );
+    newPageRenderer.createActions( uiDescriptor.getRendererFactory(), actionsParent );
     newPageRenderer.createControl( pageParent );
-    uiRenderer.activate( newPageRenderer.getId() );
+    uiRenderer.activate( newPageRenderer );
     newPageRenderer.getPage().activate();
     makeControlVisible( newPageRenderer.getControl() );
     fireTransitionAfterEvent( ui, oldPageRenderer, newPageRenderer );
@@ -165,8 +167,8 @@ public class Controller implements Serializable {
   }
 
   private void initializePreviousPage( UIImpl ui, PageRenderer previousPage ) {
-    uiRenderer.activate( previousPage.getId() );
-    previousPage.createActions( uiDescriptor.getRendererFactory(), pageParent );
+    previousPage.createActions( uiDescriptor.getRendererFactory(), actionsParent );
+    uiRenderer.activate( previousPage );
     previousPage.getPage().activate();
     makeControlVisible( previousPage.getControl() );
   }
@@ -213,17 +215,7 @@ public class Controller implements Serializable {
     return null;
   }
 
-  public String getPageId( String pageRendererId ) {
-    List<PageRenderer> pageRenderers = getAllPages();
-    for( PageRenderer pageRenderer : pageRenderers ) {
-      if( pageRenderer.getId().equals( pageRendererId ) ) {
-        return pageRenderer.getDescriptor().getId();
-      }
-    }
-    throw new IllegalStateException( "RemotePage with id " + pageRendererId + " does not exist." );
-  }
-
-  private List<PageRenderer> getAllPages() {
+  List<PageRenderer> getAllPages() {
     List<PageRenderer> pages = new ArrayList<PageRenderer>( topLevelPageRenderers.values() );
     if( currentFlow != null ) {
       pages.addAll( currentFlow.getAllRenderers() );

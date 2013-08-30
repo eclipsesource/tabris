@@ -51,14 +51,14 @@ public class RemotePage implements Serializable, PageRenderer {
   private final RemoteObjectImpl remoteObject;
   private final List<ActionRenderer> remoteActions;
   private final UI ui;
-  private final String parentId;
+  private final RemoteUI uiRenderer;
   private final PageData data;
   private final Page page;
   private Control control;
 
-  public RemotePage( UI ui, PageDescriptor descriptor, String parentId, PageData data ) {
+  public RemotePage( UI ui, RemoteUI uiRenderer, PageDescriptor descriptor, PageData data ) {
     this.ui = ui;
-    this.parentId = parentId;
+    this.uiRenderer = uiRenderer;
     this.data = data;
     this.remoteObject = ( RemoteObjectImpl )RWT.getUISession().getConnection().createRemoteObject( "tabris.Page" );
     this.descriptor = descriptor;
@@ -68,13 +68,12 @@ public class RemotePage implements Serializable, PageRenderer {
     setAttributes();
   }
 
-  @Override
-  public String getId() {
+  String getId() {
     return remoteObject.getId();
   }
 
   private void setAttributes() {
-    remoteObject.set( PROPERTY_PARENT, parentId );
+    remoteObject.set( PROPERTY_PARENT, uiRenderer.getRemoteUIId() );
     remoteObject.set( PROPERTY_TOP_LEVEL, descriptor.isTopLevel() );
     if( descriptor.getPageStyle() != null && descriptor.getPageStyle().length > 0 ) {
       remoteObject.set( PROPERTY_STYLE, createPageStyleParameter( descriptor.getPageStyle() ) );
@@ -115,7 +114,7 @@ public class RemotePage implements Serializable, PageRenderer {
   public void createActions( RendererFactory rendererFactory, Composite uiParent ) {
     List<ActionDescriptor> actions = descriptor.getActions();
     for( ActionDescriptor actionDescriptor : actions ) {
-      ActionRenderer renderer = rendererFactory.createActionRenderer( ui, actionDescriptor, parentId );
+      ActionRenderer renderer = rendererFactory.createActionRenderer( ui, uiRenderer, actionDescriptor );
       remoteActions.add( renderer );
       renderer.createUi( uiParent );
     }

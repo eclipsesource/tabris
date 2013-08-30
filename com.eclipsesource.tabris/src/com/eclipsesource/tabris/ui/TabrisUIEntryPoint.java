@@ -14,18 +14,13 @@ import static org.eclipse.rap.rwt.internal.service.ContextProvider.getApplicatio
 
 import java.io.Serializable;
 
-import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.application.ApplicationConfiguration;
 import org.eclipse.rap.rwt.application.EntryPoint;
 import org.eclipse.rap.rwt.application.EntryPointFactory;
 import org.eclipse.rap.rwt.internal.lifecycle.RWTLifeCycle;
-import org.eclipse.rap.rwt.widgets.DialogUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
-
-import com.eclipsesource.tabris.internal.TabrisClient;
 
 
 /**
@@ -100,14 +95,7 @@ public class TabrisUIEntryPoint implements EntryPoint, Serializable {
    * </p>
    */
   protected void createContent( Shell shell ) {
-    if( RWT.getClient() instanceof TabrisClient ) {
-      createTabrisUI( shell );
-    } else {
-      MessageBox messageBox = new MessageBox( shell, SWT.ICON_WARNING );
-      messageBox.setText( "Application not available in the Browser" );
-      messageBox.setMessage( "This Application is made for mobile clients only" );
-      DialogUtil.open( messageBox, null );
-    }
+    createTabrisUI( shell );
   }
 
   protected void createTabrisUI( Shell shell ) {

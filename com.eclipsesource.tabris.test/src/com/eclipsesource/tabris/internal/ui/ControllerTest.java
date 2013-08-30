@@ -15,7 +15,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
@@ -38,11 +37,15 @@ import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 
+import com.eclipsesource.tabris.internal.TabrisClient;
 import com.eclipsesource.tabris.internal.ZIndexStackLayout;
 import com.eclipsesource.tabris.internal.ui.rendering.ActionRenderer;
 import com.eclipsesource.tabris.internal.ui.rendering.PageRenderer;
+import com.eclipsesource.tabris.internal.ui.rendering.RendererFactory;
+import com.eclipsesource.tabris.internal.ui.rendering.UIRenderer;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 import com.eclipsesource.tabris.ui.Page;
 import com.eclipsesource.tabris.ui.PageData;
@@ -64,6 +67,7 @@ public class ControllerTest {
   @Before
   public void setUp() {
     Fixture.setUp();
+    Fixture.fakeClient( mock( TabrisClient.class ) );
     Display display = new Display();
     shell = new Shell( display );
     layout = mock( ZIndexStackLayout.class );
@@ -138,13 +142,13 @@ public class ControllerTest {
   public void testCreatesGlobalActionsWithUI() {
     ActionRenderer renderer = mock( ActionRenderer.class );
     RemoteRendererFactory factory = mock( RemoteRendererFactory.class );
-    when( factory.createActionRenderer( any( UI.class ), any( ActionDescriptor.class ), anyString() ) ).thenReturn( renderer );
+    when( factory.createActionRenderer( any( UI.class ), any( UIRenderer.class ), any( ActionDescriptor.class ) ) ).thenReturn( renderer );
     when( uiDescriptor.getRendererFactory() ).thenReturn( factory );
     ActionDescriptor descriptor = mock( ActionDescriptor.class );
     when( descriptor.getTitle() ).thenReturn( "foo" );
     uiDescriptor.add( descriptor );
     RemoteUI remoteUI = mock( RemoteUI.class );
-    when( remoteUI.getPageParent() ).thenReturn( shell );
+    when( remoteUI.getActionsParent() ).thenReturn( shell );
     Controller controller = new Controller( remoteUI, uiDescriptor );
 
     controller.createGlobalActions( ui );
@@ -214,7 +218,8 @@ public class ControllerTest {
 
     controller.showRoot( ui, root2, mock( PageData.class ) );
 
-    verify( remoteUI, times( 2 ) ).activate( remoteObject.getId() );
+    PageRenderer pageRenderer = controller.getRootPages().get( root2 );
+    verify( remoteUI ).activate( pageRenderer );
   }
 
   @Test
@@ -324,7 +329,9 @@ public class ControllerTest {
 
     controller.showPage( ui, page, mock( PageData.class ) );
 
-    verify( remoteUI, times( 2 ) ).activate( remoteObject.getId() );
+    ArgumentCaptor<PageRenderer> captor = ArgumentCaptor.forClass( PageRenderer.class );
+    verify( remoteUI, times( 2 ) ).activate( captor.capture() );
+    assertSame( page, captor.getAllValues().get( 1 ).getDescriptor() );
   }
 
   @Test
@@ -370,6 +377,74 @@ public class ControllerTest {
     boolean success = controller.closeCurrentPage( ui );
 
     assertFalse( success );
+  }
+
+  @Test
+  public void testShowPreviousCreatesActionsBeforeActive() {
+    ActionDescriptor descriptor = mock( ActionDescriptor.class );
+    PageDescriptor rootPage = createRootPage( "foo" );
+    List<ActionDescriptor> actions = new ArrayList<ActionDescriptor>();
+    actions.add( descriptor );
+    when( rootPage.getActions() ).thenReturn( actions );
+    RendererFactory factory = spy( RemoteRendererFactory.getInstance() );
+    when( uiDescriptor.getRendererFactory() ).thenReturn( factory );
+    PageDescriptor pageDescriptor = createPage( "bar" );
+    RemoteUI remoteUI = mock( RemoteUI.class );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
+    controller.createRootPages( ui );
+
+    controller.showPage( ui, pageDescriptor, mock( PageData.class ) );
+    controller.closeCurrentPage( ui );
+
+    InOrder order = inOrder( factory, remoteUI );
+    order.verify( factory ).createActionRenderer( ui, remoteUI, descriptor );
+    order.verify( factory ).createActionRenderer( ui, remoteUI, descriptor );
+    order.verify( remoteUI ).activate( any( PageRenderer.class ) );
+  }
+
+  @Test
+  public void testShowPageCreatesActionsBeforeActive() {
+    ActionDescriptor descriptor = mock( ActionDescriptor.class );
+    createRootPage( "foo" );
+    List<ActionDescriptor> actions = new ArrayList<ActionDescriptor>();
+    actions.add( descriptor );
+    RendererFactory factory = spy( RemoteRendererFactory.getInstance() );
+    when( uiDescriptor.getRendererFactory() ).thenReturn( factory );
+    PageDescriptor pageDescriptor = createPage( "bar" );
+    when( pageDescriptor.getActions() ).thenReturn( actions );
+    RemoteUI remoteUI = mock( RemoteUI.class );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
+    controller.createRootPages( ui );
+
+    controller.showPage( ui, pageDescriptor, mock( PageData.class ) );
+
+    InOrder order = inOrder( factory, remoteUI );
+    order.verify( factory ).createActionRenderer( ui, remoteUI, descriptor );
+    order.verify( remoteUI ).activate( any( PageRenderer.class ) );
+  }
+
+  @Test
+  public void testShowRootCreatesActionsBeforeActive() {
+    ActionDescriptor descriptor = mock( ActionDescriptor.class );
+    PageDescriptor rootPage = createRootPage( "foo" );
+    List<ActionDescriptor> actions = new ArrayList<ActionDescriptor>();
+    actions.add( descriptor );
+    RendererFactory factory = spy( RemoteRendererFactory.getInstance() );
+    when( uiDescriptor.getRendererFactory() ).thenReturn( factory );
+    when( rootPage.getActions() ).thenReturn( actions );
+    RemoteUI remoteUI = mock( RemoteUI.class );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
+    controller.createRootPages( ui );
+
+    controller.showRoot( ui, rootPage, mock( PageData.class ) );
+
+    InOrder order = inOrder( factory, remoteUI );
+    order.verify( factory ).createActionRenderer( ui, remoteUI, descriptor );
+    order.verify( factory ).createActionRenderer( ui, remoteUI, descriptor );
+    order.verify( remoteUI ).activate( any( PageRenderer.class ) );
   }
 
   @Test
@@ -619,19 +694,6 @@ public class ControllerTest {
     verify( remoteObject ).set( "enabled", true );
   }
 
-  @Test
-  public void testFindsPageIdByRemoteId() {
-    createRootPage( "foo" );
-    RemoteUI remoteUI = mock( RemoteUI.class );
-    when( remoteUI.getPageParent() ).thenReturn( shell );
-    Controller controller = new Controller( remoteUI, uiDescriptor );
-    controller.createRootPages( ui );
-
-    String pageId = controller.getPageId( remoteObject.getId() );
-
-    assertEquals( "foo", pageId );
-  }
-
   private PageDescriptor createRootPage( String id ) {
     PageDescriptor descriptor = mock( PageDescriptor.class );
     when( descriptor.getId() ).thenReturn( id );
@@ -649,4 +711,5 @@ public class ControllerTest {
     uiDescriptor.add( descriptor );
     return descriptor;
   }
+
 }

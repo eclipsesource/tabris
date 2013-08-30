@@ -40,12 +40,12 @@ public class RemoteAction extends AbstractOperationHandler implements ActionRend
   private final ActionDescriptor descriptor;
   private final UI ui;
 
-  public RemoteAction( UI ui, ActionDescriptor descriptor, String parentId ) {
+  public RemoteAction( UI ui, RemoteUI uiRenderer, ActionDescriptor descriptor ) {
     this.ui = ui;
     this.descriptor = descriptor;
     this.remoteObject = RWT.getUISession().getConnection().createRemoteObject( getType() );
     this.remoteObject.setHandler( this );
-    setAttributes( parentId );
+    setAttributes( uiRenderer.getRemoteUIId() );
   }
 
   protected String getType() {
