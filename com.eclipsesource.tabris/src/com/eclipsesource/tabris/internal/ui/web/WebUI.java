@@ -47,8 +47,8 @@ public class WebUI implements UIRenderer {
   private static final String BACK_ICON_DISABLED = "images/back_icon_disabled.png";
   private static final String DATA_ACTIVATED = "activated";
 
-  private UI ui;
   private final Shell shell;
+  private UI ui;
   private Composite pageParent;
   private Composite uiParent;
   private Button backButton;
@@ -66,7 +66,9 @@ public class WebUI implements UIRenderer {
     createPageParent();
     createBackButton();
     createPageSwitcher();
+    createSeparator();
     createActionsBar();
+    createFooter();
   }
 
   @Override
@@ -160,7 +162,11 @@ public class WebUI implements UIRenderer {
     uiParent.setData( RWT.CUSTOM_VARIANT, CUSTOM_VARIANT_TABRIS_UI );
     uiParent.setLayoutData( new GridData( GridData.FILL, GridData.CENTER, true, false ) );
     uiParent.setBackgroundMode( SWT.INHERIT_DEFAULT );
-    uiParent.setLayout( new GridLayout( 3, false ) );
+    GridLayout layout = new GridLayout( 4, false );
+    layout.marginHeight = 0;
+    layout.marginWidth = 10;
+    layout.verticalSpacing = 0;
+    uiParent.setLayout( layout );
   }
 
   private void createBackButton() {
@@ -173,12 +179,19 @@ public class WebUI implements UIRenderer {
   private void createPageSwitcher() {
     pageSwitcher = new ToolBar( uiParent, SWT.NONE );
     pageSwitcher.setData( RWT.CUSTOM_VARIANT, CUSTOM_VARIANT_TABRIS_UI );
-    pageSwitcher.setLayoutData( new GridData( GridData.FILL, GridData.CENTER, true, false ) );
+    pageSwitcher.setLayoutData( new GridData( GridData.FILL, GridData.CENTER, false, false ) );
     ToolItem pageSwitcherDropDown = new ToolItem( pageSwitcher, SWT.DROP_DOWN );
     pageSwitcherDropDown.setData( RWT.CUSTOM_VARIANT, CUSTOM_VARIANT_TABRIS_UI );
     pageSwitcherDropDown.addListener( SWT.Selection, new PageSwitcherSelectionListener() );
     pageSwitcherMenu = new Menu( uiParent.getShell(), SWT.POP_UP );
     pageSwitcherMenu.setData( RWT.CUSTOM_VARIANT, CUSTOM_VARIANT_TABRIS_UI );
+  }
+
+  private void createSeparator() {
+    Composite separator = new Composite( uiParent, SWT.NONE );
+    GridData layoutData = new GridData( GridData.FILL, GridData.CENTER, true, false );
+    layoutData.heightHint = 1;
+    separator.setLayoutData( layoutData );
   }
 
   private void createActionsBar() {
@@ -190,13 +203,21 @@ public class WebUI implements UIRenderer {
     actionsBar.setLayout( layout );
   }
 
+  private void createFooter() {
+    Composite footer = new Composite( shell, SWT.NONE );
+    footer.setData( RWT.CUSTOM_VARIANT, CUSTOM_VARIANT_TABRIS_UI );
+    GridData layoutData = new GridData( GridData.FILL, GridData.CENTER, true, false );
+    layoutData.heightHint = 8;
+    footer.setLayoutData( layoutData );
+  }
+
   private void updatePageNavigationBar( PageDescriptor pageDescriptor ) {
     if( pageDescriptor.isTopLevel() ) {
       backButton.removeListener( SWT.Selection, backButtonSelectionListener );
       backButton.setImage( backIconDisabled );
       notifyMenuItemSelected( pageDescriptor );
     } else {
-      if( !backButton.isListening( SWT.Selection  ) ) {
+      if( !backButton.isListening( SWT.Selection ) ) {
         backButton.addListener( SWT.Selection, backButtonSelectionListener );
       }
       backButton.setImage( backIcon );
@@ -248,7 +269,7 @@ public class WebUI implements UIRenderer {
       ToolItem item = ( ToolItem )event.widget;
       Rectangle bounds = item.getBounds();
       bounds.y += bounds.height;
-      Point point = pageSwitcher.toDisplay( bounds.x, bounds.y );
+      Point point = pageSwitcher.toDisplay( bounds.x + 10, bounds.y );
       pageSwitcherMenu.setLocation( point );
       pageSwitcherMenu.setVisible( true );
     }

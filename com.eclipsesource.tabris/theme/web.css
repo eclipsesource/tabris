@@ -3,28 +3,38 @@ Composite.groupedEventComposite {
 }
 
 Composite.tabrisUI {
-  background-color: #aaaaaa;
+  background-color: #222222;
   color: #000000;
 }
 
 Text[BORDER].tabrisUI {
-  border-radius: 0;
+  border-radius: 5px;
 }
 
 Text[BORDER].tabrisUI:focused {
-  border: 1px solid #aaaaaa;
-  box-shadow: inset 0 0 3px #bdbdbd;
+  border: 1px solid #66afe9;
+  box-shadow: outset 0 0 5px #66afe9;
+}
+
+Text-Search-Icon {
+  background-image: url( images/search_icon.png );
+}
+
+Text-Cancel-Icon {
+  background-image: url( images/cancel_icon.png );
 }
 
 Menu.tabrisUI {
-  border: none;
-  background-color: #aaaaaa;
+  border: 1px solid #b7b7b7;
+  background-color: #e0e5e5;
+  box-shadow: outset 0 5px 5px 0 #bdbdbd;
   background-image: none;
+  border-radius: 0 0 4px 4px;
 }
 
 MenuItem.tabrisUI {
   background-color: transparent;
-  color: #ffffff;
+  color: #222222;
 }
 
 MenuItem.tabrisUI:hover {
@@ -48,6 +58,10 @@ ToolItem.tabrisUI:hover {
 
 ToolItem.tabrisUI:pressed {
   padding: 8px;
+}
+
+ToolItem-DropDownIcon.tabrisUI {
+  background-image: url( images/drop-down.png );
 }
 
 ToolItem-DropDownIcon.tabrisUI:hover {

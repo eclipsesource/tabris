@@ -145,7 +145,7 @@ public class WebSearchAction extends WebAction implements SearchActionRenderer {
   private void showProposalsMenu() {
     Control control = getControl();
     Rectangle bounds = control.getBounds();
-    bounds.y += bounds.height;
+    bounds.y += bounds.height + 5;
     Point point = control.toDisplay( bounds.x, bounds.y );
     proposalsMenu.setLocation( point );
     proposalsMenu.setVisible( true );
