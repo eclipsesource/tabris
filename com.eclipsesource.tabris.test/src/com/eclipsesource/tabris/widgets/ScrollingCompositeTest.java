@@ -121,7 +121,7 @@ public class ScrollingCompositeTest {
     int minHeight = scrolledComposite.getMinHeight();
 
     assertEquals( size.x, minWidth );
-    assertEquals( 300, minHeight );
+    assertEquals( 0, minHeight );
   }
 
   @Test
@@ -135,7 +135,7 @@ public class ScrollingCompositeTest {
     int minHeight = scrolledComposite.getMinHeight();
 
     assertEquals( size.x, minWidth );
-    assertEquals( 100, minHeight );
+    assertEquals( 0, minHeight );
   }
 
   @Test

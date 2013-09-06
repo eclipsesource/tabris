@@ -73,17 +73,7 @@ public class ScrollingComposite extends Composite {
   }
 
   private static ScrolledComposite createScrolledComposite( Composite parent, int style ) {
-    ScrolledComposite scrolledComposite = new ScrolledComposite( parent, style ) {
-
-      @Override
-      public void layout( boolean changed, boolean all ) {
-        super.layout( changed, all );
-        Control content = getContent();
-        if( content != null && !content.isDisposed() ) {
-          ( ( ScrollingComposite )content ).layout( changed, all );
-        }
-      }
-    };
+    ScrolledComposite scrolledComposite = new ScrolledComposite( parent, style );
     scrolledComposite.setExpandVertical( true );
     scrolledComposite.setExpandHorizontal( true );
     return scrolledComposite;
@@ -104,8 +94,8 @@ public class ScrollingComposite extends Composite {
 
   @Override
   public void layout( boolean changed, boolean all ) {
-    handleScrollbars();
     super.layout( changed, all );
+    handleScrollbars();
   }
 
   private void handleScrollbars() {
@@ -119,7 +109,7 @@ public class ScrollingComposite extends Composite {
       setMinSize( resultSize.x, resultSize.y );
     } else if( hasStyle( SWT.H_SCROLL ) ) {
       resultSize = calculateHorizontalSize( changed );
-      setMinSize( resultSize.x, scrolledComposite.getClientArea().height );
+      setMinSize( resultSize.x, SWT.DEFAULT );
     } else if( hasStyle( SWT.V_SCROLL ) ) {
       resultSize = calculateVerticalSize( changed );
       setMinSize( scrolledComposite.getClientArea().width, resultSize.y );
