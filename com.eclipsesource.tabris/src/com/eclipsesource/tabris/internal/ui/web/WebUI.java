@@ -1,12 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2013 EclipseSource and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    EclipseSource - initial API and implementation
+ * Copyright (c) 2013 EclipseSource and others. All rights reserved. This
+ * program and the accompanying materials are made available under the terms of
+ * the Eclipse Public License v1.0 which accompanies this distribution, and is
+ * available at http://www.eclipse.org/legal/epl-v10.html Contributors:
+ * EclipseSource - initial API and implementation
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui.web;
 
@@ -40,13 +37,11 @@ import com.eclipsesource.tabris.internal.ui.rendering.PageRenderer;
 import com.eclipsesource.tabris.internal.ui.rendering.UIRenderer;
 import com.eclipsesource.tabris.ui.UI;
 
-
 public class WebUI implements UIRenderer {
 
   private static final String BACK_ICON = "images/back_icon.png";
   private static final String BACK_ICON_DISABLED = "images/back_icon_disabled.png";
   private static final String DATA_ACTIVATED = "activated";
-
   private final Shell shell;
   private UI ui;
   private Composite pageParent;
@@ -68,7 +63,6 @@ public class WebUI implements UIRenderer {
     createPageSwitcher();
     createSeparator();
     createActionsBar();
-    createFooter();
   }
 
   @Override
@@ -203,14 +197,6 @@ public class WebUI implements UIRenderer {
     actionsBar.setLayout( layout );
   }
 
-  private void createFooter() {
-    Composite footer = new Composite( shell, SWT.NONE );
-    footer.setData( RWT.CUSTOM_VARIANT, CUSTOM_VARIANT_TABRIS_UI );
-    GridData layoutData = new GridData( GridData.FILL, GridData.CENTER, true, false );
-    layoutData.heightHint = 8;
-    footer.setLayoutData( layoutData );
-  }
-
   private void updatePageNavigationBar( PageDescriptor pageDescriptor ) {
     if( pageDescriptor.isTopLevel() ) {
       backButton.removeListener( SWT.Selection, backButtonSelectionListener );
@@ -239,8 +225,10 @@ public class WebUI implements UIRenderer {
   private void addMenuItem( PageDescriptor pageDescriptor ) {
     MenuItem item = new MenuItem( pageSwitcherMenu, SWT.PUSH );
     item.setData( RWT.CUSTOM_VARIANT, CUSTOM_VARIANT_TABRIS_UI );
-    String title  = pageDescriptor.getTitle();
-    item.setText( title == null ? "" : title );
+    String title = pageDescriptor.getTitle();
+    item.setText( title == null
+                               ? ""
+                               : title );
     item.setImage( getImage( uiParent.getDisplay(), pageDescriptor.getImage() ) );
     item.setData( pageDescriptor );
     item.addListener( SWT.Selection, new MenuItemSelectionListener() );
@@ -255,15 +243,15 @@ public class WebUI implements UIRenderer {
       }
     }
   }
-
   private final class BackButtonSelectionListener implements Listener {
+
     @Override
     public void handleEvent( Event event ) {
       ui.getPageOperator().closeCurrentPage();
     }
   }
-
   private final class PageSwitcherSelectionListener implements Listener {
+
     @Override
     public void handleEvent( Event event ) {
       ToolItem item = ( ToolItem )event.widget;
@@ -274,8 +262,8 @@ public class WebUI implements UIRenderer {
       pageSwitcherMenu.setVisible( true );
     }
   }
-
   private final class MenuItemSelectionListener implements Listener {
+
     @Override
     public void handleEvent( Event event ) {
       MenuItem item = ( MenuItem )event.widget;
@@ -288,5 +276,4 @@ public class WebUI implements UIRenderer {
       }
     }
   }
-
 }
