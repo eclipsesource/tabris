@@ -226,9 +226,7 @@ public class WebUI implements UIRenderer {
     MenuItem item = new MenuItem( pageSwitcherMenu, SWT.PUSH );
     item.setData( RWT.CUSTOM_VARIANT, CUSTOM_VARIANT_TABRIS_UI );
     String title = pageDescriptor.getTitle();
-    item.setText( title == null
-                               ? ""
-                               : title );
+    item.setText( title == null ? "" : title );
     item.setImage( getImage( uiParent.getDisplay(), pageDescriptor.getImage() ) );
     item.setData( pageDescriptor );
     item.addListener( SWT.Selection, new MenuItemSelectionListener() );
@@ -243,6 +241,7 @@ public class WebUI implements UIRenderer {
       }
     }
   }
+
   private final class BackButtonSelectionListener implements Listener {
 
     @Override
@@ -250,6 +249,7 @@ public class WebUI implements UIRenderer {
       ui.getPageOperator().closeCurrentPage();
     }
   }
+
   private final class PageSwitcherSelectionListener implements Listener {
 
     @Override
@@ -262,6 +262,7 @@ public class WebUI implements UIRenderer {
       pageSwitcherMenu.setVisible( true );
     }
   }
+
   private final class MenuItemSelectionListener implements Listener {
 
     @Override
