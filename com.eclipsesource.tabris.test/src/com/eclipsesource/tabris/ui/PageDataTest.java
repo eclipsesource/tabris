@@ -1,6 +1,8 @@
 package com.eclipsesource.tabris.ui;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -66,4 +68,56 @@ public class PageDataTest {
 
     assertSame( list, actualList );
   }
+
+  @Test
+  public void testShouldHaveSameHashCode() {
+    PageData pageData1 = new PageData();
+    pageData1.set( "a", "1" );
+    PageData pageData2 = new PageData();
+    pageData2.set( "a", "1" );
+
+    int hashCode1 = pageData1.hashCode();
+    int hashCode2 = pageData2.hashCode();
+
+    assertEquals(hashCode1, hashCode2);
+  }
+
+  @Test
+  public void testShouldNotHaveSameHashCode() {
+    PageData pageData1 = new PageData();
+    pageData1.set( "a", "1" );
+    PageData pageData2 = new PageData();
+    pageData2.set( "2", "b" );
+    pageData2.set( "3", "c" );
+
+    int hashCode1 = pageData1.hashCode();
+    int hashCode2 = pageData2.hashCode();
+
+    assertNotEquals(hashCode1, hashCode2);
+  }
+
+  @Test
+  public void testShouldBeEqual() {
+    PageData pageData1 = new PageData();
+    pageData1.set( "a", "1" );
+    PageData pageData2 = new PageData();
+    pageData2.set( "a", "1" );
+
+    boolean equal = pageData1.equals( pageData2 );
+
+    assertTrue( equal );
+  }
+
+  @Test
+  public void testShouldNotBeEqual() {
+    PageData pageData1 = new PageData();
+    pageData1.set( "a", "1" );
+    PageData pageData2 = new PageData();
+    pageData2.set( "2", "b" );
+
+    boolean equal = pageData1.equals( pageData2 );
+
+    assertFalse( equal );
+  }
+
 }
