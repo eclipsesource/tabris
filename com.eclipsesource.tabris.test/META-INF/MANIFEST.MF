@@ -7,6 +7,6 @@ Bundle-Vendor: EclipseSource
 Fragment-Host: com.eclipsesource.tabris;bundle-version="1.2.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.junit;bundle-version="[4.10.0,5.0.0)",
- org.eclipse.rap.rwt.testfixture;bundle-version="[2.1.0,2.2.0)",
+ org.eclipse.rap.rwt.testfixture;bundle-version="[2.2.0,2.3.0)",
  org.mockito.mockito-all;bundle-version="1.9.0"
 Import-Package: org.eclipse.rap.rwt.remote

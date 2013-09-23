@@ -10,25 +10,31 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.Serializable;
+import java.util.Collection;
 
+import org.eclipse.rap.rwt.internal.lifecycle.WidgetDataUtil;
+import org.eclipse.rap.rwt.testfixture.Fixture;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry;
 
 
+@SuppressWarnings("restriction")
 public class DataWhitelistTest {
-
-  private DataWhitelist whitelist;
 
   @Before
   public void setUp() {
-    whitelist = new DataWhitelist();
+    Fixture.setUp();
+  }
+
+  @After
+  public void tearDown() {
+    Fixture.tearDown();
   }
 
   @Test
@@ -37,19 +43,14 @@ public class DataWhitelistTest {
   }
 
   @Test
-  public void testHasKeys() {
-    String[] keys = whitelist.getKeys();
+  public void testRegistersKeys() {
+    DataWhitelist.register();
+    Collection<String> registeredKeys = WidgetDataUtil.getDataKeys();
 
-    assertNotNull( keys );
-  }
-
-  @Test
-  public void testContainsAllWhiteListentries() {
-    int whiteListSize = WhiteListEntry.values().length;
-
-    String[] keys = whitelist.getKeys();
-
-    assertEquals( whiteListSize, keys.length );
+    WhiteListEntry[] values = DataWhitelist.WhiteListEntry.values();
+    for( WhiteListEntry whiteListEntry : values ) {
+      assertTrue( registeredKeys.contains( whiteListEntry.getKey() ) );
+    }
   }
 
   @Test
@@ -103,10 +104,10 @@ public class DataWhitelistTest {
   }
 
   private void assertContains( String actualKey ) {
-    String[] keys = whitelist.getKeys();
+    WhiteListEntry[] keys = DataWhitelist.WhiteListEntry.values();
     boolean foundKey = false;
-    for( String key : keys ) {
-      if( key.equals( actualKey ) ) {
+    for( WhiteListEntry key : keys ) {
+      if( key.getKey().equals( actualKey ) ) {
         foundKey = true;
       }
     }

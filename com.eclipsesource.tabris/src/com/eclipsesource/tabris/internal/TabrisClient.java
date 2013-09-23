@@ -15,7 +15,6 @@ import static org.eclipse.rap.rwt.SingletonUtil.getSessionInstance;
 import org.eclipse.rap.rwt.client.Client;
 import org.eclipse.rap.rwt.client.service.ClientInfo;
 import org.eclipse.rap.rwt.client.service.ClientService;
-import org.eclipse.rap.rwt.internal.client.WidgetDataWhiteList;
 
 import com.eclipsesource.tabris.ClientStore;
 import com.eclipsesource.tabris.app.App;
@@ -25,7 +24,6 @@ import com.eclipsesource.tabris.geolocation.Geolocation;
 import com.eclipsesource.tabris.interaction.AppLauncher;
 
 
-@SuppressWarnings("restriction")
 public class TabrisClient implements Client {
 
   public TabrisClient() {
@@ -36,15 +34,14 @@ public class TabrisClient implements Client {
     getService( ClientDevice.class );
     getService( App.class );
     getService( ClientStore.class );
+    DataWhitelist.register();
   }
 
   @Override
   @SuppressWarnings("unchecked")
   public <T extends ClientService> T getService( Class<T> type ) {
     T result = null;
-    if( type == WidgetDataWhiteList.class ) {
-      result = ( T )getSessionInstance( DataWhitelist.class );
-    } else if( type == AppLauncher.class ) {
+    if( type == AppLauncher.class ) {
       result = ( T )getSessionInstance( AppLauncherImpl.class );
     } else if( type == App.class ) {
       result = ( T )getSessionInstance( AppImpl.class );

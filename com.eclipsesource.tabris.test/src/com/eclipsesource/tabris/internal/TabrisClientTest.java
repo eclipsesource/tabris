@@ -14,7 +14,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
 import org.eclipse.rap.rwt.client.service.ClientInfo;
-import org.eclipse.rap.rwt.internal.client.WidgetDataWhiteList;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.junit.After;
 import org.junit.Before;
@@ -29,7 +28,6 @@ import com.eclipsesource.tabris.interaction.AppLauncher;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 
 
-@SuppressWarnings("restriction")
 public class TabrisClientTest {
 
   @Before
@@ -42,15 +40,6 @@ public class TabrisClientTest {
   @After
   public void tearDown() {
     Fixture.tearDown();
-  }
-
-  @Test
-  public void testHasDataWhitelistService() {
-    TabrisClient client = new TabrisClient();
-
-    WidgetDataWhiteList list = client.getService( WidgetDataWhiteList.class );
-
-    assertNotNull( list );
   }
 
   @Test
@@ -179,16 +168,6 @@ public class TabrisClientTest {
     Geolocation geolocation2 = client.getService( Geolocation.class );
 
     assertSame( geolocation, geolocation2 );
-  }
-
-  @Test
-  public void testDataWhitelistIsSingletong() {
-    TabrisClient client = new TabrisClient();
-
-    WidgetDataWhiteList list = client.getService( WidgetDataWhiteList.class );
-    WidgetDataWhiteList list2 = client.getService( WidgetDataWhiteList.class );
-
-    assertSame( list, list2 );
   }
 
 }

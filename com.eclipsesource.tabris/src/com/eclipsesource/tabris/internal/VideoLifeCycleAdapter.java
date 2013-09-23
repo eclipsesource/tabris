@@ -30,12 +30,12 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.eclipse.rap.rwt.internal.protocol.ClientObjectFactory;
-import org.eclipse.rap.rwt.internal.protocol.IClientObject;
+import org.eclipse.rap.rwt.internal.protocol.RemoteObjectFactory;
 import org.eclipse.rap.rwt.lifecycle.AbstractWidgetLCA;
 import org.eclipse.rap.rwt.lifecycle.ControlLCAUtil;
 import org.eclipse.rap.rwt.lifecycle.ProcessActionRunner;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
+import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
 
@@ -125,10 +125,9 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA implements Serializ
   @Override
   public void renderInitialization( Widget widget ) throws IOException {
     Video video = ( Video ) widget;
-    IClientObject clientObject = ClientObjectFactory.getClientObject( video );
-    clientObject.create( TYPE_VIDEO );
-    clientObject.set( PROPERTY_PARENT, WidgetUtil.getId( video.getParent() ) );
-    clientObject.set( PROPERTY_URL, video.getURL().toString() );
+    RemoteObject remoteObject = RemoteObjectFactory.createRemoteObject( video, TYPE_VIDEO );
+    remoteObject.set( PROPERTY_PARENT, WidgetUtil.getId( video.getParent() ) );
+    remoteObject.set( PROPERTY_URL, video.getURL().toString() );
   }
 
   private static Object jsonizeValue( Entry<PlaybackOptions, Object> entry ) {

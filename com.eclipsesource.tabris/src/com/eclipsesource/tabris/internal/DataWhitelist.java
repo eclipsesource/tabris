@@ -12,11 +12,10 @@ package com.eclipsesource.tabris.internal;
 
 import java.io.Serializable;
 
-import org.eclipse.rap.rwt.internal.client.WidgetDataWhiteList;
+import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 
 
-@SuppressWarnings("restriction")
-public class DataWhitelist implements WidgetDataWhiteList, Serializable {
+public class DataWhitelist implements Serializable {
 
   public enum WhiteListEntry {
 
@@ -43,13 +42,15 @@ public class DataWhitelist implements WidgetDataWhiteList, Serializable {
     }
   }
 
-  @Override
-  public String[] getKeys() {
-    WhiteListEntry[] whiteList = WhiteListEntry.values();
-    String[] keys = new String[ whiteList.length ];
-    for( int i = 0; i < whiteList.length; i++ ) {
-      keys[ i ] = whiteList[ i ].getKey();
+  public static void register() {
+    WhiteListEntry[] values = WhiteListEntry.values();
+    for( WhiteListEntry whiteListEntry : values ) {
+      WidgetUtil.registerDataKeys( whiteListEntry.getKey() );
     }
-    return keys;
   }
+
+  private DataWhitelist() {
+    // prevent instantiation
+  }
+
 }

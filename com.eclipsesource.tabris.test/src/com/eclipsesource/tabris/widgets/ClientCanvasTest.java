@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TypedListener;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -40,6 +41,7 @@ import com.eclipsesource.tabris.internal.ClientCanvasTestUtil;
 import com.eclipsesource.tabris.internal.DrawingsCache;
 
 
+@Ignore
 public class ClientCanvasTest {
 
   private ClientCanvas clientCanvas;
