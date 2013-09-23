@@ -29,7 +29,8 @@ public class DataWhitelist implements Serializable {
     CLIENT_CANVAS( "clientCanvas" ),
     SWIPE( "swipe" ),
     SHOW_TOUCH( "showTouch" ),
-    BADGE_VALUE( "badgeValue" );
+    BADGE_VALUE( "badgeValue" ),
+    OVERLAY_COLOR( "overlayColor" );
 
     private final String key;
 

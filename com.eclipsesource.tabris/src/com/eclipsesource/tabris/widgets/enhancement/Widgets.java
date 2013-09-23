@@ -16,6 +16,7 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
@@ -101,6 +102,14 @@ public class Widgets {
   public static TabItemDecorator onTabItem( TabItem tabItem ) {
     checkComponent( tabItem );
     return new TabItemDecorator( tabItem );
+  }
+
+  /**
+   * @since 1.2
+   */
+  public static ShellDecorator onShell( Shell shell ) {
+    checkComponent( shell );
+    return new ShellDecorator( shell );
   }
 
   private Widgets() {

@@ -18,6 +18,7 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
@@ -238,6 +239,26 @@ public class WidgetsTest {
 
     CompositeDecorator decorator1 = Widgets.onComposite( widget );
     CompositeDecorator decorator2 = Widgets.onComposite( widget );
+
+    assertNotSame( decorator1, decorator2 );
+  }
+
+  @Test
+  public void testOnShell() {
+    assertNotNull( Widgets.onShell( mock( Shell.class ) ) );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testOnShellWithNull() {
+    Widgets.onShell( null );
+  }
+
+  @Test
+  public void testOnShellDoesNotCache() {
+    Shell widget = mock( Shell.class );
+
+    ShellDecorator decorator1 = Widgets.onShell( widget );
+    ShellDecorator decorator2 = Widgets.onShell( widget );
 
     assertNotSame( decorator1, decorator2 );
   }

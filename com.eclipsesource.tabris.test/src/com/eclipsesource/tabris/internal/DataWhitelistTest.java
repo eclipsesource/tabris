@@ -103,6 +103,11 @@ public class DataWhitelistTest {
     assertContains( "paging" );
   }
 
+  @Test
+  public void testHasOverlayColor() {
+    assertContains( "overlayColor" );
+  }
+
   private void assertContains( String actualKey ) {
     WhiteListEntry[] keys = DataWhitelist.WhiteListEntry.values();
     boolean foundKey = false;
