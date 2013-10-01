@@ -25,13 +25,13 @@
 		<artifact-build-version>${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}.v${maven.build.timestamp}-${build-identifier}</artifact-build-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<baseline.repository>http://download.eclipsesource.com/technology/tabris/downloads/nightly/</baseline.repository>
-		<tycho-version>0.16.0</tycho-version>
-		<tycho-extras-version>0.16.0</tycho-extras-version>
+		<tycho-version>0.18.1</tycho-version>
+		<tycho-extras-version>0.18.1</tycho-extras-version>
 		<tycho-groupid>org.eclipse.tycho</tycho-groupid>
 		<findbugs-version>2.5.2</findbugs-version>
-		<surefire-version>2.12.4</surefire-version>
+		<surefire-version>2.16</surefire-version>
 		<junit-version>4.11</junit-version>
-		<mockito-version>1.9.0</mockito-version>
+		<mockito-version>1.9.5</mockito-version>
 		<jacocoagent>${basedir}/../com.eclipsesource.tabris.build/lib/jacocoagent.jar</jacocoagent>
 		<test-arguments>-Xms512m -Xmx512m
 			-javaagent:${jacocoagent}=destfile=${basedir}/../com.eclipsesource.tabris/target/jacoco.exec,append=true</test-arguments>
@@ -61,24 +61,6 @@
 		<module>../com.eclipsesource.tabris.feature</module>
 		<module>../com.eclipsesource.tabris.repository</module>
 	</modules>
-
-	<repositories>
-		<repository>
-			<id>osgi-additionals</id>
-			<layout>p2</layout>
-			<url>http://eclipsesource.github.com/osgi-additionals/</url>
-		</repository>
-		<repository>
-			<id>rap-milestone-repository</id>
-			<layout>p2</layout>
-			<url>http://download.eclipse.org/rt/rap/nightly/runtime/</url>
-		</repository>
-		<repository>
-			<id>kepler</id>
-			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/kepler/</url>
-		</repository>
-	</repositories>
 
 	<build>
 		<plugins>
@@ -121,6 +103,12 @@
 					<pomDependencies>consider</pomDependencies>
 					<ignoreTychoRepositories>true</ignoreTychoRepositories>
 					<target>
+						<artifact>
+							<groupId>${project.groupId}</groupId>
+							<artifactId>${project.artifactId}</artifactId>
+							<version>${project.version}</version>
+							<classifier>${project.parent.relativePath}/../com.eclipsesource.tabris.target/tabris</classifier>
+						</artifact>
 						<dependency-resolution>
 							<optionalDependencies>ignore</optionalDependencies>
 						</dependency-resolution>
