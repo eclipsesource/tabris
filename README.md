@@ -1,4 +1,4 @@
-Tabris
+Tabris [![Build Status](https://travis-ci.org/eclipsesource/tabris.png)](https://travis-ci.org/eclipsesource/tabris)
 ======
 
 This repository contains the [Tabris](http://developer.eclipsesource.com/tabris/) server parts and additional features that are not contained in the [RAP core](http://eclipse.org/rap/).     
