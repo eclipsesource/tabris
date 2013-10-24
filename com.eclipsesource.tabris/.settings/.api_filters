@@ -16,4 +16,35 @@
             </message_arguments>
         </filter>
     </resource>
+    <resource path="src/com/eclipsesource/tabris/widgets/ClientCanvas.java" type="com.eclipsesource.tabris.widgets.ClientCanvas">
+        <filter id="337682486">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.widgets.ClientCanvas"/>
+            </message_arguments>
+        </filter>
+        <filter id="338792546">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.widgets.ClientCanvas"/>
+                <message_argument value="afterPhase(PhaseEvent)"/>
+            </message_arguments>
+        </filter>
+        <filter id="338792546">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.widgets.ClientCanvas"/>
+                <message_argument value="beforeDestroy(UISessionEvent)"/>
+            </message_arguments>
+        </filter>
+        <filter id="338792546">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.widgets.ClientCanvas"/>
+                <message_argument value="beforePhase(PhaseEvent)"/>
+            </message_arguments>
+        </filter>
+        <filter id="338792546">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.widgets.ClientCanvas"/>
+                <message_argument value="getPhaseId()"/>
+            </message_arguments>
+        </filter>
+    </resource>
 </component>

@@ -23,6 +23,7 @@ import static org.mockito.Mockito.verify;
 import java.io.Serializable;
 
 import org.eclipse.rap.json.JsonObject;
+import org.eclipse.rap.rwt.lifecycle.WidgetLifeCycleAdapter;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -33,15 +34,15 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TypedListener;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
+import com.eclipsesource.tabris.internal.ClientCanvasLCA;
+import com.eclipsesource.tabris.internal.ClientCanvasOperator;
 import com.eclipsesource.tabris.internal.ClientCanvasTestUtil;
 import com.eclipsesource.tabris.internal.DrawingsCache;
 
 
-@Ignore
 public class ClientCanvasTest {
 
   private ClientCanvas clientCanvas;
@@ -52,12 +53,18 @@ public class ClientCanvasTest {
     Display display = new Display();
     Shell shell = new Shell( display );
     clientCanvas = new ClientCanvas( shell, SWT.NONE );
-    Fixture.fakeNewRequest();
   }
 
   @After
   public void tearDown() {
     Fixture.tearDown();
+  }
+
+  @Test
+  public void testHasClientCanvasLCA() {
+    WidgetLifeCycleAdapter adapter = clientCanvas.getAdapter( WidgetLifeCycleAdapter.class );
+
+    assertTrue( adapter instanceof ClientCanvasLCA );
   }
 
   @Test
@@ -76,7 +83,7 @@ public class ClientCanvasTest {
   }
 
   @Test
-  public void testHasCustomVariant() {
+  public void testHasClientCanvasData() {
     Object data = clientCanvas.getData( CLIENT_CANVAS.getKey() );
 
     assertEquals( Boolean.TRUE, data );
@@ -132,10 +139,9 @@ public class ClientCanvasTest {
 
     fakeDrawEvent();
     JsonObject parameters = new JsonObject();
-    parameters.add( ClientCanvas.DRAWINGS_PROPERTY, ClientCanvasTestUtil.createDrawingsWithoutLineWidth() );
+    parameters.add( ClientCanvasOperator.DRAWINGS_PROPERTY, ClientCanvasTestUtil.createDrawingsWithoutLineWidth() );
     Fixture.fakeNewRequest();
-    Fixture.fakeNotifyOperation( getId( clientCanvas ), ClientCanvas.DRAWING_EVENT, parameters );
-    Fixture.executeLifeCycleFromServerThread();
+    fakeDrawEvent();
 
     ArgumentCaptor<PaintEvent> captor = ArgumentCaptor.forClass( PaintEvent.class );
     verify( paintListener, times( 2 ) ).paintControl( captor.capture() );
@@ -147,6 +153,7 @@ public class ClientCanvasTest {
     clientCanvas.addPaintListener( listener );
 
     clientCanvas.clear();
+    Fixture.fakeNewRequest();
     fakeDrawEvent();
 
     assertTrue( listener.wasCalled() );
@@ -290,9 +297,10 @@ public class ClientCanvasTest {
 
   private void fakeDrawEvent() {
     JsonObject parameters = new JsonObject();
-    parameters.add( ClientCanvas.DRAWINGS_PROPERTY, ClientCanvasTestUtil.createDrawings( 2 ) );
+    parameters.add( ClientCanvasOperator.DRAWINGS_PROPERTY, ClientCanvasTestUtil.createDrawings( 2 ) );
+    Fixture.executeLifeCycleFromServerThread();
     Fixture.fakeNewRequest();
-    Fixture.fakeNotifyOperation( getId( clientCanvas ), ClientCanvas.DRAWING_EVENT, parameters );
+    Fixture.fakeNotifyOperation( getId( clientCanvas ), ClientCanvasOperator.DRAWING_EVENT, parameters );
     Fixture.executeLifeCycleFromServerThread();
   }
 }

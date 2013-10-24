@@ -10,29 +10,23 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets;
 
+import static com.eclipsesource.tabris.internal.ClientCanvasOperator.DRAWINGS_PROPERTY;
+import static com.eclipsesource.tabris.internal.ClientCanvasOperator.DRAWING_EVENT;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.CLIENT_CANVAS;
 import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.readEventPropertyValueAsString;
-import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.wasEventSent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.rap.rwt.RWT;
-import org.eclipse.rap.rwt.internal.lifecycle.LifeCycleUtil;
-import org.eclipse.rap.rwt.internal.service.ContextProvider;
-import org.eclipse.rap.rwt.lifecycle.PhaseEvent;
-import org.eclipse.rap.rwt.lifecycle.PhaseId;
-import org.eclipse.rap.rwt.lifecycle.PhaseListener;
+import org.eclipse.rap.rwt.lifecycle.WidgetLifeCycleAdapter;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
-import org.eclipse.rap.rwt.service.UISessionEvent;
-import org.eclipse.rap.rwt.service.UISessionListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 
+import com.eclipsesource.tabris.internal.ClientCanvasLCA;
 import com.eclipsesource.tabris.internal.DrawingsCache;
 import com.eclipsesource.tabris.internal.GCOperationDispatcher;
 
@@ -49,10 +43,9 @@ import com.eclipsesource.tabris.internal.GCOperationDispatcher;
  * @since 0.6
  */
 @SuppressWarnings("restriction")
-public class ClientCanvas extends Canvas implements PhaseListener, UISessionListener {
+public class ClientCanvas extends Canvas {
 
-  static final String DRAWING_EVENT = "Drawing";
-  static final String DRAWINGS_PROPERTY = "drawings";
+  private static final WidgetLifeCycleAdapter CLIENT_CANVAS_LCA = new ClientCanvasLCA();
 
   private final List<ClientDrawListener> drawListeners;
   private final DrawingsCache cache;
@@ -62,8 +55,6 @@ public class ClientCanvas extends Canvas implements PhaseListener, UISessionList
     super( parent, style );
     drawListeners = new ArrayList<ClientDrawListener>();
     cache = new DrawingsCache();
-    ContextProvider.getApplicationContext().getLifeCycleFactory().getLifeCycle().addPhaseListener( this );
-    RWT.getUISession().addUISessionListener( this );
     addDispatchPaintListener();
     setData( CLIENT_CANVAS.getKey(), Boolean.TRUE );
   }
@@ -202,38 +193,14 @@ public class ClientCanvas extends Canvas implements PhaseListener, UISessionList
     }
   }
 
-  @Override
-  public void beforePhase( PhaseEvent event ) {
-    Display sessionDisplay = LifeCycleUtil.getSessionDisplay();
-    if( getDisplay() == sessionDisplay ) {
-      if( wasEventSent( WidgetUtil.getId( this ), DRAWING_EVENT ) ) {
-        redraw();
-      }
-    }
-  }
-
-  @Override
-  public void afterPhase( PhaseEvent event ) {
-    // do nothing
-  }
-
-  @Override
-  public PhaseId getPhaseId() {
-    return PhaseId.PROCESS_ACTION;
-  }
-
-  @Override
-  public void beforeDestroy( UISessionEvent event ) {
-    ContextProvider.getApplicationContext().getLifeCycleFactory().getLifeCycle().removePhaseListener( this );
-    RWT.getUISession().removeUISessionListener( this );
-  }
-
   @SuppressWarnings("unchecked")
   @Override
   public <T> T getAdapter( Class<T> adapter ) {
     T result = super.getAdapter( adapter );
     if( adapter == DrawingsCache.class ) {
       result = ( T )cache;
+    } else if( adapter == WidgetLifeCycleAdapter.class ) {
+      return ( T )CLIENT_CANVAS_LCA;
     }
     return result;
   }
