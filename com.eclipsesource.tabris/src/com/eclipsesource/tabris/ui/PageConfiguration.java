@@ -20,7 +20,10 @@ import java.util.List;
 
 import org.eclipse.rap.rwt.Adaptable;
 
+import com.eclipsesource.tabris.internal.ui.ActionDescriptor;
+import com.eclipsesource.tabris.internal.ui.ImageUtil;
 import com.eclipsesource.tabris.internal.ui.PageDescriptor;
+import com.eclipsesource.tabris.internal.ui.UpdateUtil;
 
 
 /**
@@ -43,13 +46,13 @@ import com.eclipsesource.tabris.internal.ui.PageDescriptor;
  */
 public class PageConfiguration implements Adaptable, Serializable {
 
-  protected final String id;
-  protected final Class<? extends Page> pageType;
-  protected String title;
-  protected PageStyle[] style;
-  protected boolean topLevel;
-  protected List<ActionConfiguration> actions;
-  private InputStream image;
+  private final String id;
+  private final Class<? extends Page> pageType;
+  private String title;
+  private PageStyle[] style;
+  private boolean topLevel;
+  private final List<ActionConfiguration> actions;
+  private byte[] image;
 
   /**
    * <p>
@@ -119,7 +122,7 @@ public class PageConfiguration implements Adaptable, Serializable {
    */
   public PageConfiguration setImage( InputStream image ) {
     whenNull( image ).throwIllegalArgument( "Page image must not be null" );
-    this.image = image;
+    this.image = ImageUtil.getBytes( image );
     return this;
   }
 
@@ -135,7 +138,37 @@ public class PageConfiguration implements Adaptable, Serializable {
   public PageConfiguration addActionConfiguration( ActionConfiguration configuration ) {
     whenNull( configuration ).throwIllegalArgument( "Action configuration must not be null" );
     actions.add( configuration );
+    UpdateUtil.firePageUpdate( this );
     return this;
+  }
+
+  /**
+   * <p>
+   * Removes an {@link ActionConfiguration} for the specified id. Can be used to manipulate a page during runtime.
+   * </p>
+   *
+   * @throws IllegalStateException when no {@link ActionConfiguration} exist for the specified id.
+   * @throws IllegalArgumentException when the id is null or empty.
+   *
+   * @since 1.2
+   */
+  public PageConfiguration removeActionConfiguration( String actionConfigurationId ) {
+    whenNull( actionConfigurationId ).throwIllegalArgument( "actionConfigurationId most not be null" );
+    when( actionConfigurationId.isEmpty() ).throwIllegalArgument( "actionConfigurationId most not be empty" );
+    ActionConfiguration configuration = getActionConfiguration( actionConfigurationId );
+    whenNull( configuration ).throwIllegalState( "ActionConfiguration for id " + actionConfigurationId + " does not exist" );
+    actions.remove( configuration );
+    UpdateUtil.firePageUpdate( this );
+    return this;
+  }
+
+  private ActionConfiguration getActionConfiguration( String actionConfigurationId ) {
+    for( ActionConfiguration action : actions ) {
+      if( action.getAdapter( ActionDescriptor.class ).getId().equals( actionConfigurationId ) ) {
+        return action;
+      }
+    }
+    return null;
   }
 
   /**

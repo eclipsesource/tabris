@@ -63,6 +63,23 @@ public class AbstractPageTest {
   }
 
   @Test
+  public void testUsesUIConfigurationOfUI() {
+    UI ui = mock( UI.class );
+    UIConfiguration config = mock( UIConfiguration.class );
+    when( ui.getConfiguration() ).thenReturn( config );
+    PageOperator operator = mock( PageOperator.class );
+    PageData data = new PageData();
+    when( operator.getCurrentPageData() ).thenReturn( data );
+    when( ui.getPageOperator() ).thenReturn( operator );
+    TestAbstractPage page = new TestAbstractPage();
+    page.createContent( shell, ui );
+
+    UIConfiguration actualConfiguration = page.getUIConfiguration();
+
+    assertSame( config, actualConfiguration );
+  }
+
+  @Test
   public void testCanGetPageData() {
     UI ui = mock( UI.class );
     PageOperator operator = mock( PageOperator.class );

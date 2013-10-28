@@ -10,9 +10,6 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
-import static com.eclipsesource.tabris.internal.ui.ImageUtil.getBytes;
-
-import java.io.InputStream;
 import java.io.Serializable;
 
 import com.eclipsesource.tabris.ui.Action;
@@ -30,14 +27,14 @@ public class ActionDescriptor implements Serializable {
   public ActionDescriptor( String id,
                            Action action,
                            String title,
-                           InputStream image,
+                           byte[] image,
                            boolean visible,
                            boolean enabled )
   {
     this.id = id;
     this.action = action;
     this.title = title;
-    this.image = getBytes( image );
+    this.image = image;
     this.enabled = enabled;
     this.visible = visible;
   }

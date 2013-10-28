@@ -12,7 +12,6 @@ package com.eclipsesource.tabris.internal.ui;
 
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,7 +35,7 @@ public class PageDescriptor implements Serializable {
   public PageDescriptor( String id,
                          Class<? extends Page> pageType,
                          String title,
-                         InputStream image,
+                         byte[] image,
                          boolean isTopLevelPage,
                          PageStyle... style )
   {
@@ -45,7 +44,7 @@ public class PageDescriptor implements Serializable {
     this.title = title;
     this.pageType = pageType;
     this.isTopLevelPage = isTopLevelPage;
-    this.image = ImageUtil.getBytes( image );
+    this.image = image;
     this.style = style;
   }
 

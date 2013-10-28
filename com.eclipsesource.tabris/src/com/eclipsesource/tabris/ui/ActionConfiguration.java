@@ -19,6 +19,7 @@ import java.io.Serializable;
 import org.eclipse.rap.rwt.Adaptable;
 
 import com.eclipsesource.tabris.internal.ui.ActionDescriptor;
+import com.eclipsesource.tabris.internal.ui.ImageUtil;
 import com.eclipsesource.tabris.internal.ui.InstanceCreator;
 
 
@@ -41,12 +42,12 @@ import com.eclipsesource.tabris.internal.ui.InstanceCreator;
  */
 public class ActionConfiguration implements Adaptable, Serializable {
 
-  protected final String actionId;
-  protected final Class<? extends Action> actionType;
-  protected String title;
-  protected boolean enabled;
-  protected boolean visible;
-  private InputStream image;
+  private final String actionId;
+  private final Class<? extends Action> actionType;
+  private String title;
+  private boolean enabled;
+  private boolean visible;
+  private byte[] image;
 
   /**
    * <p>
@@ -114,7 +115,7 @@ public class ActionConfiguration implements Adaptable, Serializable {
    */
   public ActionConfiguration setImage( InputStream image ) {
     whenNull( image ).throwIllegalArgument( "Action Image must not be null" );
-    this.image = image;
+    this.image = ImageUtil.getBytes( image );
     return this;
   }
 

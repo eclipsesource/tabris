@@ -1,5 +1,91 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <component id="com.eclipsesource.tabris" version="2">
+    <resource path="src/com/eclipsesource/tabris/internal/AppImpl.java" type="com.eclipsesource.tabris.internal.AppImpl">
+        <filter id="574668824">
+            <message_arguments>
+                <message_argument value="App"/>
+                <message_argument value="AppImpl"/>
+                <message_argument value="ClientService"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/internal/AppLauncherImpl.java" type="com.eclipsesource.tabris.internal.AppLauncherImpl">
+        <filter id="574668824">
+            <message_arguments>
+                <message_argument value="AppLauncher"/>
+                <message_argument value="AppLauncherImpl"/>
+                <message_argument value="ClientService"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/internal/CameraImpl.java" type="com.eclipsesource.tabris.internal.CameraImpl">
+        <filter id="574668824">
+            <message_arguments>
+                <message_argument value="Camera"/>
+                <message_argument value="CameraImpl"/>
+                <message_argument value="ClientService"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/internal/ClientDeviceImpl.java" type="com.eclipsesource.tabris.internal.ClientDeviceImpl">
+        <filter id="574668824">
+            <message_arguments>
+                <message_argument value="ClientDevice"/>
+                <message_argument value="ClientDeviceImpl"/>
+                <message_argument value="ClientInfo"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/internal/ClientStoreImpl.java" type="com.eclipsesource.tabris.internal.ClientStoreImpl">
+        <filter id="574668824">
+            <message_arguments>
+                <message_argument value="ClientStore"/>
+                <message_argument value="ClientStoreImpl"/>
+                <message_argument value="ClientService"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/internal/GeolocationImpl.java" type="com.eclipsesource.tabris.internal.GeolocationImpl">
+        <filter id="574668824">
+            <message_arguments>
+                <message_argument value="Geolocation"/>
+                <message_argument value="GeolocationImpl"/>
+                <message_argument value="ClientService"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/ui/ActionConfiguration.java" type="com.eclipsesource.tabris.ui.ActionConfiguration">
+        <filter id="388018290">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.ui.ActionConfiguration"/>
+                <message_argument value="actionId"/>
+            </message_arguments>
+        </filter>
+        <filter id="388018290">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.ui.ActionConfiguration"/>
+                <message_argument value="actionType"/>
+            </message_arguments>
+        </filter>
+        <filter id="388018290">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.ui.ActionConfiguration"/>
+                <message_argument value="enabled"/>
+            </message_arguments>
+        </filter>
+        <filter id="388018290">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.ui.ActionConfiguration"/>
+                <message_argument value="title"/>
+            </message_arguments>
+        </filter>
+        <filter id="388018290">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.ui.ActionConfiguration"/>
+                <message_argument value="visible"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="src/com/eclipsesource/tabris/ui/ActionOperator.java" type="com.eclipsesource.tabris.ui.ActionOperator">
         <filter id="403804204">
             <message_arguments>
@@ -13,6 +99,44 @@
             <message_arguments>
                 <message_argument value="com.eclipsesource.tabris.ui.Page"/>
                 <message_argument value="destroy()"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/eclipsesource/tabris/ui/PageConfiguration.java" type="com.eclipsesource.tabris.ui.PageConfiguration">
+        <filter id="388018290">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.ui.PageConfiguration"/>
+                <message_argument value="actions"/>
+            </message_arguments>
+        </filter>
+        <filter id="388018290">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.ui.PageConfiguration"/>
+                <message_argument value="id"/>
+            </message_arguments>
+        </filter>
+        <filter id="388018290">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.ui.PageConfiguration"/>
+                <message_argument value="pageType"/>
+            </message_arguments>
+        </filter>
+        <filter id="388018290">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.ui.PageConfiguration"/>
+                <message_argument value="style"/>
+            </message_arguments>
+        </filter>
+        <filter id="388018290">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.ui.PageConfiguration"/>
+                <message_argument value="title"/>
+            </message_arguments>
+        </filter>
+        <filter id="388018290">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.ui.PageConfiguration"/>
+                <message_argument value="topLevel"/>
             </message_arguments>
         </filter>
     </resource>

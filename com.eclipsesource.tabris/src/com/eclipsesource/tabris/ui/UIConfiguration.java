@@ -10,9 +10,12 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.ui;
 
+import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.rap.rwt.Adaptable;
 import org.eclipse.swt.graphics.RGB;
@@ -20,6 +23,7 @@ import org.eclipse.swt.graphics.RGB;
 import com.eclipsesource.tabris.internal.ui.ActionDescriptor;
 import com.eclipsesource.tabris.internal.ui.PageDescriptor;
 import com.eclipsesource.tabris.internal.ui.UIDescriptor;
+import com.eclipsesource.tabris.internal.ui.UpdateUtil;
 
 
 /**
@@ -60,11 +64,15 @@ import com.eclipsesource.tabris.internal.ui.UIDescriptor;
 public class UIConfiguration implements Adaptable, Serializable {
 
   private final UIDescriptor uiDescriptor;
+  private final List<PageConfiguration> pageConfigurations;
+  private final List<ActionConfiguration> actionConfigurations;
   private RGB background;
   private RGB foreground;
 
   public UIConfiguration() {
     this.uiDescriptor = new UIDescriptor();
+    this.pageConfigurations = new ArrayList<PageConfiguration>();
+    this.actionConfigurations = new ArrayList<ActionConfiguration>();
   }
 
   /**
@@ -76,9 +84,35 @@ public class UIConfiguration implements Adaptable, Serializable {
    */
   public UIConfiguration addPageConfiguration( PageConfiguration configuration ) {
     whenNull( configuration ).throwIllegalArgument( "Page Configuration must not be null" );
+    pageConfigurations.add( configuration );
     PageDescriptor descriptor = configuration.getAdapter( PageDescriptor.class );
     uiDescriptor.add( descriptor );
+    UpdateUtil.fireUiUpdate( this );
     return this;
+  }
+
+  /**
+   * <p>
+   * Returns a {@link PageConfiguration} for the passed in id or <code>null</code> if no {@link PageConfiguration}
+   * exist for this id. The {@link PageConfiguration} can be used to manipulate a page during runtime e.g.
+   * adding {@link ActionConfiguration}s.
+   * </p>
+   *
+   * @throws IllegalArgumentException if the pageId is null or empty.
+   *
+   * @return The {@link PageConfiguration} for the specified id.
+   *
+   * @since 1.2
+   */
+  public PageConfiguration getPageConfiguration( String pageId ) {
+    whenNull( pageId ).throwIllegalArgument( "Page Id must not be null" );
+    when( pageId.isEmpty() ).throwIllegalArgument( "Page Id must not be empty" );
+    for( PageConfiguration configuration : pageConfigurations ) {
+      if( configuration.getAdapter( PageDescriptor.class ).getId().equals( pageId ) ) {
+        return configuration;
+      }
+    }
+    return null;
   }
 
   /**
@@ -90,9 +124,41 @@ public class UIConfiguration implements Adaptable, Serializable {
    */
   public UIConfiguration addActionConfiguration( ActionConfiguration configuration ) {
     whenNull( configuration ).throwIllegalArgument( "Action Configuration must not be null" );
+    actionConfigurations.add( configuration );
     ActionDescriptor descriptor = configuration.getAdapter( ActionDescriptor.class );
     uiDescriptor.add( descriptor );
+    UpdateUtil.fireUiUpdate( this );
     return this;
+  }
+
+  /**
+   * <p>
+   * Removes an {@link ActionConfiguration} for the specified id. Can be used to manipulate a page during runtime.
+   * </p>
+   *
+   * @throws IllegalStateException when no {@link ActionConfiguration} exist for the specified id.
+   * @throws IllegalArgumentException when the id is null or empty.
+   *
+   * @since 1.2
+   */
+  public UIConfiguration removeActionConfiguration( String actionConfigurationId ) {
+    whenNull( actionConfigurationId ).throwIllegalArgument( "actionConfigurationId most not be null" );
+    when( actionConfigurationId.isEmpty() ).throwIllegalArgument( "actionConfigurationId most not be empty" );
+    ActionConfiguration configuration = getActionConfiguration( actionConfigurationId );
+    whenNull( configuration ).throwIllegalState( "ActionConfiguration for id " + actionConfigurationId + " does not exist" );
+    uiDescriptor.removeAction( actionConfigurationId );
+    actionConfigurations.remove( configuration );
+    UpdateUtil.fireUiUpdate( this );
+    return this;
+  }
+
+  private ActionConfiguration getActionConfiguration( String actionConfigurationId ) {
+    for( ActionConfiguration action : actionConfigurations ) {
+      if( action.getAdapter( ActionDescriptor.class ).getId().equals( actionConfigurationId ) ) {
+        return action;
+      }
+    }
+    return null;
   }
 
   /**

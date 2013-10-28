@@ -12,9 +12,11 @@ package com.eclipsesource.tabris.internal.ui;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
@@ -26,7 +28,9 @@ import static org.mockito.Mockito.when;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
 import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.testfixture.Fixture;
@@ -39,6 +43,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import com.eclipsesource.tabris.internal.TabrisClient;
 import com.eclipsesource.tabris.internal.ZIndexStackLayout;
@@ -48,6 +54,7 @@ import com.eclipsesource.tabris.internal.ui.rendering.RendererFactory;
 import com.eclipsesource.tabris.internal.ui.rendering.UIRenderer;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 import com.eclipsesource.tabris.ui.Page;
+import com.eclipsesource.tabris.ui.PageConfiguration;
 import com.eclipsesource.tabris.ui.PageData;
 import com.eclipsesource.tabris.ui.TransitionListener;
 import com.eclipsesource.tabris.ui.UI;
@@ -97,6 +104,20 @@ public class ControllerTest {
     assertTrue( Serializable.class.isAssignableFrom( Controller.class ) );
   }
 
+
+  @Test
+  public void testRegistersItselfAsUpdater() {
+    PageDescriptor descriptor = createRootPage( "foo" );
+    doReturn( TestPage.class ).when( descriptor ).getPageType();
+    RemoteUI remoteUI = mock( RemoteUI.class );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+
+    Controller controller = new Controller( remoteUI, uiDescriptor );
+
+    Object attribute = RWT.getUISession().getAttribute( UpdateUtil.UPDATER_PROPERTY );
+    assertSame( controller, attribute );
+  }
+
   @Test( expected = IllegalStateException.class )
   public void testCreatesRootPagesFailsWithoutRootPages() {
     PageDescriptor descriptor = mock( PageDescriptor.class );
@@ -125,6 +146,43 @@ public class ControllerTest {
   }
 
   @Test
+  public void testUpdateCreatesNewRootPages() {
+    PageDescriptor descriptor = createRootPage( "foo" );
+    doReturn( TestPage.class ).when( descriptor ).getPageType();
+    RemoteUI remoteUI = mock( RemoteUI.class );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    when( remoteUI.getActionsParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
+    controller.createRootPages( ui );
+    UIConfiguration configuration = mock( UIConfiguration.class );
+    PageDescriptor descriptor2 = createRootPage( "fooBar" );
+    when( configuration.getAdapter( UIDescriptor.class ) ).thenReturn( uiDescriptor );
+
+    controller.update( configuration );
+
+    Map<PageDescriptor, PageRenderer> rootPages = controller.getRootPages();
+    assertNotNull( rootPages.get( descriptor2 ) );
+  }
+
+  @Test
+  public void testUpdateCreatesUIElementForNewRootPages() {
+    PageDescriptor descriptor = createRootPage( "foo" );
+    doReturn( TestPage.class ).when( descriptor ).getPageType();
+    RemoteUI remoteUI = mock( RemoteUI.class );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    when( remoteUI.getActionsParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
+    controller.createRootPages( ui );
+    UIConfiguration configuration = mock( UIConfiguration.class );
+    createRootPage( "fooBar" );
+    when( configuration.getAdapter( UIDescriptor.class ) ).thenReturn( uiDescriptor );
+
+    controller.update( configuration );
+
+    assertEquals( 2, shell.getChildren().length );
+  }
+
+  @Test
   public void testCreatesGlobalActions() {
     ActionDescriptor descriptor = mock( ActionDescriptor.class );
     when( descriptor.getTitle() ).thenReturn( "foo" );
@@ -136,6 +194,49 @@ public class ControllerTest {
     controller.createGlobalActions( ui );
 
     verify( remoteObject ).set( "title", "foo" );
+  }
+
+  @Test
+  public void testUpdateCreatesNewGlobalActions() {
+    ActionDescriptor descriptor = mock( ActionDescriptor.class );
+    when( descriptor.getTitle() ).thenReturn( "foo" );
+    when( descriptor.getId() ).thenReturn( "foo" );
+    uiDescriptor.add( descriptor );
+    RemoteUI remoteUI = mock( RemoteUI.class );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    when( remoteUI.getActionsParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
+    controller.createGlobalActions( ui );
+    ActionDescriptor descriptor2 = mock( ActionDescriptor.class );
+    when( descriptor2.getTitle() ).thenReturn( "foo2" );
+    when( descriptor2.getId() ).thenReturn( "foo2" );
+    uiDescriptor.add( descriptor2 );
+    UIConfiguration configuration = mock( UIConfiguration.class );
+    when( configuration.getAdapter( UIDescriptor.class ) ).thenReturn( uiDescriptor );
+
+    controller.update( configuration );
+
+    verify( remoteObject ).set( "title", "foo2" );
+  }
+
+  @Test
+  public void testUpdateRemovesDestroyedGlobalActions() {
+    ActionDescriptor descriptor = mock( ActionDescriptor.class );
+    when( descriptor.getTitle() ).thenReturn( "foo" );
+    when( descriptor.getId() ).thenReturn( "foo" );
+    uiDescriptor.add( descriptor );
+    RemoteUI remoteUI = mock( RemoteUI.class );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    when( remoteUI.getActionsParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
+    controller.createGlobalActions( ui );
+    when( uiDescriptor.getGlobalActions() ).thenReturn( new ArrayList<ActionDescriptor>() );
+    UIConfiguration configuration = mock( UIConfiguration.class );
+    when( configuration.getAdapter( UIDescriptor.class ) ).thenReturn( uiDescriptor );
+
+    controller.update( configuration );
+
+    verify( remoteObject ).destroy();
   }
 
   @Test
@@ -265,6 +366,46 @@ public class ControllerTest {
 
     assertTrue( getTestPage( controller, root1 ).wasCreated() );
     assertTrue( testPage.wasCreated() );
+  }
+
+  @Test
+  public void testUpdatePageConfigurationTriggersPageUpdate() {
+    RendererFactory factory = mockRendererFactory();
+    when( uiDescriptor.getRendererFactory() ).thenReturn( factory );
+    createRootPage( "foo" );
+    PageDescriptor page = createPage( "bar" );
+    RemoteUI remoteUI = mock( RemoteUI.class );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    when( remoteUI.getActionsParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
+    controller.createRootPages( ui );
+    controller.showPage( ui, page, mock( PageData.class ) ).getPage();
+    PageConfiguration configuration = mock( PageConfiguration.class );
+    when( configuration.getAdapter( PageDescriptor.class ) ).thenReturn( page );
+
+    controller.update( configuration );
+
+    PageRenderer renderer = controller.getAllPages().get( 2 );
+    verify( renderer ).update( page, factory, shell );
+  }
+
+  private RendererFactory mockRendererFactory() {
+    RendererFactory factory = mock( RendererFactory.class );
+    doAnswer( new Answer<PageRenderer>() {
+
+      @Override
+      public PageRenderer answer( InvocationOnMock invocation ) throws Throwable {
+        PageRenderer renderer = mock( PageRenderer.class );
+        when( renderer.getData() ).thenReturn( ( PageData )invocation.getArguments()[ 3 ] );
+        when( renderer.getPage() ).thenReturn( mock( Page.class ) );
+        when( renderer.getDescriptor() ).thenReturn( ( PageDescriptor )invocation.getArguments()[ 2 ] );
+        return renderer;
+      }
+    } ).when( factory ).createPageRenderer( any( UI.class ),
+                                            any( UIRenderer.class ),
+                                            any( PageDescriptor.class ),
+                                            any( PageData.class ) );
+    return factory;
   }
 
   @Test

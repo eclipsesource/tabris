@@ -114,6 +114,7 @@ public class TabrisUI implements Serializable {
   }
 
   private void prepareController( Controller controller, UIImpl ui ) {
+    controller.setUI( ui );
     controller.createGlobalActions( ui );
     controller.createRootPages( ui );
   }

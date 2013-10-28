@@ -83,7 +83,7 @@ public class RemotePageTest {
     actions.add( new ActionDescriptor( "actionFoo",
                                        new TestAction(),
                                        "actionBar",
-                                       image,
+                                       ImageUtil.getBytes( image ),
                                        true,
                                        true ) );
     when( descriptor.getActions() ).thenReturn( actions );
@@ -146,17 +146,17 @@ public class RemotePageTest {
   }
 
   @Test
-    public void testGetActionRenderers() {
-      RemotePage page = new RemotePage( ui, uiRenderer, descriptor, mock( PageData.class ) );
-      ActionRenderer renderer = mock( ActionRenderer.class );
-      RemoteRendererFactory factory = mock( RemoteRendererFactory.class );
-      when( factory.createActionRenderer( any( UI.class ), any( UIRenderer.class ), any( ActionDescriptor.class ) ) )
-        .thenReturn( renderer );
+  public void testGetActionRenderers() {
+    RemotePage page = new RemotePage( ui, uiRenderer, descriptor, mock( PageData.class ) );
+    ActionRenderer renderer = mock( ActionRenderer.class );
+    RemoteRendererFactory factory = mock( RemoteRendererFactory.class );
+    when( factory.createActionRenderer( any( UI.class ), any( UIRenderer.class ), any( ActionDescriptor.class ) ) )
+    .thenReturn( renderer );
 
-      page.createActions( factory, shell );
+    page.createActions( factory, shell );
 
-      verify( renderer ).createUi( shell );
-    }
+    verify( renderer ).createUi( shell );
+  }
 
   @Test
   public void testCreateActionsCallsActionCreateUi() {
@@ -167,6 +167,61 @@ public class RemotePageTest {
 
     assertEquals( 1, actions.size() );
     assertEquals( "actionFoo", actions.get( 0 ).getDescriptor().getId() );
+  }
+
+  @Test
+  public void testUpdateCreatesNewActionsCallsActionCreateUi() {
+    List<ActionDescriptor> actions = new ArrayList<ActionDescriptor>();
+    byte[] image = ImageUtil.getBytes( RemotePageTest.class.getResourceAsStream( "testImage.png" ) );
+    actions.add( new ActionDescriptor( "actionFoo",
+                                       new TestAction(),
+                                       "actionBar",
+                                       image,
+                                       true,
+                                       true ) );
+    when( descriptor.getActions() ).thenReturn( actions );
+    RemotePage page = new RemotePage( ui, uiRenderer, descriptor, mock( PageData.class ) );
+    page.createActions( RemoteRendererFactory.getInstance(), shell );
+    actions.add( new ActionDescriptor( "actionFoo2",
+                                       new TestAction(),
+                                       "actionBar",
+                                       image,
+                                       true,
+                                       true ) );
+
+    page.update( descriptor, RemoteRendererFactory.getInstance(), shell );
+
+    List<ActionRenderer> renderers = page.getActionRenderers();
+    assertEquals( 2, renderers.size() );
+    assertEquals( "actionFoo2", renderers.get( 1 ).getDescriptor().getId() );
+  }
+
+  @Test
+  public void testUpdateDestroysOldActionsIfDeleted() {
+    List<ActionDescriptor> actions = new ArrayList<ActionDescriptor>();
+    byte[] image = ImageUtil.getBytes( RemotePageTest.class.getResourceAsStream( "testImage.png" ) );
+    actions.add( new ActionDescriptor( "actionFoo",
+                                       new TestAction(),
+                                       "actionBar",
+                                       image,
+                                       true,
+                                       true ) );
+    actions.add( new ActionDescriptor( "actionFoo2",
+                                       new TestAction(),
+                                       "actionBar",
+                                       image,
+                                       true,
+                                       true ) );
+    when( descriptor.getActions() ).thenReturn( actions );
+    RemotePage page = new RemotePage( ui, uiRenderer, descriptor, mock( PageData.class ) );
+    page.createActions( RemoteRendererFactory.getInstance(), shell );
+    descriptor.getActions().remove( 1 );
+
+    page.update( descriptor, RemoteRendererFactory.getInstance(), shell );
+
+    List<ActionRenderer> renderers = page.getActionRenderers();
+    assertEquals( 1, renderers.size() );
+    assertEquals( "actionFoo", renderers.get( 0 ).getDescriptor().getId() );
   }
 
   @Test
