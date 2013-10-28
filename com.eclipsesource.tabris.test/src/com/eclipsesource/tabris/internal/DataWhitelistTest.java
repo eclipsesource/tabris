@@ -108,6 +108,11 @@ public class DataWhitelistTest {
     assertContains( "overlayColor" );
   }
 
+  @Test
+  public void testHasTextReplacement() {
+    assertContains( "textReplacement" );
+  }
+  
   private void assertContains( String actualKey ) {
     WhiteListEntry[] keys = DataWhitelist.WhiteListEntry.values();
     boolean foundKey = false;

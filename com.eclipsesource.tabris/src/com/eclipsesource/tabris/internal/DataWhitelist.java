@@ -30,7 +30,8 @@ public class DataWhitelist implements Serializable {
     SWIPE( "swipe" ),
     SHOW_TOUCH( "showTouch" ),
     BADGE_VALUE( "badgeValue" ),
-    OVERLAY_COLOR( "overlayColor" );
+    OVERLAY_COLOR( "overlayColor" ),
+    TEXT_REPLACEMENT( "textReplacement" );
 
     private final String key;
 
