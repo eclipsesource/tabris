@@ -13,11 +13,13 @@ package com.eclipsesource.tabris.internal.ui;
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
 import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.internal.service.ContextProvider;
 
 import com.eclipsesource.tabris.ui.PageConfiguration;
 import com.eclipsesource.tabris.ui.UIConfiguration;
 
 
+@SuppressWarnings("restriction")
 public class UpdateUtil {
 
   static final String UPDATER_PROPERTY = "com.eclipsesource.tabris.ui.UIUpdater";
@@ -43,11 +45,13 @@ public class UpdateUtil {
     }
   }
 
-  private static UIUpdater getUpdater() {
+  static UIUpdater getUpdater() {
     UIUpdater result = null;
-    Object updater = RWT.getUISession().getAttribute( UPDATER_PROPERTY );
-    if( updater != null && updater instanceof UIUpdater ) {
-      result = ( UIUpdater )updater;
+    if( ContextProvider.hasContext() ) {
+      Object updater = RWT.getUISession().getAttribute( UPDATER_PROPERTY );
+      if( updater != null && updater instanceof UIUpdater ) {
+        result = ( UIUpdater )updater;
+      }
     }
     return result;
   }
