@@ -10,11 +10,13 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.internal.service.ContextProvider;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.junit.After;
 import org.junit.Before;
@@ -24,6 +26,7 @@ import com.eclipsesource.tabris.ui.PageConfiguration;
 import com.eclipsesource.tabris.ui.UIConfiguration;
 
 
+@SuppressWarnings("restriction")
 public class UpdateUtilTest {
 
   @Before
@@ -33,7 +36,9 @@ public class UpdateUtilTest {
 
   @After
   public void tearDown() {
-    Fixture.tearDown();
+    if( ContextProvider.hasContext() ) {
+      Fixture.tearDown();
+    }
   }
 
   @Test
@@ -81,5 +86,16 @@ public class UpdateUtilTest {
     UpdateUtil.fireUiUpdate( configuration );
 
     verify( updater ).update( configuration );
+  }
+
+  @Test
+  public void testGetUpdaterReturnsNullIfNoContext() {
+    UIUpdater updater = mock( UIUpdater.class );
+    UpdateUtil.registerUpdater( updater );
+
+    ContextProvider.disposeContext();
+    UIUpdater actualUpdater = UpdateUtil.getUpdater();
+
+    assertNull( actualUpdater );
   }
 }
