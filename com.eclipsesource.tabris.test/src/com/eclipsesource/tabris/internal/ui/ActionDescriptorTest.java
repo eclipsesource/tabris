@@ -50,7 +50,7 @@ public class ActionDescriptorTest {
     ActionDescriptor descriptor = new ActionDescriptor( "foo",
                                                         mock( Action.class ),
                                                         "bar",
-                                                        image,
+                                                        ImageUtil.getBytes( image ),
                                                         true,
                                                         true );
 
@@ -64,7 +64,7 @@ public class ActionDescriptorTest {
     ActionDescriptor descriptor = new ActionDescriptor( "foo",
                                                         action,
                                                         "bar",
-                                                        image,
+                                                        ImageUtil.getBytes( image ),
                                                         true,
                                                         true );
 
@@ -78,7 +78,7 @@ public class ActionDescriptorTest {
     ActionDescriptor descriptor = new ActionDescriptor( "foo",
                                                         action,
                                                         "bar",
-                                                        image,
+                                                        ImageUtil.getBytes( image ),
                                                         true,
                                                         true );
 
@@ -92,7 +92,7 @@ public class ActionDescriptorTest {
     ActionDescriptor descriptor = new ActionDescriptor( "foo",
                                                         action,
                                                         "bar",
-                                                        image,
+                                                        ImageUtil.getBytes( image ),
                                                         true,
                                                         true );
 
@@ -106,7 +106,7 @@ public class ActionDescriptorTest {
     ActionDescriptor descriptor = new ActionDescriptor( "foo",
                                                         action,
                                                         "bar",
-                                                        image,
+                                                        ImageUtil.getBytes( image ),
                                                         true,
                                                         true );
 
@@ -120,7 +120,7 @@ public class ActionDescriptorTest {
     ActionDescriptor descriptor = new ActionDescriptor( "foo",
                                                         action,
                                                         "bar",
-                                                        image,
+                                                        ImageUtil.getBytes( image ),
                                                         true,
                                                         true );
 

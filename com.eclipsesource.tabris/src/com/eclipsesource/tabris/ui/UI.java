@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Display;
  * whole UI once it was created. You can use it to navigate through your application.
  * </p>
  *
+ * @noimplement This interface is not intended to be implemented by clients.
  * @since 0.11
  */
 public interface UI {
@@ -50,5 +51,16 @@ public interface UI {
    * @since 1.0
    */
   ActionOperator getActionOperator();
+
+  /**
+   * <p>
+   * Returns the {@link UIConfiguration} used to configure the current UI. The configuration returned has
+   * session scope and can be used to manipulate the UI during runtime e.g. adding {@link PageConfiguration}s
+   * and {@link ActionConfiguration}s.
+   * </p>
+   *
+   * @since 1.2
+   */
+  UIConfiguration getConfiguration();
 
 }

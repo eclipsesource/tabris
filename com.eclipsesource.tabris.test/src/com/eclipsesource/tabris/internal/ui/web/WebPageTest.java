@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui.web;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
@@ -35,11 +36,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.internal.ui.ActionDescriptor;
+import com.eclipsesource.tabris.internal.ui.ImageUtil;
 import com.eclipsesource.tabris.internal.ui.PageDescriptor;
 import com.eclipsesource.tabris.internal.ui.RemotePageTest;
+import com.eclipsesource.tabris.internal.ui.RemoteRendererFactory;
 import com.eclipsesource.tabris.internal.ui.TestAction;
 import com.eclipsesource.tabris.internal.ui.TestPage;
 import com.eclipsesource.tabris.internal.ui.UITestUtil;
+import com.eclipsesource.tabris.internal.ui.rendering.ActionRenderer;
 import com.eclipsesource.tabris.ui.Page;
 import com.eclipsesource.tabris.ui.PageData;
 import com.eclipsesource.tabris.ui.PageStyle;
@@ -147,6 +151,60 @@ public class WebPageTest {
     verify( javaScriptExecutor ).execute( eq( "document.title = \"bar\";" ) );
   }
 
+  @Test
+  public void testUpdateCreatesNewActionsCallsActionCreateUi() {
+    List<ActionDescriptor> actions = new ArrayList<ActionDescriptor>();
+    byte[] image = ImageUtil.getBytes( RemotePageTest.class.getResourceAsStream( "testImage.png" ) );
+    actions.add( new ActionDescriptor( "actionFoo",
+                                       new TestAction(),
+                                       "actionBar",
+                                       image,
+                                       true,
+                                       true ) );
+    when( descriptor.getActions() ).thenReturn( actions );
+    webPage.createActions( WebRendererFactory.getInstance(), shell );
+    actions.add( new ActionDescriptor( "actionFoo2",
+                                       new TestAction(),
+                                       "actionBar",
+                                       image,
+                                       true,
+                                       true ) );
+
+    webPage.update( descriptor, WebRendererFactory.getInstance(), shell );
+
+    List<ActionRenderer> renderers = webPage.getActionRenderers();
+    assertEquals( 2, renderers.size() );
+    assertEquals( "actionFoo2", renderers.get( 1 ).getDescriptor().getId() );
+  }
+
+  @Test
+  public void testUpdateDestroysOldActionsIfDeleted() {
+    List<ActionDescriptor> actions = new ArrayList<ActionDescriptor>();
+    byte[] image = ImageUtil.getBytes( RemotePageTest.class.getResourceAsStream( "testImage.png" ) );
+    actions.add( new ActionDescriptor( "actionFoo",
+                                       new TestAction(),
+                                       "actionBar",
+                                       image,
+                                       true,
+                                       true ) );
+    actions.add( new ActionDescriptor( "actionFoo2",
+                                       new TestAction(),
+                                       "actionBar",
+                                       image,
+                                       true,
+                                       true ) );
+    when( descriptor.getActions() ).thenReturn( actions );
+    webPage.createActions( WebRendererFactory.getInstance(), shell );
+    webPage.createActions( RemoteRendererFactory.getInstance(), shell );
+    descriptor.getActions().remove( 1 );
+
+    webPage.update( descriptor, RemoteRendererFactory.getInstance(), shell );
+
+    List<ActionRenderer> renderers = webPage.getActionRenderers();
+    assertEquals( 1, renderers.size() );
+    assertEquals( "actionFoo", renderers.get( 0 ).getDescriptor().getId() );
+  }
+
   private void mockDescriptor() {
     descriptor = mock( PageDescriptor.class );
     when( descriptor.getId() ).thenReturn( "foo" );
@@ -158,7 +216,7 @@ public class WebPageTest {
     actions.add( new ActionDescriptor( "actionFoo",
                                        new TestAction(),
                                        "actionBar",
-                                       image,
+                                       ImageUtil.getBytes( image ),
                                        true,
                                        true ) );
     when( descriptor.getActions() ).thenReturn( actions );

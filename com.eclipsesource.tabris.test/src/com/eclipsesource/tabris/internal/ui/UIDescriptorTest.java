@@ -12,10 +12,12 @@ package com.eclipsesource.tabris.internal.ui;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.List;
 
@@ -75,16 +77,34 @@ public class UIDescriptorTest {
   @Test
   public void testAddsAction() {
     UIDescriptor uiDescriptor = new UIDescriptor();
+    InputStream image = UIDescriptorTest.class.getResourceAsStream( "testImage.png" );
     ActionDescriptor descriptor = new ActionDescriptor( "foo",
                                                         new TestAction(),
                                                         "bar",
-                                                        UIDescriptorTest.class.getResourceAsStream( "testImage.png" ),
+                                                        ImageUtil.getBytes( image ),
                                                         true,
                                                         true );
 
     uiDescriptor.add( descriptor );
 
     assertSame( descriptor, uiDescriptor.getActionDescriptor( "foo" ) );
+  }
+
+  @Test
+  public void testRemovesAction() {
+    UIDescriptor uiDescriptor = new UIDescriptor();
+    InputStream image = UIDescriptorTest.class.getResourceAsStream( "testImage.png" );
+    ActionDescriptor descriptor = new ActionDescriptor( "foo",
+                                                        new TestAction(),
+                                                        "bar",
+                                                        ImageUtil.getBytes( image ),
+                                                        true,
+                                                        true );
+    uiDescriptor.add( descriptor );
+
+    uiDescriptor.removeAction( "foo" );
+
+    assertNull( uiDescriptor.getActionDescriptor( "foo" ) );
   }
 
   @Test
@@ -113,10 +133,11 @@ public class UIDescriptorTest {
   @Test
   public void testGetGlobalActions() {
     UIDescriptor uiDescriptor = new UIDescriptor();
+    InputStream image = UIDescriptorTest.class.getResourceAsStream( "testImage.png" );
     ActionDescriptor descriptor = new ActionDescriptor( "foo",
                                                         new TestAction(),
                                                         "bar",
-                                                        UIDescriptorTest.class.getResourceAsStream( "testImage.png" ),
+                                                        ImageUtil.getBytes( image ),
                                                         true,
                                                         true );
 
@@ -130,10 +151,11 @@ public class UIDescriptorTest {
   @Test( expected = IllegalStateException.class )
   public void testAddsActionTwiceFails() {
     UIDescriptor uiDescriptor = new UIDescriptor();
+    InputStream image = UIDescriptorTest.class.getResourceAsStream( "testImage.png" );
     ActionDescriptor descriptor = new ActionDescriptor( "foo",
                                                         new TestAction(),
                                                         "bar",
-                                                        UIDescriptorTest.class.getResourceAsStream( "testImage.png" ),
+                                                        ImageUtil.getBytes( image ),
                                                         true,
                                                         true );
 

@@ -140,4 +140,17 @@ public abstract class AbstractAction implements Action {
   public void setActionEnabled( String actionId, boolean enabled ) throws IllegalStateException {
     ui.getActionOperator().setActionEnabled( "foo", enabled );
   }
+
+  /**
+   * <p>
+   * Returns the {@link UIConfiguration} used to configure the current UI. The configuration returned has
+   * session scope and can be used to manipulate the UI during runtime e.g. adding {@link PageConfiguration}s
+   * and {@link ActionConfiguration}s.
+   * </p>
+   *
+   * @since 1.2
+   */
+  public UIConfiguration getUIConfiguration() {
+    return ui.getConfiguration();
+  }
 }

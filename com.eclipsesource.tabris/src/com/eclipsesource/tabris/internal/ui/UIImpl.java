@@ -61,7 +61,8 @@ public class UIImpl implements UI, Serializable {
     return null;
   }
 
-  UIConfiguration getConfiguration() {
+  @Override
+  public UIConfiguration getConfiguration() {
     return configuration;
   }
 

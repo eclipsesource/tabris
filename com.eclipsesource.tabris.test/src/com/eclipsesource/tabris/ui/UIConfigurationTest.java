@@ -12,9 +12,12 @@ package com.eclipsesource.tabris.ui;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.io.Serializable;
 import java.util.List;
@@ -29,6 +32,8 @@ import com.eclipsesource.tabris.internal.ui.PageDescriptor;
 import com.eclipsesource.tabris.internal.ui.TestAction;
 import com.eclipsesource.tabris.internal.ui.TestPage;
 import com.eclipsesource.tabris.internal.ui.UIDescriptor;
+import com.eclipsesource.tabris.internal.ui.UIUpdater;
+import com.eclipsesource.tabris.internal.ui.UpdateUtil;
 
 
 public class UIConfigurationTest {
@@ -54,39 +59,38 @@ public class UIConfigurationTest {
   }
 
   @Test( expected = IllegalStateException.class )
-    public void testAddPageConfigurationFailsWithDuplicateId() {
-      UIConfiguration configuration = new UIConfiguration();
-      PageConfiguration configuration1 = new PageConfiguration( "foo", TestPage.class );
-      PageConfiguration configuration2 = new PageConfiguration( "foo", TestPage.class );
+  public void testAddPageConfigurationFailsWithDuplicateId() {
+    UIConfiguration configuration = new UIConfiguration();
+    PageConfiguration configuration1 = new PageConfiguration( "foo", TestPage.class );
+    PageConfiguration configuration2 = new PageConfiguration( "foo", TestPage.class );
 
-      configuration.addPageConfiguration( configuration1 );
-      configuration.addPageConfiguration( configuration2 );
-    }
-
-
-  @Test( expected = IllegalArgumentException.class )
-    public void testAddPageConfigurationFailsWithNullConfiguration() {
-      UIConfiguration configuration = new UIConfiguration();
-
-      configuration.addPageConfiguration( null );
-    }
+    configuration.addPageConfiguration( configuration1 );
+    configuration.addPageConfiguration( configuration2 );
+  }
 
   @Test( expected = IllegalArgumentException.class )
-    public void testAddActionConfigurationFailsWithNullConfiguration() {
-      UIConfiguration configuration = new UIConfiguration();
+  public void testAddPageConfigurationFailsWithNullConfiguration() {
+    UIConfiguration configuration = new UIConfiguration();
 
-      configuration.addActionConfiguration( null );
-    }
+    configuration.addPageConfiguration( null );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testAddActionConfigurationFailsWithNullConfiguration() {
+    UIConfiguration configuration = new UIConfiguration();
+
+    configuration.addActionConfiguration( null );
+  }
 
   @Test( expected = IllegalStateException.class )
-    public void testAddActionConfigurationFailsWithDuplicateId() {
-      UIConfiguration configuration = new UIConfiguration();
-      ActionConfiguration configuration1 = new ActionConfiguration( "foo", TestAction.class );
-      ActionConfiguration configuration2 = new ActionConfiguration( "foo", TestAction.class );
+  public void testAddActionConfigurationFailsWithDuplicateId() {
+    UIConfiguration configuration = new UIConfiguration();
+    ActionConfiguration configuration1 = new ActionConfiguration( "foo", TestAction.class );
+    ActionConfiguration configuration2 = new ActionConfiguration( "foo", TestAction.class );
 
-      configuration.addActionConfiguration( configuration1 );
-      configuration.addActionConfiguration( configuration2 );
-    }
+    configuration.addActionConfiguration( configuration1 );
+    configuration.addActionConfiguration( configuration2 );
+  }
 
   @Test( expected = IllegalArgumentException.class )
   public void testAddTransitionListenerFailsWithNullListener() {
@@ -96,31 +100,67 @@ public class UIConfigurationTest {
   }
 
   @Test( expected = IllegalArgumentException.class )
-  public void testremoveTransitionListenerFailsWithNullListener() {
+  public void testRemoveTransitionListenerFailsWithNullListener() {
     UIConfiguration configuration = new UIConfiguration();
 
     configuration.removeTransitionListener( null );
   }
 
+  @Test( expected = IllegalArgumentException.class )
+  public void testGetPageConfigurationFailsWithNullId() {
+    UIConfiguration configuration = new UIConfiguration();
+
+    configuration.getPageConfiguration( null );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testGetPageConfigurationFailsWithEmptyId() {
+    UIConfiguration configuration = new UIConfiguration();
+
+    configuration.getPageConfiguration( "" );
+  }
+
   @Test
-    public void testAddActionConfigurationReturnsSameUiInstance() {
-      UIConfiguration configuration = new UIConfiguration();
+  public void testHasPageConfigurationForId() {
+    UIConfiguration configuration = new UIConfiguration();
+    PageConfiguration pageConfiguration = new PageConfiguration( "foo", TestPage.class );
+    configuration.addPageConfiguration( pageConfiguration );
 
-      UIConfiguration actualConf
-        = configuration.addActionConfiguration( new ActionConfiguration( "foo", TestAction.class ) );
+    PageConfiguration actualPageConfiguration = configuration.getPageConfiguration( "foo" );
 
-      assertSame( configuration, actualConf );
-    }
+    assertSame( pageConfiguration, actualPageConfiguration );
+  }
 
   @Test
-    public void testAddActionConfigurationWithProminenceReturnsSameUiInstance() {
-      UIConfiguration configuration = new UIConfiguration();
+  public void testGetPageConfigurationReturnsNullForNonexistingPage() {
+    UIConfiguration configuration = new UIConfiguration();
+    PageConfiguration pageConfiguration = new PageConfiguration( "foo", TestPage.class );
+    configuration.addPageConfiguration( pageConfiguration );
 
-      UIConfiguration actualConf
-        = configuration.addActionConfiguration( new ActionConfiguration( "foo", TestAction.class ) );
+    PageConfiguration actualPageConfiguration = configuration.getPageConfiguration( "foo2" );
 
-      assertSame( configuration, actualConf );
-    }
+    assertNull( actualPageConfiguration );
+  }
+
+  @Test
+  public void testAddActionConfigurationReturnsSameUiInstance() {
+    UIConfiguration configuration = new UIConfiguration();
+
+    UIConfiguration actualConf
+      = configuration.addActionConfiguration( new ActionConfiguration( "foo", TestAction.class ) );
+
+    assertSame( configuration, actualConf );
+  }
+
+  @Test
+  public void testAddActionConfigurationWithProminenceReturnsSameUiInstance() {
+    UIConfiguration configuration = new UIConfiguration();
+
+    UIConfiguration actualConf
+      = configuration.addActionConfiguration( new ActionConfiguration( "foo", TestAction.class ) );
+
+    assertSame( configuration, actualConf );
+  }
 
   @Test
   public void testAddPageConfigurationDoesNotReturnNull() {
@@ -164,12 +204,35 @@ public class UIConfigurationTest {
   }
 
   @Test
+  public void testAddsPageTriggersUIUpdate() {
+    UIUpdater updater = mock( UIUpdater.class );
+    UpdateUtil.registerUpdater( updater );
+    UIConfiguration configuration = new UIConfiguration();
+    PageConfiguration pageConfiguration = new PageConfiguration( "foo", TestPage.class ).setTopLevel( true );
+
+    configuration.addPageConfiguration( pageConfiguration );
+
+    verify( updater ).update( configuration );
+  }
+
+  @Test
   public void testAddsActionToHolder() {
     UIConfiguration configuration = new UIConfiguration();
 
     configuration.addActionConfiguration( new ActionConfiguration( "foo", TestAction.class ) );
 
     assertNotNull( configuration.getAdapter( UIDescriptor.class ).getActionDescriptor( "foo" ) );
+  }
+
+  @Test
+  public void testAddActionTriggersUIUpdate() {
+    UIUpdater updater = mock( UIUpdater.class );
+    UpdateUtil.registerUpdater( updater );
+    UIConfiguration configuration = new UIConfiguration();
+
+    configuration.addActionConfiguration( new ActionConfiguration( "foo", TestAction.class ) );
+
+    verify( updater ).update( configuration );
   }
 
   @Test
@@ -269,6 +332,62 @@ public class UIConfigurationTest {
     UIConfiguration configuration = new UIConfiguration();
 
     configuration.setBackground( null );
+  }
+
+  @Test
+  public void testRemovesActionConfiguraton() {
+    UIConfiguration configuration = new UIConfiguration();
+    configuration.addActionConfiguration( new ActionConfiguration( "foo", TestAction.class ) );
+
+    configuration.removeActionConfiguration( "foo" );
+
+    assertNull( configuration.getAdapter( UIDescriptor.class ).getActionDescriptor( "foo" ) );
+  }
+
+  @Test
+  public void testRemoveActionTriggersUIUpdate() {
+    UIUpdater updater = mock( UIUpdater.class );
+    UpdateUtil.registerUpdater( updater );
+    UIConfiguration configuration = new UIConfiguration();
+    configuration.addActionConfiguration( new ActionConfiguration( "foo", TestAction.class ) );
+
+    configuration.removeActionConfiguration( "foo" );
+
+    verify( updater, times( 2 ) ).update( configuration );
+  }
+
+  @Test
+  public void testRemoveActionReturnsUIConfiguration() {
+    UIConfiguration configuration = new UIConfiguration();
+    configuration.addActionConfiguration( new ActionConfiguration( "foo", TestAction.class ) );
+
+    UIConfiguration actualConfiguration = configuration.removeActionConfiguration( "foo" );
+
+    assertSame( configuration, actualConfiguration );
+  }
+
+  @Test( expected = IllegalStateException.class )
+  public void testRemoveActionConfiguratonFailsWithNonExistingAction() {
+    UIConfiguration configuration = new UIConfiguration();
+    configuration.addActionConfiguration( new ActionConfiguration( "foo", TestAction.class ) );
+
+    configuration.removeActionConfiguration( "foo2" );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testRemoveActionConfiguratonFailsWithNullId() {
+    UIConfiguration configuration = new UIConfiguration();
+    configuration.addActionConfiguration( new ActionConfiguration( "foo", TestAction.class ) );
+
+    configuration.removeActionConfiguration( null );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testRemoveActionConfiguratonFailsWithEmptyId() {
+    UIConfiguration configuration = new UIConfiguration();
+    configuration.addActionConfiguration( new ActionConfiguration( "foo", TestAction.class ) );
+
+    configuration.removeActionConfiguration( "" );
   }
 
 }

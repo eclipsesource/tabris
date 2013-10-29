@@ -17,6 +17,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.io.InputStream;
 import java.io.Serializable;
@@ -32,10 +35,11 @@ import com.eclipsesource.tabris.internal.ui.PageDescriptor;
 import com.eclipsesource.tabris.internal.ui.TestAction;
 import com.eclipsesource.tabris.internal.ui.TestPage;
 import com.eclipsesource.tabris.internal.ui.UITestUtil;
+import com.eclipsesource.tabris.internal.ui.UIUpdater;
+import com.eclipsesource.tabris.internal.ui.UpdateUtil;
 
 
 public class PageConfigurationTest {
-
 
   @Before
   public void setUp() {
@@ -152,9 +156,80 @@ public class PageConfigurationTest {
     assertEquals( actions.get( 0 ).getId(), "bar" );
   }
 
+  @Test
+  public void testAddsActionTriggersPageUpdate() {
+    UIUpdater updater = mock( UIUpdater.class );
+    UpdateUtil.registerUpdater( updater );
+    ActionConfiguration actionConfig = new ActionConfiguration( "bar", TestAction.class );
+    PageConfiguration config = new PageConfiguration( "foo", TestPage.class );
+
+    config.addActionConfiguration( actionConfig );
+
+    verify( updater ).update( config );
+  }
+
   @Test( expected = IllegalArgumentException.class )
-    public void testAddActionConfigurationFailsWithNullAction() {
-      new PageConfiguration( "foo", TestPage.class ).addActionConfiguration( null );
-    }
+  public void testAddActionConfigurationFailsWithNullAction() {
+    new PageConfiguration( "foo", TestPage.class ).addActionConfiguration( null );
+  }
+
+  @Test
+  public void testRemovesAction() {
+    ActionConfiguration actionConfig = new ActionConfiguration( "bar", TestAction.class );
+    PageConfiguration config = new PageConfiguration( "foo", TestPage.class ).addActionConfiguration( actionConfig );
+
+    config.removeActionConfiguration( "bar" );
+
+    PageDescriptor descriptor = config.getAdapter( PageDescriptor.class );
+    List<ActionDescriptor> actions = descriptor.getActions();
+    assertTrue( actions.isEmpty() );
+  }
+
+  @Test
+  public void testRemoveActionTriggersPageUpdate() {
+    UIUpdater updater = mock( UIUpdater.class );
+    UpdateUtil.registerUpdater( updater );
+    ActionConfiguration actionConfig = new ActionConfiguration( "bar", TestAction.class );
+    PageConfiguration config = new PageConfiguration( "foo", TestPage.class );
+    config.addActionConfiguration( actionConfig );
+
+    config.removeActionConfiguration( "bar" );
+
+    verify( updater, times( 2 ) ).update( config );
+  }
+
+  @Test
+  public void testRemoveActionReturnsPageConfiguration() {
+    ActionConfiguration actionConfig = new ActionConfiguration( "bar", TestAction.class );
+    PageConfiguration config = new PageConfiguration( "foo", TestPage.class ).addActionConfiguration( actionConfig );
+
+    PageConfiguration pageConfiguration = config.removeActionConfiguration( "bar" );
+
+    assertSame( config, pageConfiguration );
+  }
+
+  @Test( expected = IllegalStateException.class )
+  public void testRemoveActionFailsWithNonExistingAction() {
+    ActionConfiguration actionConfig = new ActionConfiguration( "bar", TestAction.class );
+    PageConfiguration config = new PageConfiguration( "foo", TestPage.class ).addActionConfiguration( actionConfig );
+
+    config.removeActionConfiguration( "bar2" );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testRemoveActionFailsWithNullId() {
+    ActionConfiguration actionConfig = new ActionConfiguration( "bar", TestAction.class );
+    PageConfiguration config = new PageConfiguration( "foo", TestPage.class ).addActionConfiguration( actionConfig );
+
+    config.removeActionConfiguration( null );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testRemoveActionFailsWithEmptyNullId() {
+    ActionConfiguration actionConfig = new ActionConfiguration( "bar", TestAction.class );
+    PageConfiguration config = new PageConfiguration( "foo", TestPage.class ).addActionConfiguration( actionConfig );
+
+    config.removeActionConfiguration( "" );
+  }
 
 }

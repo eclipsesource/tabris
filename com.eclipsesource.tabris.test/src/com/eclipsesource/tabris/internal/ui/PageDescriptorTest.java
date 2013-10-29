@@ -70,7 +70,12 @@ public class PageDescriptorTest {
   @Test
   public void testGetImage() {
     InputStream image = PageDescriptorTest.class.getResourceAsStream( "testImage.png" );
-    PageDescriptor descriptor = new PageDescriptor( "foo", TestPage.class, "bar", image, true, PageStyle.DEFAULT );
+    PageDescriptor descriptor = new PageDescriptor( "foo",
+                                                    TestPage.class,
+                                                    "bar",
+                                                    ImageUtil.getBytes( image ),
+                                                    true,
+                                                    PageStyle.DEFAULT );
 
     assertArrayEquals( UITestUtil.getImageBytes(), descriptor.getImage() );
   }

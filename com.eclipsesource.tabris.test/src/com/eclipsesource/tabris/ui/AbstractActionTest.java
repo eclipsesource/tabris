@@ -41,6 +41,19 @@ public class AbstractActionTest {
   }
 
   @Test
+  public void testUsesUIConfigurationOfUI() {
+    UI ui = mock( UI.class );
+    UIConfiguration config = mock( UIConfiguration.class );
+    when( ui.getConfiguration() ).thenReturn( config );
+    TestAbstractAction action = new TestAbstractAction();
+    action.execute( ui );
+
+    UIConfiguration actualConfiguration = action.getUIConfiguration();
+
+    assertSame( config, actualConfiguration );
+  }
+
+  @Test
   public void testDelegatesExecuteCall() {
     UI ui = mock( UI.class );
     TestAbstractAction action = spy( new TestAbstractAction() );

@@ -25,6 +25,8 @@ public interface PageRenderer extends Serializable {
 
   void createActions( RendererFactory rendererFactory, Composite uiParent );
 
+  void update( PageDescriptor descriptor, RendererFactory rendererFactory, Composite uiParent );
+
   void setTitle( String title );
 
   void createControl( Composite pageParent );

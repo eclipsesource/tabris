@@ -47,13 +47,13 @@ import com.eclipsesource.tabris.ui.UI;
 @SuppressWarnings("restriction")
 public class RemotePage implements Serializable, PageRenderer {
 
-  private final PageDescriptor descriptor;
   private final RemoteObjectImpl remoteObject;
   private final List<ActionRenderer> remoteActions;
   private final UI ui;
   private final RemoteUI uiRenderer;
   private final PageData data;
   private final Page page;
+  private PageDescriptor descriptor;
   private Control control;
 
   public RemotePage( UI ui, RemoteUI uiRenderer, PageDescriptor descriptor, PageData data ) {
@@ -111,13 +111,54 @@ public class RemotePage implements Serializable, PageRenderer {
   }
 
   @Override
+  public void update( PageDescriptor descriptor, RendererFactory rendererFactory, Composite uiParent ) {
+    this.descriptor = descriptor;
+    createActions( rendererFactory, uiParent );
+    removeOldActions();
+  }
+
+  private void removeOldActions() {
+    for( ActionRenderer renderer : new ArrayList<ActionRenderer>( remoteActions ) ) {
+      if( !existInPage( renderer ) ) {
+        renderer.destroy();
+        remoteActions.remove( renderer );
+      }
+    }
+  }
+
+  private boolean existInPage( ActionRenderer renderer ) {
+    List<ActionDescriptor> actions = descriptor.getActions();
+    for( ActionDescriptor actionDescriptor : actions ) {
+      if( actionDescriptor.getId().equals( renderer.getDescriptor().getId() ) ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  @Override
   public void createActions( RendererFactory rendererFactory, Composite uiParent ) {
     List<ActionDescriptor> actions = descriptor.getActions();
     for( ActionDescriptor actionDescriptor : actions ) {
-      ActionRenderer renderer = rendererFactory.createActionRenderer( ui, uiRenderer, actionDescriptor );
-      remoteActions.add( renderer );
-      renderer.createUi( uiParent );
+      if( !actionExist( actionDescriptor ) ) {
+        createAction( rendererFactory, uiParent, actionDescriptor );
+      }
     }
+  }
+
+  private boolean actionExist( ActionDescriptor newAction ) {
+    for( ActionRenderer renderer : remoteActions ) {
+      if( renderer.getDescriptor().getId().equals( newAction.getId() ) ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private void createAction( RendererFactory rendererFactory, Composite uiParent, ActionDescriptor actionDescriptor ) {
+    ActionRenderer renderer = rendererFactory.createActionRenderer( ui, uiRenderer, actionDescriptor );
+    remoteActions.add( renderer );
+    renderer.createUi( uiParent );
   }
 
   @Override

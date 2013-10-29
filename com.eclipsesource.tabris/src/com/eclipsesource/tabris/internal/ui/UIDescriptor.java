@@ -61,6 +61,14 @@ public class UIDescriptor implements Serializable {
     actionDescriptors.add( descriptor );
   }
 
+  public void removeAction( String actionId ) {
+    for( ActionDescriptor descriptor : new ArrayList<ActionDescriptor>( actionDescriptors ) ) {
+      if( descriptor.getId().equals( actionId ) ) {
+        actionDescriptors.remove( descriptor );
+      }
+    }
+  }
+
   private void verifyActionDescriptorIsUnique( ActionDescriptor descriptor ) {
     for( ActionDescriptor actionDescriptor : actionDescriptors ) {
       if( actionDescriptor.getId().equals( descriptor.getId() ) ) {

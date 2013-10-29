@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -28,11 +29,13 @@ import com.eclipsesource.tabris.internal.ui.rendering.PageRenderer;
 import com.eclipsesource.tabris.internal.ui.rendering.RendererFactory;
 import com.eclipsesource.tabris.internal.ui.rendering.UIRenderer;
 import com.eclipsesource.tabris.ui.Page;
+import com.eclipsesource.tabris.ui.PageConfiguration;
 import com.eclipsesource.tabris.ui.PageData;
 import com.eclipsesource.tabris.ui.TransitionListener;
+import com.eclipsesource.tabris.ui.UIConfiguration;
 
 
-public class Controller implements Serializable {
+public class Controller implements UIUpdater, Serializable {
 
   private final UIDescriptor uiDescriptor;
   private final Composite pageParent;
@@ -41,6 +44,7 @@ public class Controller implements Serializable {
   private final List<ActionRenderer> globalActionRenderers;
   private final Map<PageDescriptor, PageRenderer> topLevelPageRenderers;
   private PageFlow currentFlow;
+  private UIImpl ui;
 
   public Controller( UIRenderer uiRenderer, UIDescriptor uiDescriptor ) {
     this.uiRenderer = uiRenderer;
@@ -49,6 +53,74 @@ public class Controller implements Serializable {
     this.uiDescriptor = uiDescriptor;
     this.globalActionRenderers = new ArrayList<ActionRenderer>();
     this.topLevelPageRenderers = new HashMap<PageDescriptor, PageRenderer>();
+    UpdateUtil.registerUpdater( this );
+  }
+
+  public void setUI( UIImpl ui ) {
+    this.ui = ui;
+  }
+
+  @Override
+  public void update( UIConfiguration uiConfiguration ) {
+    UIDescriptor descriptor = uiConfiguration.getAdapter( UIDescriptor.class );
+    updateGlobalActions( descriptor );
+    updateRootPages( descriptor );
+    actionsParent.getShell().layout( true, true );
+  }
+
+  private void updateGlobalActions( UIDescriptor descriptor ) {
+    List<ActionDescriptor> globalActions = descriptor.getGlobalActions();
+    for( ActionDescriptor actionDescriptor : globalActions ) {
+      if( !actionExist( actionDescriptor ) ) {
+        createGlobalAction( ui, actionDescriptor );
+      }
+    }
+    removeDeletedGlobalActions( descriptor );
+  }
+
+  private void removeDeletedGlobalActions( UIDescriptor descriptor ) {
+    for( ActionRenderer renderer : new ArrayList<ActionRenderer>( globalActionRenderers ) ) {
+      if( !actionStillExist( renderer, descriptor ) ) {
+        renderer.destroy();
+        globalActionRenderers.remove( renderer );
+      }
+    }
+  }
+
+  private boolean actionStillExist( ActionRenderer renderer, UIDescriptor descriptor ) {
+    List<ActionDescriptor> globalActions = descriptor.getGlobalActions();
+    for( ActionDescriptor actionDescriptor : globalActions ) {
+      if( actionDescriptor.getId().equals( renderer.getDescriptor().getId() ) ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private void updateRootPages( UIDescriptor descriptor ) {
+    List<PageDescriptor> rootPages = descriptor.getRootPages();
+    createTopLevelPageRenderer( ui, rootPages );
+  }
+
+  private boolean actionExist( ActionDescriptor actionDescriptor ) {
+    for( ActionRenderer renderer : globalActionRenderers ) {
+      if( renderer.getDescriptor().getId().equals( actionDescriptor.getId() ) ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  @Override
+  public void update( PageConfiguration pageConfiguration ) {
+    PageDescriptor descriptor = pageConfiguration.getAdapter( PageDescriptor.class );
+    List<PageRenderer> allPages = getAllPages();
+    for( PageRenderer renderer : allPages ) {
+      if( renderer.getDescriptor().getId().equals( descriptor.getId() ) ) {
+        renderer.update( descriptor, uiDescriptor.getRendererFactory(), actionsParent );
+      }
+    }
+    actionsParent.getShell().layout( true, true );
   }
 
   public void createRootPages( UIImpl ui ) {
@@ -60,21 +132,36 @@ public class Controller implements Serializable {
 
   private void createTopLevelPageRenderer( UIImpl ui, List<PageDescriptor> pages ) {
     for( PageDescriptor descriptor : pages ) {
-      RendererFactory rendererFactory = uiDescriptor.getRendererFactory();
-      PageRenderer renderer = rendererFactory.createPageRenderer( ui, uiRenderer, descriptor, new PageData() );
-      topLevelPageRenderers.put( descriptor, renderer );
-      renderer.createControl( pageParent );
+      if( !exist( descriptor ) ) {
+        RendererFactory rendererFactory = uiDescriptor.getRendererFactory();
+        PageRenderer renderer = rendererFactory.createPageRenderer( ui, uiRenderer, descriptor, new PageData() );
+        topLevelPageRenderers.put( descriptor, renderer );
+        renderer.createControl( pageParent );
+      }
     }
+  }
+
+  private boolean exist( PageDescriptor descriptor ) {
+    for( Entry<PageDescriptor, PageRenderer> entry : topLevelPageRenderers.entrySet() ) {
+      if( entry.getKey().getId().equals( descriptor.getId() ) ) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public void createGlobalActions( UIImpl ui ) {
     List<ActionDescriptor> actionDescriptors = uiDescriptor.getGlobalActions();
     for( ActionDescriptor actionDescriptor : actionDescriptors ) {
-      RendererFactory rendererFactory = uiDescriptor.getRendererFactory();
-      ActionRenderer renderer = rendererFactory.createActionRenderer( ui, uiRenderer, actionDescriptor );
-      renderer.createUi( actionsParent );
-      globalActionRenderers.add( renderer );
+      createGlobalAction( ui, actionDescriptor );
     }
+  }
+
+  private void createGlobalAction( UIImpl ui, ActionDescriptor actionDescriptor ) {
+    RendererFactory rendererFactory = uiDescriptor.getRendererFactory();
+    ActionRenderer renderer = rendererFactory.createActionRenderer( ui, uiRenderer, actionDescriptor );
+    renderer.createUi( actionsParent );
+    globalActionRenderers.add( renderer );
   }
 
   void show( UIImpl ui, PageDescriptor newPageDescriptor, PageData data ) {
