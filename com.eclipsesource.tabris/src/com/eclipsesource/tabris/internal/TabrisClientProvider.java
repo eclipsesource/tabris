@@ -14,6 +14,7 @@ import static com.eclipsesource.tabris.device.ClientDevice.Platform.ANDROID;
 import static com.eclipsesource.tabris.device.ClientDevice.Platform.IOS;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_ANDROID;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_IOS;
+import static com.eclipsesource.tabris.internal.Constants.THEME_ID_IOS6;
 
 import java.io.Serializable;
 
@@ -42,7 +43,12 @@ public class TabrisClientProvider implements ClientProvider, Serializable {
 
   private void setThemeForPlatform( Platform platform ) {
     if( platform == IOS ) {
-      ThemeUtil.setCurrentThemeId( RWT.getUISession(), THEME_ID_IOS );
+      String userAgent = RWT.getRequest().getHeader( Constants.USER_AGENT );
+      if( userAgent.contains( "OS 6.1" ) ) {
+        ThemeUtil.setCurrentThemeId( RWT.getUISession(), THEME_ID_IOS6 );
+      } else {
+        ThemeUtil.setCurrentThemeId( RWT.getUISession(), THEME_ID_IOS );
+      }
     } else if( platform == ANDROID ) {
       ThemeUtil.setCurrentThemeId( RWT.getUISession(), THEME_ID_ANDROID );
     }

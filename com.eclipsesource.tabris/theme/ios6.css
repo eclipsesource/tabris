@@ -7,7 +7,7 @@ Shell[TITLE], Shell[BORDER] {
 }
 
 Shell-Titlebar {
-  font: 19px HelveticaNeue-Medium, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 20px bold Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
   background-color: #0080c0;
   background-gradient-color: #0080c0;
   color: #ffffff;
@@ -24,7 +24,7 @@ Shell-Titlebar {
 }
 
 Label {
-  font: 13px HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 18px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
 }
 
 Shell {
@@ -50,7 +50,7 @@ Tree-Cell {
 }
 
 List {
-  font: 18px HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 20px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
   background-color: #ffffff;
   border: none;
   color: #4a4a4a;
@@ -61,7 +61,7 @@ List[BORDER] {
 }
 
 List-Item {
-  font: 18px HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 18px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
   padding: 9px 10px 9px 10px;
   background-color: #ffffff;
   color: #4a4a4a;
@@ -71,11 +71,11 @@ List-Item {
 
 
 Button[PUSH],Button[FLAT],Button[TOGGLE] {
-  font: 18px HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 18px bold Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
 }
 
 Button[RADIO],Button[CHECK] {
-  font: 18px HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 20px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
 }
 
 Button,
@@ -96,16 +96,16 @@ Button[FLAT][TOGGLE] {
 }
 
 Text {
-  font: 13px HelveticaNeue-UltraLight ,Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 15px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
 }
 
 Link,Link-Hyperlink {
-  font: 12px HelveticaNeue-UltraLight ,Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 13px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
 }
 
 Combo,
 Combo[BORDER] {
-  font: 13px HelveticaNeue-UltraLight ,Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 20px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
   border: none;
   border-radius: 0 0 0 0;
   box-shadow: inset 0 0 0 #bdbdbd;
@@ -119,7 +119,7 @@ Combo[BORDER]:focused {
 Combo-Button {
   border: none;
   border-left: 0px solid #bdbdbd;
-  border-radius: 5px 5px 5px 5px;
+  border-radius: 0px 0px 0px 0px;
   width: 35px;
 }
 
@@ -130,7 +130,7 @@ Combo-List {
 }
 
 Combo-Field {
-  padding: 6px 6px 6px 6px;
+  padding: 2px 2px 2px 2px;
 }
 
 Combo-FocusIndicator {
@@ -143,7 +143,7 @@ Combo-FocusIndicator {
 /* DateTime default theme */
 
 DateTime {
-  font: 13px HelveticaNeue-UltraLight ,Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 20px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
   border: none;
   border-radius: 0 0 0 0;
 }
@@ -153,7 +153,7 @@ DateTime[BORDER]:focused {
 }
 
 DateTime-Field {
-  padding: 6px 6px 6px 6px;
+  padding: 2px 2px 2px 2px;
 }
 
 DateTime[BORDER] {
@@ -165,7 +165,7 @@ DateTime-UpButton {
   width: 35px;
   border: none;
   border-left: 0px solid #bdbdbd;
-  border-radius: 5px 5px 5px 5px;
+  border-radius: 0px 0px 0px 0px;
 }
 
 DateTime-DownButton {
@@ -195,7 +195,7 @@ TabFolder-ContentContainer {
 }
 
 TabFolder {
- font: 12px HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+ font: 12px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
 }
 
 TabItem {
@@ -220,47 +220,47 @@ ToolItem[FLAT] {
 }
 
 Button-CheckIcon {
-  background-image: url( theme/ios/checkbox_unchecked.png );
+  background-image: url( theme/ios6/checkbox_unchecked.png );
 }
 
 Button-CheckIcon:hover {
-  background-image: url( theme/ios/checkbox_unchecked.png );
+  background-image: url( theme/ios6/checkbox_unchecked.png );
 }
 
 Button-CheckIcon:selected {
-  background-image: url( theme/ios/checkbox_checked.png );
+  background-image: url( theme/ios6/checkbox_checked.png );
 }
 
 Button-CheckIcon:selected:hover {
-  background-image: url( theme/ios/checkbox_checked.png );
+  background-image: url( theme/ios6/checkbox_checked.png );
 }
 
 Button-CheckIcon:selected:grayed {
-  background-image: url( theme/ios/checkbox_checked.png );
+  background-image: url( theme/ios6/checkbox_checked.png );
 }
 
 Button-CheckIcon:selected:grayed:hover {
-  background-image: url( theme/ios/checkbox_checked.png );
+  background-image: url( theme/ios6/checkbox_checked.png );
 }
 
 Button-RadioIcon {
-  background-image: url( theme/ios/radio_unchecked.png );
+  background-image: url( theme/ios6/radio_unchecked.png );
 }
 
 Button-RadioIcon:hover {
-  background-image: url( theme/ios/radio_unchecked.png );
+  background-image: url( theme/ios6/radio_unchecked.png );
 }
 
 Button-RadioIcon:selected {
-  background-image: url( theme/ios/radio_checked.png );
+  background-image: url( theme/ios6/radio_checked.png );
 }
 
 Button-RadioIcon:selected:hover {
-  background-image: url( theme/ios/radio_checked.png );
+  background-image: url( theme/ios6/radio_checked.png );
 }
 
 Group {
-  font: 18px HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 18px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
   color: #4a4a4a;
   background-color: #ffffff;
   border: none;

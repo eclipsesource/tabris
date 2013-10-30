@@ -13,8 +13,10 @@ package com.eclipsesource.tabris;
 import static com.eclipsesource.tabris.internal.Constants.INDEX_JSON;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_ANDROID;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_IOS;
+import static com.eclipsesource.tabris.internal.Constants.THEME_ID_IOS6;
 import static com.eclipsesource.tabris.internal.Constants.THEME_PATH_ANDROID;
 import static com.eclipsesource.tabris.internal.Constants.THEME_PATH_IOS;
+import static com.eclipsesource.tabris.internal.Constants.THEME_PATH_IOS6;
 import static com.eclipsesource.tabris.internal.Constants.THEME_PATH_WEB;
 
 import java.io.IOException;
@@ -66,6 +68,7 @@ public class TabrisClientInstaller {
   private static void registerCompatibilityThemes( Application application ) {
     ResourceLoaderImpl resourceLoader = new ResourceLoaderImpl();
     application.addStyleSheet( THEME_ID_ANDROID, THEME_PATH_ANDROID, resourceLoader );
+    application.addStyleSheet( THEME_ID_IOS6, THEME_PATH_IOS6, resourceLoader );
     application.addStyleSheet( THEME_ID_IOS, THEME_PATH_IOS, resourceLoader );
     application.addStyleSheet( RWT.DEFAULT_THEME_ID, THEME_PATH_WEB, resourceLoader );
   }
