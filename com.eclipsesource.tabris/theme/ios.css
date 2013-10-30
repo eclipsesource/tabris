@@ -70,17 +70,22 @@ List-Item {
 }
 
 
-Button[PUSH],Button[FLAT],Button[TOGGLE] {
-  font: 18px HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+Button[PUSH],Button[TOGGLE] {
+  font: 15px HelveticaNeue-Medium, Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
 Button[RADIO],Button[CHECK] {
-  font: 18px HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 15px HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+  padding: 1px 1px 1px 1px;
+  spacing: 9px;
+}
+
+Button[FLAT] {
+  font: 15px HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
 Button,
 Button[PUSH],
-Button[FLAT],
 Button[TOGGLE],
 Button[PUSH][BORDER], 
 Button[FLAT][BORDER],
@@ -89,10 +94,15 @@ Button[PUSH][TOGGLE] {
   spacing: 8px;
 }
 
+Button[FLAT] {
+  padding: 1px 1px 1px 1px;
+  spacing: 9px;
+}
+
 Button[PUSH][BORDER], 
 Button[FLAT][BORDER],
 Button[FLAT][TOGGLE] {
-  border: 1px solid #6e6e6e;
+  border: 0px;
 }
 
 Text {
@@ -260,7 +270,7 @@ Button-RadioIcon:selected:hover {
 }
 
 Group {
-  font: 18px HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 13px HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
   color: #4a4a4a;
   background-color: #ffffff;
   border: none;
