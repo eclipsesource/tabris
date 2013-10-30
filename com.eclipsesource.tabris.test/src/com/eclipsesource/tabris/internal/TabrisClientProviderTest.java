@@ -97,6 +97,18 @@ public class TabrisClientProviderTest {
   }
 
   @Test
+  public void testUsesIOS6Theme() throws IOException {
+    registerTheme( Constants.THEME_ID_IOS6 );
+    TestRequest request = ( TestRequest )RWT.getRequest();
+    request.setHeader( Constants.USER_AGENT, Constants.ID_IOS + " OS 6.1.2" );
+
+    provider.accept( request );
+
+    String currentTheme = ( String )RWT.getUISession().getAttribute( CURRENT_THEME_ID );
+    assertEquals( Constants.THEME_ID_IOS6, currentTheme );
+  }
+
+  @Test
   public void testUsesAndroidTheme() throws IOException {
     registerTheme( Constants.THEME_ID_ANDROID );
     TestRequest request = ( TestRequest )RWT.getRequest();

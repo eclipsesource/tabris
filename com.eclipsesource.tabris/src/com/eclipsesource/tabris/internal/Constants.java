@@ -17,10 +17,12 @@ public class Constants {
   public static final String ID_ANDROID = "com.eclipsesource.tabris.android";
   public static final String ID_IOS = "com.eclipsesource.tabris.ios";
   public static final String USER_AGENT = "User-Agent";
-  public static final String THEME_ID_IOS = "com.eclipsesource.rap.mobile.theme.ios";
   public static final String THEME_ID_ANDROID = "com.eclipsesource.rap.mobile.theme.android";
+  public static final String THEME_ID_IOS = "com.eclipsesource.rap.mobile.theme.ios";
+  public static final String THEME_ID_IOS6 = "com.eclipsesource.rap.mobile.theme.ios6";
+  public static final String THEME_PATH_ANDROID = "theme/android.css";
   public static final String THEME_PATH_IOS = "theme/ios.css";
-  public static final String THEME_PATH_ANDROID = "theme/theme-android-holo.css";
+  public static final String THEME_PATH_IOS6 = "theme/ios6.css";
   public static final String THEME_PATH_WEB = "theme/web.css";
   public static final String INDEX_JSON = "index.json";
   public static final String CUSTOM_VARIANT_TABRIS_UI = "tabrisUI";
