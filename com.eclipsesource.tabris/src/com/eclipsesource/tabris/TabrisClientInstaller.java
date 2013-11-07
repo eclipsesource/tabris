@@ -14,9 +14,11 @@ import static com.eclipsesource.tabris.internal.Constants.INDEX_JSON;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_ANDROID;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_IOS;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_IOS6;
+import static com.eclipsesource.tabris.internal.Constants.THEME_ID_SWT;
 import static com.eclipsesource.tabris.internal.Constants.THEME_PATH_ANDROID;
 import static com.eclipsesource.tabris.internal.Constants.THEME_PATH_IOS;
 import static com.eclipsesource.tabris.internal.Constants.THEME_PATH_IOS6;
+import static com.eclipsesource.tabris.internal.Constants.THEME_PATH_SWT;
 import static com.eclipsesource.tabris.internal.Constants.THEME_PATH_WEB;
 
 import java.io.IOException;
@@ -30,6 +32,7 @@ import org.eclipse.rap.rwt.service.ResourceLoader;
 
 import com.eclipsesource.tabris.internal.TabrisClientProvider;
 import com.eclipsesource.tabris.internal.TabrisResourceLoader;
+import com.eclipsesource.tabris.internal.TabrisSWTClientProvider;
 
 
 /**
@@ -61,6 +64,7 @@ public class TabrisClientInstaller {
   public static void install( Application application ) {
     ApplicationImpl applicationImpl = ( ApplicationImpl )application;
     applicationImpl.addClientProvider( new TabrisClientProvider() );
+    applicationImpl.addClientProvider( new TabrisSWTClientProvider() );
     registerCompatibilityThemes( application );
     registerResourceLoader( applicationImpl );
   }
@@ -68,6 +72,7 @@ public class TabrisClientInstaller {
   private static void registerCompatibilityThemes( Application application ) {
     ResourceLoaderImpl resourceLoader = new ResourceLoaderImpl();
     application.addStyleSheet( THEME_ID_ANDROID, THEME_PATH_ANDROID, resourceLoader );
+    application.addStyleSheet( THEME_ID_SWT, THEME_PATH_SWT, resourceLoader );
     application.addStyleSheet( THEME_ID_IOS6, THEME_PATH_IOS6, resourceLoader );
     application.addStyleSheet( THEME_ID_IOS, THEME_PATH_IOS, resourceLoader );
     application.addStyleSheet( RWT.DEFAULT_THEME_ID, THEME_PATH_WEB, resourceLoader );
