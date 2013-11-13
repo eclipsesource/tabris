@@ -3,13 +3,13 @@
    <feature url="features/com.eclipsesource.tabris.feature_1.2.0.qualifier.jar" id="com.eclipsesource.tabris.feature" version="1.2.0.qualifier">
       <category name="com.eclipsesource.tabris"/>
    </feature>
-   <feature url="features/org.eclipse.rap.equinox.target.feature_2.2.0.20130930-1645.jar" id="org.eclipse.rap.equinox.target.feature" version="2.2.0.20130930-1645">
+   <feature url="features/org.eclipse.rap.equinox.target.feature_2.2.0.20131110-1237.jar" id="org.eclipse.rap.equinox.target.feature" version="2.2.0.20131110-1237">
       <category name="com.eclipsesource.tabris"/>
    </feature>
-   <feature url="features/org.eclipse.rap.feature_2.2.0.20130930-1404.jar" id="org.eclipse.rap.feature" version="2.2.0.20130930-1404">
+   <feature url="features/org.eclipse.rap.feature_2.2.0.20131112-1622.jar" id="org.eclipse.rap.feature" version="2.2.0.20131112-1622">
       <category name="com.eclipsesource.tabris"/>
    </feature>
-   <feature url="features/org.eclipse.rap.sdk.feature_2.2.0.20130930-1404.jar" id="org.eclipse.rap.sdk.feature" version="2.2.0.20130930-1404">
+   <feature url="features/org.eclipse.rap.sdk.feature_2.2.0.20131112-1622.jar" id="org.eclipse.rap.sdk.feature" version="2.2.0.20131112-1622">
       <category name="com.eclipsesource.tabris"/>
    </feature>
    <category-def name="com.eclipsesource.tabris" label="Tabris"/>
