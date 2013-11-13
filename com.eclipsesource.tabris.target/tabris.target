@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="Tabris Target" sequenceNumber="41">
+<?pde version="3.8"?><target name="Tabris Target" sequenceNumber="42">
 <locations>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.rap.feature.feature.group" version="2.2.0.20130930-1404"/>
-<unit id="org.eclipse.rap.equinox.target.feature.feature.group" version="2.2.0.20130930-1645"/>
-<unit id="org.eclipse.rap.sdk.feature.feature.group" version="2.2.0.20130930-1404"/>
-<repository location="http://download.eclipse.org/rt/rap/2.2/M2-20130930-1404/"/>
-</location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="com.eclipsesource.osgi.additionals.feature.group" version="1.19.0.201305291433"/>
 <repository location="http://eclipsesource.github.com/osgi-additionals"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.rap.feature.feature.group" version="2.2.0.20131112-1622"/>
+<unit id="org.eclipse.rap.sdk.feature.feature.group" version="2.2.0.20131112-1622"/>
+<unit id="org.eclipse.rap.equinox.target.feature.feature.group" version="2.2.0.20131110-1237"/>
+<repository location="http://download.eclipse.org/rt/rap/nightly/runtime/"/>
 </location>
 </locations>
 </target>
