@@ -25,8 +25,8 @@ import java.util.List;
 
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.rwt.RWT;
-import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
+import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
@@ -47,7 +47,7 @@ import com.eclipsesource.tabris.ui.UI;
 @SuppressWarnings("restriction")
 public class RemotePage implements Serializable, PageRenderer {
 
-  private final RemoteObjectImpl remoteObject;
+  private final RemoteObject remoteObject;
   private final List<ActionRenderer> remoteActions;
   private final UI ui;
   private final RemoteUI uiRenderer;
@@ -60,7 +60,7 @@ public class RemotePage implements Serializable, PageRenderer {
     this.ui = ui;
     this.uiRenderer = uiRenderer;
     this.data = data;
-    this.remoteObject = ( RemoteObjectImpl )RWT.getUISession().getConnection().createRemoteObject( "tabris.Page" );
+    this.remoteObject = RWT.getUISession().getConnection().createRemoteObject( "tabris.Page" );
     this.descriptor = descriptor;
     this.page = InstanceCreator.createInstance( descriptor.getPageType() );
     this.remoteActions = new ArrayList<ActionRenderer>();

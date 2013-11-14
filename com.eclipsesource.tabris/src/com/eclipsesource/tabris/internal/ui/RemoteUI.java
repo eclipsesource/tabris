@@ -25,8 +25,8 @@ import java.util.List;
 
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
-import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
 import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
+import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -36,17 +36,16 @@ import com.eclipsesource.tabris.internal.ui.rendering.UIRenderer;
 import com.eclipsesource.tabris.ui.UI;
 
 
-@SuppressWarnings("restriction")
 public class RemoteUI extends AbstractOperationHandler implements UIRenderer {
 
-  private final RemoteObjectImpl remoteObject;
+  private final RemoteObject remoteObject;
   private final Shell shell;
   private UI ui;
   private Controller controller;
 
   public RemoteUI( Shell shell ) {
     this.shell = shell;
-    this.remoteObject = ( RemoteObjectImpl )getUISession().getConnection().createRemoteObject( "tabris.UI" );
+    this.remoteObject = getUISession().getConnection().createRemoteObject( "tabris.UI" );
     this.remoteObject.setHandler( this );
     this.remoteObject.set( PROPERTY_SHELL, getId( shell ) );
   }
