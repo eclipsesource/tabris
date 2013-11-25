@@ -13,6 +13,7 @@ package com.eclipsesource.tabris.ui;
 import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ import org.eclipse.rap.rwt.Adaptable;
 import org.eclipse.swt.graphics.RGB;
 
 import com.eclipsesource.tabris.internal.ui.ActionDescriptor;
+import com.eclipsesource.tabris.internal.ui.ImageUtil;
 import com.eclipsesource.tabris.internal.ui.PageDescriptor;
 import com.eclipsesource.tabris.internal.ui.UIDescriptor;
 import com.eclipsesource.tabris.internal.ui.UpdateUtil;
@@ -68,6 +70,7 @@ public class UIConfiguration implements Adaptable, Serializable {
   private final List<ActionConfiguration> actionConfigurations;
   private RGB background;
   private RGB foreground;
+  private byte[] image;
 
   public UIConfiguration() {
     this.uiDescriptor = new UIDescriptor();
@@ -246,6 +249,30 @@ public class UIConfiguration implements Adaptable, Serializable {
    */
   public RGB getBackground() {
     return background;
+  }
+
+  /**
+   * <p>
+   * Places a UI icon to the platform typical place.
+   * </p>
+   *
+   * @since 1.2
+   */
+  public UIConfiguration setImage( InputStream image ) {
+    whenNull( image ).throwIllegalArgument( "Action Image must not be null" );
+    this.image = ImageUtil.getBytes( image );
+    return this;
+  }
+
+  /**
+   * <p>
+   * Returns the bytes of the UI icon or <code>null</code>.
+   * </p>
+   *
+   * @since 1.2
+   */
+  public byte[] getImage() {
+    return image;
   }
 
   /**

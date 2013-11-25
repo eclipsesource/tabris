@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.ui;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -28,10 +29,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.eclipsesource.tabris.internal.ui.ImageUtil;
 import com.eclipsesource.tabris.internal.ui.PageDescriptor;
 import com.eclipsesource.tabris.internal.ui.TestAction;
 import com.eclipsesource.tabris.internal.ui.TestPage;
 import com.eclipsesource.tabris.internal.ui.UIDescriptor;
+import com.eclipsesource.tabris.internal.ui.UITestUtil;
 import com.eclipsesource.tabris.internal.ui.UIUpdater;
 import com.eclipsesource.tabris.internal.ui.UpdateUtil;
 
@@ -332,6 +335,23 @@ public class UIConfigurationTest {
 
     List<TransitionListener> listeners = configuration.getAdapter( UIDescriptor.class ).getTransitionListeners();
     assertTrue( listeners.isEmpty() );
+  }
+
+  @Test
+  public void testSetsImage() {
+    UIConfiguration configuration = new UIConfiguration();
+
+    configuration.setImage( UITestUtil.class.getResourceAsStream( "testImage.png" ) );
+
+    byte[] image = configuration.getImage();
+    assertArrayEquals( ImageUtil.getBytes( UITestUtil.class.getResourceAsStream( "testImage.png" ) ), image );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testSetImageFailsWithNull() {
+    UIConfiguration configuration = new UIConfiguration();
+
+    configuration.setImage( null );
   }
 
   @Test

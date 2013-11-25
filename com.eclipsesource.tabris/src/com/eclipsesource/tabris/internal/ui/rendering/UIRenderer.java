@@ -13,6 +13,7 @@ package com.eclipsesource.tabris.internal.ui.rendering;
 import java.io.Serializable;
 
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 import com.eclipsesource.tabris.internal.ui.Controller;
@@ -30,6 +31,8 @@ public interface UIRenderer extends Serializable {
   void setForeground( Color color );
 
   void setBackground( Color color ) ;
+
+  void setImage( Image image );
 
   Composite getPageParent();
 

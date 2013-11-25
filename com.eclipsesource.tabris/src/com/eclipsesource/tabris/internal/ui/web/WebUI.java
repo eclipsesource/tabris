@@ -93,6 +93,11 @@ public class WebUI implements UIRenderer {
   }
 
   @Override
+  public void setImage( Image image ) {
+    // has no effect on web
+  }
+
+  @Override
   public Composite getPageParent() {
     return pageParent;
   }

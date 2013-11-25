@@ -15,12 +15,15 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 
 import org.eclipse.rap.json.JsonArray;
+import org.eclipse.rap.rwt.internal.protocol.ProtocolUtil;
 import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -31,9 +34,11 @@ import org.junit.Test;
 import com.eclipsesource.tabris.internal.TabrisClient;
 import com.eclipsesource.tabris.internal.ZIndexStackLayout;
 import com.eclipsesource.tabris.internal.ui.TestPage;
+import com.eclipsesource.tabris.internal.ui.UITestUtil;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 
 
+@SuppressWarnings("restriction")
 public class TabrisUITest {
 
   private Shell shell;
@@ -91,6 +96,18 @@ public class TabrisUITest {
   }
 
   @Test
+  public void testSetsImageOnRemoteUI() {
+    UIConfiguration configuration = createConfiguration();
+    TabrisUI tabrisUI = new TabrisUI( configuration );
+    shell.open();
+
+    tabrisUI.create( shell );
+
+    Image image = new Image( shell.getDisplay(), new ByteArrayInputStream( configuration.getImage() ) );
+    verify( remoteObject ).set( "image", ProtocolUtil.getJsonForImage( image ) );
+  }
+
+  @Test
   public void testSetsBackgroundOnRemoteUI() {
     TabrisUI tabrisUI = new TabrisUI( createConfiguration() );
     shell.open();
@@ -120,6 +137,7 @@ public class TabrisUITest {
 
   private UIConfiguration createConfiguration() {
     UIConfiguration configuration = new UIConfiguration();
+    configuration.setImage( UITestUtil.class.getResourceAsStream( "testImage.png" ) );
     configuration.addPageConfiguration( new PageConfiguration( "foo1", TestPage.class ).setTopLevel( true ) );
     configuration.addPageConfiguration( new PageConfiguration( "foo2", TestPage.class ).setTopLevel( true ) );
     configuration.setBackground( new RGB( 100, 100, 100 ) );

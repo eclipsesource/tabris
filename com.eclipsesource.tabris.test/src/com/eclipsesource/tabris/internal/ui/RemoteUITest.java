@@ -23,10 +23,12 @@ import java.util.List;
 
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
+import org.eclipse.rap.rwt.internal.protocol.ProtocolUtil;
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -153,6 +155,16 @@ public class RemoteUITest {
     remoteUI.setBackground( new Color( shell.getDisplay(), 100, 120, 150 ) );
 
     verify( remoteObject ).set( "background", new JsonArray().add( 100 ).add( 120 ).add( 150 ) );
+  }
+
+  @Test
+  public void testSendsImage() {
+    Image image = new Image( shell.getDisplay(), UITestUtil.class.getResourceAsStream( "testImage.png" ) );
+    RemoteUI remoteUI = createRemoteUI( mock( UI.class ) );
+
+    remoteUI.setImage( image );
+
+    verify( remoteObject ).set( "image", ProtocolUtil.getJsonForImage( image ) );
   }
 
   @Test

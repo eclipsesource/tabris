@@ -13,11 +13,13 @@ package com.eclipsesource.tabris.ui;
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static org.eclipse.rap.rwt.internal.service.ContextProvider.getContext;
 
+import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 
 import org.eclipse.rap.json.JsonValue;
 import org.eclipse.rap.rwt.application.EntryPoint;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -84,6 +86,7 @@ public class TabrisUI implements Serializable {
     UIImpl ui = prepareUi( pageParent.getDisplay(), uiRenderer, configuration, controller );
     configure( configuration, ui );
     setUiColors( pageParent.getDisplay(), uiRenderer, configuration );
+    setUiImage( pageParent.getDisplay(), uiRenderer, configuration );
     prepareController( controller, ui );
   }
 
@@ -110,6 +113,14 @@ public class TabrisUI implements Serializable {
     RGB foreground = configuration.getForeground();
     if( foreground != null ) {
       uiRenderer.setForeground( new Color( display, foreground ) );
+    }
+  }
+
+  private void setUiImage( Display display, UIRenderer uiRenderer, UIConfiguration configuration ) {
+    byte[] imageBytes = configuration.getImage();
+    if( imageBytes != null ) {
+      Image image = new Image( display, new ByteArrayInputStream( imageBytes ) );
+      uiRenderer.setImage( image );
     }
   }
 

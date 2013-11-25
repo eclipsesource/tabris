@@ -16,9 +16,11 @@ import static com.eclipsesource.tabris.internal.Constants.EVENT_SHOW_PREVIOUS_PA
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ACTIVE_PAGE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_BACKGROUND;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_FOREGROUND;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_IMAGE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PAGE_ID;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SHELL;
 import static org.eclipse.rap.rwt.RWT.getUISession;
+import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.getJsonForImage;
 import static org.eclipse.rap.rwt.lifecycle.WidgetUtil.getId;
 
 import java.util.List;
@@ -28,6 +30,7 @@ import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
@@ -36,6 +39,7 @@ import com.eclipsesource.tabris.internal.ui.rendering.UIRenderer;
 import com.eclipsesource.tabris.ui.UI;
 
 
+@SuppressWarnings("restriction")
 public class RemoteUI extends AbstractOperationHandler implements UIRenderer {
 
   private final RemoteObject remoteObject;
@@ -94,6 +98,11 @@ public class RemoteUI extends AbstractOperationHandler implements UIRenderer {
   @Override
   public void setBackground( Color color ) {
     setColor( PROPERTY_BACKGROUND, color );
+  }
+
+  @Override
+  public void setImage( Image image ) {
+    remoteObject.set( PROPERTY_IMAGE, getJsonForImage( image ) );
   }
 
   String getRemoteUIId() {
