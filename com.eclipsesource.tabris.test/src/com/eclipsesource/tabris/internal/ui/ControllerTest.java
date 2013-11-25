@@ -353,6 +353,52 @@ public class ControllerTest {
     order.verify( listener ).after( ui, getTestPage( controller, root1 ), getTestPage( controller, root2 ) );
   }
 
+  @Test( expected = IllegalStateException.class )
+  public void testFailsToRemovePageFromCurrentFlow() {
+    createRootPage( "foo" );
+    PageDescriptor page = createPage( "bar" );
+    RemoteUI remoteUI = mock( RemoteUI.class );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
+    controller.createRootPages( ui );
+    controller.showPage( ui, page, mock( PageData.class ) ).getPage();
+    PageConfiguration configuration = mock( PageConfiguration.class );
+    when( configuration.getAdapter( PageDescriptor.class ) ).thenReturn( page );
+
+    controller.remove( configuration );
+  }
+
+  @Test( expected = IllegalStateException.class )
+  public void testFailsToRemoveRootPageFromCurrentFlow() {
+    PageDescriptor rootPage = createRootPage( "foo" );
+    RemoteUI remoteUI = mock( RemoteUI.class );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
+    controller.createRootPages( ui );
+    controller.showRoot( ui, rootPage, new PageData() );
+    PageConfiguration configuration = mock( PageConfiguration.class );
+    when( configuration.getAdapter( PageDescriptor.class ) ).thenReturn( rootPage );
+
+    controller.remove( configuration );
+  }
+
+  @Test
+  public void testRemovesRootPageCallsDestroyOnRenderer() {
+    PageDescriptor rootPage = createRootPage( "foo" );
+    PageDescriptor rootPage2 = createRootPage( "foo1" );
+    RemoteUI remoteUI = mock( RemoteUI.class );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
+    controller.createRootPages( ui );
+    controller.showRoot( ui, rootPage, new PageData() );
+    PageConfiguration configuration = mock( PageConfiguration.class );
+    when( configuration.getAdapter( PageDescriptor.class ) ).thenReturn( rootPage2 );
+
+    controller.remove( configuration );
+
+    verify( remoteObject ).destroy();
+  }
+
   @Test
   public void testShowPageCreatesControl() {
     PageDescriptor root1 = createRootPage( "foo" );

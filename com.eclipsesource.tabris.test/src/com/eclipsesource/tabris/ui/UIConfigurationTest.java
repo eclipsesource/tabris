@@ -120,6 +120,62 @@ public class UIConfigurationTest {
     configuration.getPageConfiguration( "" );
   }
 
+  @Test( expected = IllegalArgumentException.class )
+  public void testRemovePageConfigurationFailsWithNullId() {
+    UIConfiguration configuration = new UIConfiguration();
+    PageConfiguration pageConfiguration = new PageConfiguration( "foo", TestPage.class );
+    configuration.addPageConfiguration( pageConfiguration );
+
+    configuration.removePageConfiguration( null );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testRemovePageConfigurationFailsWithEmptyId() {
+    UIConfiguration configuration = new UIConfiguration();
+    PageConfiguration pageConfiguration = new PageConfiguration( "foo", TestPage.class );
+    configuration.addPageConfiguration( pageConfiguration );
+
+    configuration.removePageConfiguration( "" );
+  }
+
+  @Test
+  public void testRemovePageConfigurationDeletesPageConfiguration() {
+    UIConfiguration configuration = new UIConfiguration();
+    PageConfiguration pageConfiguration = new PageConfiguration( "foo", TestPage.class );
+    configuration.addPageConfiguration( pageConfiguration );
+
+    configuration.removePageConfiguration( "foo" );
+
+    PageConfiguration actualPageConfiguration = configuration.getPageConfiguration( "foo" );
+    assertNull( actualPageConfiguration );
+  }
+
+  @Test
+  public void testRemovePageConfigurationTriggersUpdate() {
+    UIUpdater updater = mock( UIUpdater.class );
+    UpdateUtil.registerUpdater( updater );
+    UIConfiguration configuration = new UIConfiguration();
+    PageConfiguration pageConfiguration = new PageConfiguration( "foo", TestPage.class );
+    configuration.addPageConfiguration( pageConfiguration );
+
+    configuration.removePageConfiguration( "foo" );
+
+    verify( updater ).remove( pageConfiguration );
+  }
+
+  @Test
+  public void testRemovePageConfigurationDeletesPageConfigurationFromDescriptor() {
+    UIConfiguration configuration = new UIConfiguration();
+    PageConfiguration pageConfiguration = new PageConfiguration( "foo", TestPage.class );
+    configuration.addPageConfiguration( pageConfiguration );
+
+    configuration.removePageConfiguration( "foo" );
+
+    UIDescriptor uiDescriptor = configuration.getAdapter( UIDescriptor.class );
+    PageDescriptor pageDescriptor = uiDescriptor.getPageDescriptor( "foo" );
+    assertNull( pageDescriptor );
+  }
+
   @Test
   public void testHasPageConfigurationForId() {
     UIConfiguration configuration = new UIConfiguration();

@@ -37,6 +37,14 @@ public class UpdateUtil {
     }
   }
 
+  public static void firePageRemove( PageConfiguration pageConfiguration ) {
+    whenNull( pageConfiguration ).throwIllegalArgument( "PageConfiguration must not be null" );
+    UIUpdater updater = getUpdater();
+    if( updater != null ) {
+      updater.remove( pageConfiguration );
+    }
+  }
+
   public static void fireUiUpdate( UIConfiguration uiConfiguration ) {
     whenNull( uiConfiguration ).throwIllegalArgument( "UIConfiguration must not be null" );
     UIUpdater updater = getUpdater();

@@ -56,6 +56,14 @@ public class UIDescriptor implements Serializable {
     return null;
   }
 
+  public void removePageDescriptor( String id ) {
+    for( PageDescriptor pageDescriptor : new ArrayList<PageDescriptor>( pageDescriptors ) ) {
+      if( pageDescriptor.getId().equals( id ) ) {
+        pageDescriptors.remove( pageDescriptor );
+      }
+    }
+  }
+
   public void add( ActionDescriptor descriptor ) {
     verifyActionDescriptorIsUnique( descriptor );
     actionDescriptors.add( descriptor );

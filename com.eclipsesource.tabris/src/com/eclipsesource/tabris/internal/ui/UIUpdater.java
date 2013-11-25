@@ -16,6 +16,8 @@ import com.eclipsesource.tabris.ui.UIConfiguration;
 
 public interface UIUpdater {
 
+  void remove( PageConfiguration pageConfiguration );
+
   void update( PageConfiguration pageConfiguration );
 
   void update( UIConfiguration uiConfiguration );

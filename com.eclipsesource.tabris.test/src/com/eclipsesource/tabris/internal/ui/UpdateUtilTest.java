@@ -78,6 +78,17 @@ public class UpdateUtilTest {
   }
 
   @Test
+  public void testNotifiesUpdaterAboutPageremove() {
+    UIUpdater updater = mock( UIUpdater.class );
+    UpdateUtil.registerUpdater( updater );
+    PageConfiguration configuration = mock( PageConfiguration.class );
+
+    UpdateUtil.firePageRemove( configuration );
+
+    verify( updater ).remove( configuration );
+  }
+
+  @Test
   public void testNotifiesUpdaterAboutUIChange() {
     UIUpdater updater = mock( UIUpdater.class );
     UpdateUtil.registerUpdater( updater );

@@ -70,6 +70,17 @@ public class UIDescriptorTest {
     assertSame( descriptor, uiDescriptor.getPageDescriptor( "foo" ) );
   }
 
+  @Test
+  public void testRemovesPageDescriptor() {
+    UIDescriptor uiDescriptor = new UIDescriptor();
+    PageDescriptor descriptor = createDescriptor( "foo" );
+    uiDescriptor.add( descriptor );
+
+    uiDescriptor.removePageDescriptor( "foo" );
+
+    assertNull( uiDescriptor.getPageDescriptor( "foo" ) );
+  }
+
   private PageDescriptor createDescriptor( String id ) {
     return new PageDescriptor( id, TestPage.class, "", null, true );
   }

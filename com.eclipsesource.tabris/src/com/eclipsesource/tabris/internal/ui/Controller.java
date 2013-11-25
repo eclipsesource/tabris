@@ -123,6 +123,30 @@ public class Controller implements UIUpdater, Serializable {
     actionsParent.getShell().layout( true, true );
   }
 
+  @Override
+  public void remove( PageConfiguration pageConfiguration ) {
+    PageDescriptor descriptor = pageConfiguration.getAdapter( PageDescriptor.class );
+    verifyPageIsNoInCurrentFlow( descriptor );
+    destroyPage( descriptor );
+  }
+
+  private void verifyPageIsNoInCurrentFlow( PageDescriptor descriptor ) {
+    List<PageRenderer> allRenderers = currentFlow.getAllRenderers();
+    for( PageRenderer pageRenderer : allRenderers ) {
+      if( pageRenderer.getDescriptor().getId().equals( descriptor.getId() ) ) {
+        throw new IllegalStateException( "Can not remove page from current chain" );
+      }
+    }
+  }
+
+  private void destroyPage( PageDescriptor descriptor ) {
+    for( Entry<PageDescriptor, PageRenderer> entry : topLevelPageRenderers.entrySet() ) {
+      if( entry.getKey().getId().equals( descriptor.getId() ) ) {
+        entry.getValue().destroy();
+      }
+    }
+  }
+
   public void createRootPages( UIImpl ui ) {
     List<PageDescriptor> pageDescriptors = uiDescriptor.getRootPages();
     when( pageDescriptors.isEmpty() ).throwIllegalState( "No TopLevel Pages found." );

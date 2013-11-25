@@ -98,9 +98,10 @@ public class UIConfiguration implements Adaptable, Serializable {
    * adding {@link ActionConfiguration}s.
    * </p>
    *
-   * @throws IllegalArgumentException if the pageId is null or empty.
+   * @return The {@link PageConfiguration} for the specified id or <code>null</code> when the configuration does not
+   * exist.
    *
-   * @return The {@link PageConfiguration} for the specified id.
+   * @throws IllegalArgumentException if the pageId is <code>null</code> or empty.
    *
    * @since 1.2
    */
@@ -113,6 +114,29 @@ public class UIConfiguration implements Adaptable, Serializable {
       }
     }
     return null;
+  }
+
+  /**
+   * <p>
+   * Removes a {@link PageConfiguration} for the specified id. Can be used to manipulate a ui during runtime.
+   * </p>
+   *
+   * @throws IllegalStateException when the page to remove is active or in the current page chain.
+   * @throws IllegalArgumentException when the id is <code>null</code> or empty.
+   *
+   * @since 1.2
+   */
+  public UIConfiguration removePageConfiguration( String pageId ) {
+    whenNull( pageId ).throwIllegalArgument( "Page Id must not be null" );
+    when( pageId.isEmpty() ).throwIllegalArgument( "Page Id must not be empty" );
+    for( PageConfiguration configuration : new ArrayList<PageConfiguration>( pageConfigurations ) ) {
+      if( configuration.getAdapter( PageDescriptor.class ).getId().equals( pageId ) ) {
+        UpdateUtil.firePageRemove( configuration );
+        pageConfigurations.remove( configuration );
+        uiDescriptor.removePageDescriptor( pageId );
+      }
+    }
+    return this;
   }
 
   /**
@@ -137,7 +161,7 @@ public class UIConfiguration implements Adaptable, Serializable {
    * </p>
    *
    * @throws IllegalStateException when no {@link ActionConfiguration} exist for the specified id.
-   * @throws IllegalArgumentException when the id is null or empty.
+   * @throws IllegalArgumentException when the id is <code>null</code> or empty.
    *
    * @since 1.2
    */
