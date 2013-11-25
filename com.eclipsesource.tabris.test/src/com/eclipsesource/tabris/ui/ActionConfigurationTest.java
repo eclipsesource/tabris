@@ -15,6 +15,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.io.InputStream;
@@ -128,6 +129,25 @@ public class ActionConfigurationTest {
     ActionDescriptor descriptor = configuration.getAdapter( ActionDescriptor.class );
 
     assertArrayEquals( UITestUtil.getImageBytes(), descriptor.getImage() );
+  }
+
+  @Test
+  public void testSetsPlacementPriority() {
+    ActionConfiguration configuration = new ActionConfiguration( "foo", TestAction.class );
+
+    configuration.setPlacementPriority( PlacementPriority.HIGH );
+
+    ActionDescriptor descriptor = configuration.getAdapter( ActionDescriptor.class );
+    assertSame( PlacementPriority.HIGH, descriptor.getPlacementPriority() );
+  }
+
+  @Test
+  public void testSetPlacementPriorityReturnsConfiguration() {
+    ActionConfiguration configuration = new ActionConfiguration( "foo", TestAction.class );
+
+    ActionConfiguration actualConfiguration = configuration.setPlacementPriority( PlacementPriority.HIGH );
+
+    assertSame( configuration, actualConfiguration );
   }
 
   @Test( expected = IllegalArgumentException.class )

@@ -48,6 +48,7 @@ public class ActionConfiguration implements Adaptable, Serializable {
   private boolean enabled;
   private boolean visible;
   private byte[] image;
+  private PlacementPriority placementPriority;
 
   /**
    * <p>
@@ -120,6 +121,22 @@ public class ActionConfiguration implements Adaptable, Serializable {
   }
 
   /**
+   * <p>
+   * Defines the {@link PlacementPriority} of the action.
+   * </p>
+   *
+   * @param placementPriority the placement priority of the action. Must not be <code>null</code>.
+   *
+   * @see PlacementPriority
+   * @since 1.2
+   */
+  public ActionConfiguration setPlacementPriority( PlacementPriority placementPriority ) {
+    whenNull( placementPriority ).throwIllegalArgument( "PlacementPriority must not be null" );
+    this.placementPriority = placementPriority;
+    return this;
+  }
+
+  /**
    * @since 1.0
    */
   @Override
@@ -133,7 +150,7 @@ public class ActionConfiguration implements Adaptable, Serializable {
 
   private ActionDescriptor createDescriptor() {
     Action action = InstanceCreator.createInstance( actionType );
-    return new ActionDescriptor( actionId, action, title, image, visible, enabled );
+    return new ActionDescriptor( actionId, action, title, image, visible, enabled, placementPriority );
   }
 
 }

@@ -14,6 +14,7 @@ import static com.eclipsesource.tabris.internal.Constants.EVENT_SELECTION;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ENABLED;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_IMAGE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PARENT;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PLACEMENT_PRIORITY;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TITLE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_VISIBILITY;
 
@@ -30,6 +31,7 @@ import org.eclipse.swt.internal.graphics.ImageFactory;
 import org.eclipse.swt.widgets.Composite;
 
 import com.eclipsesource.tabris.internal.ui.rendering.ActionRenderer;
+import com.eclipsesource.tabris.ui.PlacementPriority;
 import com.eclipsesource.tabris.ui.UI;
 
 
@@ -58,6 +60,7 @@ public class RemoteAction extends AbstractOperationHandler implements ActionRend
     setImage();
     setDefaultEnabled();
     setDefaultVisible();
+    setPlacementPriority();
   }
 
   private void setImage() {
@@ -90,6 +93,13 @@ public class RemoteAction extends AbstractOperationHandler implements ActionRend
     boolean visible = descriptor.isVisible();
     if( !visible ) {
       setVisible( visible );
+    }
+  }
+
+  private void setPlacementPriority() {
+    PlacementPriority placementPriority = descriptor.getPlacementPriority();
+    if( placementPriority != null ) {
+      remoteObject.set( PROPERTY_PLACEMENT_PRIORITY, placementPriority.name() );
     }
   }
 

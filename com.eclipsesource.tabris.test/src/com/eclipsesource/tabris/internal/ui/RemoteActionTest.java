@@ -36,6 +36,7 @@ import org.mockito.ArgumentCaptor;
 
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 import com.eclipsesource.tabris.ui.Action;
+import com.eclipsesource.tabris.ui.PlacementPriority;
 import com.eclipsesource.tabris.ui.UI;
 
 
@@ -61,6 +62,7 @@ public class RemoteActionTest {
     InputStream image = RemoteActionTest.class.getResourceAsStream( "testImage.png" );
     when( actionDescriptor.getImage() ).thenReturn( ImageUtil.getBytes( image ) );
     when( actionDescriptor.getTitle() ).thenReturn( "bar" );
+    when( actionDescriptor.getPlacementPriority() ).thenReturn( PlacementPriority.HIGH );
   }
 
   @After
@@ -130,12 +132,19 @@ public class RemoteActionTest {
   }
 
   @Test
-  public void testSetEnabled() {
+  public void testSetsEnabled() {
     RemoteAction remoteAction = new RemoteAction( ui, uiRenderer, actionDescriptor );
 
     remoteAction.setEnabled( true );
 
     verify( remoteObject ).set( "enabled", true );
+  }
+
+  @Test
+  public void testSetsPlacementPriority() {
+    new RemoteAction( ui, uiRenderer, actionDescriptor );
+
+    verify( remoteObject ).set( "placementPriority", "HIGH" );
   }
 
   @Test

@@ -160,7 +160,8 @@ public class WebPageTest {
                                        "actionBar",
                                        image,
                                        true,
-                                       true ) );
+                                       true,
+                                       null ) );
     when( descriptor.getActions() ).thenReturn( actions );
     webPage.createActions( WebRendererFactory.getInstance(), shell );
     actions.add( new ActionDescriptor( "actionFoo2",
@@ -168,7 +169,8 @@ public class WebPageTest {
                                        "actionBar",
                                        image,
                                        true,
-                                       true ) );
+                                       true,
+                                       null ) );
 
     webPage.update( descriptor, WebRendererFactory.getInstance(), shell );
 
@@ -186,13 +188,15 @@ public class WebPageTest {
                                        "actionBar",
                                        image,
                                        true,
-                                       true ) );
+                                       true,
+                                       null ) );
     actions.add( new ActionDescriptor( "actionFoo2",
                                        new TestAction(),
                                        "actionBar",
                                        image,
                                        true,
-                                       true ) );
+                                       true,
+                                       null ) );
     when( descriptor.getActions() ).thenReturn( actions );
     webPage.createActions( WebRendererFactory.getInstance(), shell );
     webPage.createActions( RemoteRendererFactory.getInstance(), shell );
@@ -218,7 +222,8 @@ public class WebPageTest {
                                        "actionBar",
                                        ImageUtil.getBytes( image ),
                                        true,
-                                       true ) );
+                                       true,
+                                       null ) );
     when( descriptor.getActions() ).thenReturn( actions );
     when( descriptor.getImage() ).thenReturn( UITestUtil.getImageBytes() );
     doReturn( TestPage.class ).when( descriptor ).getPageType();

@@ -94,7 +94,8 @@ public class UIDescriptorTest {
                                                         "bar",
                                                         ImageUtil.getBytes( image ),
                                                         true,
-                                                        true );
+                                                        true,
+                                                        null );
 
     uiDescriptor.add( descriptor );
 
@@ -110,7 +111,8 @@ public class UIDescriptorTest {
                                                         "bar",
                                                         ImageUtil.getBytes( image ),
                                                         true,
-                                                        true );
+                                                        true,
+                                                        null );
     uiDescriptor.add( descriptor );
 
     uiDescriptor.removeAction( "foo" );
@@ -150,7 +152,8 @@ public class UIDescriptorTest {
                                                         "bar",
                                                         ImageUtil.getBytes( image ),
                                                         true,
-                                                        true );
+                                                        true,
+                                                        null );
 
     uiDescriptor.add( descriptor );
 
@@ -168,7 +171,8 @@ public class UIDescriptorTest {
                                                         "bar",
                                                         ImageUtil.getBytes( image ),
                                                         true,
-                                                        true );
+                                                        true,
+                                                        null );
 
     uiDescriptor.add( descriptor );
     uiDescriptor.add( descriptor );

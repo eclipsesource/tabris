@@ -52,7 +52,8 @@ public class ActionDescriptorTest {
                                                         "bar",
                                                         ImageUtil.getBytes( image ),
                                                         true,
-                                                        true );
+                                                        true,
+                                                        null );
 
     assertEquals( "foo", descriptor.getId() );
   }
@@ -66,7 +67,8 @@ public class ActionDescriptorTest {
                                                         "bar",
                                                         ImageUtil.getBytes( image ),
                                                         true,
-                                                        true );
+                                                        true,
+                                                        null );
 
     assertSame( action, descriptor.getAction() );
   }
@@ -80,7 +82,8 @@ public class ActionDescriptorTest {
                                                         "bar",
                                                         ImageUtil.getBytes( image ),
                                                         true,
-                                                        true );
+                                                        true,
+                                                        null );
 
     assertTrue( descriptor.isVisible() );
   }
@@ -94,7 +97,8 @@ public class ActionDescriptorTest {
                                                         "bar",
                                                         ImageUtil.getBytes( image ),
                                                         true,
-                                                        true );
+                                                        true,
+                                                        null );
 
     assertTrue( descriptor.isEnabled() );
   }
@@ -108,7 +112,8 @@ public class ActionDescriptorTest {
                                                         "bar",
                                                         ImageUtil.getBytes( image ),
                                                         true,
-                                                        true );
+                                                        true,
+                                                        null );
 
     assertEquals( "bar", descriptor.getTitle() );
   }
@@ -122,7 +127,8 @@ public class ActionDescriptorTest {
                                                         "bar",
                                                         ImageUtil.getBytes( image ),
                                                         true,
-                                                        true );
+                                                        true,
+                                                        null );
 
     assertArrayEquals( UITestUtil.getImageBytes(), descriptor.getImage() );
   }

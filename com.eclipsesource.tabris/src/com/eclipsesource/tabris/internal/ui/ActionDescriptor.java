@@ -13,6 +13,7 @@ package com.eclipsesource.tabris.internal.ui;
 import java.io.Serializable;
 
 import com.eclipsesource.tabris.ui.Action;
+import com.eclipsesource.tabris.ui.PlacementPriority;
 
 
 public class ActionDescriptor implements Serializable {
@@ -23,13 +24,15 @@ public class ActionDescriptor implements Serializable {
   private final boolean visible;
   private final boolean enabled;
   private final byte[] image;
+  private final PlacementPriority placementPriority;
 
   public ActionDescriptor( String id,
                            Action action,
                            String title,
                            byte[] image,
                            boolean visible,
-                           boolean enabled )
+                           boolean enabled,
+                           PlacementPriority placementPriority )
   {
     this.id = id;
     this.action = action;
@@ -37,6 +40,7 @@ public class ActionDescriptor implements Serializable {
     this.image = image;
     this.enabled = enabled;
     this.visible = visible;
+    this.placementPriority = placementPriority;
   }
 
   public String getId() {
@@ -61,6 +65,10 @@ public class ActionDescriptor implements Serializable {
 
   public boolean isEnabled() {
     return enabled;
+  }
+
+  public PlacementPriority getPlacementPriority() {
+    return placementPriority;
   }
 
 }

@@ -63,6 +63,7 @@ public class Constants {
   public static final String PROPERTY_SHELL = "shell";
   public static final String PROPERTY_BACKGROUND = "background";
   public static final String PROPERTY_PROPOSALS = "proposals";
+  public static final String PROPERTY_PLACEMENT_PRIORITY = "placementPriority";
 
   // Geolocation Constants
   public static final String TYPE_GEOLOCATION = "tabris.Geolocation";

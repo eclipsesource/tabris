@@ -85,7 +85,8 @@ public class RemotePageTest {
                                        "actionBar",
                                        ImageUtil.getBytes( image ),
                                        true,
-                                       true ) );
+                                       true,
+                                       null ) );
     when( descriptor.getActions() ).thenReturn( actions );
     when( descriptor.getImage() ).thenReturn( UITestUtil.getImageBytes() );
     doReturn( TestPage.class ).when( descriptor ).getPageType();
@@ -178,7 +179,8 @@ public class RemotePageTest {
                                        "actionBar",
                                        image,
                                        true,
-                                       true ) );
+                                       true,
+                                       null ) );
     when( descriptor.getActions() ).thenReturn( actions );
     RemotePage page = new RemotePage( ui, uiRenderer, descriptor, mock( PageData.class ) );
     page.createActions( RemoteRendererFactory.getInstance(), shell );
@@ -187,7 +189,8 @@ public class RemotePageTest {
                                        "actionBar",
                                        image,
                                        true,
-                                       true ) );
+                                       true,
+                                       null ) );
 
     page.update( descriptor, RemoteRendererFactory.getInstance(), shell );
 
@@ -205,13 +208,15 @@ public class RemotePageTest {
                                        "actionBar",
                                        image,
                                        true,
-                                       true ) );
+                                       true,
+                                       null ) );
     actions.add( new ActionDescriptor( "actionFoo2",
                                        new TestAction(),
                                        "actionBar",
                                        image,
                                        true,
-                                       true ) );
+                                       true,
+                                       null ) );
     when( descriptor.getActions() ).thenReturn( actions );
     RemotePage page = new RemotePage( ui, uiRenderer, descriptor, mock( PageData.class ) );
     page.createActions( RemoteRendererFactory.getInstance(), shell );
