@@ -86,14 +86,6 @@
             </message_arguments>
         </filter>
     </resource>
-    <resource path="src/com/eclipsesource/tabris/ui/ActionOperator.java" type="com.eclipsesource.tabris.ui.ActionOperator">
-        <filter id="403804204">
-            <message_arguments>
-                <message_argument value="com.eclipsesource.tabris.ui.ActionOperator"/>
-                <message_argument value="getAction(String)"/>
-            </message_arguments>
-        </filter>
-    </resource>
     <resource path="src/com/eclipsesource/tabris/ui/Page.java" type="com.eclipsesource.tabris.ui.Page">
         <filter id="403804204">
             <message_arguments>

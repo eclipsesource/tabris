@@ -746,6 +746,21 @@ public class ControllerTest {
   }
 
   @Test
+  public void testGetCurrentPageId() {
+    createRootPage( "foo" );
+    PageDescriptor page = createPage( "bar" );
+    RemoteUI remoteUI = mock( RemoteUI.class );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
+    controller.createRootPages( ui );
+    controller.showPage( ui, page, mock( PageData.class ) );
+
+    String currentPageId = controller.getCurrentPageId();
+
+    assertEquals( "bar", currentPageId );
+  }
+
+  @Test
   public void testGetCurrentPageData() {
     createRootPage( "foo" );
     PageDescriptor page = createPage( "bar" );

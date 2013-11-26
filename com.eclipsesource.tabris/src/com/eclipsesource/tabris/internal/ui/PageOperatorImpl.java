@@ -63,6 +63,11 @@ public class PageOperatorImpl implements PageOperator, Serializable {
   }
 
   @Override
+  public String getCurrentPageId() {
+    return controller.getCurrentPageId();
+  }
+
+  @Override
   public void setCurrentPageTitle( String title ) {
     whenNull( title ).throwIllegalArgument( "Page Title must not be null" );
     controller.setTitle( getCurrentPage(), title );

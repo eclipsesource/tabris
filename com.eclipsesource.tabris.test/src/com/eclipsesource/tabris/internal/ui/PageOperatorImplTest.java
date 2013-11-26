@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
@@ -74,6 +75,18 @@ public class PageOperatorImplTest {
     ui.getPageOperator().getCurrentPage();
 
     verify( controller ).getCurrentPage();
+  }
+
+  @Test
+  public void testGetsCurrentPageId() {
+    Controller controller = mock( Controller.class );
+    when( controller.getCurrentPageId() ).thenReturn( "foo" );
+    UIImpl ui = new UIImpl( display, controller, mock( UIConfiguration.class ) );
+
+    ui.markInitialized();
+    String id = ui.getPageOperator().getCurrentPageId();
+
+    assertEquals( "foo", id );
   }
 
   @Test

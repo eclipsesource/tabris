@@ -319,6 +319,13 @@ public class Controller implements UIUpdater, Serializable {
     return null;
   }
 
+  public String getCurrentPageId() {
+    if( currentFlow != null ) {
+      return currentFlow.getCurrentRenderer().getDescriptor().getId();
+    }
+    return null;
+  }
+
   public PageData getCurrentData() {
     if( currentFlow != null ) {
       return currentFlow.getCurrentRenderer().getData();
