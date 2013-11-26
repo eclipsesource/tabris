@@ -19,6 +19,7 @@ import java.io.Serializable;
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.RGB;
 
 
@@ -65,7 +66,7 @@ public class GCOperationDispatcher implements Serializable {
     } else if( PROPERTY_FOREGROUND.equals( operationType ) ) {
       dispatchSetForeground( parameters );
     } else if( PROPERTY_PATH.equals( operationType ) ) {
-      dispatchDrawPolyline( parameters );
+      dispatchDrawPath( parameters );
     }
   }
 
@@ -83,11 +84,27 @@ public class GCOperationDispatcher implements Serializable {
     gc.setAlpha( a );
   }
 
-  private void dispatchDrawPolyline( JsonArray parameters ) {
-    int[] polyline = new int[ parameters.size() ];
-    for( int i = 0; i < parameters.size(); i++ ) {
-      polyline[ i ] = Double.valueOf( parameters.get( i ).asDouble() ).intValue();
+  private void dispatchDrawPath( JsonArray parameters ) {
+    if( !parameters.isEmpty() ) {
+      Path path = new Path( gc.getDevice() );
+      createWayPoints( parameters, path );
+      gc.drawPath( path );
     }
-    gc.drawPolyline( polyline );
+  }
+
+  private void createWayPoints( JsonArray parameters, Path path ) {
+    path.moveTo( getFloatAtIndex( parameters, 0 ), getFloatAtIndex( parameters, 1 ) );
+    for( int i = 2; i < parameters.size(); i += 6 ) {
+      path.cubicTo( getFloatAtIndex( parameters, i ),
+                   getFloatAtIndex( parameters, i + 1 ),
+                   getFloatAtIndex( parameters, i + 2 ),
+                   getFloatAtIndex( parameters, i + 3 ),
+                   getFloatAtIndex( parameters, i + 4 ),
+                   getFloatAtIndex( parameters, i + 5 ) );
+    }
+  }
+
+  private float getFloatAtIndex( JsonArray parameters, int index ) {
+    return Double.valueOf( parameters.get( index ).asDouble() ).floatValue();
   }
 }

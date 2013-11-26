@@ -19,42 +19,52 @@ public class ClientCanvasTestUtil {
 
   public static String createDrawingsWithoutLineWidth() {
     JsonArray drawings = new JsonArray();
-    JsonArray polylineParam = createPolylineParam();
+    JsonArray polylineParam = createPathParam();
     drawings.add( polylineParam );
     JsonArray colorParam = createColorParam();
     drawings.add( colorParam );
-    JsonArray polylineParam2 = createPolylineParam();
+    JsonArray polylineParam2 = createPathParam();
     drawings.add( polylineParam2 );
     return drawings.toString();
   }
 
   public static String createDrawings( int lineWidth ) {
     JsonArray drawings = new JsonArray();
-    JsonArray polylineParam = createPolylineParam();
+    JsonArray polylineParam = createPathParam();
     drawings.add( polylineParam );
     JsonArray lineWidthParam = createLineWidthParam( lineWidth );
     drawings.add( lineWidthParam );
     JsonArray colorParam = createColorParam();
     drawings.add( colorParam );
-    JsonArray polylineParam2 = createPolylineParam();
+    JsonArray polylineParam2 = createPathParam();
     drawings.add( polylineParam2 );
     return drawings.toString();
   }
 
-  private static JsonArray createPolylineParam() {
+  private static JsonArray createPathParam() {
     JsonArray drawingParam1 = new JsonArray();
     drawingParam1.add( Constants.PROPERTY_PATH );
-    JsonArray polyline = createPolyline();
-    drawingParam1.add( polyline );
+    JsonArray path = createPath();
+    drawingParam1.add( path );
     return drawingParam1;
   }
 
-  private static JsonArray createPolyline() {
+  private static JsonArray createPath() {
     JsonArray polyline = new JsonArray();
     polyline.add( 0 );
     polyline.add( 1 );
     polyline.add( 5 );
     polyline.add( 5 );
+    polyline.add( 6 );
+    polyline.add( 6 );
+    polyline.add( 7 );
+    polyline.add( 7 );
+    polyline.add( 8 );
+    polyline.add( 8 );
+    polyline.add( 9 );
+    polyline.add( 9 );
+    polyline.add( 10 );
+    polyline.add( 10 );
     return polyline;
   }
 

@@ -10,10 +10,10 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.AdditionalMatchers.aryEq;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 
@@ -23,6 +23,7 @@ import org.eclipse.rap.json.ParseException;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.widgets.Display;
 import org.junit.After;
 import org.junit.Before;
@@ -59,7 +60,9 @@ public class GCOperationDispatcherTest {
     dispatcher.dispatch();
 
     InOrder order = inOrder( gc );
-    order.verify( gc ).drawPolyline( aryEq( new int[] { 0, 1, 5, 5} ) );
+    ArgumentCaptor<Path> pathCaptor = ArgumentCaptor.forClass( Path.class );
+    order.verify( gc ).drawPath( pathCaptor.capture() );
+    assertArrayEquals( new float[] { 0, 1, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10 }, pathCaptor.getValue().getPathData().points, 0 );
     order.verify( gc ).setLineWidth( 3 );
     ArgumentCaptor<Color> captor = ArgumentCaptor.forClass( Color.class );
     order.verify( gc ).setForeground( captor.capture() );
@@ -68,7 +71,9 @@ public class GCOperationDispatcherTest {
     assertEquals( 50, color.getRed() );
     assertEquals( 100, color.getGreen() );
     assertEquals( 200, color.getBlue() );
-    order.verify( gc ).drawPolyline( aryEq( new int[] { 0, 1, 5, 5} ) );
+    pathCaptor = ArgumentCaptor.forClass( Path.class );
+    order.verify( gc ).drawPath( pathCaptor.capture() );
+    assertArrayEquals( new float[] { 0, 1, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10 }, pathCaptor.getValue().getPathData().points, 0 );
   }
 
   @Test( expected = ParseException.class )
