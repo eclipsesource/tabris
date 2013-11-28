@@ -10,6 +10,9 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
+import static com.eclipsesource.tabris.internal.Constants.METHOD_OPEN;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_MESSAGE;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_QUERY;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -35,7 +38,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
-import com.eclipsesource.tabris.internal.ui.rendering.SearchActionRendererHolder;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 import com.eclipsesource.tabris.ui.UI;
 import com.eclipsesource.tabris.ui.action.ProposalHandler;
@@ -64,6 +66,8 @@ public class RemoteSearchActionTest {
     InputStream image = RemoteActionTest.class.getResourceAsStream( "testImage.png" );
     when( actionDescriptor.getImage() ).thenReturn( ImageUtil.getBytes( image ) );
     when( actionDescriptor.getTitle() ).thenReturn( "bar" );
+    TestSearchAction action = new TestSearchAction();
+    when( actionDescriptor.getAction() ).thenReturn( action );
   }
 
   @After
@@ -72,14 +76,14 @@ public class RemoteSearchActionTest {
   }
 
   @Test
-  public void testSetsRendererOnSerachAction() {
+  public void testRegistersItselfAsChangeListener() {
     SearchAction action = spy( new TestSearchAction() );
     when( actionDescriptor.getAction() ).thenReturn( action );
 
     RemoteSearchAction renderer = new RemoteSearchAction( ui, uiRenderer, actionDescriptor );
 
-    SearchActionRendererHolder holder = action.getAdapter( SearchActionRendererHolder.class );
-    assertSame( holder.getSearchActionRenderer(), renderer );
+    PropertyChangeNotifier adapter = action.getAdapter( PropertyChangeNotifier.class );
+    assertSame( adapter.getPropertyChangeHandler(), renderer );
   }
 
   @Test
@@ -198,5 +202,45 @@ public class RemoteSearchActionTest {
     remoteAction.handleCall( "deactivate", null );
 
     assertFalse( ServerPushManager.getInstance().isServerPushActive() );
+  }
+
+  @Test
+  public void testCallsOpenOnPropertyChange() {
+    RemoteSearchAction remoteAction = new RemoteSearchAction( ui, uiRenderer, actionDescriptor );
+    when( remoteObject.getHandler() ).thenReturn( remoteAction );
+
+    remoteAction.propertyChanged( METHOD_OPEN, null );
+
+    verify( remoteObject ).call( "open", null );
+  }
+
+  @Test
+  public void testCallsExecuteBeforeOpenOnPropertyChange() {
+    RemoteSearchAction remoteAction = new RemoteSearchAction( ui, uiRenderer, actionDescriptor );
+    when( remoteObject.getHandler() ).thenReturn( remoteAction );
+
+    remoteAction.propertyChanged( METHOD_OPEN, null );
+
+    assertTrue( ( ( TestSearchAction ) actionDescriptor.getAction() ).wasExecuted() );
+  }
+
+  @Test
+  public void testSetsQueryOnPropertyChange() {
+    RemoteSearchAction remoteAction = new RemoteSearchAction( ui, uiRenderer, actionDescriptor );
+    when( remoteObject.getHandler() ).thenReturn( remoteAction );
+
+    remoteAction.propertyChanged( PROPERTY_QUERY, "foo" );
+
+    verify( remoteObject ).set( "query", "foo" );
+  }
+
+  @Test
+  public void testSetsMessageOnPropertyChange() {
+    RemoteSearchAction remoteAction = new RemoteSearchAction( ui, uiRenderer, actionDescriptor );
+    when( remoteObject.getHandler() ).thenReturn( remoteAction );
+
+    remoteAction.propertyChanged( PROPERTY_MESSAGE, "foo" );
+
+    verify( remoteObject ).set( "message", "foo" );
   }
 }

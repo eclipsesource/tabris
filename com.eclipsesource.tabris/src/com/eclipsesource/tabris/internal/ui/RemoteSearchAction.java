@@ -19,31 +19,22 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_MESSAGE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_QUERY;
 
 import org.eclipse.rap.json.JsonObject;
+import org.eclipse.rap.rwt.Adaptable;
 import org.eclipse.rap.rwt.service.ServerPushSession;
 
-import com.eclipsesource.tabris.internal.ui.rendering.SearchActionRenderer;
-import com.eclipsesource.tabris.internal.ui.rendering.SearchActionRendererHolder;
 import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.UI;
 import com.eclipsesource.tabris.ui.action.SearchAction;
 
 
-public class RemoteSearchAction extends RemoteAction implements SearchActionRenderer {
+public class RemoteSearchAction extends RemoteAction implements PropertyChangeHandler {
 
   private ServerPushSession pushSession;
 
   public RemoteSearchAction( UI ui, RemoteUI uiRenderer, ActionDescriptor descriptor ) {
     super( ui, uiRenderer, descriptor );
-    setRemoteObject( descriptor );
-  }
-
-  private void setRemoteObject( ActionDescriptor descriptor ) {
     Action action = descriptor.getAction();
-    if( action instanceof SearchAction ) {
-      SearchAction searchAction = ( SearchAction )action;
-      SearchActionRendererHolder remoteSearchActionHolder = searchAction.getAdapter( SearchActionRendererHolder.class );
-      remoteSearchActionHolder.setSearchActionRenderer( this );
-    }
+    ( ( Adaptable )action ).getAdapter( PropertyChangeNotifier.class ).setPropertyChangeHandler( this );
   }
 
   @Override
@@ -52,18 +43,15 @@ public class RemoteSearchAction extends RemoteAction implements SearchActionRend
   }
 
   @Override
-  public void open() {
-    getRemoteObject().call( METHOD_OPEN, null );
-  }
-
-  @Override
-  public void setQuery( String query ) {
-    getRemoteObject().set( PROPERTY_QUERY, query );
-  }
-
-  @Override
-  public void setMessage( String message ) {
-    getRemoteObject().set( PROPERTY_MESSAGE, message );
+  public void propertyChanged( String key, Object value ) {
+    if( key.equals( METHOD_OPEN ) ) {
+      getDescriptor().getAction().execute( getUI() );
+      getRemoteObject().call( METHOD_OPEN, null );
+    } else if( key.equals( PROPERTY_QUERY ) ) {
+      getRemoteObject().set( PROPERTY_QUERY, ( String )value );
+    } else if( key.equals( PROPERTY_MESSAGE ) ) {
+      getRemoteObject().set( PROPERTY_MESSAGE, ( String )value );
+    }
   }
 
   @Override

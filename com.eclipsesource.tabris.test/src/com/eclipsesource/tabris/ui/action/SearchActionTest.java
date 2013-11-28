@@ -10,98 +10,60 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.ui.action;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
+import static com.eclipsesource.tabris.internal.Constants.METHOD_OPEN;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_MESSAGE;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_QUERY;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.eclipsesource.tabris.internal.ui.PropertyChangeHandler;
+import com.eclipsesource.tabris.internal.ui.PropertyChangeNotifier;
 import com.eclipsesource.tabris.internal.ui.TestSearchAction;
-import com.eclipsesource.tabris.internal.ui.rendering.SearchActionRenderer;
-import com.eclipsesource.tabris.internal.ui.rendering.SearchActionRendererHolder;
-import com.eclipsesource.tabris.ui.UI;
 
 public class SearchActionTest {
 
   private TestSearchAction searchAction;
-  private SearchActionRenderer searchActionRenderer;
+  private PropertyChangeHandler handler;
 
   @Before
   public void setUp() {
     searchAction = new TestSearchAction();
-    searchActionRenderer = mock( SearchActionRenderer.class );
+    handler = mock( PropertyChangeHandler.class );
+    searchAction.getAdapter( PropertyChangeNotifier.class ).setPropertyChangeHandler( handler );
   }
 
   @Test
   public void testCallsOpenWithoutQuery() {
-    searchAction.getAdapter( SearchActionRendererHolder.class ).setSearchActionRenderer( searchActionRenderer );
-
     searchAction.open();
 
-    verify( searchActionRenderer ).open();
-  }
-
-  @Test
-  public void testCallsExecuteOnOpen() {
-    searchAction = spy( new TestSearchAction() );
-    UI ui = mock( UI.class );
-    when( searchActionRenderer.getUI() ).thenReturn( ui );
-    searchAction.getAdapter( SearchActionRendererHolder.class ).setSearchActionRenderer( searchActionRenderer );
-
-    searchAction.open();
-
-    verify( searchAction ).execute( ui );
+    verify( handler ).propertyChanged( METHOD_OPEN, null );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testSetMessageFailsWithNull() {
-    searchAction.getAdapter( SearchActionRendererHolder.class ).setSearchActionRenderer( searchActionRenderer );
-
     searchAction.setMessage( null );
   }
 
   @Test
   public void testSetMessage() {
-    searchAction.getAdapter( SearchActionRendererHolder.class ).setSearchActionRenderer( searchActionRenderer );
-
     searchAction.setMessage( "foo" );
 
-    verify( searchActionRenderer ).setMessage( "foo" );
+    verify( handler ).propertyChanged( PROPERTY_MESSAGE, "foo" );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testSetQueryFailsWithNull() {
-    searchAction.getAdapter( SearchActionRendererHolder.class ).setSearchActionRenderer( searchActionRenderer );
-
     searchAction.setQuery( null );
   }
 
   @Test
   public void testSetQuery() {
-    searchAction.getAdapter( SearchActionRendererHolder.class ).setSearchActionRenderer( searchActionRenderer );
-
     searchAction.setQuery( "foo" );
 
-    verify( searchActionRenderer ).setQuery( "foo" );
-  }
-
-  @Test
-  public void testHasRendererHolder() {
-    SearchActionRendererHolder rendererHolder = searchAction.getAdapter( SearchActionRendererHolder.class );
-
-    assertNotNull( rendererHolder );
-  }
-
-  @Test
-  public void testHasOneRemoteObjectHolder() {
-    SearchActionRendererHolder remoteObjectHolder = searchAction.getAdapter( SearchActionRendererHolder.class );
-    SearchActionRendererHolder remoteObjectHolder2 = searchAction.getAdapter( SearchActionRendererHolder.class );
-
-    assertSame( remoteObjectHolder, remoteObjectHolder2 );
+    verify( handler ).propertyChanged( PROPERTY_QUERY, "foo" );
   }
 
 }

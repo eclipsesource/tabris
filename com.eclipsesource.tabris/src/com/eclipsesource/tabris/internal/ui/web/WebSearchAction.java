@@ -15,6 +15,7 @@ import static com.eclipsesource.tabris.internal.Constants.CUSTOM_VARIANT_TABRIS_
 
 import java.util.List;
 
+import org.eclipse.rap.rwt.Adaptable;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.service.ServerPushSession;
 import org.eclipse.swt.SWT;
@@ -32,15 +33,15 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
 
 import com.eclipsesource.tabris.internal.ui.ActionDescriptor;
-import com.eclipsesource.tabris.internal.ui.rendering.SearchActionRenderer;
-import com.eclipsesource.tabris.internal.ui.rendering.SearchActionRendererHolder;
+import com.eclipsesource.tabris.internal.ui.PropertyChangeHandler;
+import com.eclipsesource.tabris.internal.ui.PropertyChangeNotifier;
 import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.UI;
 import com.eclipsesource.tabris.ui.action.ProposalHandler;
 import com.eclipsesource.tabris.ui.action.SearchAction;
 
 
-public class WebSearchAction extends WebAction implements SearchActionRenderer {
+public class WebSearchAction extends WebAction implements PropertyChangeHandler {
 
   private static final int TEXT_WIDTH = 200;
 
@@ -52,15 +53,7 @@ public class WebSearchAction extends WebAction implements SearchActionRenderer {
     super( ui, uiRenderer, descriptor );
     textModifyListener = new TextModifyListener( this );
     Action action = descriptor.getAction();
-    initActionHolder( action );
-  }
-
-  private void initActionHolder( Action action ) {
-    if( action instanceof SearchAction ) {
-      SearchAction searchAction = ( SearchAction )action;
-      SearchActionRendererHolder remoteSearchActionHolder = searchAction.getAdapter( SearchActionRendererHolder.class );
-      remoteSearchActionHolder.setSearchActionRenderer( this );
-    }
+    ( ( Adaptable )action ).getAdapter( PropertyChangeNotifier.class ).setPropertyChangeHandler( this );
   }
 
   @Override
@@ -84,18 +77,27 @@ public class WebSearchAction extends WebAction implements SearchActionRenderer {
   }
 
   @Override
+  public void propertyChanged( String key, Object value ) {
+    if( key.equals( "open" ) ) {
+      open();
+    } else if( key.equals( "query" ) ) {
+      setQuery( ( String )value );
+    } else if( key.equals( "message" ) ) {
+      setMessage( ( String )value );
+    }
+  }
+
   public void open() {
     whenNull( text ).throwIllegalState( "UI is not created" );
+    getDescriptor().getAction().execute( getUI() );
     actionExecuted();
   }
 
-  @Override
   public void setQuery( String query ) {
     whenNull( text ).throwIllegalState( "UI is not created" );
     text.setText( query );
   }
 
-  @Override
   public void setMessage( String message ) {
     whenNull( text ).throwIllegalState( "UI is not created" );
     text.setMessage( message );

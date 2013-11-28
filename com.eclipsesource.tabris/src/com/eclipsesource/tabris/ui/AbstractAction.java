@@ -10,6 +10,10 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.ui;
 
+import org.eclipse.rap.rwt.Adaptable;
+
+import com.eclipsesource.tabris.internal.ui.PropertyChangeNotifier;
+
 
 
 /**
@@ -22,9 +26,14 @@ package com.eclipsesource.tabris.ui;
  *
  * @since 1.0
  */
-public abstract class AbstractAction implements Action {
+public abstract class AbstractAction implements Action, Adaptable {
 
+  private final PropertyChangeNotifier notifier;
   private UI ui;
+
+  public AbstractAction() {
+    notifier = new PropertyChangeNotifier();
+  }
 
   @Override
   public final void execute( UI ui ) {
@@ -152,5 +161,18 @@ public abstract class AbstractAction implements Action {
    */
   public UIConfiguration getUIConfiguration() {
     return ui.getConfiguration();
+  }
+
+
+  /**
+   * @since 1.2
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public <T> T getAdapter( Class<T> adapter ) {
+    if( adapter == PropertyChangeNotifier.class ) {
+      return ( T )notifier;
+    }
+    return null;
   }
 }

@@ -19,6 +19,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -44,8 +45,10 @@ import org.junit.Test;
 
 import com.eclipsesource.tabris.internal.ui.ActionDescriptor;
 import com.eclipsesource.tabris.internal.ui.ImageUtil;
+import com.eclipsesource.tabris.internal.ui.PropertyChangeHandler;
+import com.eclipsesource.tabris.internal.ui.PropertyChangeNotifier;
 import com.eclipsesource.tabris.internal.ui.RemoteActionTest;
-import com.eclipsesource.tabris.internal.ui.rendering.SearchActionRendererHolder;
+import com.eclipsesource.tabris.internal.ui.TestSearchAction;
 import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.UI;
 import com.eclipsesource.tabris.ui.action.ProposalHandler;
@@ -74,8 +77,7 @@ public class WebSearchActionTest {
     shell.open();
     ui = mock( UI.class );
     uiRenderer = mock( WebUI.class );
-    searchAction = mock( SearchAction.class );
-    when( searchAction.getAdapter( SearchActionRendererHolder.class ) ).thenReturn( new SearchActionRendererHolder() );
+    searchAction = spy( new TestSearchAction() );
     actionDescriptor = mockDescriptor( searchAction );
     webSearchAction = new WebSearchAction( ui, uiRenderer, actionDescriptor );
     webSearchAction.createUi( shell );
@@ -90,13 +92,11 @@ public class WebSearchActionTest {
   }
 
   @Test
-  public void testSetsActionHolder() {
-    SearchActionRendererHolder holder = new SearchActionRendererHolder();
-    when( searchAction.getAdapter( SearchActionRendererHolder.class ) ).thenReturn( holder );
-
+  public void testSetsItselfAsChangeHandler() {
     webSearchAction = new WebSearchAction( ui, uiRenderer, actionDescriptor );
 
-    assertSame( holder.getSearchActionRenderer(), webSearchAction );
+    PropertyChangeHandler handler = searchAction.getAdapter( PropertyChangeNotifier.class ).getPropertyChangeHandler();
+    assertSame( handler, webSearchAction );
   }
 
   @Test
@@ -155,6 +155,13 @@ public class WebSearchActionTest {
     webSearchAction.setEnabled( true );
 
     assertTrue( control.isEnabled() );
+  }
+
+  @Test
+  public void testOpen_executesActions() {
+    webSearchAction.open();
+
+    verify( searchAction ).execute( ui );
   }
 
   @Test

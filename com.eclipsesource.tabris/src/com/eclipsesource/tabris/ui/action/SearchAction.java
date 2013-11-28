@@ -11,22 +11,17 @@
 package com.eclipsesource.tabris.ui.action;
 
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
+import static com.eclipsesource.tabris.internal.Constants.METHOD_OPEN;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_MESSAGE;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_QUERY;
 
-import org.eclipse.rap.rwt.Adaptable;
-
-import com.eclipsesource.tabris.internal.ui.rendering.SearchActionRendererHolder;
+import com.eclipsesource.tabris.internal.ui.PropertyChangeNotifier;
 import com.eclipsesource.tabris.ui.AbstractAction;
 
 /**
  * @since 1.2
  */
-public abstract class SearchAction extends AbstractAction implements Adaptable {
-
-  private final SearchActionRendererHolder rendererHolder;
-
-  public SearchAction() {
-    rendererHolder = new SearchActionRendererHolder();
-  }
+public abstract class SearchAction extends AbstractAction {
 
   @Override
   public void execute() {
@@ -38,30 +33,17 @@ public abstract class SearchAction extends AbstractAction implements Adaptable {
   public abstract void modified( String query, ProposalHandler proposalHandler );
 
   public final void open() {
-    whenNull( rendererHolder.getSearchActionRenderer() ).throwIllegalState( "SearchActionRenderer not set" );
-    execute( rendererHolder.getSearchActionRenderer().getUI() );
-    rendererHolder.getSearchActionRenderer().open();
+    getAdapter( PropertyChangeNotifier.class ).firePropertyChange( METHOD_OPEN, null );
   }
 
-  public void setQuery( String query ) {
+  public final void setQuery( String query ) {
     whenNull( query ).throwIllegalArgument( "Query must not be null" );
-    whenNull( rendererHolder.getSearchActionRenderer() ).throwIllegalState( "SearchActionRenderer not set" );
-    rendererHolder.getSearchActionRenderer().setQuery( query );
+    getAdapter( PropertyChangeNotifier.class ).firePropertyChange( PROPERTY_QUERY, query );
   }
 
-  public void setMessage( String message ) {
+  public final void setMessage( String message ) {
     whenNull( message ).throwIllegalArgument( "Message must not be null" );
-    whenNull( rendererHolder.getSearchActionRenderer() ).throwIllegalState( "SearchActionRenderer not set" );
-    rendererHolder.getSearchActionRenderer().setMessage( message );
-  }
-
-  @Override
-  @SuppressWarnings("unchecked")
-  public <T> T getAdapter( Class<T> adapter ) {
-    if( adapter == SearchActionRendererHolder.class ) {
-      return ( T )rendererHolder;
-    }
-    return null;
+    getAdapter( PropertyChangeNotifier.class ).firePropertyChange( PROPERTY_MESSAGE, message );
   }
 
 }

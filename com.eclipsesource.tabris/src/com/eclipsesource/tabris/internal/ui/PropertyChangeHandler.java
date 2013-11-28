@@ -8,21 +8,10 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.internal.ui.rendering;
-
-import java.io.Serializable;
+package com.eclipsesource.tabris.internal.ui;
 
 
-public class SearchActionRendererHolder implements Serializable {
+public interface PropertyChangeHandler {
 
-  private SearchActionRenderer searchActionRenderer;
-
-  public SearchActionRenderer getSearchActionRenderer() {
-    return searchActionRenderer;
-  }
-
-  public void setSearchActionRenderer( SearchActionRenderer searchActionRenderer ) {
-    this.searchActionRenderer = searchActionRenderer;
-  }
-
+  void propertyChanged( String key, Object value );
 }

@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.ui;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -20,6 +21,8 @@ import static org.mockito.Mockito.when;
 import java.io.Serializable;
 
 import org.junit.Test;
+
+import com.eclipsesource.tabris.internal.ui.PropertyChangeNotifier;
 
 
 
@@ -157,6 +160,23 @@ public class AbstractActionTest {
     action.setActionEnabled( "foo", false );
 
     verify( actionOperator ).setActionEnabled( "foo", false );
+  }
+
+  @Test
+  public void testHasChangeNotifier() {
+    TestAbstractAction action = new TestAbstractAction();
+    PropertyChangeNotifier changeNotifier = action.getAdapter( PropertyChangeNotifier.class );
+
+    assertNotNull( changeNotifier );
+  }
+
+  @Test
+  public void testHasOneChangeNotifier() {
+    TestAbstractAction action = new TestAbstractAction();
+    PropertyChangeNotifier changeNotifier = action.getAdapter( PropertyChangeNotifier.class );
+    PropertyChangeNotifier changeNotifier2 = action.getAdapter( PropertyChangeNotifier.class );
+
+    assertSame( changeNotifier, changeNotifier2 );
   }
 
   private static class TestAbstractAction extends AbstractAction {

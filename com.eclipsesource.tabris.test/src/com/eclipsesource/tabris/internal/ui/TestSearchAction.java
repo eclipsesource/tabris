@@ -16,12 +16,19 @@ import com.eclipsesource.tabris.ui.action.SearchAction;
 
 public class TestSearchAction extends SearchAction {
 
+  private boolean executed;
+
   @Override
   public void search( String query ) {
   }
 
   @Override
   public void execute() {
+    executed = true;
+  }
+
+  public boolean wasExecuted() {
+    return executed;
   }
 
   @Override
