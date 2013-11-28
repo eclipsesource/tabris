@@ -1,9 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2013 EclipseSource and others. All rights reserved. This
- * program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0 which accompanies this distribution, and is
- * available at http://www.eclipse.org/legal/epl-v10.html Contributors:
- * EclipseSource - initial API and implementation
+ * Copyright (c) 2013 EclipseSource and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    EclipseSource - initial API and implementation
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui.web;
 
@@ -22,7 +25,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
@@ -39,9 +41,10 @@ import com.eclipsesource.tabris.ui.UI;
 
 public class WebUI implements UIRenderer {
 
-  private static final String BACK_ICON = "images/back_icon.png";
-  private static final String BACK_ICON_DISABLED = "images/back_icon_disabled.png";
+  private static final int BACK_BUTTON_SIZE = 32;
+  private static final String BACK_BUTTON_CUSTOM_VARIANT = CUSTOM_VARIANT_TABRIS_UI + "_back";
   private static final String DATA_ACTIVATED = "activated";
+
   private final Shell shell;
   private UI ui;
   private Composite pageParent;
@@ -51,8 +54,6 @@ public class WebUI implements UIRenderer {
   private ToolBar pageSwitcher;
   private Menu pageSwitcherMenu;
   private Composite actionsBar;
-  private Image backIcon;
-  private Image backIconDisabled;
 
   public WebUI( Shell shell ) {
     this.shell = shell;
@@ -137,10 +138,7 @@ public class WebUI implements UIRenderer {
   }
 
   private void init() {
-    Display display = shell.getDisplay();
     shell.setLayout( createShellLayout() );
-    backIcon = getImage( display, BACK_ICON );
-    backIconDisabled = getImage( display, BACK_ICON_DISABLED );
   }
 
   private GridLayout createShellLayout() {
@@ -170,8 +168,9 @@ public class WebUI implements UIRenderer {
 
   private void createBackButton() {
     backButton = new Button( uiParent, SWT.PUSH );
-    backButton.setData( RWT.CUSTOM_VARIANT, CUSTOM_VARIANT_TABRIS_UI );
-    backButton.setImage( backIconDisabled );
+    backButton.setData( RWT.CUSTOM_VARIANT, BACK_BUTTON_CUSTOM_VARIANT );
+    backButton.setLayoutData( new GridData( BACK_BUTTON_SIZE, BACK_BUTTON_SIZE ) );
+    backButton.setEnabled( false );
     backButtonSelectionListener = new BackButtonSelectionListener();
   }
 
@@ -205,13 +204,13 @@ public class WebUI implements UIRenderer {
   private void updatePageNavigationBar( PageDescriptor pageDescriptor ) {
     if( pageDescriptor.isTopLevel() ) {
       backButton.removeListener( SWT.Selection, backButtonSelectionListener );
-      backButton.setImage( backIconDisabled );
+      backButton.setEnabled( false );
       notifyMenuItemSelected( pageDescriptor );
     } else {
       if( !backButton.isListening( SWT.Selection ) ) {
         backButton.addListener( SWT.Selection, backButtonSelectionListener );
       }
-      backButton.setImage( backIcon );
+      backButton.setEnabled( true );
     }
   }
 

@@ -13,6 +13,7 @@ package com.eclipsesource.tabris.internal.ui.web;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
@@ -86,6 +87,8 @@ public class WebUITest {
 
     assertNotNull( backButton );
     assertFalse( backButton.isListening( SWT.Selection ) );
+    assertFalse( backButton.getEnabled() );
+    assertNull( backButton.getImage() );
   }
 
   @Test
@@ -181,6 +184,7 @@ public class WebUITest {
 
     assertTrue( webUI.getPageSwitcher().getVisible() );
     assertFalse( webUI.getBackButton().isListening( SWT.Selection ) );
+    assertFalse( webUI.getBackButton().getEnabled() );
   }
 
   @Test
@@ -191,6 +195,7 @@ public class WebUITest {
 
     assertTrue( webUI.getPageSwitcher().getVisible() );
     assertTrue( webUI.getBackButton().isListening( SWT.Selection ) );
+    assertTrue( webUI.getBackButton().getEnabled() );
   }
 
   @Test

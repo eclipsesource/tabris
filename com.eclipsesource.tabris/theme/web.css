@@ -75,6 +75,19 @@ Button[PUSH].tabrisUI {
   border: none;
 }
 
-Button-FocusIndicator[PUSH].tabrisUI {
+Button[PUSH].tabrisUI_back {
+  background-color: transparent;
+  background-image: url( images/back_icon.png );
+  background-position: center center;
+  background-repeat: no-repeat;
+  padding: 0px;
+  border: none;
+}
+
+Button[PUSH].tabrisUI_back:disabled {
+  background-image: url( images/back_icon_disabled.png );
+}
+
+Button-FocusIndicator[PUSH].tabrisUI, Button-FocusIndicator[PUSH].tabrisUI_back {
   border: none;
 }
