@@ -22,7 +22,6 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -197,12 +196,6 @@ public class WebSearchAction extends WebAction implements SearchActionRenderer {
       text.removeListener( SWT.Modify, textModifyListener );
     }
     layoutWebUI();
-  }
-
-  private RowData createRowData( int width, int height, boolean visible ) {
-    RowData data = new RowData( width, height );
-    data.exclude = !visible;
-    return data;
   }
 
   private final class TextDefaultSelectionListener implements Listener {

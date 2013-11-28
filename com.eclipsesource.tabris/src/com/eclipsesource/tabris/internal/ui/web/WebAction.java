@@ -16,6 +16,7 @@ import static com.eclipsesource.tabris.internal.ui.ImageUtil.getImage;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
@@ -29,7 +30,7 @@ import com.eclipsesource.tabris.ui.UI;
 public class WebAction implements ActionRenderer {
 
   private final UI ui;
-  private WebUI uiRenderer;
+  private final WebUI uiRenderer;
   private final ActionDescriptor descriptor;
   private Button control;
 
@@ -61,7 +62,9 @@ public class WebAction implements ActionRenderer {
   @Override
   public void setVisible( boolean visible ) {
     whenNull( control ).throwIllegalState( "UI is not created" );
+    control.setLayoutData( createRowData( SWT.DEFAULT, SWT.DEFAULT, visible ) );
     control.setVisible( visible );
+    layoutWebUI();
   }
 
   @Override
@@ -92,6 +95,12 @@ public class WebAction implements ActionRenderer {
 
   protected void actionExecuted() {
     // might be implemented by subclasses
+  }
+
+  protected RowData createRowData( int width, int height, boolean visible ) {
+    RowData data = new RowData( width, height );
+    data.exclude = !visible;
+    return data;
   }
 
   private final class ActionSelectionListener implements Listener {
