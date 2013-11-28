@@ -78,6 +78,10 @@ public interface Page extends Serializable {
   void deactivate();
 
   /**
+   * <p>
+   * Will be called when the page will be destroyed.
+   * </p>
+   *
    * @since 1.2
    */
   void destroy();

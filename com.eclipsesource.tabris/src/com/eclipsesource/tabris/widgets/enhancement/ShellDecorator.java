@@ -33,6 +33,16 @@ public class ShellDecorator extends WidgetDecorator<ShellDecorator> {
     this.shell = shell;
   }
 
+  /**
+   * <p>
+   * Specifies the overlay color of modal shells. When a modal shell is not fullscreen it has a transparent area between
+   * the display and the shell bounds. This area can be colored using the
+   * {@link ShellDecorator#setOverlayColor(Color, int)} method.
+   * </p>
+   *
+   * @param color the color to use for the gap between shell and display bounds. Must not be <code>null</code>.
+   * @param alpha the alpha value of the color.
+   */
   public ShellDecorator setOverlayColor( Color color, int alpha ) {
     whenNull( color ).throwIllegalArgument( "Color must not be null" );
     when( alpha < 0 || alpha > 255 ).throwIllegalArgument( "Alpha must be >= 0 and <= 255 but was " + alpha );

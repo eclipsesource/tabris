@@ -68,6 +68,12 @@ public interface ActionOperator {
   boolean isActionVisible( String id );
 
   /**
+   * <p>
+   * Returns the actual {@link Action} instance for a given id.
+   * </p>
+   *
+   * @param id the id of the {@link Action}. Must not be empty or <code>null</code>.
+   *
    * @since 1.2
    */
   Action getAction( String id );
