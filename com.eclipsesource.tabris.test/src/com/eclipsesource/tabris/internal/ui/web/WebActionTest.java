@@ -17,6 +17,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.InputStream;
@@ -24,6 +25,7 @@ import java.io.InputStream;
 import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -42,6 +44,7 @@ import com.eclipsesource.tabris.ui.UI;
 public class WebActionTest {
 
   private UI ui;
+  private WebUI webUI;
   private ActionDescriptor actionDescriptor;
   private WebAction webAction;
   private Button control;
@@ -53,7 +56,8 @@ public class WebActionTest {
     Shell shell = new Shell( new Display() );
     ui = mock( UI.class );
     actionDescriptor = mockDescriptor();
-    webAction = new WebAction( ui, mock( WebUI.class ), actionDescriptor );
+    webUI = mock( WebUI.class );
+    webAction = new WebAction( ui, webUI, actionDescriptor );
     webAction.createUi( shell );
     control = webAction.getControl();
   }
@@ -90,10 +94,26 @@ public class WebActionTest {
   }
 
   @Test
-  public void testSetsVisible() {
+  public void testSetVisible() {
     webAction.setVisible( true );
 
     assertTrue( control.getVisible() );
+    assertFalse( ( ( RowData )control.getLayoutData() ).exclude );
+  }
+
+  @Test
+  public void testSetVisible_makesInvisible() {
+    webAction.setVisible( false );
+
+    assertFalse( control.getVisible() );
+    assertTrue( ( ( RowData )control.getLayoutData() ).exclude );
+  }
+
+  @Test
+  public void testSetVisible_doesRelayout() {
+    webAction.setVisible( false );
+
+    verify( webUI ).layout();
   }
 
   @Test
