@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.eclipse.rap.rwt.remote.RemoteObject;
 
+import com.eclipsesource.tabris.ui.action.Proposal;
 import com.eclipsesource.tabris.ui.action.ProposalHandler;
 
 
@@ -30,16 +31,23 @@ public class ProposalHandlerImpl implements ProposalHandler {
   }
 
   @Override
-  public void setProposals( List<String> proposals ) {
+  public void setProposals( List<Proposal> proposals ) {
     whenNull( proposals ).throwIllegalArgument( "Search Proposals must not be null" );
     String[] proposalsToSend;
     if( proposals != null ) {
-      proposalsToSend = new String[ proposals.size() ];
-      proposals.toArray( proposalsToSend );
+      proposalsToSend = createArray( proposals );
     } else {
       proposalsToSend = new String[ 0 ];
     }
     remoteObject.set( PROPERTY_PROPOSALS, createJsonArray( proposalsToSend ) );
+  }
+
+  private String[] createArray( List<Proposal> proposals ) {
+    String[] result = new String[ proposals.size() ];
+    for( int i = 0; i < proposals.size(); i++ ) {
+      result[ i ] = proposals.get( i ).getTitle();
+    }
+    return result;
   }
 
 }

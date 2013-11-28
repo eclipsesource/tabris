@@ -14,10 +14,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.junit.Test;
+
+import com.eclipsesource.tabris.ui.action.Proposal;
 
 
 public class ProposalHandlerImplTest {
@@ -34,9 +37,9 @@ public class ProposalHandlerImplTest {
   public void testSetsProposalsAsProperty() {
     RemoteObject remoteObject = mock( RemoteObject.class );
     ProposalHandlerImpl proposalHandler = new ProposalHandlerImpl( remoteObject );
-    ArrayList<String> proposals = new ArrayList<String>();
-    proposals.add( "foo" );
-    proposals.add( "bar" );
+    List<Proposal> proposals = new ArrayList<Proposal>();
+    proposals.add( new Proposal( "foo" ) );
+    proposals.add( new Proposal( "bar" ) );
 
     proposalHandler.setProposals( proposals );
 
@@ -51,7 +54,7 @@ public class ProposalHandlerImplTest {
     RemoteObject remoteObject = mock( RemoteObject.class );
     ProposalHandlerImpl proposalHandler = new ProposalHandlerImpl( remoteObject );
 
-    proposalHandler.setProposals( new ArrayList<String>() );
+    proposalHandler.setProposals( new ArrayList<Proposal>() );
 
     verify( remoteObject ).set( "proposals", new JsonArray() );
   }

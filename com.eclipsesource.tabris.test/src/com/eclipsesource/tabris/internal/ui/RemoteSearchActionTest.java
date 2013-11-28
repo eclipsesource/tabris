@@ -25,6 +25,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
@@ -40,6 +41,7 @@ import org.mockito.ArgumentCaptor;
 
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 import com.eclipsesource.tabris.ui.UI;
+import com.eclipsesource.tabris.ui.action.Proposal;
 import com.eclipsesource.tabris.ui.action.ProposalHandler;
 import com.eclipsesource.tabris.ui.action.SearchAction;
 
@@ -132,9 +134,9 @@ public class RemoteSearchActionTest {
     when( actionDescriptor.getAction() ).thenReturn( action );
     RemoteSearchAction remoteAction = new RemoteSearchAction( ui, uiRenderer, actionDescriptor );
     when( remoteObject.getHandler() ).thenReturn( remoteAction );
-    ArrayList<String> proposals = new ArrayList<String>();
-    proposals.add( "foo" );
-    proposals.add( "bar" );
+    List<Proposal> proposals = new ArrayList<Proposal>();
+    proposals.add( new Proposal( "foo" ) );
+    proposals.add( new Proposal( "bar" ) );
     JsonObject properties = new JsonObject();
     properties.add( "query", "bar" );
     TabrisTestUtil.dispatchNotify( remoteObject, "Modify", properties );
@@ -158,7 +160,7 @@ public class RemoteSearchActionTest {
     ArgumentCaptor<ProposalHandler> captor = ArgumentCaptor.forClass( ProposalHandler.class );
     verify( action ).modified( eq( "bar" ), captor.capture() );
 
-    captor.getValue().setProposals( new ArrayList<String>() );
+    captor.getValue().setProposals( new ArrayList<Proposal>() );
 
     verify( remoteObject ).set( "proposals", new JsonArray() );
   }

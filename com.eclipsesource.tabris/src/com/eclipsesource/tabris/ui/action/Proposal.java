@@ -10,29 +10,36 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.ui.action;
 
-import java.io.Serializable;
-import java.util.List;
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
 
 /**
  * <p>
- * A {@link ProposalHandler} acts as a bridge between server and client during a search task. The
- * {@link ProposalHandler} will be used to propose search terms to a client during the modification of a search query.
+ * A {@link Proposal} can be displayed on a client's proposal list during a search.
  * </p>
  *
- * @see SearchAction#modified(String, ProposalHandler)
+ * @see ProposalHandler
+ * @see SearchAction
  *
  * @since 1.2
  */
-public interface ProposalHandler extends Serializable {
+public class Proposal {
+
+  private final String title;
 
   /**
    * <p>
-   * Sets the search term proposals to display on the client.
+   * Creates a new {@link Proposal} object with a given title.
    * </p>
    *
-   * @param proposals the proposals to set. Must not be <code>null</code>.
+   * @param title the title to use. Must not be <code>null</code>.
    */
-  void setProposals( List<Proposal> proposals );
+  public Proposal( String title ) {
+    whenNull( title ).throwIllegalArgument( "title must not be null" );
+    this.title = title;
+  }
 
+  public String getTitle() {
+    return title;
+  }
 }

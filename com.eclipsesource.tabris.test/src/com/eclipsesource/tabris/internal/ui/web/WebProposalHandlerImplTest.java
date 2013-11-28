@@ -22,6 +22,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
+import com.eclipsesource.tabris.ui.action.Proposal;
+
 
 public class WebProposalHandlerImplTest {
 
@@ -42,7 +44,7 @@ public class WebProposalHandlerImplTest {
   @Test
   @SuppressWarnings("unchecked")
   public void testSetProposals_empty() {
-    List<String> proposals = new ArrayList<String>();
+    List<Proposal> proposals = new ArrayList<Proposal>();
 
     proposalHandler.setProposals( proposals );
 
@@ -54,9 +56,9 @@ public class WebProposalHandlerImplTest {
   @Test
   @SuppressWarnings("unchecked")
   public void testSetProposals() {
-    List<String> proposals = new ArrayList<String>();
-    proposals.add( "foo" );
-    proposals.add( "bar" );
+    List<Proposal> proposals = new ArrayList<Proposal>();
+    proposals.add( new Proposal( "foo" ) );
+    proposals.add( new Proposal( "bar" ) );
 
     proposalHandler.setProposals( proposals );
 
