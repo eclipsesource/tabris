@@ -7,10 +7,15 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.enhancement;
 
+import static com.eclipsesource.tabris.internal.Clauses.when;
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.ALT_SELECTION;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.BACK_FOCUS;
 import static com.eclipsesource.tabris.internal.WidgetsUtil.setData;
 
+import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.template.Cell;
+import org.eclipse.rap.rwt.template.Template;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.internal.widgets.IDisplayAdapter;
@@ -100,9 +105,10 @@ public class TreeDecorator extends WidgetDecorator<TreeDecorator> {
    *
    * @since 0.10
    */
-  public void enableBackButtonNavigation() {
+  public TreeDecorator enableBackButtonNavigation() {
     setData( tree, BACK_FOCUS, Boolean.TRUE );
     setDataToNullOnOtherTrees();
+    return this;
   }
 
   private void setDataToNullOnOtherTrees() {
@@ -111,6 +117,41 @@ public class TreeDecorator extends WidgetDecorator<TreeDecorator> {
     for( int i = 0; i < shells.length; i++ ) {
       WidgetTreeVisitor.accept( shells[ i ], new BackButtonDataTreeVisistor() );
     }
+  }
+
+  /**
+   * <p>
+   * Controls the number of preloaded items outside (above and below) visible area of a virtual
+   * <code>Tree</code>.
+   * </p>
+   *
+   * @param preloadedItems the items to preload. Must be > 0.
+   *
+   * @since 1.2
+   */
+  public TreeDecorator setPreloadedItems( int preloadedItems ) {
+    when( preloadedItems < 0 ).throwIllegalArgument( "Preloaded items must be > 0 but was " + preloadedItems );
+    tree.setData( RWT.PRELOADED_ITEMS, Integer.valueOf( preloadedItems ) );
+    return this;
+  }
+
+  /**
+   * <p>
+   * Sets a {@link Template} on this tree.
+   * </P>
+   *
+   * @param template the template to use. Must not be null.
+   *
+   * @see Template
+   * @see Cell
+   * @see RWT#ROW_TEMPLATE
+   *
+   * @since 1.2
+   */
+  public TreeDecorator setTemplate( Template template ) {
+    whenNull( template ).throwIllegalArgument( "Template must not be null" );
+    tree.setData( RWT.ROW_TEMPLATE, template );
+    return this;
   }
 
 }

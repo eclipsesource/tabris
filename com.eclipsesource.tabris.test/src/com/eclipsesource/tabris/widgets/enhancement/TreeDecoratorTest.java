@@ -14,9 +14,12 @@ import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.ALT
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.BACK_FOCUS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 
+import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.template.Template;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
@@ -31,7 +34,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.eclipsesource.tabris.widgets.enhancement.TreeDecorator.TreePart;
 
+
 @RunWith( MockitoJUnitRunner.class )
+@SuppressWarnings("restriction")
 public class TreeDecoratorTest {
 
   @Mock
@@ -91,6 +96,17 @@ public class TreeDecoratorTest {
   }
 
   @Test
+  public void testEnableBackButtonNavigationReturnsDecorator() {
+    Shell shell = new Shell( display );
+    Tree focusTree = new Tree( shell, SWT.NONE );
+    TreeDecorator treeDecorator = Widgets.onTree( focusTree );
+
+    TreeDecorator actualDecorator = treeDecorator.enableBackButtonNavigation();
+
+    assertSame( treeDecorator, actualDecorator );
+  }
+
+  @Test
   public void testSetBackButtonFocusShouldSetNullVariantOnOtherTreesWithBackFocusVariant() {
     Shell shell = new Shell( display );
     Tree tree1 = new Tree( shell, SWT.NONE );
@@ -104,6 +120,46 @@ public class TreeDecoratorTest {
     assertEquals( Boolean.TRUE, tree1.getData( BACK_FOCUS.getKey() ) );
     assertNull( tree2.getData( BACK_FOCUS.getKey() ) );
     assertEquals( "anyVariant", tree3.getData( BACK_FOCUS.getKey() ) );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testSetPreloadedItemsFailsWithNegativeItems() {
+    decorator.setPreloadedItems( -1 );
+  }
+
+  @Test
+  public void testSetPreloadedItemsReturnsDecorator() {
+    TreeDecorator actualDecorator = decorator.setPreloadedItems( 1 );
+
+    assertSame( decorator, actualDecorator );
+  }
+
+  @Test
+  public void testSetPreloadedItemsAsCustomData() {
+    decorator.setPreloadedItems( 1 );
+
+    verify( tree ).setData( RWT.PRELOADED_ITEMS, Integer.valueOf( 1 ) );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testFailsWithNullTemplate() {
+    decorator.setTemplate( null );
+  }
+
+  @Test
+  public void testSetTemplateReturnsDecorator() {
+    TreeDecorator actualDecorator = decorator.setTemplate( new Template() );
+
+    assertSame( decorator, actualDecorator );
+  }
+
+  @Test
+  public void testSetsTemplateAsCustomData() {
+    Template template = new Template();
+
+    decorator.setTemplate( template );
+
+    verify( tree ).setData( RWT.ROW_TEMPLATE, template );
   }
 
 }

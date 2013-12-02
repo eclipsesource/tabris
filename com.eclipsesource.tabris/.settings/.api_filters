@@ -163,4 +163,26 @@
             </message_arguments>
         </filter>
     </resource>
+    <resource path="src/com/eclipsesource/tabris/widgets/enhancement/TreeDecorator.java" type="com.eclipsesource.tabris.widgets.enhancement.TreeDecorator">
+        <filter id="338792546">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.widgets.enhancement.TreeDecorator"/>
+                <message_argument value="enableBackButtonNavigation()"/>
+            </message_arguments>
+        </filter>
+        <filter id="643846161">
+            <message_arguments>
+                <message_argument value="Template"/>
+                <message_argument value="TreeDecorator"/>
+                <message_argument value="setTemplate(Template)"/>
+            </message_arguments>
+        </filter>
+        <filter id="1141899266">
+            <message_arguments>
+                <message_argument value="0.10"/>
+                <message_argument value="1.2"/>
+                <message_argument value="enableBackButtonNavigation()"/>
+            </message_arguments>
+        </filter>
+    </resource>
 </component>
