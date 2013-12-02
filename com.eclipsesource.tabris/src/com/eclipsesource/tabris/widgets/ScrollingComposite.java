@@ -172,22 +172,35 @@ public class ScrollingComposite extends Composite {
    * to be completely visible for a <code>true</code> result.
    * </p>
    *
-   * @param control the control to check the visibility. Must not be
-   *          <code>null</code>.
-   * @exception IllegalArgumentException when the defined control is
-   *              <code>null</code> or not a children of this Composite.
+   * @param control the control to check the visibility. Must not be <code>null</code>.
+   *
+   * @throws IllegalArgumentException when the defined control is <code>null</code> or not a
+   *            children of this Composite.
    */
   public boolean isRevealed( Control control ) {
     checkRevealState( control );
     Point origin = scrolledComposite.getOrigin();
     Rectangle clientArea = scrolledComposite.getClientArea();
     Rectangle controlBounds = control.getBounds();
-    boolean verticalVisible = ( clientArea.height + origin.y - controlBounds.y - controlBounds.height ) >= 0
-                              && clientArea.height + origin.y <= controlBounds.y
-                                                                 + clientArea.height;
-    boolean horizontalVisible = ( clientArea.width + origin.x - control.getLocation().x - controlBounds.width ) >= 0
-                                && ( clientArea.width + origin.x ) <= ( control.getLocation().x + clientArea.width );
+    boolean verticalVisible = isVerticallyVisible( origin, clientArea, controlBounds );
+    boolean horizontalVisible = isHorizontallyVisible( origin, clientArea, controlBounds );
     return horizontalVisible && verticalVisible;
+  }
+
+  private boolean isVerticallyVisible( Point origin, Rectangle clientArea, Rectangle controlBounds ) {
+    boolean isTopIn = origin.y <= controlBounds.y;
+    boolean isBottomIn = origin.y + clientArea.height > controlBounds.y + controlBounds.height;
+    boolean isFullyTopIn = origin.y <= controlBounds.y - controlBounds.height;
+    boolean isFullyBottomIn = origin.y + clientArea.height >= controlBounds.y + controlBounds.height;
+    return ( isTopIn && isBottomIn ) || ( isFullyTopIn && isFullyBottomIn );
+  }
+
+  private boolean isHorizontallyVisible( Point origin, Rectangle clientArea, Rectangle controlBounds ) {
+    boolean isLeftIn = origin.x <= controlBounds.x;
+    boolean isRightIn = origin.x + clientArea.width > controlBounds.x + controlBounds.width;
+    boolean isFullyLeftIn = origin.x <= controlBounds.x - controlBounds.width;
+    boolean isFullyRightIn = origin.x + clientArea.width >= controlBounds.x + controlBounds.width;
+    return ( isLeftIn && isRightIn ) || ( isFullyLeftIn && isFullyRightIn );
   }
 
   private void checkRevealState( Control control ) {
