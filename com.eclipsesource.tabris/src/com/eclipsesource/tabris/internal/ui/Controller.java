@@ -270,10 +270,11 @@ public class Controller implements UIUpdater, Serializable {
   }
 
   private PageRenderer cleanUpCurrentPage( UIImpl ui ) {
-    PageRenderer removedPage = currentFlow.pop();
+    PageRenderer removedPage = currentFlow.getCurrentRenderer();
     removedPage.destroy();
     removedPage.destroyActions();
     removedPage.getPage().deactivate();
+    currentFlow.pop();
     return removedPage;
   }
 
