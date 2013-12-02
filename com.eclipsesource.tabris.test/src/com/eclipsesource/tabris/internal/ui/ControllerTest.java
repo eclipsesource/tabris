@@ -650,6 +650,24 @@ public class ControllerTest {
   }
 
   @Test
+  public void testShowPreviousCallsDeactivateWithOldCurrentPage() {
+    createRootPage( "foo" );
+    PageDescriptor page = createPage( "bar" );
+    RemoteUI remoteUI = mock( RemoteUI.class );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
+    when( ui.getPageOperator() ).thenReturn( new PageOperatorImpl( controller, ui ) );
+    controller.createRootPages( ui );
+    PageRenderer renderer = controller.showPage( ui, page, mock( PageData.class ) );
+    TestPage testPage = ( TestPage )renderer.getPage();
+
+    controller.closeCurrentPage( ui );
+
+    Page pageAtDeactivate = testPage.getPageAtDeactivate();
+    assertSame( testPage, pageAtDeactivate );
+  }
+
+  @Test
   public void testShowPreviousisNotifiesListeners() {
     PageDescriptor rootPage = createRootPage( "foo" );
     PageDescriptor page = createPage( "bar" );
