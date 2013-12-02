@@ -103,6 +103,7 @@ public class Constants {
   public static final String METHOD_UNLOCK_RIGHT = "unlockRight";
   public static final String PROPERTY_ITEM = "item";
   public static final String PROPERTY_ITEMS = "items";
+  public static final String PROPERTY_ITEM_COUNT = "itemCount";
   public static final String PROPERTY_ACTIVE = "active";
   public static final String PROPERTY_INDEX = "index";
 

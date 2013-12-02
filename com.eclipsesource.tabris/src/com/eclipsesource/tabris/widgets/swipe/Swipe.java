@@ -23,6 +23,7 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ACTIVE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_CONTROL;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_INDEX;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ITEMS;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ITEM_COUNT;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PARENT;
 import static com.eclipsesource.tabris.internal.Constants.TYPE_SWIPE;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.SWIPE;
@@ -78,6 +79,7 @@ public class Swipe implements Serializable {
   private final List<SwipeListener> listeners;
   private final RemoteObject remoteObject;
   private final SwipeManager manager;
+  private int oldCount;
 
   public Swipe( Composite parent, SwipeItemProvider itemProvider ) {
     whenNull( parent ).throwIllegalArgument( "Parent must not be null" );
@@ -92,6 +94,7 @@ public class Swipe implements Serializable {
 
   private void initialize() {
     remoteObject.set( PROPERTY_PARENT, WidgetUtil.getId( container ) );
+    updateItemCount();
     remoteObject.setHandler( new SwipeOperationHandler( this ) );
     container.setLayout( new ZIndexStackLayout() );
     if( manager.getProvider().getItemCount() > 0 ) {
@@ -184,6 +187,7 @@ public class Swipe implements Serializable {
       showCurrentItem();
     }
     initializeNextItem();
+    updateItemCount();
   }
 
   private boolean hasCurrentIndexChanged( int index ) {
@@ -385,6 +389,7 @@ public class Swipe implements Serializable {
     manager.lock( direction, indexToLock, true );
     String method = direction == SWT.LEFT ? METHOD_LOCK_LEFT : METHOD_LOCK_RIGHT;
     remoteObject.call( method, createLockProperties( direction, indexToLock ) );
+    updateItemCount();
   }
 
   /**
@@ -400,6 +405,7 @@ public class Swipe implements Serializable {
     manager.unlock( direction );
     String method = direction == SWT.LEFT ? METHOD_UNLOCK_LEFT : METHOD_UNLOCK_RIGHT;
     remoteObject.call( method, null );
+    updateItemCount();
   }
 
   private JsonObject createLockProperties( int direction, int index ) {
@@ -410,6 +416,14 @@ public class Swipe implements Serializable {
 
   private void verifyIsNotDisposed() {
     when( container.isDisposed() ).throwIllegalState( "Swipe is already disposed" );
+  }
+
+  private void updateItemCount() {
+    int newCount = manager.getProvider().getItemCount();
+    if( newCount != oldCount ) {
+      oldCount = newCount;
+      remoteObject.set( PROPERTY_ITEM_COUNT, newCount );
+    }
   }
 
   /**

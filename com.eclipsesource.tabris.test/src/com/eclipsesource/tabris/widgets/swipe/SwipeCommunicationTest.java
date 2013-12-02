@@ -16,6 +16,7 @@ import static com.eclipsesource.tabris.widgets.swipe.SwipeTest.mockSwipeItem;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -67,6 +68,97 @@ public class SwipeCommunicationTest {
     Swipe swipe = new Swipe( shell, itemProvider );
 
     verify( remoteObject ).set( "parent", WidgetUtil.getId( swipe.getControl() ) );
+  }
+
+  @Test
+  public void testSetsItemCount() {
+    SwipeItemProvider itemProvider = mockProvider( 2 );
+    mockSwipeItem( itemProvider, 0, false );
+    mockSwipeItem( itemProvider, 1, false );
+
+    new Swipe( shell, itemProvider );
+
+    verify( remoteObject ).set( "itemCount", 2 );
+  }
+
+  @Test
+  public void testRefreshSetsChangedItemCount() {
+    SwipeItemProvider itemProvider = mockProvider( 2 );
+    mockSwipeItem( itemProvider, 0, false );
+    mockSwipeItem( itemProvider, 1, false );
+    mockSwipeItem( itemProvider, 2, false );
+    Swipe swipe = new Swipe( shell, itemProvider );
+    doReturn( Integer.valueOf( 3 ) ).when( itemProvider ).getItemCount();
+
+    swipe.refresh();
+
+    InOrder order = inOrder( remoteObject );
+    order.verify( remoteObject ).set( "itemCount", 2 );
+    order.verify( remoteObject ).set( "itemCount", 3 );
+  }
+
+  @Test
+  public void testShowSetsChangedItemCount() {
+    SwipeItemProvider itemProvider = mockProvider( 2 );
+    mockSwipeItem( itemProvider, 0, false );
+    mockSwipeItem( itemProvider, 1, false );
+    mockSwipeItem( itemProvider, 2, false );
+    Swipe swipe = new Swipe( shell, itemProvider );
+    doReturn( Integer.valueOf( 3 ) ).when( itemProvider ).getItemCount();
+
+    swipe.show( 1 );
+
+    InOrder order = inOrder( remoteObject );
+    order.verify( remoteObject ).set( "itemCount", 2 );
+    order.verify( remoteObject ).set( "itemCount", 3 );
+  }
+
+  @Test
+  public void testLockSetsChangedItemCount() {
+    SwipeItemProvider itemProvider = mockProvider( 2 );
+    mockSwipeItem( itemProvider, 0, false );
+    mockSwipeItem( itemProvider, 1, false );
+    mockSwipeItem( itemProvider, 2, false );
+    Swipe swipe = new Swipe( shell, itemProvider );
+    doReturn( Integer.valueOf( 3 ) ).when( itemProvider ).getItemCount();
+
+    swipe.lock( SWT.RIGHT );
+
+    InOrder order = inOrder( remoteObject );
+    order.verify( remoteObject ).set( "itemCount", 2 );
+    order.verify( remoteObject ).set( "itemCount", 3 );
+  }
+
+  @Test
+  public void testUnlockSetsChangedItemCount() {
+    SwipeItemProvider itemProvider = mockProvider( 2 );
+    mockSwipeItem( itemProvider, 0, false );
+    mockSwipeItem( itemProvider, 1, false );
+    mockSwipeItem( itemProvider, 2, false );
+    Swipe swipe = new Swipe( shell, itemProvider );
+    doReturn( Integer.valueOf( 3 ) ).when( itemProvider ).getItemCount();
+
+    swipe.unlock( SWT.RIGHT );
+
+    InOrder order = inOrder( remoteObject );
+    order.verify( remoteObject ).set( "itemCount", 2 );
+    order.verify( remoteObject ).set( "itemCount", 3 );
+  }
+
+  @Test
+  public void testSetCacheSizeSetsChangedItemCount() {
+    SwipeItemProvider itemProvider = mockProvider( 2 );
+    mockSwipeItem( itemProvider, 0, false );
+    mockSwipeItem( itemProvider, 1, false );
+    mockSwipeItem( itemProvider, 2, false );
+    Swipe swipe = new Swipe( shell, itemProvider );
+    doReturn( Integer.valueOf( 3 ) ).when( itemProvider ).getItemCount();
+
+    swipe.setCacheSize( 2 );
+
+    InOrder order = inOrder( remoteObject );
+    order.verify( remoteObject ).set( "itemCount", 2 );
+    order.verify( remoteObject ).set( "itemCount", 3 );
   }
 
   @Test
