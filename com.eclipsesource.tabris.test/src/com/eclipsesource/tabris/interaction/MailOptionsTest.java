@@ -31,6 +31,13 @@ public class MailOptionsTest {
   }
 
   @Test
+  public void testWithoutTo() {
+    MailOptions mailOptions = new MailOptions();
+
+    assertSame( App.MAIL, mailOptions.getApp() );
+  }
+
+  @Test
   public void testWithTo() {
     MailOptions mailOptions = new MailOptions( "foo@bar.com" );
 

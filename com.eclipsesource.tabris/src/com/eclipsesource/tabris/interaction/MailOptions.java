@@ -24,6 +24,13 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TO;
  */
 public class MailOptions extends LaunchOptions {
 
+  /**
+   * @since 1.2
+   */
+  public MailOptions() {
+    super( App.MAIL );
+  }
+
   public MailOptions( String to ) {
     super( App.MAIL );
     whenNull( to ).throwIllegalArgument( "To must not be null" );
