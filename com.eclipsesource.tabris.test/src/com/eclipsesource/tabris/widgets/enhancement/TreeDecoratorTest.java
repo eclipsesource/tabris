@@ -162,4 +162,23 @@ public class TreeDecoratorTest {
     verify( tree ).setData( RWT.ROW_TEMPLATE, template );
   }
 
+  @Test( expected = IllegalArgumentException.class )
+  public void testFailsWithNegativeItemHeight() {
+    decorator.setItemHeight( -1 );
+  }
+
+  @Test
+  public void testSetItemHeightReturnsDecorator() {
+    TreeDecorator actualDecorator = decorator.setItemHeight( 1 );
+
+    assertSame( decorator, actualDecorator );
+  }
+
+  @Test
+  public void testSetItemHeightInWidget() {
+    decorator.setItemHeight( 23 );
+
+    verify( tree ).setData( RWT.CUSTOM_ITEM_HEIGHT, Integer.valueOf( 23 ) );
+  }
+
 }

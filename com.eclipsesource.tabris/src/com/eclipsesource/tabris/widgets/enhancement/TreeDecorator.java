@@ -23,6 +23,7 @@ import org.eclipse.swt.internal.widgets.WidgetTreeVisitor;
 import org.eclipse.swt.internal.widgets.WidgetTreeVisitor.AllWidgetTreeVisitor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.swt.widgets.Widget;
 
 /**
@@ -151,6 +152,21 @@ public class TreeDecorator extends WidgetDecorator<TreeDecorator> {
   public TreeDecorator setTemplate( Template template ) {
     whenNull( template ).throwIllegalArgument( "Template must not be null" );
     tree.setData( RWT.ROW_TEMPLATE, template );
+    return this;
+  }
+
+  /**
+   * <p>
+   * Set the item height of a {@link TreeItem} in pixels.
+   * </p>
+   *
+   * @param itemHeight the item height in pixels. Must be >= 0.
+   *
+   * @since 1.2
+   */
+  public TreeDecorator setItemHeight( int itemHeight ) {
+    when( itemHeight < 0 ).throwIllegalArgument( "ItemHeight must be >= 0 but was " + itemHeight );
+    tree.setData( RWT.CUSTOM_ITEM_HEIGHT, Integer.valueOf( itemHeight ) );
     return this;
   }
 
