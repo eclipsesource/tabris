@@ -49,10 +49,23 @@ public class WidgetDecorator<T extends WidgetDecorator> implements Serializable 
    * </p>
    *
    * @since 0.10
+   * @deprecated use {@link WidgetDecorator#showLocalTouch(boolean)} instead.
+   */
+  @Deprecated
+  public T showLocalTouch() {
+    return showLocalTouch( true );
+  }
+
+  /**
+   * <p>
+   * Instructs a {@link Widget} to show or hide immediate visual feedback on a user interaction.
+   * </p>
+   *
+   * @since 1.2
    */
   @SuppressWarnings("unchecked")
-  public T showLocalTouch() {
-    setData( widget, SHOW_TOUCH, Boolean.TRUE );
+  public T showLocalTouch( boolean show ) {
+    setData( widget, SHOW_TOUCH, Boolean.valueOf( show ) );
     return ( T )this;
   }
 

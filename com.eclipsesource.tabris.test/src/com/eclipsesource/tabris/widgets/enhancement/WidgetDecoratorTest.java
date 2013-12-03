@@ -51,9 +51,16 @@ public class WidgetDecoratorTest {
 
   @Test
   public void testShowLocalTouch() {
-    decorator.showLocalTouch();
+    decorator.showLocalTouch( true );
 
     verify( widget ).setData( SHOW_TOUCH.getKey(), Boolean.TRUE );
+  }
+
+  @Test
+  public void testHideLocalTouch() {
+    decorator.showLocalTouch( false );
+
+    verify( widget ).setData( SHOW_TOUCH.getKey(), Boolean.FALSE );
   }
 
 }
