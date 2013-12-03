@@ -20,6 +20,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
+import com.eclipsesource.tabris.internal.ScrollingCompositeUtil;
+
 /**
  * <p>
  * A {@link ScrollingComposite} can be used the same way as a simple
@@ -182,25 +184,7 @@ public class ScrollingComposite extends Composite {
     Point origin = scrolledComposite.getOrigin();
     Rectangle clientArea = scrolledComposite.getClientArea();
     Rectangle controlBounds = control.getBounds();
-    boolean verticalVisible = isVerticallyVisible( origin, clientArea, controlBounds );
-    boolean horizontalVisible = isHorizontallyVisible( origin, clientArea, controlBounds );
-    return horizontalVisible && verticalVisible;
-  }
-
-  private boolean isVerticallyVisible( Point origin, Rectangle clientArea, Rectangle controlBounds ) {
-    boolean isTopIn = origin.y <= controlBounds.y;
-    boolean isBottomIn = origin.y + clientArea.height >= controlBounds.y + controlBounds.height;
-    boolean isFullyTopIn = origin.y <= controlBounds.y - controlBounds.height;
-    boolean isFullyBottomIn = origin.y + clientArea.height >= controlBounds.y + controlBounds.height;
-    return ( isTopIn && isBottomIn ) || ( isFullyTopIn && isFullyBottomIn );
-  }
-
-  private boolean isHorizontallyVisible( Point origin, Rectangle clientArea, Rectangle controlBounds ) {
-    boolean isLeftIn = origin.x <= controlBounds.x;
-    boolean isRightIn = origin.x + clientArea.width >= controlBounds.x + controlBounds.width;
-    boolean isFullyLeftIn = origin.x <= controlBounds.x - controlBounds.width;
-    boolean isFullyRightIn = origin.x + clientArea.width >= controlBounds.x + controlBounds.width;
-    return ( isLeftIn && isRightIn ) || ( isFullyLeftIn && isFullyRightIn );
+    return ScrollingCompositeUtil.isRevealed( origin, clientArea, controlBounds );
   }
 
   private void checkRevealState( Control control ) {
