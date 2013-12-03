@@ -21,7 +21,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,9 +35,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.internal.ui.ActionDescriptor;
-import com.eclipsesource.tabris.internal.ui.ImageUtil;
 import com.eclipsesource.tabris.internal.ui.PageDescriptor;
-import com.eclipsesource.tabris.internal.ui.RemotePageTest;
 import com.eclipsesource.tabris.internal.ui.RemoteRendererFactory;
 import com.eclipsesource.tabris.internal.ui.TestAction;
 import com.eclipsesource.tabris.internal.ui.TestPage;
@@ -154,23 +151,10 @@ public class WebPageTest {
   @Test
   public void testUpdateCreatesNewActionsCallsActionCreateUi() {
     List<ActionDescriptor> actions = new ArrayList<ActionDescriptor>();
-    byte[] image = ImageUtil.getBytes( RemotePageTest.class.getResourceAsStream( "testImage.png" ) );
-    actions.add( new ActionDescriptor( "actionFoo",
-                                       new TestAction(),
-                                       "actionBar",
-                                       image,
-                                       true,
-                                       true,
-                                       null ) );
+    actions.add( new ActionDescriptor( "actionFoo", new TestAction() ) );
     when( descriptor.getActions() ).thenReturn( actions );
     webPage.createActions( WebRendererFactory.getInstance(), shell );
-    actions.add( new ActionDescriptor( "actionFoo2",
-                                       new TestAction(),
-                                       "actionBar",
-                                       image,
-                                       true,
-                                       true,
-                                       null ) );
+    actions.add( new ActionDescriptor( "actionFoo2", new TestAction() ) );
 
     webPage.update( descriptor, WebRendererFactory.getInstance(), shell );
 
@@ -182,21 +166,8 @@ public class WebPageTest {
   @Test
   public void testUpdateDestroysOldActionsIfDeleted() {
     List<ActionDescriptor> actions = new ArrayList<ActionDescriptor>();
-    byte[] image = ImageUtil.getBytes( RemotePageTest.class.getResourceAsStream( "testImage.png" ) );
-    actions.add( new ActionDescriptor( "actionFoo",
-                                       new TestAction(),
-                                       "actionBar",
-                                       image,
-                                       true,
-                                       true,
-                                       null ) );
-    actions.add( new ActionDescriptor( "actionFoo2",
-                                       new TestAction(),
-                                       "actionBar",
-                                       image,
-                                       true,
-                                       true,
-                                       null ) );
+    actions.add( new ActionDescriptor( "actionFoo", new TestAction() ) );
+    actions.add( new ActionDescriptor( "actionFoo2", new TestAction() ) );
     when( descriptor.getActions() ).thenReturn( actions );
     webPage.createActions( WebRendererFactory.getInstance(), shell );
     webPage.createActions( RemoteRendererFactory.getInstance(), shell );
@@ -216,14 +187,7 @@ public class WebPageTest {
     doReturn( Boolean.TRUE ).when( descriptor ).isTopLevel();
     when( descriptor.getPageStyle() ).thenReturn( new PageStyle[] { PageStyle.DEFAULT } );
     List<ActionDescriptor> actions = new ArrayList<ActionDescriptor>();
-    InputStream image = RemotePageTest.class.getResourceAsStream( "testImage.png" );
-    actions.add( new ActionDescriptor( "actionFoo",
-                                       new TestAction(),
-                                       "actionBar",
-                                       ImageUtil.getBytes( image ),
-                                       true,
-                                       true,
-                                       null ) );
+    actions.add( new ActionDescriptor( "actionFoo", new TestAction() ) );
     when( descriptor.getActions() ).thenReturn( actions );
     when( descriptor.getImage() ).thenReturn( UITestUtil.getImageBytes() );
     doReturn( TestPage.class ).when( descriptor ).getPageType();

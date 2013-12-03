@@ -189,7 +189,7 @@ public class ScrollingComposite extends Composite {
 
   private boolean isVerticallyVisible( Point origin, Rectangle clientArea, Rectangle controlBounds ) {
     boolean isTopIn = origin.y <= controlBounds.y;
-    boolean isBottomIn = origin.y + clientArea.height > controlBounds.y + controlBounds.height;
+    boolean isBottomIn = origin.y + clientArea.height >= controlBounds.y + controlBounds.height;
     boolean isFullyTopIn = origin.y <= controlBounds.y - controlBounds.height;
     boolean isFullyBottomIn = origin.y + clientArea.height >= controlBounds.y + controlBounds.height;
     return ( isTopIn && isBottomIn ) || ( isFullyTopIn && isFullyBottomIn );
@@ -197,7 +197,7 @@ public class ScrollingComposite extends Composite {
 
   private boolean isHorizontallyVisible( Point origin, Rectangle clientArea, Rectangle controlBounds ) {
     boolean isLeftIn = origin.x <= controlBounds.x;
-    boolean isRightIn = origin.x + clientArea.width > controlBounds.x + controlBounds.width;
+    boolean isRightIn = origin.x + clientArea.width >= controlBounds.x + controlBounds.width;
     boolean isFullyLeftIn = origin.x <= controlBounds.x - controlBounds.width;
     boolean isFullyRightIn = origin.x + clientArea.width >= controlBounds.x + controlBounds.width;
     return ( isLeftIn && isRightIn ) || ( isFullyLeftIn && isFullyRightIn );

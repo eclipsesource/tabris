@@ -150,7 +150,12 @@ public class ActionConfiguration implements Adaptable, Serializable {
 
   private ActionDescriptor createDescriptor() {
     Action action = InstanceCreator.createInstance( actionType );
-    return new ActionDescriptor( actionId, action, title, image, visible, enabled, placementPriority );
+    return new ActionDescriptor( actionId, action )
+               .setTitle( title )
+               .setImage( image )
+               .setVisible( visible )
+               .setEnabled( enabled )
+               .setPlacementPrority( placementPriority );
   }
 
 }

@@ -17,7 +17,6 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.List;
 
@@ -82,20 +81,13 @@ public class UIDescriptorTest {
   }
 
   private PageDescriptor createDescriptor( String id ) {
-    return new PageDescriptor( id, TestPage.class, "", null, true );
+    return new PageDescriptor( id, TestPage.class );
   }
 
   @Test
   public void testAddsAction() {
     UIDescriptor uiDescriptor = new UIDescriptor();
-    InputStream image = UIDescriptorTest.class.getResourceAsStream( "testImage.png" );
-    ActionDescriptor descriptor = new ActionDescriptor( "foo",
-                                                        new TestAction(),
-                                                        "bar",
-                                                        ImageUtil.getBytes( image ),
-                                                        true,
-                                                        true,
-                                                        null );
+    ActionDescriptor descriptor = new ActionDescriptor( "foo", new TestAction() );
 
     uiDescriptor.add( descriptor );
 
@@ -105,14 +97,7 @@ public class UIDescriptorTest {
   @Test
   public void testRemovesAction() {
     UIDescriptor uiDescriptor = new UIDescriptor();
-    InputStream image = UIDescriptorTest.class.getResourceAsStream( "testImage.png" );
-    ActionDescriptor descriptor = new ActionDescriptor( "foo",
-                                                        new TestAction(),
-                                                        "bar",
-                                                        ImageUtil.getBytes( image ),
-                                                        true,
-                                                        true,
-                                                        null );
+    ActionDescriptor descriptor = new ActionDescriptor( "foo", new TestAction());
     uiDescriptor.add( descriptor );
 
     uiDescriptor.removeAction( "foo" );
@@ -146,14 +131,7 @@ public class UIDescriptorTest {
   @Test
   public void testGetGlobalActions() {
     UIDescriptor uiDescriptor = new UIDescriptor();
-    InputStream image = UIDescriptorTest.class.getResourceAsStream( "testImage.png" );
-    ActionDescriptor descriptor = new ActionDescriptor( "foo",
-                                                        new TestAction(),
-                                                        "bar",
-                                                        ImageUtil.getBytes( image ),
-                                                        true,
-                                                        true,
-                                                        null );
+    ActionDescriptor descriptor = new ActionDescriptor( "foo", new TestAction() );
 
     uiDescriptor.add( descriptor );
 
@@ -165,14 +143,7 @@ public class UIDescriptorTest {
   @Test( expected = IllegalStateException.class )
   public void testAddsActionTwiceFails() {
     UIDescriptor uiDescriptor = new UIDescriptor();
-    InputStream image = UIDescriptorTest.class.getResourceAsStream( "testImage.png" );
-    ActionDescriptor descriptor = new ActionDescriptor( "foo",
-                                                        new TestAction(),
-                                                        "bar",
-                                                        ImageUtil.getBytes( image ),
-                                                        true,
-                                                        true,
-                                                        null );
+    ActionDescriptor descriptor = new ActionDescriptor( "foo", new TestAction() );
 
     uiDescriptor.add( descriptor );
     uiDescriptor.add( descriptor );
@@ -212,6 +183,6 @@ public class UIDescriptorTest {
   }
 
   private PageDescriptor createDescriptor( String id, boolean isRoot ) {
-    return new PageDescriptor( id, TestPage.class, "", null, isRoot );
+    return new PageDescriptor( id, TestPage.class ).setTopLevel( isRoot );
   }
 }

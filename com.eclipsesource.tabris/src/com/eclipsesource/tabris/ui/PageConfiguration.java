@@ -184,7 +184,11 @@ public class PageConfiguration implements Adaptable, Serializable {
   }
 
   private PageDescriptor createDescriptor() {
-    PageDescriptor pageDescriptor = new PageDescriptor( id, pageType, title, image, topLevel, style );
+    PageDescriptor pageDescriptor = new PageDescriptor( id, pageType )
+                                      .setTitle( title )
+                                      .setImage( image )
+                                      .setTopLevel( topLevel )
+                                      .setPageStyle( style );
     for( ActionConfiguration configuration : actions ) {
       pageDescriptor.addAction( configuration );
     }

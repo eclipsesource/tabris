@@ -48,57 +48,82 @@ public class PageDescriptorTest {
 
   @Test
   public void testGetId() {
-    PageDescriptor descriptor = new PageDescriptor( "foo", TestPage.class, "", null, true, PageStyle.DEFAULT );
+    PageDescriptor descriptor = new PageDescriptor( "foo", TestPage.class );
 
     assertEquals( "foo", descriptor.getId() );
   }
 
   @Test
   public void testGetPage() {
-    PageDescriptor descriptor = new PageDescriptor( "foo", TestPage.class, "", null, true, PageStyle.DEFAULT );
+    PageDescriptor descriptor = new PageDescriptor( "foo", TestPage.class );
 
     assertSame( TestPage.class, descriptor.getPageType() );
   }
 
   @Test
   public void testGetTitle() {
-    PageDescriptor descriptor = new PageDescriptor( "foo", TestPage.class, "bar", null, true, PageStyle.DEFAULT );
+    PageDescriptor descriptor = new PageDescriptor( "foo", TestPage.class );
+    descriptor.setTitle( "bar" );
 
     assertEquals( "bar", descriptor.getTitle() );
   }
 
   @Test
+  public void testSetTitleReturnsDescritor() {
+    PageDescriptor descriptor = new PageDescriptor( "foo", TestPage.class );
+
+    PageDescriptor actualDescriptor = descriptor.setTitle( "bar" );
+
+    assertSame( descriptor, actualDescriptor );
+  }
+
+  @Test
   public void testGetImage() {
     InputStream image = PageDescriptorTest.class.getResourceAsStream( "testImage.png" );
-    PageDescriptor descriptor = new PageDescriptor( "foo",
-                                                    TestPage.class,
-                                                    "bar",
-                                                    ImageUtil.getBytes( image ),
-                                                    true,
-                                                    PageStyle.DEFAULT );
+    PageDescriptor descriptor = new PageDescriptor( "foo", TestPage.class );
+    descriptor.setImage( ImageUtil.getBytes( image ) );
 
     assertArrayEquals( UITestUtil.getImageBytes(), descriptor.getImage() );
   }
 
   @Test
-  public void testGetTransitionHint() {
-    PageDescriptor descriptor = new PageDescriptor( "foo", TestPage.class, "", null, true, PageStyle.DEFAULT );
+  public void testGetStyle() {
+    PageDescriptor descriptor = new PageDescriptor( "foo", TestPage.class );
+    descriptor.setPageStyle( PageStyle.DEFAULT );
 
     assertSame( PageStyle.DEFAULT, descriptor.getPageStyle()[ 0 ] );
   }
 
   @Test
+  public void testSetStyleReturnsDescriptor() {
+    PageDescriptor descriptor = new PageDescriptor( "foo", TestPage.class );
+
+    PageDescriptor actualDescriptor = descriptor.setPageStyle( PageStyle.DEFAULT );
+
+    assertSame( descriptor, actualDescriptor );
+  }
+
+  @Test
   public void testIsTopLevel() {
-    PageDescriptor descriptor1 = new PageDescriptor( "foo", TestPage.class, "", null, true, PageStyle.DEFAULT );
-    PageDescriptor descriptor2 = new PageDescriptor( "foo1", TestPage.class, "", null, false, PageStyle.DEFAULT );
+    PageDescriptor descriptor1 = new PageDescriptor( "foo", TestPage.class ).setTopLevel( true );
+    PageDescriptor descriptor2 = new PageDescriptor( "foo1", TestPage.class ).setTopLevel( false );
 
     assertTrue( descriptor1.isTopLevel() );
     assertFalse( descriptor2.isTopLevel() );
   }
 
   @Test
+  public void testSetTopLevelReturnsDescriptor() {
+    PageDescriptor descriptor = new PageDescriptor( "foo", TestPage.class );
+
+    PageDescriptor actualDescriptor = descriptor.setTopLevel( true );
+
+    assertSame( descriptor, actualDescriptor );
+  }
+
+  @Test
   public void testAddAction() {
-    PageDescriptor descriptor = new PageDescriptor( "foo", TestPage.class, "", null, true, PageStyle.DEFAULT );
+    PageDescriptor descriptor = new PageDescriptor( "foo", TestPage.class );
 
     descriptor.addAction( new ActionConfiguration( "foo", TestAction.class ) );
 
@@ -108,9 +133,18 @@ public class PageDescriptorTest {
     assertEquals( "foo", actionDescriptor.getId() );
   }
 
+  @Test
+  public void testAddActionReturnsDescriptor() {
+    PageDescriptor descriptor = new PageDescriptor( "foo", TestPage.class );
+
+    PageDescriptor actualDescriptor = descriptor.addAction( new ActionConfiguration( "foo", TestAction.class ) );
+
+    assertSame( descriptor, actualDescriptor );
+  }
+
   @Test( expected = IllegalArgumentException.class )
   public void testAddActionFailsWithNullConfiguration() {
-    PageDescriptor descriptor = new PageDescriptor( "foo", TestPage.class, "", null, true, PageStyle.DEFAULT );
+    PageDescriptor descriptor = new PageDescriptor( "foo", TestPage.class );
 
     descriptor.addAction( null );
   }

@@ -22,7 +22,6 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,14 +78,7 @@ public class RemotePageTest {
     doReturn( Boolean.TRUE ).when( descriptor ).isTopLevel();
     when( descriptor.getPageStyle() ).thenReturn( new PageStyle[] { PageStyle.DEFAULT } );
     List<ActionDescriptor> actions = new ArrayList<ActionDescriptor>();
-    InputStream image = RemotePageTest.class.getResourceAsStream( "testImage.png" );
-    actions.add( new ActionDescriptor( "actionFoo",
-                                       new TestAction(),
-                                       "actionBar",
-                                       ImageUtil.getBytes( image ),
-                                       true,
-                                       true,
-                                       null ) );
+    actions.add( new ActionDescriptor( "actionFoo", new TestAction() ) );
     when( descriptor.getActions() ).thenReturn( actions );
     when( descriptor.getImage() ).thenReturn( UITestUtil.getImageBytes() );
     doReturn( TestPage.class ).when( descriptor ).getPageType();
@@ -124,12 +116,8 @@ public class RemotePageTest {
 
   @Test
   public void testSetsFullScreenStyle() {
-    PageDescriptor localDescriptor = new PageDescriptor( "foo",
-                                                         TestPage.class,
-                                                         "bar",
-                                                         null,
-                                                         true,
-                                                         PageStyle.FULLSCREEN );
+    PageDescriptor localDescriptor = new PageDescriptor( "foo", TestPage.class );
+    localDescriptor.setPageStyle( PageStyle.FULLSCREEN );
 
     RemotePage remotePage = new RemotePage( ui, uiRenderer, localDescriptor, mock( PageData.class ) );
     remotePage.createControl( shell );
@@ -139,7 +127,7 @@ public class RemotePageTest {
 
   @Test
   public void testSetsNoEmptyScreenStyle() {
-    PageDescriptor localDescriptor = new PageDescriptor( "foo", TestPage.class, "bar", null, true );
+    PageDescriptor localDescriptor = new PageDescriptor( "foo", TestPage.class );
 
     new RemotePage( ui, uiRenderer, localDescriptor, mock( PageData.class ) );
 
@@ -173,24 +161,11 @@ public class RemotePageTest {
   @Test
   public void testUpdateCreatesNewActionsCallsActionCreateUi() {
     List<ActionDescriptor> actions = new ArrayList<ActionDescriptor>();
-    byte[] image = ImageUtil.getBytes( RemotePageTest.class.getResourceAsStream( "testImage.png" ) );
-    actions.add( new ActionDescriptor( "actionFoo",
-                                       new TestAction(),
-                                       "actionBar",
-                                       image,
-                                       true,
-                                       true,
-                                       null ) );
+    actions.add( new ActionDescriptor( "actionFoo", new TestAction() ) );
     when( descriptor.getActions() ).thenReturn( actions );
     RemotePage page = new RemotePage( ui, uiRenderer, descriptor, mock( PageData.class ) );
     page.createActions( RemoteRendererFactory.getInstance(), shell );
-    actions.add( new ActionDescriptor( "actionFoo2",
-                                       new TestAction(),
-                                       "actionBar",
-                                       image,
-                                       true,
-                                       true,
-                                       null ) );
+    actions.add( new ActionDescriptor( "actionFoo2", new TestAction() ) );
 
     page.update( descriptor, RemoteRendererFactory.getInstance(), shell );
 
@@ -202,21 +177,8 @@ public class RemotePageTest {
   @Test
   public void testUpdateDestroysOldActionsIfDeleted() {
     List<ActionDescriptor> actions = new ArrayList<ActionDescriptor>();
-    byte[] image = ImageUtil.getBytes( RemotePageTest.class.getResourceAsStream( "testImage.png" ) );
-    actions.add( new ActionDescriptor( "actionFoo",
-                                       new TestAction(),
-                                       "actionBar",
-                                       image,
-                                       true,
-                                       true,
-                                       null ) );
-    actions.add( new ActionDescriptor( "actionFoo2",
-                                       new TestAction(),
-                                       "actionBar",
-                                       image,
-                                       true,
-                                       true,
-                                       null ) );
+    actions.add( new ActionDescriptor( "actionFoo", new TestAction() ) );
+    actions.add( new ActionDescriptor( "actionFoo2", new TestAction() ) );
     when( descriptor.getActions() ).thenReturn( actions );
     RemotePage page = new RemotePage( ui, uiRenderer, descriptor, mock( PageData.class ) );
     page.createActions( RemoteRendererFactory.getInstance(), shell );

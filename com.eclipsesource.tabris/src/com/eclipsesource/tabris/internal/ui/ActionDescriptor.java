@@ -20,27 +20,15 @@ public class ActionDescriptor implements Serializable {
 
   private final String id;
   private final Action action;
-  private final String title;
-  private final boolean visible;
-  private final boolean enabled;
-  private final byte[] image;
-  private final PlacementPriority placementPriority;
+  private String title;
+  private boolean visible;
+  private boolean enabled;
+  private byte[] image;
+  private PlacementPriority placementPriority;
 
-  public ActionDescriptor( String id,
-                           Action action,
-                           String title,
-                           byte[] image,
-                           boolean visible,
-                           boolean enabled,
-                           PlacementPriority placementPriority )
-  {
+  public ActionDescriptor( String id, Action action ) {
     this.id = id;
     this.action = action;
-    this.title = title;
-    this.image = image;
-    this.enabled = enabled;
-    this.visible = visible;
-    this.placementPriority = placementPriority;
   }
 
   public String getId() {
@@ -55,20 +43,45 @@ public class ActionDescriptor implements Serializable {
     return title;
   }
 
+  public ActionDescriptor setTitle( String title ) {
+    this.title = title;
+    return this;
+  }
+
   public byte[] getImage() {
     return image;
+  }
+
+  public ActionDescriptor setImage( byte[] image ) {
+    this.image = image;
+    return this;
   }
 
   public boolean isVisible() {
     return visible;
   }
 
+  public ActionDescriptor setVisible( boolean visible ) {
+    this.visible = visible;
+    return this;
+  }
+
   public boolean isEnabled() {
     return enabled;
   }
 
+  public ActionDescriptor setEnabled( boolean enabled ) {
+    this.enabled = enabled;
+    return this;
+  }
+
   public PlacementPriority getPlacementPriority() {
     return placementPriority;
+  }
+
+  public ActionDescriptor setPlacementPrority( PlacementPriority placemenPriority ) {
+    this.placementPriority = placemenPriority;
+    return this;
   }
 
 }

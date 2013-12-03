@@ -25,6 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.ui.Action;
+import com.eclipsesource.tabris.ui.PlacementPriority;
 
 
 public class ActionDescriptorTest {
@@ -46,14 +47,7 @@ public class ActionDescriptorTest {
 
   @Test
   public void testGetId() {
-    InputStream image = ActionDescriptorTest.class.getResourceAsStream( "testImage.png" );
-    ActionDescriptor descriptor = new ActionDescriptor( "foo",
-                                                        mock( Action.class ),
-                                                        "bar",
-                                                        ImageUtil.getBytes( image ),
-                                                        true,
-                                                        true,
-                                                        null );
+    ActionDescriptor descriptor = new ActionDescriptor( "foo", mock( Action.class ) );
 
     assertEquals( "foo", descriptor.getId() );
   }
@@ -61,14 +55,7 @@ public class ActionDescriptorTest {
   @Test
   public void testGetAction() {
     Action action = mock( Action.class );
-    InputStream image = ActionDescriptorTest.class.getResourceAsStream( "testImage.png" );
-    ActionDescriptor descriptor = new ActionDescriptor( "foo",
-                                                        action,
-                                                        "bar",
-                                                        ImageUtil.getBytes( image ),
-                                                        true,
-                                                        true,
-                                                        null );
+    ActionDescriptor descriptor = new ActionDescriptor( "foo", action );
 
     assertSame( action, descriptor.getAction() );
   }
@@ -76,61 +63,103 @@ public class ActionDescriptorTest {
   @Test
   public void testIsVisible() {
     Action action = mock( Action.class );
-    InputStream image = ActionDescriptorTest.class.getResourceAsStream( "testImage.png" );
-    ActionDescriptor descriptor = new ActionDescriptor( "foo",
-                                                        action,
-                                                        "bar",
-                                                        ImageUtil.getBytes( image ),
-                                                        true,
-                                                        true,
-                                                        null );
+    ActionDescriptor descriptor = new ActionDescriptor( "foo", action );
+
+    descriptor.setVisible( true );
 
     assertTrue( descriptor.isVisible() );
   }
 
   @Test
+  public void testSetVisibleReturnsActionDescriptor() {
+    Action action = mock( Action.class );
+    ActionDescriptor descriptor = new ActionDescriptor( "foo", action );
+
+    ActionDescriptor actualDescriptor = descriptor.setVisible( true );
+
+    assertSame( descriptor, actualDescriptor );
+  }
+
+  @Test
   public void testIsEnabled() {
     Action action = mock( Action.class );
-    InputStream image = ActionDescriptorTest.class.getResourceAsStream( "testImage.png" );
-    ActionDescriptor descriptor = new ActionDescriptor( "foo",
-                                                        action,
-                                                        "bar",
-                                                        ImageUtil.getBytes( image ),
-                                                        true,
-                                                        true,
-                                                        null );
+    ActionDescriptor descriptor = new ActionDescriptor( "foo", action);
+
+    descriptor.setEnabled( true );
 
     assertTrue( descriptor.isEnabled() );
   }
 
   @Test
+  public void testSetEnabledReturnsDescriptor() {
+    Action action = mock( Action.class );
+    ActionDescriptor descriptor = new ActionDescriptor( "foo", action);
+
+    ActionDescriptor actualDescriptor = descriptor.setEnabled( true );
+
+    assertSame( descriptor, actualDescriptor );
+  }
+
+  @Test
   public void testGetTitle() {
     Action action = mock( Action.class );
-    InputStream image = ActionDescriptorTest.class.getResourceAsStream( "testImage.png" );
-    ActionDescriptor descriptor = new ActionDescriptor( "foo",
-                                                        action,
-                                                        "bar",
-                                                        ImageUtil.getBytes( image ),
-                                                        true,
-                                                        true,
-                                                        null );
+    ActionDescriptor descriptor = new ActionDescriptor( "foo", action );
+
+    descriptor.setTitle( "bar" );
 
     assertEquals( "bar", descriptor.getTitle() );
+  }
+
+  @Test
+  public void testSetTitleReturnsDescriptor() {
+    Action action = mock( Action.class );
+    ActionDescriptor descriptor = new ActionDescriptor( "foo", action );
+
+    ActionDescriptor actualDescriptor = descriptor.setTitle( "bar" );
+
+    assertSame( descriptor, actualDescriptor );
   }
 
   @Test
   public void testGetImage() {
     Action action = mock( Action.class );
     InputStream image = ActionDescriptorTest.class.getResourceAsStream( "testImage.png" );
-    ActionDescriptor descriptor = new ActionDescriptor( "foo",
-                                                        action,
-                                                        "bar",
-                                                        ImageUtil.getBytes( image ),
-                                                        true,
-                                                        true,
-                                                        null );
+    ActionDescriptor descriptor = new ActionDescriptor( "foo", action );
+
+    descriptor.setImage( ImageUtil.getBytes( image ) );
 
     assertArrayEquals( UITestUtil.getImageBytes(), descriptor.getImage() );
+  }
+
+  @Test
+  public void testSetImageReturnsDescriptor() {
+    Action action = mock( Action.class );
+    InputStream image = ActionDescriptorTest.class.getResourceAsStream( "testImage.png" );
+    ActionDescriptor descriptor = new ActionDescriptor( "foo", action );
+
+    ActionDescriptor actualDescriptor = descriptor.setImage( ImageUtil.getBytes( image ) );
+
+    assertSame( descriptor, actualDescriptor );
+  }
+
+  @Test
+  public void testGetPlacementPriority() {
+    Action action = mock( Action.class );
+    ActionDescriptor descriptor = new ActionDescriptor( "foo", action );
+
+    descriptor.setPlacementPrority( PlacementPriority.HIGH );
+
+    assertSame( PlacementPriority.HIGH, descriptor.getPlacementPriority() );
+  }
+
+  @Test
+  public void testSetPlacementPriorityReturnsDescriptor() {
+    Action action = mock( Action.class );
+    ActionDescriptor descriptor = new ActionDescriptor( "foo", action );
+
+    ActionDescriptor actualDescriptor = descriptor.setPlacementPrority( PlacementPriority.HIGH );
+
+    assertSame( descriptor, actualDescriptor );
   }
 
 }
