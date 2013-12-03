@@ -10,8 +10,10 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
+import java.io.Serializable;
 
-public interface PropertyChangeHandler {
+
+public interface PropertyChangeHandler extends Serializable {
 
   void propertyChanged( String key, Object value );
 }

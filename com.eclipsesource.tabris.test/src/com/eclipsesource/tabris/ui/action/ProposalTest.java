@@ -11,11 +11,19 @@
 package com.eclipsesource.tabris.ui.action;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.io.Serializable;
 
 import org.junit.Test;
 
 
 public class ProposalTest {
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( Proposal.class ) );
+  }
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithNullTitle() {
