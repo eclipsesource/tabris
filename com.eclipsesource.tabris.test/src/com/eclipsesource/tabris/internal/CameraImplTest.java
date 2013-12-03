@@ -79,6 +79,7 @@ public class CameraImplTest {
     verify( remoteObject, never() ).set( eq( "resolution" ), any( JsonValue.class ) );
     verify( remoteObject, never() ).set( eq( "saveToAlbum" ), any( JsonValue.class ) );
     verify( remoteObject, never() ).set( eq( "sourceType" ), any( JsonValue.class ) );
+    verify( remoteObject, never() ).set( eq( "compressionQuality" ), any( JsonValue.class ) );
   }
 
   @Test
@@ -96,6 +97,7 @@ public class CameraImplTest {
     assertEquals( 100, resolution.get( 0 ).asInt() );
     assertEquals( 100, resolution.get( 1 ).asInt() );
     assertTrue( captor.getValue().get( "saveToAlbum" ).asBoolean() );
+    assertEquals( captor.getValue().get( "compressionQuality" ).asFloat(), 0.5F, 0 );
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -141,6 +143,34 @@ public class CameraImplTest {
 
     camera.takePicture( createOptions() );
     TabrisTestUtil.dispatchNotify( camera.getRemoteObject(), "ImageSelectionError", null );
+
+    verify( listener1 ).receivedPicture( null );
+    verify( listener2 ).receivedPicture( null );
+  }
+
+
+  @Test
+  public void testDelegatesCancel() {
+    CameraImpl camera = new CameraImpl();
+    CameraListener listener = mock( CameraListener.class );
+    camera.addCameraListener( listener );
+
+    camera.takePicture( createOptions() );
+    TabrisTestUtil.dispatchNotify( camera.getRemoteObject(), "ImageSelectionCancel", null );
+
+    verify( listener ).receivedPicture( null );
+  }
+
+  @Test
+  public void testDelegatesCancelToAllListeners() {
+    CameraImpl camera = new CameraImpl();
+    CameraListener listener1 = mock( CameraListener.class );
+    CameraListener listener2 = mock( CameraListener.class );
+    camera.addCameraListener( listener1 );
+    camera.addCameraListener( listener2 );
+
+    camera.takePicture( createOptions() );
+    TabrisTestUtil.dispatchNotify( camera.getRemoteObject(), "ImageSelectionCancel", null );
 
     verify( listener1 ).receivedPicture( null );
     verify( listener2 ).receivedPicture( null );
@@ -201,6 +231,7 @@ public class CameraImplTest {
     CameraOptions options = new CameraOptions();
     options.setResolution( 100, 100 );
     options.setSaveToAlbum( true );
+    options.setCompressionQuality( 0.5F );
     return options;
   }
 

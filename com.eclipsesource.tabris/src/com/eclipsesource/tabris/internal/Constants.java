@@ -84,8 +84,10 @@ public class Constants {
   public static final String TYPE_CAMERA = "tabris.Camera";
   public static final String EVENT_IMAGE_SELECTION = "ImageSelection";
   public static final String EVENT_IMAGE_SELECTION_ERROR = "ImageSelectionError";
+  public static final String EVENT_IMAGE_SELECTION_CANCEL = "ImageSelectionCancel";
   public static final String PROPERTY_RESOLUTION = "resolution";
   public static final String PROPERTY_SAVE_TO_ALBUM = "saveToAlbum";
+  public static final String PROPERTY_COMPRESSON_QUALITY = "compressionQuality";
 
   // Video Constants
   public static final String TYPE_VIDEO = "tabris.widgets.Video";
