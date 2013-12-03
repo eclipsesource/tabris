@@ -30,7 +30,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.eclipsesource.tabris.internal.TabrisClient;
+import com.eclipsesource.tabris.internal.TabrisClientImpl;
 
 
 @SuppressWarnings("restriction")
@@ -43,7 +43,7 @@ public class TabrisUIEntryPointTest {
     LifeCycleFactory lifeCycleFactory = getApplicationContext().getLifeCycleFactory();
     lifeCycleFactory.configure( TestLifeCycle.class );
     lifeCycleFactory.activate();
-    Fixture.fakeClient( new TabrisClient() );
+    Fixture.fakeClient( new TabrisClientImpl() );
   }
 
   @After

@@ -37,7 +37,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.eclipsesource.tabris.internal.TabrisClient;
+import com.eclipsesource.tabris.internal.TabrisClientImpl;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 
 @RunWith( MockitoJUnitRunner.class )
@@ -92,7 +92,7 @@ public class TextReplacementDataTest {
 
   @Test
   public void testPutCreatesSetOperation() {
-    Fixture.fakeClient( new TabrisClient() );
+    Fixture.fakeClient( new TabrisClientImpl() );
     RemoteObject remoteObject = TabrisTestUtil.mockRemoteObject();
     TextReplacementData data = new TextReplacementData();
 
@@ -184,7 +184,7 @@ public class TextReplacementDataTest {
 
   @Test
   public void testRemoveCreatesSetOperations() {
-    Fixture.fakeClient( new TabrisClient() );
+    Fixture.fakeClient( new TabrisClientImpl() );
     RemoteObject remoteObject = TabrisTestUtil.mockRemoteObject();
     TextReplacementData data = new TextReplacementData();
     data.put( "shortcut", "replacement" );

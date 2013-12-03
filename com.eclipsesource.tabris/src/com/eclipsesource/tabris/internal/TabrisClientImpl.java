@@ -12,11 +12,11 @@ package com.eclipsesource.tabris.internal;
 
 import static org.eclipse.rap.rwt.SingletonUtil.getSessionInstance;
 
-import org.eclipse.rap.rwt.client.Client;
 import org.eclipse.rap.rwt.client.service.ClientInfo;
 import org.eclipse.rap.rwt.client.service.ClientService;
 
 import com.eclipsesource.tabris.ClientStore;
+import com.eclipsesource.tabris.TabrisClient;
 import com.eclipsesource.tabris.app.App;
 import com.eclipsesource.tabris.camera.Camera;
 import com.eclipsesource.tabris.device.ClientDevice;
@@ -24,9 +24,9 @@ import com.eclipsesource.tabris.geolocation.Geolocation;
 import com.eclipsesource.tabris.interaction.AppLauncher;
 
 
-public class TabrisClient implements Client {
+public class TabrisClientImpl implements TabrisClient {
 
-  public TabrisClient() {
+  public TabrisClientImpl() {
     initializeServices();
   }
 

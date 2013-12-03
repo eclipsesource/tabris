@@ -24,7 +24,7 @@ import org.eclipse.rap.rwt.remote.Connection;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.swt.widgets.Text;
 
-import com.eclipsesource.tabris.internal.TabrisClient;
+import com.eclipsesource.tabris.TabrisClient;
 import com.eclipsesource.tabris.internal.WidgetsUtil;
 
 public class TextReplacementData implements Adaptable, Serializable {

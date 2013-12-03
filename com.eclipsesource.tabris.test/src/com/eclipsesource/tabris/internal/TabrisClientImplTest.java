@@ -20,6 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.ClientStore;
+import com.eclipsesource.tabris.TabrisClient;
 import com.eclipsesource.tabris.app.App;
 import com.eclipsesource.tabris.camera.Camera;
 import com.eclipsesource.tabris.device.ClientDevice;
@@ -28,7 +29,7 @@ import com.eclipsesource.tabris.interaction.AppLauncher;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 
 
-public class TabrisClientTest {
+public class TabrisClientImplTest {
 
   @Before
   public void setUp() {
@@ -44,7 +45,7 @@ public class TabrisClientTest {
 
   @Test
   public void testHasAppLauncherService() {
-    TabrisClient client = new TabrisClient();
+    TabrisClient client = new TabrisClientImpl();
 
     AppLauncher launcher = client.getService( AppLauncher.class );
 
@@ -53,7 +54,7 @@ public class TabrisClientTest {
 
   @Test
   public void testHasAppService() {
-    TabrisClient client = new TabrisClient();
+    TabrisClient client = new TabrisClientImpl();
 
     App app = client.getService( App.class );
 
@@ -62,7 +63,7 @@ public class TabrisClientTest {
 
   @Test
   public void testHasClientDeviceService() {
-    TabrisClient client = new TabrisClient();
+    TabrisClient client = new TabrisClientImpl();
 
     ClientDevice device = client.getService( ClientDevice.class );
 
@@ -71,7 +72,7 @@ public class TabrisClientTest {
 
   @Test
   public void testHasClientInfoService() {
-    TabrisClient client = new TabrisClient();
+    TabrisClient client = new TabrisClientImpl();
 
     ClientInfo info = client.getService( ClientInfo.class );
 
@@ -80,7 +81,7 @@ public class TabrisClientTest {
 
   @Test
   public void testHasClientStoreService() {
-    TabrisClient client = new TabrisClient();
+    TabrisClient client = new TabrisClientImpl();
 
     ClientStore store = client.getService( ClientStore.class );
 
@@ -89,7 +90,7 @@ public class TabrisClientTest {
 
   @Test
   public void testHasCameraService() {
-    TabrisClient client = new TabrisClient();
+    TabrisClient client = new TabrisClientImpl();
 
     Camera camera = client.getService( Camera.class );
 
@@ -98,7 +99,7 @@ public class TabrisClientTest {
 
   @Test
   public void testHasGeolocationService() {
-    TabrisClient client = new TabrisClient();
+    TabrisClient client = new TabrisClientImpl();
 
     Geolocation geolocation = client.getService( Geolocation.class );
 
@@ -107,7 +108,7 @@ public class TabrisClientTest {
 
   @Test
   public void testAppLauncherIsSingleton() {
-    TabrisClient client = new TabrisClient();
+    TabrisClient client = new TabrisClientImpl();
 
     AppLauncher launcher = client.getService( AppLauncher.class );
 
@@ -116,7 +117,7 @@ public class TabrisClientTest {
 
   @Test
   public void testAppIsSingleton() {
-    TabrisClient client = new TabrisClient();
+    TabrisClient client = new TabrisClientImpl();
 
     App app = client.getService( App.class );
 
@@ -125,7 +126,7 @@ public class TabrisClientTest {
 
   @Test
   public void testClientDeviceIsSingleton() {
-    TabrisClient client = new TabrisClient();
+    TabrisClient client = new TabrisClientImpl();
 
     ClientDevice device = client.getService( ClientDevice.class );
 
@@ -134,7 +135,7 @@ public class TabrisClientTest {
 
   @Test
   public void testClientInfoIsSingleton() {
-    TabrisClient client = new TabrisClient();
+    TabrisClient client = new TabrisClientImpl();
 
     ClientInfo info = client.getService( ClientInfo.class );
 
@@ -143,7 +144,7 @@ public class TabrisClientTest {
 
   @Test
   public void testClientStoreIsSingleton() {
-    TabrisClient client = new TabrisClient();
+    TabrisClient client = new TabrisClientImpl();
 
     ClientStore store = client.getService( ClientStore.class );
 
@@ -152,7 +153,7 @@ public class TabrisClientTest {
 
   @Test
   public void testCameraIsSingleton() {
-    TabrisClient client = new TabrisClient();
+    TabrisClient client = new TabrisClientImpl();
 
     Camera camera = client.getService( Camera.class );
     Camera camera2 = client.getService( Camera.class );
@@ -162,7 +163,7 @@ public class TabrisClientTest {
 
   @Test
   public void testGeolocationIsSingleton() {
-    TabrisClient client = new TabrisClient();
+    TabrisClient client = new TabrisClientImpl();
 
     Geolocation geolocation = client.getService( Geolocation.class );
     Geolocation geolocation2 = client.getService( Geolocation.class );

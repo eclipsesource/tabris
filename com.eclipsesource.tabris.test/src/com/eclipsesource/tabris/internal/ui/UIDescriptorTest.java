@@ -28,7 +28,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.eclipsesource.tabris.internal.TabrisClient;
+import com.eclipsesource.tabris.TabrisClient;
 import com.eclipsesource.tabris.internal.ui.web.WebRendererFactory;
 import com.eclipsesource.tabris.ui.TransitionListener;
 

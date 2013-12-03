@@ -16,7 +16,7 @@ import java.util.List;
 
 import org.eclipse.rap.rwt.RWT;
 
-import com.eclipsesource.tabris.internal.TabrisClient;
+import com.eclipsesource.tabris.TabrisClient;
 import com.eclipsesource.tabris.internal.ui.rendering.RendererFactory;
 import com.eclipsesource.tabris.internal.ui.web.WebRendererFactory;
 import com.eclipsesource.tabris.ui.TransitionListener;

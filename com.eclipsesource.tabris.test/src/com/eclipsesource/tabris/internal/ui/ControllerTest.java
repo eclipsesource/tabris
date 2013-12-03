@@ -46,7 +46,7 @@ import org.mockito.InOrder;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import com.eclipsesource.tabris.internal.TabrisClient;
+import com.eclipsesource.tabris.TabrisClient;
 import com.eclipsesource.tabris.internal.ZIndexStackLayout;
 import com.eclipsesource.tabris.internal.ui.rendering.ActionRenderer;
 import com.eclipsesource.tabris.internal.ui.rendering.PageRenderer;

@@ -56,6 +56,6 @@ public class TabrisClientProvider implements ClientProvider, Serializable {
 
   @Override
   public Client getClient() {
-    return new TabrisClient();
+    return new TabrisClientImpl();
   }
 }

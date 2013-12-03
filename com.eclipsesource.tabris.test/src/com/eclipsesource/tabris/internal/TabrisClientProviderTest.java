@@ -34,6 +34,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.eclipsesource.tabris.TabrisClient;
+
 
 @SuppressWarnings("restriction")
 public class TabrisClientProviderTest {
