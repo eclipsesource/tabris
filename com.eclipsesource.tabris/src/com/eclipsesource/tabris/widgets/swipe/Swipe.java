@@ -212,7 +212,7 @@ public class Swipe implements Serializable {
   private int[] filterRespectingBounds( int[] outOfRangeIndexes ) {
     List<Integer> indexes = new ArrayList<Integer>();
     for( int index : outOfRangeIndexes ) {
-      if( index < manager.getProvider().getItemCount() ) {
+      if( index < manager.getProvider().getItemCount() && manager.getItemHolder().isLoaded( index ) ) {
         indexes.add( Integer.valueOf( index ) );
       }
     }

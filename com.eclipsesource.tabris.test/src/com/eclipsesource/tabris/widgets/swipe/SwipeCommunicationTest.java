@@ -360,6 +360,25 @@ public class SwipeCommunicationTest {
   }
 
   @Test
+  public void testJumpRemovesOutOfRangeItemOnlyIfLoaded() {
+    SwipeItemProvider itemProvider = mockProvider( 5 );
+    mockSwipeItem( itemProvider, 0, false );
+    mockSwipeItem( itemProvider, 1, false );
+    mockSwipeItem( itemProvider, 2, false );
+    mockSwipeItem( itemProvider, 3, false );
+    mockSwipeItem( itemProvider, 4, false );
+    Swipe swipe = new Swipe( shell, itemProvider );
+
+    swipe.show( 0 );
+    swipe.show( 4 );
+
+    ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
+    verify( remoteObject, times( 1 ) ).call( eq( "remove" ), captor.capture() );
+    JsonArray actualIndexes = captor.getValue().get( "items" ).asArray();
+    assertEquals( new JsonArray().add( 0 ), actualIndexes );
+  }
+
+  @Test
   public void testIncrementalDeleteSendsRemoveMessages() {
     SwipeItemProvider itemProvider = mockProvider( 5 );
     mockSwipeItem( itemProvider, 0, true );
