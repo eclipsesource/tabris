@@ -20,9 +20,9 @@ mvn archetype:generate -DarchetypeGroupId=com.eclipsesource.tabris -DarchetypeAr
 
 ## Tabris via p2 Software Sites
 The following sites can be used to consume Tabris as an Eclipse Target Platform.  
-* **release:** `http://download.eclipsesource.com/technology/tabris/downloads/releases` Contains a the latest releases.  
+* **release:** `http://download.eclipsesource.com/technology/tabris/downloads/releases` Contains the latest releases.  
 * **staging:** `http://download.eclipsesource.com/technology/tabris/downloads/staging` Can be used as a stable target. We will not purge any version. Contains picked nightly builds.  
-* **nightly:** `http://download.eclipsesource.com/technology/tabris/downloads/nightly` Contains the last 10 nightly builds.
+* **nightly:** `http://download.eclipsesource.com/technology/tabris/downloads/nightly` Contains the last 10 nightly builds. Older builds will be purged.
 
 ## Demos
 Demos using the Tabris features are located in the [tabris-demos repository](https://github.com/eclipsesource/tabris-demos).
