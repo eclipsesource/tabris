@@ -12,6 +12,8 @@ package com.eclipsesource.tabris.ui.action;
 
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
+import java.io.Serializable;
+
 
 /**
  * <p>
@@ -23,7 +25,7 @@ import static com.eclipsesource.tabris.internal.Clauses.whenNull;
  *
  * @since 1.2
  */
-public class Proposal {
+public class Proposal implements Serializable {
 
   private final String title;
 

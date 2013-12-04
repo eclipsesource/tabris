@@ -44,7 +44,6 @@ public class TreeDecoratorTest {
   private TreeDecorator decorator;
   private Display display;
 
-
   @Before
   public void setUp() {
     Fixture.setUp();
