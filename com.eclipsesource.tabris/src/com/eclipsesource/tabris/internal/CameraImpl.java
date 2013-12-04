@@ -2,8 +2,10 @@ package com.eclipsesource.tabris.internal;
 
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.Constants.EVENT_IMAGE_SELECTION;
+import static com.eclipsesource.tabris.internal.Constants.EVENT_IMAGE_SELECTION_CANCEL;
 import static com.eclipsesource.tabris.internal.Constants.EVENT_IMAGE_SELECTION_ERROR;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_OPEN;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_COMPRESSON_QUALITY;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_IMAGE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_RESOLUTION;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SAVE_TO_ALBUM;
@@ -69,6 +71,7 @@ public class CameraImpl extends AbstractOperationHandler implements Camera {
     JsonObject properties = new JsonObject();
     addResolution( properties, options );
     addSaveToAlbum( properties, options );
+    addCompressionQuality( properties, options );
     return properties;
   }
 
@@ -88,13 +91,17 @@ public class CameraImpl extends AbstractOperationHandler implements Camera {
     }
   }
 
+  private void addCompressionQuality( JsonObject properties, CameraOptions options ) {
+    properties.add( PROPERTY_COMPRESSON_QUALITY, options.getCompressionQuality() );
+  }
+
   @Override
   public void handleNotify( String event, JsonObject properties ) {
     if( EVENT_IMAGE_SELECTION.equals( event ) ) {
       Image image = decodeImage( properties.get( PROPERTY_IMAGE ).asString() );
       notifyListenersWithImage( image );
-    } else if( EVENT_IMAGE_SELECTION_ERROR.equals( event ) ) {
-      notifyListenersWithError();
+    } else if( EVENT_IMAGE_SELECTION_ERROR.equals( event ) || EVENT_IMAGE_SELECTION_CANCEL.equals( event ) ) {
+      notifyListenersWithoutPicture();
     }
   }
 
@@ -105,7 +112,7 @@ public class CameraImpl extends AbstractOperationHandler implements Camera {
     }
   }
 
-  private void notifyListenersWithError() {
+  private void notifyListenersWithoutPicture() {
     List<CameraListener> listeners = new ArrayList<CameraListener>( cameraListeners );
     for( CameraListener listener : listeners ) {
       listener.receivedPicture( null );

@@ -31,8 +31,8 @@ public interface CameraListener extends Serializable {
    * Called in the case of successfully taking or selecting a picture from a mobile client's camera/photo album.
    * </p>
    *
-   * @param image the picture transfered form the client. May be <code>null</code> when there was any error on the
-   * client side.
+   * @param image the picture transfered form the client. May be <code>null</code> if there was an error or the user
+   * canceled.
    *
    *  @see Image
    */

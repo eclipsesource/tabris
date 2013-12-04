@@ -7,6 +7,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.camera;
 
+import static com.eclipsesource.tabris.internal.Clauses.when;
+
 import java.io.Serializable;
 
 import org.eclipse.swt.graphics.Point;
@@ -25,6 +27,11 @@ public class CameraOptions implements Serializable {
   public static final CameraOptions NONE = new CameraOptions();
   private Point resolution;
   private boolean saveToAlbum;
+  private float quality;
+
+  public CameraOptions() {
+    quality = 1.0F;
+  }
 
   /**
    * <p>
@@ -65,5 +72,30 @@ public class CameraOptions implements Serializable {
    */
   public boolean savesToAlbum() {
     return saveToAlbum;
+  }
+
+  /**
+   * <p>
+   * The quality of the resulting image, expressed as a value from 0.0 to 1.0. The value 0.0 represents the maximum
+   * compression (or lowest quality) while the value 1.0 represents the least compression (or best quality).
+   * </p>
+   *
+   * @since 1.2
+   */
+  public void setCompressionQuality( float quality ) {
+    when( quality < 0 || quality > 1 )
+      .throwIllegalArgument( "Compression Quality must be >= 0 and <= 1 but was " + quality );
+    this.quality = quality;
+  }
+
+  /**
+   * <p>
+   * Returns the compression quality of the resulting image. The default value is 1.0.
+   * </p>
+   *
+   * @since 1.2
+   */
+  public float getCompressionQuality() {
+    return quality;
   }
 }

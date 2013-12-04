@@ -24,6 +24,18 @@ import org.junit.Test;
 public class CameraOptionsTest {
 
   @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( CameraOptions.class ) );
+  }
+
+  @Test
+  public void testNoneOptions() {
+    assertNull( CameraOptions.NONE.getResolution() );
+    assertFalse( CameraOptions.NONE.savesToAlbum() );
+    assertEquals( 1.0F, CameraOptions.NONE.getCompressionQuality(), 0 );
+  }
+
+  @Test
   public void testResolution() {
     CameraOptions cameraOptions = new CameraOptions();
 
@@ -33,13 +45,47 @@ public class CameraOptionsTest {
   }
 
   @Test
-  public void testIsSerializable() {
-    assertTrue( Serializable.class.isAssignableFrom( CameraOptions.class ) );
+  public void testDefaultResolutionIsNull() {
+    CameraOptions cameraOptions = new CameraOptions();
+
+    Point resolution = cameraOptions.getResolution();
+
+    assertNull( resolution );
   }
 
   @Test
-  public void testNoneOptions() {
-    assertNull( CameraOptions.NONE.getResolution() );
-    assertFalse( CameraOptions.NONE.savesToAlbum() );
+  public void testSetsSaveToAlbum() {
+    CameraOptions cameraOptions = new CameraOptions();
+
+    cameraOptions.setSaveToAlbum( true );
+
+    assertTrue( cameraOptions.savesToAlbum() );
+  }
+
+  @Test
+  public void testDefaultSaveToAlbumIsFalse() {
+    CameraOptions cameraOptions = new CameraOptions();
+
+    boolean savesToAlbum = cameraOptions.savesToAlbum();
+
+    assertFalse( savesToAlbum );
+  }
+
+  @Test
+  public void testSetsComptressionQuality() {
+    CameraOptions cameraOptions = new CameraOptions();
+
+    cameraOptions.setCompressionQuality( 0.5F );
+
+    assertEquals( 0.5F, cameraOptions.getCompressionQuality(), 0 );
+  }
+
+  @Test
+  public void testDefaultCompressionQualityIsOne() {
+    CameraOptions cameraOptions = new CameraOptions();
+
+    float compressionQuality = cameraOptions.getCompressionQuality();
+
+    assertEquals( 1.0F, compressionQuality, 0 );
   }
 }
