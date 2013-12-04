@@ -19,6 +19,7 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TEXT;
  * <p>
  * Concrete launch option to send a text message.
  * </p>
+ *
  * @since 0.9
  */
 public class SMSOptions extends LaunchOptions {

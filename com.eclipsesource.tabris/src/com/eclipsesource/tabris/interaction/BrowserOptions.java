@@ -21,6 +21,7 @@ import java.net.URL;
  * <p>
  * Concrete launch option to open an URL in the Browser.
  * </p>
+ *
  * @since 0.9
  */
 public class BrowserOptions extends LaunchOptions {

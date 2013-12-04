@@ -170,6 +170,12 @@
                 <message_argument value="enableBackButtonNavigation()"/>
             </message_arguments>
         </filter>
+        <filter id="354463860">
+            <message_arguments>
+                <message_argument value="com.eclipsesource.tabris.widgets.enhancement.TreeDecorator"/>
+                <message_argument value="TreeDecorator(Tree)"/>
+            </message_arguments>
+        </filter>
         <filter id="643846161">
             <message_arguments>
                 <message_argument value="Template"/>

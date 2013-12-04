@@ -16,7 +16,8 @@ import org.eclipse.rap.rwt.client.service.ClientService;
  * <code>RWT.getClient().getService( AppLauncher.class );</code>.
  * </p>
  *
- * @noimplement
+ * @noimplement This interface is not intended to be implemented by clients.
+ *
  * @since 0.9
  */
 public interface AppLauncher extends ClientService {
@@ -34,7 +35,9 @@ public interface AppLauncher extends ClientService {
   void open( LaunchOptions launchOptions ) throws IllegalArgumentException;
 
   /**
-   * <p>Opens an URL with the best possible App. E.g. it will oppen a mailto url with the email app.</p>
+   * <p>
+   * Opens an URL with the best possible App. E.g. it will open a mailto url with the email app.
+   * </p>
    *
    * @param url The url to open. Needs to be a valid url and must not be <code>null</code>.
    */

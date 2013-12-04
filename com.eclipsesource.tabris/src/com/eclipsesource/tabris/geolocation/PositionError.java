@@ -29,7 +29,7 @@ public class PositionError implements Serializable {
    * <code>PositionErrorCode</code> is a helper enumeration to unify the most common client errors.
    * </p>
    */
-  public enum PositionErrorCode {
+  public static enum PositionErrorCode {
     /**
      * <p>
      * Means that the client app had not the sufficient permissions to determine the location. When the user doesn't

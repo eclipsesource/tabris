@@ -20,7 +20,8 @@ import org.eclipse.rap.rwt.client.service.ClientService;
  * The {@link App} provides facilities to accomplish these tasks.
  * </p>
  *
- * @noimplement
+ * @noimplement This interface is not intended to be implemented by clients.
+ *
  * @since 0.10
  */
 public interface App extends ClientService {

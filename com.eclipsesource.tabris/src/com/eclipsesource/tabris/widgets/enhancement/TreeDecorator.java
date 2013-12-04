@@ -58,7 +58,7 @@ public class TreeDecorator extends WidgetDecorator<TreeDecorator> {
 
   private final Tree tree;
 
-  public TreeDecorator( Tree tree ) {
+  TreeDecorator( Tree tree ) {
     super( tree );
     this.tree = tree;
   }

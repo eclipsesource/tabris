@@ -32,9 +32,9 @@ public interface CameraListener extends Serializable {
    * </p>
    *
    * @param image the picture transfered form the client. May be <code>null</code> if there was an error or the user
-   * canceled.
+   *              canceled.
    *
-   *  @see Image
+   * @see Image
    */
   void receivedPicture( Image image );
 

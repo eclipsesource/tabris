@@ -48,8 +48,9 @@ public class WidgetDecorator<T extends WidgetDecorator> implements Serializable 
    * Instructs a {@link Widget} to show immediate visual feedback on a user interaction.
    * </p>
    *
-   * @since 0.10
    * @deprecated use {@link WidgetDecorator#showLocalTouch(boolean)} instead.
+   *
+   * @since 0.10
    */
   @Deprecated
   public T showLocalTouch() {

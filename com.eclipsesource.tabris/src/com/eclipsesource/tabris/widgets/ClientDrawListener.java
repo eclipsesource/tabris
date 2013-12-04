@@ -19,6 +19,7 @@ import java.io.Serializable;
  * </p>
  *
  * @see ClientCanvas
+ *
  * @since 0.6
  */
 public interface ClientDrawListener extends Serializable {

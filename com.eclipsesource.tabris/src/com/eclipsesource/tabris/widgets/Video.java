@@ -48,7 +48,7 @@ public class Video extends Composite {
    *
    * @since 1.0
    */
-  public enum Playback {
+  public static enum Playback {
     /**
      * <p>
      * Video playback is ready.
@@ -121,7 +121,7 @@ public class Video extends Composite {
    *
    * @since 1.0
    */
-  public enum Presentation {
+  public static enum Presentation {
     /**
      * <p>
      * The player has entered or should enter full-screen.

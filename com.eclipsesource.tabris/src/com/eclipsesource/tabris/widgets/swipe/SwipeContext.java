@@ -45,7 +45,6 @@ public class SwipeContext implements Serializable {
     store.put( key, value );
   }
 
-
   /**
    * <p>
    * Gets a value from this context, already casted to the passed in type.

@@ -26,7 +26,8 @@ import org.eclipse.rap.rwt.client.service.ClientService;
  * @see CameraOptions
  * @see Client
  *
- * @noimplement
+ * @noimplement This interface is not intended to be implemented by clients.
+ *
  * @since 0.8
  */
 public interface Camera extends ClientService {
@@ -37,10 +38,10 @@ public interface Camera extends ClientService {
    * user has taken/selected a picture or in the case of an error.
    * </p>
    *
-   *  @param options The options that should be used as the configuration for taking a picture. Must not
-   *                 be <code>null</code>.
+   * @param options The options that should be used as the configuration for taking a picture. Must not
+   *                be <code>null</code>.
    *
-   *  @see CameraListener
+   * @see CameraListener
    */
   void takePicture( CameraOptions options );
 

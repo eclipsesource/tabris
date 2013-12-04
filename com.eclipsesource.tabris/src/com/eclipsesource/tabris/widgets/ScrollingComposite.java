@@ -48,6 +48,7 @@ import com.eclipsesource.tabris.internal.ScrollingCompositeUtil;
  *
  * @see Composite
  * @see ScrolledComposite
+ *
  * @since 1.0
  */
 public class ScrollingComposite extends Composite {

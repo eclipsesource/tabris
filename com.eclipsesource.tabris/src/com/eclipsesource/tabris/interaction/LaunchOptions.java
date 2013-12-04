@@ -34,7 +34,7 @@ import java.util.Map;
  */
 public class LaunchOptions implements Serializable {
 
-  public enum App {
+  public static enum App {
     MAIL, BROWSER, MAPS, PHONE, SMS, TWITTER, FACEBOOK
   }
 

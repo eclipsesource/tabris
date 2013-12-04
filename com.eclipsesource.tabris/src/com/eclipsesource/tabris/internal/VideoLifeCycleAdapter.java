@@ -48,7 +48,7 @@ import com.eclipsesource.tabris.widgets.Video.Presentation;
 @SuppressWarnings("restriction")
 public class VideoLifeCycleAdapter extends AbstractWidgetLCA implements Serializable {
 
-  public enum PlaybackOptions {
+  public static enum PlaybackOptions {
     SPEED, REPEAT, CONTROLS_VISIBLE, PLAYBACK, PRESENTATION, HEAD_POSITION
   }
 

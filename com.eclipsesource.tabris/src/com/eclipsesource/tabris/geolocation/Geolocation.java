@@ -18,7 +18,8 @@ import org.eclipse.rap.rwt.client.service.ClientService;
  * @see GeolocationOptions
  * @see Client
  *
- * @noimplement
+ * @noimplement This interface is not intended to be implemented by clients.
+ *
  * @since 0.6
  */
 public interface Geolocation extends ClientService {

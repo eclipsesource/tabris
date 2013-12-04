@@ -38,6 +38,8 @@ import com.eclipsesource.tabris.internal.TabrisResourceLoader;
  * be obtained using {@link RWT#getClient()}.
  * </p>
  *
+ * @see TabrisClient
+ *
  * @since 1.0
  */
 @SuppressWarnings("restriction")

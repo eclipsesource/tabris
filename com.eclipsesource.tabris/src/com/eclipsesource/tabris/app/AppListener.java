@@ -10,7 +10,6 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.app;
 
-import java.awt.Event;
 import java.io.Serializable;
 
 
@@ -31,7 +30,7 @@ public interface AppListener extends Serializable {
    * Will be called when an event was fired within the App.
    * </p>
    *
-   * @param event the specific {@link Event} that was fired.
+   * @param event the specific {@link AppEvent} that was fired.
    */
   void handleEvent( AppEvent event );
 }

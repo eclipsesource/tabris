@@ -34,11 +34,11 @@ import com.eclipsesource.tabris.ui.UI;
 public class WebPage implements PageRenderer {
 
   private final UI ui;
-  private PageDescriptor descriptor;
   private final WebUI uiRenderer;
   private final PageData data;
   private final Page page;
   private final List<ActionRenderer> remoteActions;
+  private PageDescriptor descriptor;
   private Control control;
   private String title;
 

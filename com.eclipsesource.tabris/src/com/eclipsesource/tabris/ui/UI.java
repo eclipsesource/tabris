@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Display;
  * </p>
  *
  * @noimplement This interface is not intended to be implemented by clients.
+ *
  * @since 0.11
  */
 public interface UI {

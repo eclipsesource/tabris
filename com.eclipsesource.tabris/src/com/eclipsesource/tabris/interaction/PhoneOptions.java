@@ -19,6 +19,7 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_NUMBER;
  * <p>
  * Concrete launch option to do a phone call.
  * </p>
+ *
  * @since 0.9
  */
 public class PhoneOptions extends LaunchOptions {

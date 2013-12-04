@@ -27,7 +27,8 @@ import org.eclipse.rap.rwt.client.service.ClientInfo;
  * @see ConnectionType
  * @see Client
  *
- * @noimplement
+ * @noimplement This interface is not intended to be implemented by clients.
+ *
  * @since 0.11
  */
 public interface ClientDevice extends ClientInfo {
@@ -39,7 +40,7 @@ public interface ClientDevice extends ClientInfo {
    *
    * @since 0.11
    */
-  public enum Platform {
+  public static enum Platform {
     IOS, ANDROID, WEB
   }
 
@@ -59,7 +60,7 @@ public interface ClientDevice extends ClientInfo {
    *
    * @since 0.11
    */
-  public enum Orientation {
+  public static enum Orientation {
     PORTRAIT, LANDSCAPE, SQUARE
   }
 
@@ -80,7 +81,7 @@ public interface ClientDevice extends ClientInfo {
    *
    * @since 0.11
    */
-  public enum Capability {
+  public static enum Capability {
     LOCATION, MESSAGE, PHONE, CAMERA, MAPS
   }
 
@@ -102,7 +103,7 @@ public interface ClientDevice extends ClientInfo {
    *
    * @since 0.11
    */
-  public enum ConnectionType {
+  public static enum ConnectionType {
     WIFI, CELLULAR
   }
 

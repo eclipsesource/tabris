@@ -15,7 +15,7 @@ import java.io.Serializable;
 
 /**
  * <p>
- * <code>Coordinates</code> is a wrapper for GPS positions. It's used within a <code>Position</code>
+ * <code>Coordinates</code> is a wrapper for GPS positions. It's used within a <code>Position</code> object.
  * </p>
  *
  * @see Position

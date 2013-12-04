@@ -40,6 +40,7 @@ import com.eclipsesource.tabris.internal.GCOperationDispatcher;
  * </p>
  *
  * @see ClientDrawListener
+ *
  * @since 0.6
  */
 @SuppressWarnings("restriction")

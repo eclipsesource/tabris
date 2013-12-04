@@ -16,9 +16,11 @@ import org.eclipse.rap.rwt.client.Client;
 /**
  * <p>
  * The RWT Tabris Client. Consumers can determine if the current accessing client is a {@link TabrisClient} by checking
- * the current RWT client. *
+ * the current RWT client.
  * <pre>
- * RWT.getClient() instanceof TabrisClient
+ * if( RWT.getClient() instanceof TabrisClient ) {
+ *   ...
+ * }
  * </pre>
  * </p>
  *
