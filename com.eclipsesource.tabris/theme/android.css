@@ -1066,7 +1066,7 @@ TreeColumn-SortIndicator {
 
 Tree-Cell {
   spacing: 0;
-  padding: 20px;
+  padding: 8px;
 }
 
 Tree-GridLine {
