@@ -42,6 +42,8 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -88,8 +90,19 @@ public class Swipe implements Serializable {
     this.listeners = new ArrayList<SwipeListener>();
     this.container = new Composite( parent, SWT.NONE );
     container.setData( SWIPE.getKey(), Boolean.TRUE );
+    addDisposeListener();
     this.remoteObject = RWT.getUISession().getConnection().createRemoteObject( TYPE_SWIPE );
     initialize();
+  }
+
+  private void addDisposeListener() {
+    container.addDisposeListener( new DisposeListener() {
+
+      @Override
+      public void widgetDisposed( DisposeEvent event ) {
+        dispose();
+      }
+    } );
   }
 
   private void initialize() {
@@ -433,8 +446,11 @@ public class Swipe implements Serializable {
    */
   public void dispose() {
     manager.getItemHolder().removeAllItems();
-    container.dispose();
+    if( !container.isDisposed() ) {
+      container.dispose();
+    }
     notifyDisposed( listeners, manager.getContext() );
+    remoteObject.destroy();
   }
 
   SwipeItemHolder getItemHolder() {

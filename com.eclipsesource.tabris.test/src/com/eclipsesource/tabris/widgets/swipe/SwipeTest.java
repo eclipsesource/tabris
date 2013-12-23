@@ -30,6 +30,8 @@ import static org.mockito.Mockito.when;
 
 import java.io.Serializable;
 
+import org.eclipse.rap.rwt.lifecycle.PhaseId;
+import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -48,11 +50,12 @@ import com.eclipsesource.tabris.internal.ZIndexStackLayout;
 public class SwipeTest {
 
   private Shell shell;
+  private RemoteObject remoteObject;
 
   @Before
   public void setUp() {
     Fixture.setUp();
-    mockRemoteObject();
+    remoteObject = mockRemoteObject();
     shell = new Shell( new Display() );
   }
 
@@ -634,6 +637,18 @@ public class SwipeTest {
   }
 
   @Test
+  public void testRegistersDisposeListenerOnControl() {
+    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
+    SwipeItemProvider itemProvider = mockProvider( 0 );
+    Swipe swipe = new Swipe( shell, itemProvider );
+    Control control = swipe.getControl();
+
+    control.dispose();
+
+    verify( remoteObject ).destroy();
+  }
+
+  @Test
   public void testDisposeDisposesControl() {
     SwipeItemProvider itemProvider = mockProvider( 0 );
     Swipe swipe = new Swipe( shell, itemProvider );
@@ -642,6 +657,16 @@ public class SwipeTest {
     swipe.dispose();
 
     assertTrue( control.isDisposed() );
+  }
+
+  @Test
+  public void testDisposeDestroysRemoteObject() {
+    SwipeItemProvider itemProvider = mockProvider( 0 );
+    Swipe swipe = new Swipe( shell, itemProvider );
+
+    swipe.dispose();
+
+    verify( remoteObject ).destroy();
   }
 
   @Test
