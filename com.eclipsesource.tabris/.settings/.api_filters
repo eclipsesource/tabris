@@ -176,13 +176,6 @@
                 <message_argument value="TreeDecorator(Tree)"/>
             </message_arguments>
         </filter>
-        <filter id="643846161">
-            <message_arguments>
-                <message_argument value="Template"/>
-                <message_argument value="TreeDecorator"/>
-                <message_argument value="setTemplate(Template)"/>
-            </message_arguments>
-        </filter>
         <filter id="1141899266">
             <message_arguments>
                 <message_argument value="0.10"/>

@@ -2,7 +2,7 @@
 <feature
       id="com.eclipsesource.tabris.feature"
       label="Tabris Runtime"
-      version="1.2.0.qualifier"
+      version="1.2.1.qualifier"
       provider-name="EclipseSource">
 
    <description url="http://rapmobile.eclipsesource.com">

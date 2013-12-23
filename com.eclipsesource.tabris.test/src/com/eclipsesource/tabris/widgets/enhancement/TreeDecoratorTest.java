@@ -36,7 +36,6 @@ import com.eclipsesource.tabris.widgets.enhancement.TreeDecorator.TreePart;
 
 
 @RunWith( MockitoJUnitRunner.class )
-@SuppressWarnings("restriction")
 public class TreeDecoratorTest {
 
   @Mock
