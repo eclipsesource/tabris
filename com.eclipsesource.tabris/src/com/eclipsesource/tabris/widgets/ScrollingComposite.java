@@ -155,6 +155,12 @@ public class ScrollingComposite extends Composite {
     scrolledComposite.setLayoutData( layoutData );
   }
 
+  @Override
+  public Object getLayoutData() {
+    checkWidget();
+    return scrolledComposite.getLayoutData();
+  }
+
   /**
    * <p>
    * Scrolls to the defined control until it's visible.

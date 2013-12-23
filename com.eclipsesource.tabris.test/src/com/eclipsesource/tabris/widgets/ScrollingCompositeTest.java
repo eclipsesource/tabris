@@ -259,4 +259,15 @@ public class ScrollingCompositeTest {
 
     assertNotNull( size );
   }
+
+  @Test
+  public void testReturnsSettedLayoutData() {
+    ScrollingComposite composite = new ScrollingComposite( shell, SWT.NONE );
+    GridData gridData = new GridData();
+    composite.setLayoutData( gridData );
+
+    Object layoutData = composite.getLayoutData();
+
+    assertSame( gridData, layoutData );
+  }
 }
