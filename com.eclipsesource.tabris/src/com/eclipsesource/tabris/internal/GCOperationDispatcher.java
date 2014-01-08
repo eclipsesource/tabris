@@ -94,13 +94,11 @@ public class GCOperationDispatcher implements Serializable {
 
   private void createWayPoints( JsonArray parameters, Path path ) {
     path.moveTo( getFloatAtIndex( parameters, 0 ), getFloatAtIndex( parameters, 1 ) );
-    for( int i = 2; i < parameters.size(); i += 6 ) {
-      path.cubicTo( getFloatAtIndex( parameters, i ),
+    for( int i = 2; i < parameters.size(); i += 4 ) {
+      path.quadTo( getFloatAtIndex( parameters, i ),
                    getFloatAtIndex( parameters, i + 1 ),
                    getFloatAtIndex( parameters, i + 2 ),
-                   getFloatAtIndex( parameters, i + 3 ),
-                   getFloatAtIndex( parameters, i + 4 ),
-                   getFloatAtIndex( parameters, i + 5 ) );
+                   getFloatAtIndex( parameters, i + 3 ) );
     }
   }
 

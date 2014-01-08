@@ -61,10 +61,6 @@ public class ClientCanvasTestUtil {
     polyline.add( 7 );
     polyline.add( 8 );
     polyline.add( 8 );
-    polyline.add( 9 );
-    polyline.add( 9 );
-    polyline.add( 10 );
-    polyline.add( 10 );
     return polyline;
   }
 

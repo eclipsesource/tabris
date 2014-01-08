@@ -62,7 +62,7 @@ public class GCOperationDispatcherTest {
     InOrder order = inOrder( gc );
     ArgumentCaptor<Path> pathCaptor = ArgumentCaptor.forClass( Path.class );
     order.verify( gc ).drawPath( pathCaptor.capture() );
-    assertArrayEquals( new float[] { 0, 1, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10 }, pathCaptor.getValue().getPathData().points, 0 );
+    assertArrayEquals( new float[] { 0, 1, 5, 5, 6, 6, 7, 7, 8, 8 }, pathCaptor.getValue().getPathData().points, 0 );
     order.verify( gc ).setLineWidth( 3 );
     ArgumentCaptor<Color> captor = ArgumentCaptor.forClass( Color.class );
     order.verify( gc ).setForeground( captor.capture() );
@@ -73,7 +73,7 @@ public class GCOperationDispatcherTest {
     assertEquals( 200, color.getBlue() );
     pathCaptor = ArgumentCaptor.forClass( Path.class );
     order.verify( gc ).drawPath( pathCaptor.capture() );
-    assertArrayEquals( new float[] { 0, 1, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10 }, pathCaptor.getValue().getPathData().points, 0 );
+    assertArrayEquals( new float[] { 0, 1, 5, 5, 6, 6, 7, 7, 8, 8 }, pathCaptor.getValue().getPathData().points, 0 );
   }
 
   @Test( expected = ParseException.class )
