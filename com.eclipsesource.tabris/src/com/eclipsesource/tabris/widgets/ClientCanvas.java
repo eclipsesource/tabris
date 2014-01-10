@@ -202,6 +202,8 @@ public class ClientCanvas extends Canvas {
       result = ( T )cache;
     } else if( adapter == WidgetLifeCycleAdapter.class ) {
       return ( T )CLIENT_CANVAS_LCA;
+    } else if( adapter == List.class ) {
+      return ( T )drawListeners;
     }
     return result;
   }

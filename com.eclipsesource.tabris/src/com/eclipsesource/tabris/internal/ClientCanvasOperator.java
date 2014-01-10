@@ -11,13 +11,19 @@
 package com.eclipsesource.tabris.internal;
 
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
+import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.readEventPropertyValueAsString;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.lifecycle.ProcessActionRunner;
+import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.swt.internal.widgets.canvaskit.CanvasOperationHandler;
 import org.eclipse.swt.widgets.Canvas;
 
 import com.eclipsesource.tabris.widgets.ClientCanvas;
+import com.eclipsesource.tabris.widgets.ClientDrawListener;
 
 
 @SuppressWarnings("restriction")
@@ -34,16 +40,35 @@ public class ClientCanvasOperator extends CanvasOperationHandler {
   @Override
   public void handleNotify( final Canvas control, String eventName, JsonObject properties ) {
     if( eventName.equals( DRAWING_EVENT ) ) {
-      ProcessActionRunner.add( new Runnable() {
-
-        @Override
-        public void run() {
-          control.redraw();
-        }
-      } );
+      handleDrawings( control );
     } else {
       super.handleNotify( control, eventName, properties );
     }
   }
 
+  private void handleDrawings( final Canvas control ) {
+    ProcessActionRunner.add( new Runnable() {
+
+      @Override
+      public void run() {
+        DrawingsCache cache = control.getAdapter( DrawingsCache.class );
+        String drawings = readEventPropertyValueAsString( WidgetUtil.getId( control ), DRAWING_EVENT, DRAWINGS_PROPERTY );
+        if( drawings != null ) {
+          cache.cache( drawings );
+          cache.clearRemoved();
+          fireDrawEvent( ( ClientCanvas )control );
+        }
+      }
+    } );
+  }
+
+  @SuppressWarnings("unchecked")
+  private void fireDrawEvent(ClientCanvas control) {
+    if( !control.isDisposed() ) {
+      List<ClientDrawListener> listeners = new ArrayList<ClientDrawListener>( control.getAdapter( List.class ) );
+      for( ClientDrawListener listener : listeners ) {
+        listener.receivedDrawing();
+      }
+    }
+  }
 }

@@ -14,6 +14,7 @@ import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.CLI
 import static org.eclipse.rap.rwt.lifecycle.WidgetUtil.getId;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -21,8 +22,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.eclipse.rap.json.JsonObject;
+import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.lifecycle.WidgetLifeCycleAdapter;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
@@ -35,7 +38,6 @@ import org.eclipse.swt.widgets.TypedListener;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 
 import com.eclipsesource.tabris.internal.ClientCanvasLCA;
 import com.eclipsesource.tabris.internal.ClientCanvasOperator;
@@ -65,6 +67,13 @@ public class ClientCanvasTest {
     WidgetLifeCycleAdapter adapter = clientCanvas.getAdapter( WidgetLifeCycleAdapter.class );
 
     assertTrue( adapter instanceof ClientCanvasLCA );
+  }
+
+  @Test
+  public void testHasDrawingListeners() {
+    List<?> adapter = clientCanvas.getAdapter( List.class );
+
+    assertNotNull( adapter );
   }
 
   @Test
@@ -104,13 +113,13 @@ public class ClientCanvasTest {
   }
 
   @Test
-  public void testRedraws() {
+  public void testRedrawsNotOnClientDrawingOnly() {
     CheckPaintListener listener = new CheckPaintListener();
     clientCanvas.addPaintListener( listener );
 
     fakeDrawEvent();
 
-    assertTrue( listener.wasCalled() );
+    assertFalse( listener.wasCalled() );
   }
 
   @Test
@@ -143,8 +152,7 @@ public class ClientCanvasTest {
     Fixture.fakeNewRequest();
     fakeDrawEvent();
 
-    ArgumentCaptor<PaintEvent> captor = ArgumentCaptor.forClass( PaintEvent.class );
-    verify( paintListener, times( 2 ) ).paintControl( captor.capture() );
+    assertEquals( 1, clientCanvas.getAdapter( DrawingsCache.class ).getCachedDrawings().size() );
   }
 
   @Test
@@ -152,6 +160,7 @@ public class ClientCanvasTest {
     CheckPaintListener listener = new CheckPaintListener();
     clientCanvas.addPaintListener( listener );
 
+    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     clientCanvas.clear();
     Fixture.fakeNewRequest();
     fakeDrawEvent();
@@ -183,6 +192,7 @@ public class ClientCanvasTest {
     clientCanvas.addPaintListener( listener );
     fakeDrawEvent();
 
+    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     clientCanvas.undo();
 
     assertTrue( listener.wasCalled() );
@@ -215,6 +225,7 @@ public class ClientCanvasTest {
     fakeDrawEvent();
     clientCanvas.undo();
 
+    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     clientCanvas.redo();
 
     assertTrue( listener.wasCalled() );

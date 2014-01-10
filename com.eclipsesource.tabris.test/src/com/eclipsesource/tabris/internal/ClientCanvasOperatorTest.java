@@ -10,15 +10,16 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
-import static org.mockito.Matchers.any;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import org.eclipse.rap.json.JsonArray;
+import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.lifecycle.PhaseId;
+import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
@@ -26,6 +27,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.widgets.ClientCanvas;
+import com.eclipsesource.tabris.widgets.ClientDrawListener;
 
 
 public class ClientCanvasOperatorTest {
@@ -50,16 +52,38 @@ public class ClientCanvasOperatorTest {
   }
 
   @Test
-  public void testRedrawsOnDrawingEvent() {
+  public void testFiresDrawEvent() {
     ClientCanvas clientCanvas = new ClientCanvas( shell, SWT.NONE );
-    PaintListener listener = mock( PaintListener.class );
-    clientCanvas.addPaintListener( listener );
+    ClientDrawListener drawListener = mock( ClientDrawListener.class );
+    clientCanvas.addClientDrawListener( drawListener );
     ClientCanvasOperator operator = new ClientCanvasOperator( clientCanvas );
+    Fixture.fakeNewRequest();
+    JsonObject drawings = new JsonObject();
+    drawings.add( ClientCanvasOperator.DRAWINGS_PROPERTY, JsonArray.readFrom( ClientCanvasTestUtil.createDrawings( 1 ) ) );
+    Fixture.fakeNotifyOperation( WidgetUtil.getId( clientCanvas ), ClientCanvasOperator.DRAWING_EVENT, drawings );
     Fixture.fakePhase( PhaseId.PROCESS_ACTION );
 
-    operator.handleNotify( clientCanvas, ClientCanvasOperator.DRAWING_EVENT, null );
+    operator.handleNotify( clientCanvas, ClientCanvasOperator.DRAWING_EVENT, drawings );
 
-    verify( listener ).paintControl( any( PaintEvent.class ) );
+    verify( drawListener ).receivedDrawing();
+  }
+
+  @Test
+  public void testAddsDrawingToCache() {
+    ClientCanvas clientCanvas = new ClientCanvas( shell, SWT.NONE );
+    ClientDrawListener drawListener = mock( ClientDrawListener.class );
+    clientCanvas.addClientDrawListener( drawListener );
+    ClientCanvasOperator operator = new ClientCanvasOperator( clientCanvas );
+    Fixture.fakeNewRequest();
+    JsonObject drawings = new JsonObject();
+    drawings.add( ClientCanvasOperator.DRAWINGS_PROPERTY, JsonArray.readFrom( ClientCanvasTestUtil.createDrawings( 1 ) ) );
+    Fixture.fakeNotifyOperation( WidgetUtil.getId( clientCanvas ), ClientCanvasOperator.DRAWING_EVENT, drawings );
+    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
+
+    operator.handleNotify( clientCanvas, ClientCanvasOperator.DRAWING_EVENT, drawings );
+
+    DrawingsCache cache = clientCanvas.getAdapter( DrawingsCache.class );
+    assertFalse( cache.getCachedDrawings().isEmpty() );
   }
 
   @Test( expected = UnsupportedOperationException.class )
