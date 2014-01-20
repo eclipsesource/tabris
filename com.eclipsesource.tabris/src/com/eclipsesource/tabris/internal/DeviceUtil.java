@@ -24,6 +24,8 @@ public class DeviceUtil {
       result = Platform.IOS;
     } else if( userAgent != null && userAgent.contains( Constants.ID_ANDROID ) ) {
       result = Platform.ANDROID;
+    } else if( userAgent != null && userAgent.contains( Constants.ID_SWT ) ) {
+      result = Platform.SWT;
     }
     return result;
   }

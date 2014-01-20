@@ -93,6 +93,17 @@ public class ClientDeviceImplTest {
   }
 
   @Test
+  public void testGetPlatformIsSWT() {
+    TestRequest request = ( TestRequest )RWT.getRequest();
+    request.setHeader( Constants.USER_AGENT, "com.eclipsesource.tabris.swt" );
+    ClientDevice device = new ClientDeviceImpl();
+
+    Platform platform = device.getPlatform();
+
+    assertSame( Platform.SWT, platform );
+  }
+
+  @Test
   public void testGetPlatformIsWebByDefault() {
     TestRequest request = ( TestRequest )RWT.getRequest();
     request.setHeader( Constants.USER_AGENT, "Mozilla/bla" );

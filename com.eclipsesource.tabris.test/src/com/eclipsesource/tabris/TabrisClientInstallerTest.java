@@ -60,6 +60,7 @@ public class TabrisClientInstallerTest {
     verify( application ).addStyleSheet( eq( Constants.THEME_ID_ANDROID ), anyString(), any( ResourceLoader.class ) );
     verify( application ).addStyleSheet( eq( Constants.THEME_ID_IOS6 ), anyString(), any( ResourceLoader.class ) );
     verify( application ).addStyleSheet( eq( Constants.THEME_ID_IOS ), anyString(), any( ResourceLoader.class ) );
+    verify( application ).addStyleSheet( eq( Constants.THEME_ID_SWT ), anyString(), any( ResourceLoader.class ) );
     verify( application ).addStyleSheet( eq( RWT.DEFAULT_THEME_ID ), anyString(), any( ResourceLoader.class ) );
   }
 

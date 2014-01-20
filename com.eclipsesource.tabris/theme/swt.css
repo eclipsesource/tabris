@@ -1,0 +1,110 @@
+/*******************************************************************************
+ * Copyright (c) 2012 EclipseSource and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    EclipseSource - initial API and implementation
+ ******************************************************************************/
+
+/* Default theme for all widgets */
+* {
+	font: 16px Helvetica;
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	spacing: 0px 0px 0px 0px;
+	border: none;
+}
+
+Shell-Titlebar {
+	height: 10px;
+}
+
+Spinner {
+	border: 3px;
+}
+
+Menu {
+	font: 0px Helvetica;
+	height: 0;
+}
+
+Shell {
+	padding: 0px 0px 0px 0px;
+}
+
+CoolBar {
+	
+}
+
+ToolBar {
+	padding: 4px 4px 0px 0px;
+}
+
+ToolItem {
+	
+}
+
+CoolItem {
+	
+}
+
+Label {
+	border: 0px;
+}
+
+Button {
+	padding: 6px 14px 6px 14px;
+}
+
+TabItem {
+	padding: 7px 13px 6px 13px;
+}
+
+Group {
+	padding: 0px 0px 0px 0px;
+	border: 0px;
+	border-radius: 0px;
+}
+
+Group-Frame {
+	margin: 0px 0px 0px 0px;
+	padding: 14px 5px 5px 5px;
+	spacing: 0px 0px 0px 0px;
+	border: 0px;
+	border-radius: 0px;
+}
+
+Group-Label {
+	font: 0px Helvetica;
+}
+
+Table {
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	spacing: 0px 0px 0px 0px;
+	border: 0px;
+	border-radius: 0px;
+}
+
+Table-Cell {
+	font: 16px Helvetica;
+	padding: 1px 1px 0px 0px;
+	margin: 0px 0px 0px 0px;
+	spacing: 0px 0px 0px 0px;
+}
+
+TableColumn {
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	spacing: 0px 0px 0px 0px;
+	border: 0px;
+	border-radius: 0px;
+}
+
+CTabFolder {
+	
+}
+

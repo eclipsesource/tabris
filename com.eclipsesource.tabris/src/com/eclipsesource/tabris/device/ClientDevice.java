@@ -41,7 +41,14 @@ public interface ClientDevice extends ClientInfo {
    * @since 0.11
    */
   public static enum Platform {
-    IOS, ANDROID, WEB
+    IOS,
+    ANDROID,
+    WEB,
+
+    /**
+     * @since 1.3
+     */
+    SWT
   }
 
   /**
