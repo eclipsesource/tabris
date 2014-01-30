@@ -13,13 +13,17 @@
 * {
 	font: 16px Helvetica;
 	margin: 0px 0px 0px 0px;
-	padding: 0px 0px 0px 0px;
+	padding: 3px 2px 3px 2px;
 	spacing: 0px 0px 0px 0px;
 	border: none;
 }
 
+Composite {
+	padding: 0px;
+}
+
 Shell-Titlebar {
-	height: 10px;
+	height: 22px;
 }
 
 Spinner {
@@ -71,7 +75,7 @@ Group {
 
 Group-Frame {
 	margin: 0px 0px 0px 0px;
-	padding: 14px 5px 5px 5px;
+	padding: 14px 5px 7px 5px;
 	spacing: 0px 0px 0px 0px;
 	border: 0px;
 	border-radius: 0px;
