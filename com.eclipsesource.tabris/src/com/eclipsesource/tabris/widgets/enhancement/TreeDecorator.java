@@ -105,10 +105,26 @@ public class TreeDecorator extends WidgetDecorator<TreeDecorator> {
    * </p>
    *
    * @since 0.10
+   * @deprecated use {@link TreeDecorator#setBackButtonNavigationEnabled(boolean)}
    */
+  @Deprecated
   public TreeDecorator enableBackButtonNavigation() {
-    setData( tree, BACK_FOCUS, Boolean.TRUE );
-    setDataToNullOnOtherTrees();
+    return setBackButtonNavigationEnabled( true );
+  }
+
+  /**
+   * <p>
+   * Enables or disables the defined tree to take advantage of the back button. This means when the back button will
+   * be pressed the tree navigates back.
+   * </p>
+   *
+   * @since 1.3
+   */
+  public TreeDecorator setBackButtonNavigationEnabled( boolean enabled ) {
+    setData( tree, BACK_FOCUS, Boolean.valueOf( enabled ) );
+    if( enabled ) {
+      setDataToNullOnOtherTrees();
+    }
     return this;
   }
 

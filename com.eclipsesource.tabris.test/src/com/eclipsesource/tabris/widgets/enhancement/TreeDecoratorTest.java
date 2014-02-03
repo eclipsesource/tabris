@@ -13,6 +13,7 @@ package com.eclipsesource.tabris.widgets.enhancement;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.ALT_SELECTION;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.BACK_FOCUS;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Matchers.eq;
@@ -84,13 +85,23 @@ public class TreeDecoratorTest {
   }
 
   @Test
-  public void testSetBackButtonFocusShouldSetBackFocusVariant() {
+  public void testSetBackButtonEnabledShouldSetBackFocusData() {
     Shell shell = new Shell( display );
     Tree focusTree = new Tree( shell, SWT.NONE );
 
-    Widgets.onTree( focusTree ).enableBackButtonNavigation();
+    Widgets.onTree( focusTree ).setBackButtonNavigationEnabled( true );
 
     assertEquals( Boolean.TRUE, focusTree.getData( BACK_FOCUS.getKey() ) );
+  }
+
+  @Test
+  public void testSetBackButtonDisabledShouldSetBackFocusData() {
+    Shell shell = new Shell( display );
+    Tree focusTree = new Tree( shell, SWT.NONE );
+
+    Widgets.onTree( focusTree ).setBackButtonNavigationEnabled( false );
+
+    assertEquals( Boolean.FALSE, focusTree.getData( BACK_FOCUS.getKey() ) );
   }
 
   @Test
@@ -99,13 +110,24 @@ public class TreeDecoratorTest {
     Tree focusTree = new Tree( shell, SWT.NONE );
     TreeDecorator treeDecorator = Widgets.onTree( focusTree );
 
-    TreeDecorator actualDecorator = treeDecorator.enableBackButtonNavigation();
+    TreeDecorator actualDecorator = treeDecorator.setBackButtonNavigationEnabled( true );
 
     assertSame( treeDecorator, actualDecorator );
   }
 
   @Test
-  public void testSetBackButtonFocusShouldSetNullVariantOnOtherTreesWithBackFocusVariant() {
+  public void testDisableBackButtonNavigationReturnsDecorator() {
+    Shell shell = new Shell( display );
+    Tree focusTree = new Tree( shell, SWT.NONE );
+    TreeDecorator treeDecorator = Widgets.onTree( focusTree );
+
+    TreeDecorator actualDecorator = treeDecorator.setBackButtonNavigationEnabled( false );
+
+    assertSame( treeDecorator, actualDecorator );
+  }
+
+  @Test
+  public void testEnableBackButtonNavigationShouldSetNullVariantOnOtherTreesWithBackFocusVariant() {
     Shell shell = new Shell( display );
     Tree tree1 = new Tree( shell, SWT.NONE );
     Tree tree2 = new Tree( shell, SWT.NONE );
@@ -113,10 +135,26 @@ public class TreeDecoratorTest {
     tree2.setData( BACK_FOCUS.getKey(), Boolean.TRUE );
     tree3.setData( BACK_FOCUS.getKey(), "anyVariant" );
 
-    Widgets.onTree( tree1 ).enableBackButtonNavigation();
+    Widgets.onTree( tree1 ).setBackButtonNavigationEnabled( true );
 
     assertEquals( Boolean.TRUE, tree1.getData( BACK_FOCUS.getKey() ) );
     assertNull( tree2.getData( BACK_FOCUS.getKey() ) );
+    assertEquals( "anyVariant", tree3.getData( BACK_FOCUS.getKey() ) );
+  }
+
+  @Test
+  public void testDisableBackButtonNavigationShouldSetNullVariantOnOtherTreesWithBackFocusVariant() {
+    Shell shell = new Shell( display );
+    Tree tree1 = new Tree( shell, SWT.NONE );
+    Tree tree2 = new Tree( shell, SWT.NONE );
+    Tree tree3 = new Tree( shell, SWT.NONE );
+    tree2.setData( BACK_FOCUS.getKey(), Boolean.TRUE );
+    tree3.setData( BACK_FOCUS.getKey(), "anyVariant" );
+
+    Widgets.onTree( tree1 ).setBackButtonNavigationEnabled( false );
+
+    assertEquals( Boolean.FALSE, tree1.getData( BACK_FOCUS.getKey() ) );
+    assertNotNull( tree2.getData( BACK_FOCUS.getKey() ) );
     assertEquals( "anyVariant", tree3.getData( BACK_FOCUS.getKey() ) );
   }
 
