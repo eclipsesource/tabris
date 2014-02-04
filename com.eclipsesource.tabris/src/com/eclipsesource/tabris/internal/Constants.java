@@ -167,6 +167,12 @@ public class Constants {
   public static final String PROPERTY_XSOURCE = "xSource";
   public static final String PROPERTY_ACTION_PARAMETERS = "actionParameters";
 
+  // TableItemHeight Service
+  public static final String GRID_ITEM_HEIGHT_SETTER = "gridItemHeightSetter";
+  public static final String SET_ITEM_HEIGHT = "setItemHeight";
+  public static final String PROPERTY_ITEM_HEIGHT = "itemHeight";
+  public static final String PROPERTY_TARGET = "target";
+
   private Constants() {
     // prevent instantiation
   }

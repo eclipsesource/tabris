@@ -19,6 +19,7 @@ import com.eclipsesource.tabris.TabrisClient;
 public class TabrisSWTClient implements TabrisClient {
 
   public TabrisSWTClient() {
+    getService( TableItemHeightService.class );
     getService( BrowserNavigation.class );
   }
 
@@ -26,7 +27,9 @@ public class TabrisSWTClient implements TabrisClient {
   @SuppressWarnings("unchecked")
   public <T extends ClientService> T getService( Class<T> type ) {
     T result = null;
-    if( type == BrowserNavigation.class ) {
+    if( type == TableItemHeightService.class ) {
+      result = ( T )getSessionInstance( TableItemHeightService.class );
+    } else if( type == BrowserNavigation.class ) {
       result = ( T )getSessionInstance( BrowserNavigationImpl.class );
     }
     return result;
