@@ -19,7 +19,7 @@ package com.eclipsesource.tabris.ui;
  * @see TransitionListener
  * @since 1.3
  */
-public class TransistionAdapter implements TransitionListener {
+public class TransitionAdapter implements TransitionListener {
 
   @Override
   public void before( UI ui, Page from, Page to ) {
