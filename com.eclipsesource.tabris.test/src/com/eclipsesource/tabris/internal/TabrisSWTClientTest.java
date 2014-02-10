@@ -46,4 +46,23 @@ public class TabrisSWTClientTest {
 
     assertSame( service, service2 );
   }
+
+  @Test
+  public void testHasTableItemHeightService() {
+    TabrisSWTClient client = new TabrisSWTClient();
+
+    TableItemHeightService service = client.getService( TableItemHeightService.class );
+
+    assertNotNull( service );
+  }
+
+  @Test
+  public void testTableItemHeightServiceIsSessionSingleton() {
+    TabrisSWTClient client = new TabrisSWTClient();
+
+    TableItemHeightService service = client.getService( TableItemHeightService.class );
+    TableItemHeightService service2 = client.getService( TableItemHeightService.class );
+
+    assertSame( service, service2 );
+  }
 }
