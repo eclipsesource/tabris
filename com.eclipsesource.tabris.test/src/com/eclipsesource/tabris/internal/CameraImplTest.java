@@ -32,32 +32,25 @@ import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import com.eclipsesource.tabris.camera.Camera;
 import com.eclipsesource.tabris.camera.CameraListener;
 import com.eclipsesource.tabris.camera.CameraOptions;
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 
 
-@RunWith( MockitoJUnitRunner.class )
+@RunWith( RWTRunner.class )
 public class CameraImplTest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     new Display();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

@@ -29,26 +29,23 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import com.eclipsesource.tabris.test.RWTRunner;
 
 
+@RunWith( RWTRunner.class )
 public class ScrollingCompositeTest {
 
   private Shell shell;
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     Display display = new Display();
     shell = new Shell( display );
     Fixture.fakePhase( PhaseId.PROCESS_ACTION );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test( expected = IllegalArgumentException.class )

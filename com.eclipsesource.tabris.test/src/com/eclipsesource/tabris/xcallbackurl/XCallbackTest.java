@@ -12,27 +12,17 @@ import java.util.Map;
 
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.remote.RemoteObject;
-import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 
 
+@RunWith( RWTRunner.class )
 public class XCallbackTest {
-
-  @Before
-  public void setUp() {
-    Fixture.setUp();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
-  }
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithNullConfiguration() {

@@ -29,18 +29,18 @@ import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.widgets.Text;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import com.eclipsesource.tabris.internal.TabrisClientImpl;
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 
-@RunWith( MockitoJUnitRunner.class )
+
+@RunWith( RWTRunner.class )
 public class TextReplacementDataTest {
 
   @Mock
@@ -48,12 +48,7 @@ public class TextReplacementDataTest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
+    text = mock( Text.class );
   }
 
   @Test

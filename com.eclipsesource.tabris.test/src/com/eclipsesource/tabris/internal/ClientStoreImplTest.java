@@ -23,29 +23,24 @@ import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.json.JsonValue;
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
 import org.eclipse.rap.rwt.remote.RemoteObject;
-import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 
 
 @SuppressWarnings("restriction")
+@RunWith( RWTRunner.class )
 public class ClientStoreImplTest {
 
   private RemoteObject serviceObject;
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     serviceObject = TabrisTestUtil.mockServiceObject();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test( expected = IllegalArgumentException.class )

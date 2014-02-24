@@ -17,43 +17,35 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.template.Template;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.widgets.enhancement.TreeDecorator.TreePart;
 
 
-@RunWith( MockitoJUnitRunner.class )
+@RunWith( RWTRunner.class )
 public class TreeDecoratorTest {
 
-  @Mock
   private Tree tree;
   private TreeDecorator decorator;
   private Display display;
 
   @Before
   public void setUp() {
-    Fixture.setUp();
+    tree = mock( Tree.class );
     display = new Display();
     decorator = Widgets.onTree( tree );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

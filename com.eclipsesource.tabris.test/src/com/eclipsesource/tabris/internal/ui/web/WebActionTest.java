@@ -30,17 +30,19 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.internal.ui.ActionDescriptor;
 import com.eclipsesource.tabris.internal.ui.ImageUtil;
 import com.eclipsesource.tabris.internal.ui.RemoteActionTest;
 import com.eclipsesource.tabris.internal.ui.TestAction;
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.ui.UI;
 
 
+@RunWith( RWTRunner.class )
 public class WebActionTest {
 
   private UI ui;
@@ -51,7 +53,6 @@ public class WebActionTest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     Shell shell = new Shell( new Display() );
     ui = mock( UI.class );
@@ -60,11 +61,6 @@ public class WebActionTest {
     webAction = new WebAction( ui, webUI, actionDescriptor );
     webAction.createUi( shell );
     control = webAction.getControl();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

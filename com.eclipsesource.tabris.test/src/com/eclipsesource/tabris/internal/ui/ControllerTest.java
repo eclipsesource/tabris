@@ -38,9 +38,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 import org.mockito.invocation.InvocationOnMock;
@@ -52,6 +52,7 @@ import com.eclipsesource.tabris.internal.ui.rendering.ActionRenderer;
 import com.eclipsesource.tabris.internal.ui.rendering.PageRenderer;
 import com.eclipsesource.tabris.internal.ui.rendering.RendererFactory;
 import com.eclipsesource.tabris.internal.ui.rendering.UIRenderer;
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 import com.eclipsesource.tabris.ui.Page;
 import com.eclipsesource.tabris.ui.PageConfiguration;
@@ -62,6 +63,7 @@ import com.eclipsesource.tabris.ui.UIConfiguration;
 
 
 @SuppressWarnings("restriction")
+@RunWith( RWTRunner.class )
 public class ControllerTest {
 
   private Shell shell;
@@ -73,7 +75,6 @@ public class ControllerTest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     Fixture.fakeClient( mock( TabrisClient.class ) );
     Display display = new Display();
     shell = new Shell( display );
@@ -92,11 +93,6 @@ public class ControllerTest {
     when( configuration.getAdapter( UIDescriptor.class ) ).thenReturn( uiDescriptor );
     uiDescriptor.addTransitionListener( listener );
     when( ui.getConfiguration() ).thenReturn( configuration );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

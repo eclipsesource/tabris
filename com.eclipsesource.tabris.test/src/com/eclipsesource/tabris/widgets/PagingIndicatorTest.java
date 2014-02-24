@@ -22,24 +22,21 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import com.eclipsesource.tabris.test.RWTRunner;
 
 
+@RunWith( RWTRunner.class )
 public class PagingIndicatorTest {
 
   private Shell parent;
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     parent = new Shell( new Display() );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test( expected = IllegalArgumentException.class )

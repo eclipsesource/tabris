@@ -38,15 +38,17 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.internal.ui.PageDescriptor;
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.ui.PageOperator;
 import com.eclipsesource.tabris.ui.UI;
 
 
+@RunWith( RWTRunner.class )
 public class WebUITest {
 
   private Display display;
@@ -55,16 +57,10 @@ public class WebUITest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     display = new Display();
     shell = new Shell( display );
     webUI = new WebUI( shell );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

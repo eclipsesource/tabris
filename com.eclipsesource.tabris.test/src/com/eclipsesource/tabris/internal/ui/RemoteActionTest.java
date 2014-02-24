@@ -27,13 +27,13 @@ import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
 import org.eclipse.rap.rwt.remote.RemoteObject;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.widgets.Display;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.PlacementPriority;
@@ -41,6 +41,7 @@ import com.eclipsesource.tabris.ui.UI;
 
 
 @SuppressWarnings("restriction")
+@RunWith( RWTRunner.class )
 public class RemoteActionTest {
 
   private RemoteObjectImpl remoteObject;
@@ -50,7 +51,6 @@ public class RemoteActionTest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     new Display();
     remoteObject = ( RemoteObjectImpl )TabrisTestUtil.mockRemoteObject();
     ui = mock( UI.class );
@@ -63,11 +63,6 @@ public class RemoteActionTest {
     when( actionDescriptor.getImage() ).thenReturn( ImageUtil.getBytes( image ) );
     when( actionDescriptor.getTitle() ).thenReturn( "bar" );
     when( actionDescriptor.getPlacementPriority() ).thenReturn( PlacementPriority.HIGH );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

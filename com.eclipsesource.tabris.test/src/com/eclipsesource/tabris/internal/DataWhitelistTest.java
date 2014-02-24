@@ -16,26 +16,16 @@ import java.io.Serializable;
 import java.util.Collection;
 
 import org.eclipse.rap.rwt.internal.lifecycle.WidgetDataUtil;
-import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry;
+import com.eclipsesource.tabris.test.RWTRunner;
 
 
 @SuppressWarnings("restriction")
+@RunWith( RWTRunner.class )
 public class DataWhitelistTest {
-
-  @Before
-  public void setUp() {
-    Fixture.setUp();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
-  }
 
   @Test
   public void testIsSerializable() {
@@ -112,7 +102,7 @@ public class DataWhitelistTest {
   public void testHasTextReplacement() {
     assertContains( "textReplacement" );
   }
-  
+
   private void assertContains( String actualKey ) {
     WhiteListEntry[] keys = DataWhitelist.WhiteListEntry.values();
     boolean foundKey = false;

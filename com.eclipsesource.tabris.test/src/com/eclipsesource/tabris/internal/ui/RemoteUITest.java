@@ -26,23 +26,24 @@ import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.internal.protocol.ProtocolUtil;
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.internal.ui.rendering.PageRenderer;
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 import com.eclipsesource.tabris.ui.PageOperator;
 import com.eclipsesource.tabris.ui.UI;
 
 
 @SuppressWarnings("restriction")
+@RunWith( RWTRunner.class )
 public class RemoteUITest {
 
   private RemoteObjectImpl remoteObject;
@@ -50,14 +51,8 @@ public class RemoteUITest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     shell = new Shell( new Display() );
     remoteObject = ( RemoteObjectImpl )TabrisTestUtil.mockRemoteObject();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test( expected = IllegalArgumentException.class )

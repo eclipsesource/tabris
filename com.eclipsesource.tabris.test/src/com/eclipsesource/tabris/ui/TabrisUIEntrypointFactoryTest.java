@@ -17,23 +17,14 @@ import static org.junit.Assert.assertTrue;
 import java.io.Serializable;
 
 import org.eclipse.rap.rwt.application.EntryPoint;
-import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import com.eclipsesource.tabris.test.RWTRunner;
 
 
+@RunWith( RWTRunner.class )
 public class TabrisUIEntrypointFactoryTest {
-
-  @Before
-  public void setUp() {
-    Fixture.setUp();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
-  }
 
   @Test
   public void testIsSerializable() {

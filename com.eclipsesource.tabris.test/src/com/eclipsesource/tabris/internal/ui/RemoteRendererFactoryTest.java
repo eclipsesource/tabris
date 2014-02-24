@@ -16,21 +16,22 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.internal.ui.rendering.ActionRenderer;
 import com.eclipsesource.tabris.internal.ui.rendering.PageRenderer;
 import com.eclipsesource.tabris.internal.ui.rendering.UIRenderer;
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.PageData;
 import com.eclipsesource.tabris.ui.UI;
 
 
+@RunWith( RWTRunner.class )
 public class RemoteRendererFactoryTest {
 
   private RemoteRendererFactory rendererFactory;
@@ -39,15 +40,9 @@ public class RemoteRendererFactoryTest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     rendererFactory = ( RemoteRendererFactory )RemoteRendererFactory.getInstance();
     ui = mock( UI.class );
     uiRenderer = mock( RemoteUI.class );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

@@ -29,31 +29,27 @@ import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 
 import com.eclipsesource.tabris.internal.ui.rendering.PageRenderer;
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.ui.PageData;
 import com.eclipsesource.tabris.ui.UI;
 
 
+@RunWith( RWTRunner.class )
 public class PageFlowTest {
 
   private Shell shell;
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     Display display = new Display();
     shell = new Shell( display );
     Fixture.fakePhase( PhaseId.PROCESS_ACTION );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

@@ -27,18 +27,20 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.TabrisClient;
 import com.eclipsesource.tabris.internal.ZIndexStackLayout;
 import com.eclipsesource.tabris.internal.ui.TestPage;
 import com.eclipsesource.tabris.internal.ui.UITestUtil;
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 
 
 @SuppressWarnings("restriction")
+@RunWith( RWTRunner.class )
 public class TabrisUITest {
 
   private Shell shell;
@@ -46,17 +48,11 @@ public class TabrisUITest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     Fixture.fakeClient( mock( TabrisClient.class ) );
     Display display = new Display();
     shell = new Shell( display );
     Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     remoteObject = TabrisTestUtil.mockRemoteObject();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

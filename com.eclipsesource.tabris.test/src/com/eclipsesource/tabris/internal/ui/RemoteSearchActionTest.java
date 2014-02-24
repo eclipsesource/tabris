@@ -34,11 +34,12 @@ import org.eclipse.rap.rwt.internal.serverpush.ServerPushManager;
 import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.widgets.Display;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 import com.eclipsesource.tabris.ui.UI;
 import com.eclipsesource.tabris.ui.action.Proposal;
@@ -47,6 +48,7 @@ import com.eclipsesource.tabris.ui.action.SearchAction;
 
 
 @SuppressWarnings("restriction")
+@RunWith( RWTRunner.class )
 public class RemoteSearchActionTest {
 
   private RemoteObjectImpl remoteObject;
@@ -56,7 +58,6 @@ public class RemoteSearchActionTest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     Display display = new Display();
     remoteObject = ( RemoteObjectImpl )TabrisTestUtil.mockRemoteObject();
     ui = mock( UI.class );
@@ -70,11 +71,6 @@ public class RemoteSearchActionTest {
     when( actionDescriptor.getTitle() ).thenReturn( "bar" );
     TestSearchAction action = new TestSearchAction();
     when( actionDescriptor.getAction() ).thenReturn( action );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

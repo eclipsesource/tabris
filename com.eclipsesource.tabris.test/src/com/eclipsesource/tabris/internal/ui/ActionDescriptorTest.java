@@ -19,26 +19,16 @@ import static org.mockito.Mockito.mock;
 import java.io.InputStream;
 import java.io.Serializable;
 
-import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.PlacementPriority;
 
 
+@RunWith( RWTRunner.class )
 public class ActionDescriptorTest {
-
-  @Before
-  public void setUp() {
-    Fixture.setUp();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
-  }
 
   @Test
   public void testIsSerializable() {

@@ -22,18 +22,20 @@ import static org.mockito.Mockito.when;
 
 import java.io.Serializable;
 
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.ui.Page;
 import com.eclipsesource.tabris.ui.PageData;
 import com.eclipsesource.tabris.ui.UIConfiguration;
 
 
+@RunWith( RWTRunner.class )
 public class PageOperatorImplTest {
 
   private Display display;
@@ -41,7 +43,6 @@ public class PageOperatorImplTest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     display = new Display();
     Shell shell = new Shell( display );
     shell.setLayout( new StackLayout() );

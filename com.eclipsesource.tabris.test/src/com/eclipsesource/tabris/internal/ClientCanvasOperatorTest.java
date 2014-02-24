@@ -22,28 +22,24 @@ import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.widgets.ClientCanvas;
 import com.eclipsesource.tabris.widgets.ClientDrawListener;
 
 
+@RunWith( RWTRunner.class )
 public class ClientCanvasOperatorTest {
 
   private Shell shell;
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     Display display = new Display();
     shell = new Shell( display );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test( expected = IllegalArgumentException.class )

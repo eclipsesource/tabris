@@ -26,9 +26,9 @@ import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 
 import com.eclipsesource.tabris.geolocation.Coordinates;
@@ -37,20 +37,16 @@ import com.eclipsesource.tabris.geolocation.GeolocationOptions;
 import com.eclipsesource.tabris.geolocation.Position;
 import com.eclipsesource.tabris.geolocation.PositionError;
 import com.eclipsesource.tabris.geolocation.PositionError.PositionErrorCode;
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 
 
+@RunWith( RWTRunner.class )
 public class GeolocationImplTest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     Fixture.fakePhase( PhaseId.PROCESS_ACTION );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

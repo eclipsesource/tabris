@@ -25,21 +25,22 @@ import java.net.URL;
 import java.util.Map;
 
 import org.eclipse.rap.rwt.lifecycle.WidgetLifeCycleAdapter;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 
 import com.eclipsesource.tabris.internal.VideoLifeCycleAdapter;
 import com.eclipsesource.tabris.internal.VideoLifeCycleAdapter.PlaybackOptions;
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.widgets.Video.Playback;
 import com.eclipsesource.tabris.widgets.Video.PlaybackAdapter;
 import com.eclipsesource.tabris.widgets.Video.Presentation;
 
 
+@RunWith( RWTRunner.class )
 public class VideoTest {
 
   private Video video;
@@ -47,10 +48,8 @@ public class VideoTest {
   private PlaybackListener playbackListener;
   private PresentationListener presentationListener;
 
-
   @Before
   public void setUp() {
-    Fixture.setUp();
     Display display = new Display();
     parent = new Shell( display );
     video = new Video( "http://test.com", parent );
@@ -58,11 +57,6 @@ public class VideoTest {
     video.addPlaybackListener( playbackListener );
     presentationListener = mock( PresentationListener.class );
     video.addPresentationListener( presentationListener );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

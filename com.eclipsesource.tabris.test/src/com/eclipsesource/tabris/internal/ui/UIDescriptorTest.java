@@ -23,26 +23,22 @@ import java.util.List;
 import org.eclipse.rap.rwt.client.WebClient;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.widgets.Display;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.TabrisClient;
 import com.eclipsesource.tabris.internal.ui.web.WebRendererFactory;
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.ui.TransitionListener;
 
 
+@RunWith( RWTRunner.class )
 public class UIDescriptorTest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     new Display();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

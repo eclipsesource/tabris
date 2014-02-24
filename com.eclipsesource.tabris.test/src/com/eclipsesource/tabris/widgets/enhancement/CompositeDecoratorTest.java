@@ -33,11 +33,14 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import com.eclipsesource.tabris.test.RWTRunner;
 
 
+@RunWith( RWTRunner.class )
 public class CompositeDecoratorTest {
 
   private Composite composite;
@@ -45,17 +48,11 @@ public class CompositeDecoratorTest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     Shell shell = new Shell( new Display() );
     composite = new Composite( shell, SWT.NONE );
     composite.setLayout( new GridLayout() );
     decorator = new CompositeDecorator( composite );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test( expected = IllegalArgumentException.class )

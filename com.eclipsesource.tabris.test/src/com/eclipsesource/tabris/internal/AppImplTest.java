@@ -29,9 +29,9 @@ import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 
@@ -39,20 +39,16 @@ import com.eclipsesource.tabris.app.App;
 import com.eclipsesource.tabris.app.AppEvent;
 import com.eclipsesource.tabris.app.AppListener;
 import com.eclipsesource.tabris.app.BackNavigationListener;
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 
 
+@RunWith( RWTRunner.class )
 public class AppImplTest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     Fixture.fakePhase( PhaseId.PROCESS_ACTION );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

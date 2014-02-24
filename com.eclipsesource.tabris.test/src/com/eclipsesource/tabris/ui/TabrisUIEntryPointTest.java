@@ -26,29 +26,25 @@ import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.lifecycle.PhaseListener;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.internal.TabrisClientImpl;
+import com.eclipsesource.tabris.test.RWTRunner;
 
 
 @SuppressWarnings("restriction")
+@RunWith( RWTRunner.class )
 public class TabrisUIEntryPointTest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     LifeCycleFactory lifeCycleFactory = getApplicationContext().getLifeCycleFactory();
     lifeCycleFactory.configure( TestLifeCycle.class );
     lifeCycleFactory.activate();
     Fixture.fakeClient( new TabrisClientImpl() );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

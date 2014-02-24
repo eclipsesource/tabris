@@ -35,31 +35,27 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TypedListener;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.internal.ClientCanvasLCA;
 import com.eclipsesource.tabris.internal.ClientCanvasOperator;
 import com.eclipsesource.tabris.internal.ClientCanvasTestUtil;
 import com.eclipsesource.tabris.internal.DrawingsCache;
+import com.eclipsesource.tabris.test.RWTRunner;
 
 
+@RunWith( RWTRunner.class )
 public class ClientCanvasTest {
 
   private ClientCanvas clientCanvas;
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     Display display = new Display();
     Shell shell = new Shell( display );
     clientCanvas = new ClientCanvas( shell, SWT.NONE );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

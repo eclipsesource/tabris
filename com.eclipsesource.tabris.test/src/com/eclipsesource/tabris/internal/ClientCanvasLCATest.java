@@ -21,33 +21,28 @@ import org.eclipse.rap.rwt.internal.remote.RemoteObjectRegistry;
 import org.eclipse.rap.rwt.lifecycle.AbstractWidgetLCA;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.remote.OperationHandler;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.widgets.ClientCanvas;
 
 
 @SuppressWarnings("restriction")
+@RunWith( RWTRunner.class )
 public class ClientCanvasLCATest {
 
   private ClientCanvas clientCanvas;
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     Display display = new Display();
     Shell shell = new Shell( display );
     clientCanvas = new ClientCanvas( shell, SWT.NONE );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

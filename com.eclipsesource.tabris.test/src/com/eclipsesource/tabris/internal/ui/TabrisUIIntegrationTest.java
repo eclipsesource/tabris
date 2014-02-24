@@ -16,12 +16,13 @@ import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.TabrisClient;
 import com.eclipsesource.tabris.internal.ZIndexStackLayout;
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.ui.AbstractPage;
 import com.eclipsesource.tabris.ui.ActionConfiguration;
 import com.eclipsesource.tabris.ui.PageConfiguration;
@@ -29,17 +30,12 @@ import com.eclipsesource.tabris.ui.PageData;
 import com.eclipsesource.tabris.ui.UIConfiguration;
 
 
+@RunWith( RWTRunner.class )
 public class TabrisUIIntegrationTest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     Fixture.fakeClient( mock( TabrisClient.class ) );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

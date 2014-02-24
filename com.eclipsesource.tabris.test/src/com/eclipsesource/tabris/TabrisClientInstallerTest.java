@@ -26,29 +26,23 @@ import org.eclipse.rap.rwt.internal.lifecycle.PhaseListenerRegistry;
 import org.eclipse.rap.rwt.internal.resources.ResourceRegistry;
 import org.eclipse.rap.rwt.internal.theme.ThemeManager;
 import org.eclipse.rap.rwt.service.ResourceLoader;
-import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.internal.Constants;
 import com.eclipsesource.tabris.internal.TabrisResourceLoader;
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 
 
 @SuppressWarnings("restriction")
+@RunWith( RWTRunner.class )
 public class TabrisClientInstallerTest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
-
     TabrisTestUtil.mockRemoteObject();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

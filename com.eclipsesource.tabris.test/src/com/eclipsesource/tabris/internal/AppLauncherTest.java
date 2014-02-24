@@ -20,30 +20,20 @@ import java.io.Serializable;
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.json.JsonValue;
 import org.eclipse.rap.rwt.remote.RemoteObject;
-import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 
 import com.eclipsesource.tabris.interaction.AppLauncher;
 import com.eclipsesource.tabris.interaction.LaunchOptions;
 import com.eclipsesource.tabris.interaction.LaunchOptions.App;
 import com.eclipsesource.tabris.interaction.MailOptions;
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 
 
+@RunWith( RWTRunner.class )
 public class AppLauncherTest {
-
-  @Before
-  public void setUp() {
-    Fixture.setUp();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
-  }
 
   @Test
   public void testIsSerializable() {

@@ -23,11 +23,9 @@ import static org.mockito.Mockito.verify;
 import java.io.Serializable;
 import java.util.List;
 
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.graphics.RGB;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.internal.ui.ImageUtil;
 import com.eclipsesource.tabris.internal.ui.PageDescriptor;
@@ -37,19 +35,11 @@ import com.eclipsesource.tabris.internal.ui.UIDescriptor;
 import com.eclipsesource.tabris.internal.ui.UITestUtil;
 import com.eclipsesource.tabris.internal.ui.UIUpdater;
 import com.eclipsesource.tabris.internal.ui.UpdateUtil;
+import com.eclipsesource.tabris.test.RWTRunner;
 
 
+@RunWith( RWTRunner.class )
 public class UIConfigurationTest {
-
-  @Before
-  public void setUp() {
-    Fixture.setUp();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
-  }
 
   @Test
   public void testIsSerializable() {

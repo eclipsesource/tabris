@@ -39,9 +39,9 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.internal.ui.ActionDescriptor;
 import com.eclipsesource.tabris.internal.ui.ImageUtil;
@@ -49,6 +49,7 @@ import com.eclipsesource.tabris.internal.ui.PropertyChangeHandler;
 import com.eclipsesource.tabris.internal.ui.PropertyChangeNotifier;
 import com.eclipsesource.tabris.internal.ui.RemoteActionTest;
 import com.eclipsesource.tabris.internal.ui.TestSearchAction;
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.UI;
 import com.eclipsesource.tabris.ui.action.ProposalHandler;
@@ -56,6 +57,7 @@ import com.eclipsesource.tabris.ui.action.SearchAction;
 
 
 @SuppressWarnings("restriction")
+@RunWith( RWTRunner.class )
 public class WebSearchActionTest {
 
   private UI ui;
@@ -70,7 +72,6 @@ public class WebSearchActionTest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     display = new Display();
     Shell shell = new Shell( display );
@@ -84,11 +85,6 @@ public class WebSearchActionTest {
     control = webSearchAction.getControl();
     text = webSearchAction.getText();
     proposalsMenu = webSearchAction.getProposalsMenu();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

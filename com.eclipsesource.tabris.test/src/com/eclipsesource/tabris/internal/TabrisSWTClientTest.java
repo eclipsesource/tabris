@@ -11,22 +11,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
 import org.eclipse.rap.rwt.client.service.BrowserNavigation;
-import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.eclipsesource.tabris.test.RWTRunner;
+
+
+@RunWith( RWTRunner.class )
 public class TabrisSWTClientTest {
-
-  @Before
-  public void setUp() {
-    Fixture.setUp();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
-  }
 
   @Test
   public void testHasBrowserNavigationService() {

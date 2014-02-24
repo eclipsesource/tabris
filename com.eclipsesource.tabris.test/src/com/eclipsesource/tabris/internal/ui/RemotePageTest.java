@@ -29,16 +29,16 @@ import java.util.List;
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 
 import com.eclipsesource.tabris.internal.ui.rendering.ActionRenderer;
 import com.eclipsesource.tabris.internal.ui.rendering.UIRenderer;
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 import com.eclipsesource.tabris.ui.Page;
 import com.eclipsesource.tabris.ui.PageData;
@@ -47,6 +47,7 @@ import com.eclipsesource.tabris.ui.UI;
 
 
 @SuppressWarnings("restriction")
+@RunWith( RWTRunner.class )
 public class RemotePageTest {
 
   private RemoteObjectImpl remoteObject;
@@ -57,7 +58,6 @@ public class RemotePageTest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     shell = new Shell( new Display() );
     remoteObject = ( RemoteObjectImpl )TabrisTestUtil.mockRemoteObject();
     ui = mock( UI.class );
@@ -82,11 +82,6 @@ public class RemotePageTest {
     when( descriptor.getActions() ).thenReturn( actions );
     when( descriptor.getImage() ).thenReturn( UITestUtil.getImageBytes() );
     doReturn( TestPage.class ).when( descriptor ).getPageType();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

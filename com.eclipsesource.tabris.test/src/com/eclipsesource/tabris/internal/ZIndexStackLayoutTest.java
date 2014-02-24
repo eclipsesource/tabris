@@ -14,7 +14,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
 
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
@@ -22,54 +21,51 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import com.eclipsesource.tabris.test.RWTRunner;
 
 
+@RunWith( RWTRunner.class )
 public class ZIndexStackLayoutTest {
-  
+
   private Shell shell;
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     shell = new Shell( new Display() );
     shell.setSize( 50, 50 );
     shell.setLayout( new FillLayout() );
   }
-  
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
-  }
-  
+
   @Test
   public void testUsesWholeClientAreaForLayout() {
     Composite parent = new Composite( shell, SWT.NONE );
     parent.setLayout( new ZIndexStackLayout() );
     Composite child = new Composite( parent, SWT.NONE );
     shell.layout( true, true );
-    
+
     Point size = child.computeSize( SWT.DEFAULT, SWT.DEFAULT );
-    
+
     assertEquals( 64, size.x );
     assertEquals( 64, size.y );
   }
-  
+
   @Test
   public void testUsesHints() {
     Composite parent = new Composite( shell, SWT.NONE );
     parent.setLayout( new ZIndexStackLayout() );
     Composite child = new Composite( parent, SWT.NONE );
     shell.layout( true, true );
-    
+
     Point size = child.computeSize( 100, 100 );
-    
+
     assertEquals( 100, size.x );
     assertEquals( 100, size.y );
   }
-  
+
   @Test
   public void testModifiesZIndexOnLayout() {
     Composite parent = new Composite( shell, SWT.NONE );
@@ -78,12 +74,12 @@ public class ZIndexStackLayoutTest {
     new Composite( parent, SWT.NONE );
     Composite child2 = new Composite( parent, SWT.NONE );
     layout.setOnTopControl( child2 );
-    
+
     shell.layout( true, true );
-    
+
     assertSame( child2, parent.getChildren()[ 0 ] );
   }
-  
+
   @Test
   public void testModifiesZIndexOnLayoutWhenTopControlChangedTwice() {
     Composite parent = new Composite( shell, SWT.NONE );
@@ -91,23 +87,23 @@ public class ZIndexStackLayoutTest {
     parent.setLayout( layout );
     Composite child1 = new Composite( parent, SWT.NONE );
     Composite child2 = new Composite( parent, SWT.NONE );
-    
+
     layout.setOnTopControl( child1 );
     layout.setOnTopControl( child2 );
     layout.setOnTopControl( child1 );
-    
+
     shell.layout( true, true );
-    
+
     assertSame( child1, parent.getChildren()[ 0 ] );
   }
-  
+
   @Test
   public void testGetOnTopControl() {
     ZIndexStackLayout swipeLayout = new ZIndexStackLayout();
     Control control = mock( Control.class );
-    
+
     swipeLayout.setOnTopControl( control);
-    
+
     assertEquals( control, swipeLayout.getOnTopControl() );
   }
 }

@@ -27,17 +27,18 @@ import org.eclipse.rap.rwt.internal.theme.ThemeManager;
 import org.eclipse.rap.rwt.internal.theme.css.CssFileReader;
 import org.eclipse.rap.rwt.internal.theme.css.StyleSheet;
 import org.eclipse.rap.rwt.service.ResourceLoader;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.rap.rwt.testfixture.TestRequest;
 import org.eclipse.rap.rwt.testfixture.internal.engine.ThemeManagerHelper;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.TabrisClient;
+import com.eclipsesource.tabris.test.RWTRunner;
 
 
 @SuppressWarnings("restriction")
+@RunWith( RWTRunner.class )
 public class TabrisClientProviderTest {
 
   private static final String CURRENT_THEME_ID = "org.eclipse.rap.theme.current";
@@ -46,13 +47,7 @@ public class TabrisClientProviderTest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     provider = new TabrisClientProvider();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

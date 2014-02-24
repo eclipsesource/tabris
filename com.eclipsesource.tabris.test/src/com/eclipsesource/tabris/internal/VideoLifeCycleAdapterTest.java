@@ -19,6 +19,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
@@ -37,15 +38,13 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import com.eclipsesource.tabris.internal.VideoLifeCycleAdapter.PlaybackOptions;
 import com.eclipsesource.tabris.test.ControlLCATestUtil;
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.widgets.PlaybackListener;
 import com.eclipsesource.tabris.widgets.PresentationListener;
 import com.eclipsesource.tabris.widgets.Video;
@@ -53,29 +52,25 @@ import com.eclipsesource.tabris.widgets.Video.Playback;
 import com.eclipsesource.tabris.widgets.Video.Presentation;
 
 
-@RunWith( MockitoJUnitRunner.class )
+@RunWith( RWTRunner.class )
 public class VideoLifeCycleAdapterTest {
 
   private Video video;
   private Shell parent;
-  @Mock private PlaybackListener playbackListener;
-  @Mock private PresentationListener presentationListener;
+  private PlaybackListener playbackListener;
+  private PresentationListener presentationListener;
   private AbstractWidgetLCA lifeCycleAdapter;
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     Display display = new Display();
     parent = new Shell( display );
     video = new Video( "http://test.com", parent );
+    playbackListener = mock( PlaybackListener.class );
+    presentationListener = mock( PresentationListener.class );
     new Button( parent, SWT.PUSH );
     lifeCycleAdapter = ( AbstractWidgetLCA )video.getAdapter( WidgetLifeCycleAdapter.class );
     Fixture.fakeNewRequest();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

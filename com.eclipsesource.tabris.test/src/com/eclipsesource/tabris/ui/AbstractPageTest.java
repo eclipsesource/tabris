@@ -19,28 +19,24 @@ import static org.mockito.Mockito.when;
 
 import java.io.Serializable;
 
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import com.eclipsesource.tabris.test.RWTRunner;
 
 
+@RunWith( RWTRunner.class )
 public class AbstractPageTest {
 
   private Shell shell;
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     shell = new Shell( new Display() );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

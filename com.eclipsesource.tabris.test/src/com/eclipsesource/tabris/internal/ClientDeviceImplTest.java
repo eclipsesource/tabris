@@ -30,9 +30,9 @@ import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
 import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.rap.rwt.testfixture.TestRequest;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.device.ClientDevice;
 import com.eclipsesource.tabris.device.ClientDevice.Capability;
@@ -40,24 +40,20 @@ import com.eclipsesource.tabris.device.ClientDevice.ConnectionType;
 import com.eclipsesource.tabris.device.ClientDevice.Orientation;
 import com.eclipsesource.tabris.device.ClientDevice.Platform;
 import com.eclipsesource.tabris.device.ClientDeviceListener;
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 
 
 @SuppressWarnings("restriction")
+@RunWith( RWTRunner.class )
 public class ClientDeviceImplTest {
 
   private RemoteObjectImpl serviceObject;
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     serviceObject = ( RemoteObjectImpl )mockServiceObject();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

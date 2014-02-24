@@ -19,19 +19,20 @@ import static org.mockito.Mockito.when;
 
 import java.io.Serializable;
 
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.ui.ActionOperator;
 import com.eclipsesource.tabris.ui.PageOperator;
 import com.eclipsesource.tabris.ui.UIConfiguration;
 
 
+@RunWith( RWTRunner.class )
 public class UIImplTest {
 
   private Display display;
@@ -39,18 +40,12 @@ public class UIImplTest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     display = new Display();
     Shell shell = new Shell( display );
     shell.setLayout( new StackLayout() );
     RemoteUI uiRenderer = mock( RemoteUI.class );
     when( uiRenderer.getPageParent() ).thenReturn( shell );
     controller = new Controller( uiRenderer, mock( UIDescriptor.class ) );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

@@ -14,17 +14,18 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import org.eclipse.rap.json.JsonArray;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry;
+import com.eclipsesource.tabris.test.RWTRunner;
 
 
+@RunWith( RWTRunner.class )
 public class ShellDecoratorTest {
 
   private Shell shell;
@@ -33,15 +34,9 @@ public class ShellDecoratorTest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     display = new Display();
     shell = mock( Shell.class );
     decorator = Widgets.onShell( shell );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test( expected = IllegalArgumentException.class )

@@ -21,29 +21,23 @@ import static org.junit.Assert.assertTrue;
 import java.io.InputStream;
 import java.io.Serializable;
 
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.widgets.Display;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.internal.ui.ActionDescriptor;
 import com.eclipsesource.tabris.internal.ui.TestAction;
 import com.eclipsesource.tabris.internal.ui.UITestUtil;
+import com.eclipsesource.tabris.test.RWTRunner;
 
 
+@RunWith( RWTRunner.class )
 public class ActionConfigurationTest {
-
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     new Display();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

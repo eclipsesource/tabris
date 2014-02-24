@@ -20,18 +20,20 @@ import static org.mockito.Mockito.mock;
 import java.io.Serializable;
 
 import org.eclipse.rap.json.ParseException;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.widgets.Display;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 
+import com.eclipsesource.tabris.test.RWTRunner;
 
+
+@RunWith( RWTRunner.class )
 public class GCOperationDispatcherTest {
 
   private GC gc;
@@ -39,15 +41,9 @@ public class GCOperationDispatcherTest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     new Display();
     gc = mock( GC.class );
     dispatcher = new GCOperationDispatcher( gc, ClientCanvasTestUtil.createDrawings( 3 ) );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

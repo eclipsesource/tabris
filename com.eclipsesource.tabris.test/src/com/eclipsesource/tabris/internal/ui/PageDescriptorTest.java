@@ -20,26 +20,16 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.List;
 
-import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.ui.ActionConfiguration;
 import com.eclipsesource.tabris.ui.PageStyle;
 
 
+@RunWith( RWTRunner.class )
 public class PageDescriptorTest {
-
-  @Before
-  public void setUp() {
-    Fixture.setUp();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
-  }
 
   @Test
   public void testIsSerializable() {

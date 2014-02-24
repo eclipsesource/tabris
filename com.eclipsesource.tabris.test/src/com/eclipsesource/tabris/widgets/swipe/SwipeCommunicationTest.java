@@ -33,16 +33,18 @@ import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 
+import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 import com.eclipsesource.tabris.widgets.swipe.SwipeTest.TestItem;
 
 
+@RunWith( RWTRunner.class )
 public class SwipeCommunicationTest {
 
   private RemoteObject remoteObject;
@@ -50,15 +52,9 @@ public class SwipeCommunicationTest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     shell = new Shell( new Display() );
     remoteObject = TabrisTestUtil.mockRemoteObject();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test
