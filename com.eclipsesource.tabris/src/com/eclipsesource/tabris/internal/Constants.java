@@ -130,6 +130,10 @@ public class Constants {
   public static final String PROPERTY_CONNECTION_TYPE = "connectionType";
   public static final String PROPERTY_CAPABILITIES = "capabilities";
   public static final String PROPERTY_ORIENTATION = "orientation";
+  public static final String PROPERTY_SCALE_FACTOR = "scaleFactor";
+  public static final String PROPERTY_OS_VERSION = "osVersion";
+  public static final String PROPERTY_MODEL = "model";
+  public static final String PROPERTY_VENDOR = "vendor";
 
   // App Constants
   public static final String TYPE_APP = "tabris.App";
@@ -139,6 +143,9 @@ public class Constants {
   public static final String PROPERTY_INACTIVITY_TIME = "inactivityTime";
   public static final String PROPERTY_SCREEN_PROTECTION = "screenProtection";
   public static final String PROPERTY_BADGE_NUMBER = "badgeNumber";
+  public static final String PROPERTY_APP_VERSION = "version";
+  public static final String PROPERTY_APP_ID = "id";
+  public static final String PROPERTY_TABRIS_VERSION = "tabrisVersion";
 
   // AppLauncher Constants
   public static final String TYPE_APP_LAUNCHER = "tabris.AppLauncher";

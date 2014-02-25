@@ -11,9 +11,12 @@ import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Constants.EVENT_BACK_NAVIGATION;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_START_INACTIVITY_TIMER;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_STOP_INACTIVITY_TIMER;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_APP_ID;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_APP_VERSION;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_BADGE_NUMBER;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_INACTIVITY_TIME;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SCREEN_PROTECTION;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TABRIS_VERSION;
 import static com.eclipsesource.tabris.internal.Constants.TYPE_APP;
 
 import java.util.ArrayList;
@@ -40,6 +43,9 @@ public class AppImpl extends AbstractOperationHandler implements App {
   private final RemoteObject remoteObject;
   private final Map<EventType, List<AppListener>> eventListeners;
   private final List<BackNavigationListener> backNavigationListeners;
+  private String id;
+  private String version;
+  private String tabrisVersion;
   private boolean protect;
   private int badgeNumber;
 
@@ -87,6 +93,19 @@ public class AppImpl extends AbstractOperationHandler implements App {
     backNavigationListeners.remove( listener );
     if( backNavigationListeners.isEmpty() ) {
       remoteObject.listen( EVENT_BACK_NAVIGATION, false );
+    }
+  }
+
+  @Override
+  public void handleSet( JsonObject properties ) {
+    if( properties.get( PROPERTY_TABRIS_VERSION ) != null ) {
+      tabrisVersion = properties.get( PROPERTY_TABRIS_VERSION ).asString();
+    }
+    if( properties.get( PROPERTY_APP_ID ) != null ) {
+      id = properties.get( PROPERTY_APP_ID ).asString();
+    }
+    if( properties.get( PROPERTY_APP_VERSION ) != null ) {
+      version = properties.get( PROPERTY_APP_VERSION ).asString();
     }
   }
 
@@ -159,5 +178,20 @@ public class AppImpl extends AbstractOperationHandler implements App {
   @Override
   public int getBadgeNumber() {
     return badgeNumber;
+  }
+
+  @Override
+  public String getTabrisVersion() {
+    return tabrisVersion;
+  }
+
+  @Override
+  public String getId() {
+    return id;
+  }
+
+  @Override
+  public String getVersion() {
+    return version;
   }
 }

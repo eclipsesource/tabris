@@ -339,4 +339,52 @@ public class ClientDeviceImplTest {
 
     verify( listener ).connectionTypeChanged( ConnectionType.WIFI );
   }
+
+  @Test
+  public void testSetsVendor() {
+    ClientDeviceImpl device = new ClientDeviceImpl();
+    JsonObject properties = new JsonObject();
+    properties.add( "vendor", "fooBar" );
+
+    device.handleSet( properties );
+
+    String vendor = device.getVendor();
+    assertEquals( "fooBar", vendor );
+  }
+
+  @Test
+  public void testSetsModel() {
+    ClientDeviceImpl device = new ClientDeviceImpl();
+    JsonObject properties = new JsonObject();
+    properties.add( "model", "blub" );
+
+    device.handleSet( properties );
+
+    String model = device.getModel();
+    assertEquals( "blub", model );
+  }
+
+  @Test
+  public void testSetsOSVersion() {
+    ClientDeviceImpl device = new ClientDeviceImpl();
+    JsonObject properties = new JsonObject();
+    properties.add( "osVersion", "7.1.0" );
+
+    device.handleSet( properties );
+
+    String version = device.getOSVersion();
+    assertEquals( "7.1.0", version );
+  }
+
+  @Test
+  public void testSetsScaleFactor() {
+    ClientDeviceImpl device = new ClientDeviceImpl();
+    JsonObject properties = new JsonObject();
+    properties.add( "scaleFactor", 2.13F );
+
+    device.handleSet( properties );
+
+    float scaleFactor = device.getScaleFactor();
+    assertEquals( 2.13F, scaleFactor, 0F );
+  }
 }
