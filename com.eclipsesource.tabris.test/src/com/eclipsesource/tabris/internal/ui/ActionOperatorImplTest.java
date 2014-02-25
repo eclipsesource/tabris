@@ -13,6 +13,7 @@ package com.eclipsesource.tabris.internal.ui;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -64,6 +65,43 @@ public class ActionOperatorImplTest {
     Action actualAction = actionOperator.getAction( "foo" );
 
     assertSame( action, actualAction );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testExistsFailsWithNullId() {
+    Controller controller = mock( Controller.class );
+    ActionOperatorImpl actionOperator = new ActionOperatorImpl( controller );
+
+    actionOperator.exists( null );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testExistsFailsWithEmptyId() {
+    Controller controller = mock( Controller.class );
+    ActionOperatorImpl actionOperator = new ActionOperatorImpl( controller );
+
+    actionOperator.exists( "" );
+  }
+
+  @Test
+  public void testActionExistsIfRegistered() {
+    Controller controller = mock( Controller.class );
+    doReturn( Boolean.TRUE ).when( controller ).hasAction( "foo" );
+    ActionOperatorImpl actionOperator = new ActionOperatorImpl( controller );
+
+    boolean exists = actionOperator.exists( "foo" );
+
+    assertTrue( exists );
+  }
+
+  @Test
+  public void testActionDoesNotExistIfNotRegistered() {
+    Controller controller = mock( Controller.class );
+    ActionOperatorImpl actionOperator = new ActionOperatorImpl( controller );
+
+    boolean exists = actionOperator.exists( "foo" );
+
+    assertFalse( exists );
   }
 
   @Test

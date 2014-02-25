@@ -54,6 +54,7 @@ import com.eclipsesource.tabris.internal.ui.rendering.RendererFactory;
 import com.eclipsesource.tabris.internal.ui.rendering.UIRenderer;
 import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
+import com.eclipsesource.tabris.ui.ActionConfiguration;
 import com.eclipsesource.tabris.ui.Page;
 import com.eclipsesource.tabris.ui.PageConfiguration;
 import com.eclipsesource.tabris.ui.PageData;
@@ -926,6 +927,39 @@ public class ControllerTest {
     doReturn( Boolean.FALSE ).when( descriptor ).isTopLevel();
     uiDescriptor.add( descriptor );
     return descriptor;
+  }
+
+  @Test
+  public void testHasGlobalAction() {
+    ActionDescriptor descriptor = mock( ActionDescriptor.class );
+    when( descriptor.getId() ).thenReturn( "foo" );
+    uiDescriptor.add( descriptor );
+    RemoteUI remoteUI = mock( RemoteUI.class );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
+    controller.createGlobalActions( ui );
+
+    boolean hasAction = controller.hasAction( "foo" );
+
+    assertTrue( hasAction );
+  }
+
+  @Test
+  public void testHasPageAction() {
+    PageDescriptor pageDescriptor = new PageDescriptor( "bar", TestPage.class );
+    pageDescriptor.setTopLevel( true );
+    pageDescriptor.addAction( new ActionConfiguration( "foo", TestAction.class ) );
+    uiDescriptor.add( pageDescriptor );
+    RemoteUI remoteUI = mock( RemoteUI.class );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
+    controller.createGlobalActions( ui );
+    controller.createRootPages( ui );
+    controller.showPage( ui, pageDescriptor, mock( PageData.class ) );
+
+    boolean hasAction = controller.hasAction( "foo" );
+
+    assertTrue( hasAction );
   }
 
 }
