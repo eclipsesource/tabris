@@ -12,6 +12,7 @@ package com.eclipsesource.tabris.internal;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
@@ -53,6 +54,11 @@ public class TabrisClientProviderTest {
   @Test
   public void testIsSerializable() {
     assertTrue( Serializable.class.isAssignableFrom( TabrisClientProvider.class ) );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testFailsWithEmptyServerId() {
+    new TabrisClientProvider( "" );
   }
 
   @Test
@@ -131,5 +137,62 @@ public class TabrisClientProviderTest {
     ThemeManagerHelper.resetThemeManager();
     ThemeManager themeManager = applicationContext.getThemeManager();
     themeManager.registerTheme( theme );
+  }
+
+  @Test
+  public void testSetsServerIdAsHeaderForAndroid() {
+    provider = new TabrisClientProvider( "foo" );
+    TestRequest request = ( TestRequest )RWT.getRequest();
+    request.setHeader( Constants.USER_AGENT, Constants.ID_ANDROID );
+
+    provider.accept( request );
+
+    String header = RWT.getResponse().getHeader( "com.eclipsesource.tabris.server.id" );
+    assertEquals( "foo", header );
+  }
+
+  @Test
+  public void testSetsServerIdAsHeaderForIOS() {
+    provider = new TabrisClientProvider( "foo" );
+    TestRequest request = ( TestRequest )RWT.getRequest();
+    request.setHeader( Constants.USER_AGENT, Constants.ID_IOS );
+
+    provider.accept( request );
+
+    String header = RWT.getResponse().getHeader( "com.eclipsesource.tabris.server.id" );
+    assertEquals( "foo", header );
+  }
+
+  @Test
+  public void testSetsServerIdAsHeaderForAndroidOnlyIfSet() {
+    TestRequest request = ( TestRequest )RWT.getRequest();
+    request.setHeader( Constants.USER_AGENT, Constants.ID_ANDROID );
+
+    provider.accept( request );
+
+    String header = RWT.getResponse().getHeader( "com.eclipsesource.tabris.server.id" );
+    assertNull( header );
+  }
+
+  @Test
+  public void testSetsServerIdAsHeaderForIOSOnlyIfSet() {
+    TestRequest request = ( TestRequest )RWT.getRequest();
+    request.setHeader( Constants.USER_AGENT, Constants.ID_IOS );
+
+    provider.accept( request );
+
+    String header = RWT.getResponse().getHeader( "com.eclipsesource.tabris.server.id" );
+    assertNull( header );
+  }
+
+  @Test
+  public void testSetsNoServerIdAsHeaderForWeb() {
+    provider = new TabrisClientProvider( "foo" );
+    TestRequest request = ( TestRequest )RWT.getRequest();
+
+    provider.accept( request );
+
+    String header = RWT.getResponse().getHeader( "com.eclipsesource.tabris.server.id" );
+    assertNull( header );
   }
 }

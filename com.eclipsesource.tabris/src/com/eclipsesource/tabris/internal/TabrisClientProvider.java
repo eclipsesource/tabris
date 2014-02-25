@@ -9,6 +9,8 @@ package com.eclipsesource.tabris.internal;
 
 import static com.eclipsesource.tabris.device.ClientDevice.Platform.ANDROID;
 import static com.eclipsesource.tabris.device.ClientDevice.Platform.IOS;
+import static com.eclipsesource.tabris.internal.Clauses.when;
+import static com.eclipsesource.tabris.internal.Constants.HEADER_SERVER_ID;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_ANDROID;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_IOS;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_IOS6;
@@ -16,6 +18,7 @@ import static com.eclipsesource.tabris.internal.Constants.THEME_ID_IOS6;
 import java.io.Serializable;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.client.Client;
@@ -27,12 +30,30 @@ import com.eclipsesource.tabris.device.ClientDevice.Platform;
 @SuppressWarnings("restriction")
 public class TabrisClientProvider implements ClientProvider, Serializable {
 
+  private final String serverId;
+
+  public TabrisClientProvider() {
+    this( null );
+  }
+
+  public TabrisClientProvider( String serverId ) {
+    verifyServerId( serverId );
+    this.serverId = serverId;
+  }
+
+  private void verifyServerId( String serverId ) {
+    if( serverId != null ) {
+      when( serverId.isEmpty() ).throwIllegalArgument( "ServerId must not be empty" );
+    }
+  }
+
   @Override
   public boolean accept( HttpServletRequest request ) {
     Platform platform = DeviceUtil.getPlatform();
     boolean result = platform == ANDROID || platform == IOS;
     if( result ) {
       setThemeForPlatform( platform );
+      setServerId();
     }
     return result;
   }
@@ -47,6 +68,13 @@ public class TabrisClientProvider implements ClientProvider, Serializable {
       }
     } else if( platform == ANDROID ) {
       ThemeUtil.setCurrentThemeId( RWT.getUISession(), THEME_ID_ANDROID );
+    }
+  }
+
+  private void setServerId() {
+    HttpServletResponse response = RWT.getResponse();
+    if( serverId != null ) {
+      response.addHeader( HEADER_SERVER_ID, serverId );
     }
   }
 

@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris;
 
+import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Constants.INDEX_JSON;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_ANDROID;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_IOS;
@@ -58,17 +59,38 @@ public class TabrisClientInstaller {
 
   /**
    * <p>
-   * Registers themes and other resources needed for the Tabris clients.
+   * Registers themes and other resources needed for the Tabris clients with no required serverId.
    * </p>
    *
    * @since 1.0
    */
   public static void install( Application application ) {
+    TabrisClientInstaller.install( application, null );
+  }
+
+  /**
+   * <p>
+   * Registers themes and other resources needed for the Tabris clients. Also sets the server id that a client
+   * can use to verify a server connection.
+   * </p>
+   *
+   * @param serverId the id for the server. May be <code>null</code> but not empty.
+   *
+   * @since 1.3
+   */
+  public static void install( Application application, String serverId ) {
+    verifyServerId( serverId );
     ApplicationImpl applicationImpl = ( ApplicationImpl )application;
-    applicationImpl.addClientProvider( new TabrisClientProvider() );
+    applicationImpl.addClientProvider( new TabrisClientProvider( serverId ) );
     applicationImpl.addClientProvider( new TabrisSWTClientProvider() );
     registerCompatibilityThemes( application );
     registerResourceLoader( applicationImpl );
+  }
+
+  private static void verifyServerId( String serverId ) {
+    if( serverId != null ) {
+      when( serverId.isEmpty() ).throwIllegalArgument( "ServerId must not be empty" );
+    }
   }
 
   private static void registerCompatibilityThemes( Application application ) {

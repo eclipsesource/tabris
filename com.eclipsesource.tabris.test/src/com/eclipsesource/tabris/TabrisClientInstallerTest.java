@@ -68,6 +68,36 @@ public class TabrisClientInstallerTest {
     verify( applicationContext.getResourceRegistry() ).add( eq( "index.json" ), any( TabrisResourceLoader.class ) );
   }
 
+  @Test
+  public void testRegistersThemeWithId() {
+    ApplicationImpl application = mockConfiguration();
+
+    TabrisClientInstaller.install( application, "foo" );
+
+    verify( application ).addStyleSheet( eq( Constants.THEME_ID_ANDROID ), anyString(), any( ResourceLoader.class ) );
+    verify( application ).addStyleSheet( eq( Constants.THEME_ID_IOS6 ), anyString(), any( ResourceLoader.class ) );
+    verify( application ).addStyleSheet( eq( Constants.THEME_ID_IOS ), anyString(), any( ResourceLoader.class ) );
+    verify( application ).addStyleSheet( eq( Constants.THEME_ID_SWT ), anyString(), any( ResourceLoader.class ) );
+    verify( application ).addStyleSheet( eq( RWT.DEFAULT_THEME_ID ), anyString(), any( ResourceLoader.class ) );
+  }
+
+  @Test
+  public void testRegistersTabrisLoaderWithId() {
+    ApplicationImpl application = mockConfiguration();
+    ApplicationContextImpl applicationContext = application.getApplicationContext();
+
+    TabrisClientInstaller.install( application, "foo" );
+
+    verify( applicationContext.getResourceRegistry() ).add( eq( "index.json" ), any( TabrisResourceLoader.class ) );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testFailsWithEmptyId() {
+    ApplicationImpl application = mockConfiguration();
+
+    TabrisClientInstaller.install( application, "" );
+  }
+
   private ApplicationImpl mockConfiguration() {
     ApplicationImpl application = mock( ApplicationImpl.class );
     ApplicationContextImpl context = mock( ApplicationContextImpl.class );

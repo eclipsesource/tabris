@@ -18,6 +18,7 @@ public class Constants {
   public static final String ID_IOS = "com.eclipsesource.tabris.ios";
   public static final String ID_SWT = "com.eclipsesource.tabris.swt";
   public static final String USER_AGENT = "User-Agent";
+  public static final String HEADER_SERVER_ID = "com.eclipsesource.tabris.server.id";
   public static final String THEME_ID_ANDROID = "com.eclipsesource.rap.mobile.theme.android";
   public static final String THEME_ID_SWT = "com.eclipsesource.rap.mobile.theme.swt";
   public static final String THEME_ID_IOS = "com.eclipsesource.rap.mobile.theme.ios";
