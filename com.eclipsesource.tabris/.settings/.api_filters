@@ -54,4 +54,12 @@
             </message_arguments>
         </filter>
     </resource>
+    <resource path="src/com/eclipsesource/tabris/internal/TableItemHeightService.java" type="com.eclipsesource.tabris.internal.TableItemHeightService">
+        <filter id="574619656">
+            <message_arguments>
+                <message_argument value="ClientService"/>
+                <message_argument value="TableItemHeightService"/>
+            </message_arguments>
+        </filter>
+    </resource>
 </component>

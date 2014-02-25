@@ -13,8 +13,10 @@ package com.eclipsesource.tabris.internal.ui;
 import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
+import java.io.Serializable;
 
-public class PropertyChangeNotifier {
+
+public class PropertyChangeNotifier implements Serializable {
 
   private PropertyChangeHandler handler;
 

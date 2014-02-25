@@ -11,13 +11,21 @@
 package com.eclipsesource.tabris.internal.ui;
 
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+
+import java.io.Serializable;
 
 import org.junit.Test;
 
 
 public class PropertyChangeNotifierTest {
+
+  @Test
+  public void testIsSerializable() {
+    assertTrue( Serializable.class.isAssignableFrom( PropertyChangeNotifier.class ) );
+  }
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsToSetNullHandler() {
