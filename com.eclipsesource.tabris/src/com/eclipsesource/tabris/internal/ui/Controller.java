@@ -361,6 +361,14 @@ public class Controller implements UIUpdater, Serializable {
     return result;
   }
 
+  boolean hasAction( String id ) {
+    ActionRenderer result = findActionInGlobalActions( id );
+    if( result == null ) {
+      result = findActionInPageActions( id );
+    }
+    return result != null;
+  }
+
   private ActionRenderer findActionInGlobalActions( String id ) {
     for( ActionRenderer action : globalActionRenderers ) {
       if( action.getDescriptor().getId().equals( id ) ) {

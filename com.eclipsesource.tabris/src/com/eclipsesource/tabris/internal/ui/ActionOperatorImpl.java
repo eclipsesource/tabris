@@ -74,12 +74,19 @@ public class ActionOperatorImpl implements ActionOperator, Serializable {
   }
 
   @Override
+  public boolean exists( String id ) {
+    whenNull( id ).throwIllegalArgument( "Id must not be null" );
+    when( id.isEmpty() ).throwIllegalArgument( "Id must not be empty" );
+    return controller.hasAction( id );
+  }
+
+  @Override
   public Action getAction( String id ) {
     whenNull( id ).throwIllegalArgument( "Id must not be null" );
     when( id.isEmpty() ).throwIllegalArgument( "Id must not be empty" );
-    ActionRenderer remoteAction = controller.findRemoteAction( id );
-    if( remoteAction != null ) {
-      return remoteAction.getDescriptor().getAction();
+    ActionRenderer actionRenderer = controller.findRemoteAction( id );
+    if( actionRenderer != null ) {
+      return actionRenderer.getDescriptor().getAction();
     }
     return null;
   }

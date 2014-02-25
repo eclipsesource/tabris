@@ -69,6 +69,17 @@ public interface ActionOperator {
 
   /**
    * <p>
+   * Checks if an {@link Action} with the specified id exists.
+   * </p>
+   *
+   * @param id the id of the {@link Action}. Must not be empty or <code>null</code>.
+   *
+   * @since 1.3
+   */
+  boolean exists( String id );
+
+  /**
+   * <p>
    * Returns the actual {@link Action} instance for a given id.
    * </p>
    *
