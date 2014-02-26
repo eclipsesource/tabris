@@ -30,6 +30,7 @@ public class Constants {
   public static final String THEME_PATH_SWT = "theme/swt.css";
   public static final String INDEX_JSON = "index.json";
   public static final String CUSTOM_VARIANT_TABRIS_UI = "tabrisUI";
+  public static final String PROPERTY_VERSION_CHECK = "com.eclipsesource.tabris.version.check";
 
   // Common Constants
   public static final String METHOD_OPEN = "open";
