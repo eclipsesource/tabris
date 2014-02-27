@@ -55,10 +55,13 @@
   <modules>
     <!-- Bundles -->
     <module>../com.eclipsesource.tabris</module>
+    <module>../com.eclipsesource.tabris.passepartout</module>
     <!-- Tests -->
     <module>../com.eclipsesource.tabris.test</module>
+    <module>../com.eclipsesource.tabris.passepartout.test</module>
     <!-- Features -->
     <module>../com.eclipsesource.tabris.feature</module>
+    <module>../com.eclipsesource.tabris.passepartout.feature</module>
     <module>../com.eclipsesource.tabris.repository</module>
   </modules>
 

@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tabris Passe-Partout Tests
+Bundle-SymbolicName: com.eclipsesource.tabris.passepartout.test
+Bundle-Version: 0.9.0.qualifier
+Bundle-Vendor: EclipseSource
+Fragment-Host: com.eclipsesource.tabris.passepartout;bundle-version="0.9.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.junit;bundle-version="[4.10.0,5.0.0)",
+ org.mockito.mockito-all;bundle-version="1.9.5",
+ org.eclipse.rap.rwt.testfixture;bundle-version="2.2.0",
+ org.eclipse.rap.rwt;bundle-version="2.2.0",
+ org.eclipse.rap.jface;bundle-version="2.2.0"
