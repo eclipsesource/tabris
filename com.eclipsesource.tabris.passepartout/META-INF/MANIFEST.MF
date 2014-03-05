@@ -10,4 +10,8 @@ Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.swt,
  org.eclipse.swt.graphics,
  org.eclipse.swt.widgets
-Export-Package: com.eclipsesource.tabris.passepartout;version="0.9.0"
+Export-Package: com.eclipsesource.tabris.passepartout;version="0.9.0",
+ com.eclipsesource.tabris.passepartout.internal;version="0.9.0";x-internal:=true,
+ com.eclipsesource.tabris.passepartout.internal.condition;version="0.9.0";x-internal:=true,
+ com.eclipsesource.tabris.passepartout.internal.instruction;version="0.9.0";x-internal:=true,
+ com.eclipsesource.tabris.passepartout.internal.unit;version="0.9.0";x-internal:=true
