@@ -426,4 +426,40 @@ public class AppImplTest {
     app.setBadgeNumber( -1 );
   }
 
+  @Test
+  public void testSetsTabrisVersion() {
+    AppImpl app = new AppImpl();
+    JsonObject properties = new JsonObject();
+    properties.set( "tabrisVersion", "1.3.0" );
+
+    app.handleSet( properties );
+
+    String tabrisVersion = app.getTabrisVersion();
+    assertEquals( "1.3.0", tabrisVersion );
+  }
+
+  @Test
+  public void testSetsAppId() {
+    AppImpl app = new AppImpl();
+    JsonObject properties = new JsonObject();
+    properties.set( "id", "foo.bar" );
+
+    app.handleSet( properties );
+
+    String id = app.getId();
+    assertEquals( "foo.bar", id );
+  }
+
+  @Test
+  public void testSetsVersion() {
+    AppImpl app = new AppImpl();
+    JsonObject properties = new JsonObject();
+    properties.set( "version", "1.4.0" );
+
+    app.handleSet( properties );
+
+    String version = app.getVersion();
+    assertEquals( "1.4.0", version );
+  }
+
 }

@@ -35,6 +35,42 @@ public interface ClientDevice extends ClientInfo {
 
   /**
    * <p>
+   * Returns the vendor name of the client device e.g. Apple, Samsung and so on.
+   * </p>
+   *
+   * @since 1.3
+   */
+  String getVendor();
+
+  /**
+   * <p>
+   * Returns the model name of the client device e.g. iPhone, Galaxy S3 and so on.
+   * </p>
+   *
+   * @since 1.3
+   */
+  String getModel();
+
+  /**
+   * <p>
+   * Returns the version of the client's operating system.
+   * </p>
+   *
+   * @since 1.3
+   */
+  String getOSVersion();
+
+  /**
+   * <p>
+   * Returns the scale factor of the device's display.
+   * </p>
+   *
+   * @since 1.3
+   */
+  float getScaleFactor();
+
+  /**
+   * <p>
    * Enumeration to make the identification of a requesting client easier.
    * </p>
    *

@@ -13,8 +13,12 @@ package com.eclipsesource.tabris.internal;
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_CAPABILITIES;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_CONNECTION_TYPE;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_MODEL;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ORIENTATION;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_OS_VERSION;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SCALE_FACTOR;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TIMEZONE_OFFSET;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_VENDOR;
 import static com.eclipsesource.tabris.internal.Constants.TYPE_CLIENT_DEVICE;
 
 import java.util.ArrayList;
@@ -49,6 +53,10 @@ public class ClientDeviceImpl extends AbstractOperationHandler implements Client
   private ConnectionType connectionType;
   private Orientation orientation;
   private List<Capability> capabilities;
+  private String vendor;
+  private String model;
+  private String osVersion;
+  private float scaleFactor;
 
   public ClientDeviceImpl() {
     remoteObject = ( ( ConnectionImpl )RWT.getUISession().getConnection() ).createServiceObject( TYPE_CLIENT_DEVICE );
@@ -66,25 +74,89 @@ public class ClientDeviceImpl extends AbstractOperationHandler implements Client
   }
 
   @Override
+  public String getVendor() {
+    return vendor;
+  }
+
+  @Override
+  public String getModel() {
+    return model;
+  }
+
+  @Override
+  public String getOSVersion() {
+    return osVersion;
+  }
+
+  @Override
+  public float getScaleFactor() {
+    return scaleFactor;
+  }
+
+  @Override
   public Platform getPlatform() {
     return DeviceUtil.getPlatform();
   }
 
   @Override
   public void handleSet( JsonObject properties ) {
+    setTimezoneOffset( properties );
+    setConnectionType( properties );
+    setCapabilities( properties );
+    setOrientation( properties );
+    setVendor( properties );
+    setModel( properties );
+    setOsVersion( properties );
+    setScaleFactor( properties );
+  }
+
+  private void setTimezoneOffset( JsonObject properties ) {
     if( properties.get( PROPERTY_TIMEZONE_OFFSET ) != null ) {
       timezoneOffset = Integer.valueOf( properties.get( PROPERTY_TIMEZONE_OFFSET ).asInt() );
     }
+  }
+
+  private void setConnectionType( JsonObject properties ) {
     if( properties.get( PROPERTY_CONNECTION_TYPE ) != null ) {
       connectionType = ConnectionType.valueOf( properties.get( PROPERTY_CONNECTION_TYPE ).asString() );
       fireConnectionTypeChange();
     }
+  }
+
+  private void setCapabilities( JsonObject properties ) {
     if( properties.get( PROPERTY_CAPABILITIES ) != null ) {
       setCapabilities( properties.get( PROPERTY_CAPABILITIES ).asArray() );
     }
+  }
+
+  private void setOrientation( JsonObject properties ) {
     if( properties.get( PROPERTY_ORIENTATION ) != null ) {
       orientation = Orientation.valueOf( properties.get( PROPERTY_ORIENTATION ).asString() );
       fireOrientationChange();
+    }
+  }
+
+  private void setVendor( JsonObject properties ) {
+    if( properties.get( PROPERTY_VENDOR ) != null ) {
+      vendor = properties.get( PROPERTY_VENDOR ).asString();
+    }
+  }
+
+  private void setModel( JsonObject properties ) {
+    if( properties.get( PROPERTY_MODEL ) != null ) {
+      model = properties.get( PROPERTY_MODEL ).asString();
+    }
+  }
+
+  private void setOsVersion( JsonObject properties ) {
+    if( properties.get( PROPERTY_OS_VERSION ) != null ) {
+      osVersion = properties.get( PROPERTY_OS_VERSION ).asString();
+    }
+  }
+
+  private void setScaleFactor( JsonObject properties ) {
+    if( properties.get( PROPERTY_SCALE_FACTOR ) != null ) {
+      scaleFactor = properties.get( PROPERTY_SCALE_FACTOR ).asFloat();
     }
   }
 

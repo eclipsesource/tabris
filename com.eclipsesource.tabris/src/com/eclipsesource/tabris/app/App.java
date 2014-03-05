@@ -125,4 +125,31 @@ public interface App extends ClientService {
    */
   int getBadgeNumber();
 
+  /**
+   * <p>
+   * Returns the Tabris version used in the client application.
+   * </p>
+   *
+   * @since 1.3
+   */
+  String getTabrisVersion();
+
+  /**
+   * <p>
+   * Returns the ID of the client application.
+   * </p>
+   *
+   * @since 1.3
+   */
+  String getId();
+
+  /**
+   * <p>
+   * Returns the version of the client application.
+   * </p>
+   *
+   * @since 1.3
+   */
+  String getVersion();
+
 }
