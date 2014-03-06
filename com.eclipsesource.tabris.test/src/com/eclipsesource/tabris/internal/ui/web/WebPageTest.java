@@ -133,6 +133,18 @@ public class WebPageTest {
   }
 
   @Test
+  public void testSetTitleUpdatesUi() {
+    WebClient webClient = mock( WebClient.class );
+    JavaScriptExecutor javaScriptExecutor = mock( JavaScriptExecutor.class );
+    when( webClient.getService( JavaScriptExecutor.class ) ).thenReturn( javaScriptExecutor );
+    Fixture.fakeClient( webClient );
+
+    webPage.setTitle( "foo" );
+
+    verify( uiRenderer ).updatePageSwitcher( descriptor, "foo" );
+  }
+
+  @Test
   public void testPageActivated_rendersTitle() {
     WebClient webClient = mock( WebClient.class );
     JavaScriptExecutor javaScriptExecutor = mock( JavaScriptExecutor.class );

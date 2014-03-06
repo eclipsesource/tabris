@@ -111,6 +111,7 @@ public class WebPage implements PageRenderer {
   public void setTitle( String title ) {
     this.title = title;
     setBrowserTitle();
+    uiRenderer.updatePageSwitcher( descriptor, title );
   }
 
   @Override

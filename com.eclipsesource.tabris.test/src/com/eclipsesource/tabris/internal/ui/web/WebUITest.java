@@ -246,6 +246,36 @@ public class WebUITest {
   }
 
   @Test
+  public void testUpdateUpdatesMenuItems() {
+    WebPage page = mock( WebPage.class );
+    PageDescriptor descriptor = mock( PageDescriptor.class );
+    doReturn( Boolean.TRUE ).when( descriptor ).isTopLevel();
+    doReturn( "Title" ).when( descriptor ).getTitle();
+    when( page.getDescriptor() ).thenReturn( descriptor );
+    webUI.pageCreated( page );
+    webUI.activate( page );
+
+    webUI.updatePageSwitcher( descriptor, "foo" );
+
+    assertEquals( "foo", webUI.getPageSwitcherMenu().getItem( 0 ).getText() );
+  }
+
+  @Test
+  public void testUpdateUpdatesToolItems() {
+    WebPage page = mock( WebPage.class );
+    PageDescriptor descriptor = mock( PageDescriptor.class );
+    doReturn( Boolean.TRUE ).when( descriptor ).isTopLevel();
+    doReturn( "Title" ).when( descriptor ).getTitle();
+    when( page.getDescriptor() ).thenReturn( descriptor );
+    webUI.pageCreated( page );
+    webUI.activate( page );
+
+    webUI.updatePageSwitcher( descriptor, "foo" );
+
+    assertEquals( "foo", webUI.getPageSwitcher().getItem( 0 ).getText() );
+  }
+
+  @Test
   public void testLayoutOrder() {
     List<Composite> log = new ArrayList<Composite>();
     Composite actionsParent = webUI.getActionsParent();

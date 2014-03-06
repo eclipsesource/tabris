@@ -246,6 +246,28 @@ public class WebUI implements UIRenderer {
     }
   }
 
+  void updatePageSwitcher( PageDescriptor descriptor, String title ) {
+    updateMenuItems( descriptor, title );
+    updateToolItems( descriptor, title );
+  }
+
+  private void updateMenuItems( PageDescriptor descriptor, String title ) {
+    for( MenuItem menuItem : pageSwitcherMenu.getItems() ) {
+      if( menuItem.getData() == descriptor ) {
+        menuItem.setText( title );
+      }
+    }
+  }
+
+  private void updateToolItems( PageDescriptor descriptor, String title ) {
+    for( ToolItem toolItem : pageSwitcher.getItems() ) {
+      if( toolItem.getData() == descriptor ) {
+        toolItem.setText( title );
+        toolItem.getParent().getParent().layout( true, true );
+      }
+    }
+  }
+
   private final class BackButtonSelectionListener implements Listener {
 
     @Override
@@ -275,6 +297,7 @@ public class WebUI implements UIRenderer {
       PageDescriptor pageDescriptor = ( PageDescriptor )item.getData();
       ToolItem dropDown = pageSwitcher.getItem( 0 );
       dropDown.setText( item.getText() );
+      dropDown.setData( pageDescriptor );
       dropDown.setImage( item.getImage() );
       if( !DATA_ACTIVATED.equals( event.data ) ) {
         ui.getPageOperator().openPage( pageDescriptor.getId() );
