@@ -263,17 +263,17 @@ public class Controller implements UIUpdater, Serializable {
   }
 
   private void restorePreviousPage( UIImpl ui, PageRenderer previousPageRenderer ) {
+    fireTransitionBeforeEvent( ui, currentFlow.getCurrentRenderer(), previousPageRenderer );
     PageRenderer removedPage = cleanUpCurrentPage( ui );
-    fireTransitionBeforeEvent( ui, removedPage, previousPageRenderer );
     initializePreviousPage( ui, previousPageRenderer );
     fireTransitionAfterEvent( ui, removedPage, previousPageRenderer );
   }
 
   private PageRenderer cleanUpCurrentPage( UIImpl ui ) {
     PageRenderer removedPage = currentFlow.getCurrentRenderer();
+    removedPage.getPage().deactivate();
     removedPage.destroy();
     removedPage.destroyActions();
-    removedPage.getPage().deactivate();
     currentFlow.pop();
     return removedPage;
   }
