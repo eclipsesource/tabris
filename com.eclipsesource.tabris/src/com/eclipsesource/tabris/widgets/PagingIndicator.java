@@ -20,8 +20,22 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Widget;
+
+import com.eclipsesource.tabris.ui.TabrisUI;
+import com.eclipsesource.tabris.widgets.swipe.Swipe;
 
 /**
+ * <p>
+ * When you build your app with a paging concept using {@link Swipe}, {@link TabrisUI} or any homebrew solution it’s
+ * sometimes required that you need to indicate the paging progress. This is often done using colored bullets. With the
+ * {@link PagingIndicator} you can create such bullets. It allows you to define the number of bullets, the active one
+ * and the look and feel.
+ * </p>
+ * <p>
+ * The {@link PagingIndicator} is a stand alone {@link Widget}. It needs to be part of your layout.
+ * </p>
+ *
  * @since 1.3
  */
 public class PagingIndicator extends Composite {
@@ -34,6 +48,21 @@ public class PagingIndicator extends Composite {
   private int spacing;
   private int diameter;
 
+  /**
+   * <p>
+   * Creates a new {@link PagingIndicator} with the provided parent. Default values are:
+   * <ul>
+   *   <li>bullet count = 1</li>
+   *   <li>active bullet index = 0</li>
+   *   <li>spacing between bullets = 9px</li>
+   *   <li>bullet diameter = 7px</li>
+   *   <li>active color = blue</li>
+   *   <li>inactive color = gray</li>
+   * </ul>
+   * </p>
+   *
+   * @param parent the parent to use. Must not be <code>null</code>.
+   */
   public PagingIndicator( Composite parent ) {
     super( parent, SWT.NONE );
     initializeIndicator( parent );
@@ -64,16 +93,37 @@ public class PagingIndicator extends Composite {
     indicatorCanvas.setLayoutData( new GridData( SWT.CENTER, SWT.CENTER, true, true ) );
   }
 
+  /**
+   * <p>
+   * Sets the number of the bullets to show.
+   * </p>
+   *
+   * @param count the number of bullets. Must be >= 0.
+   */
   public void setCount( int count ) {
     when( count < 0 ).throwIllegalArgument( "Count must be positive but was " + count );
     this.count = count;
     update();
   }
 
+  /**
+   * <p>
+   * Returns the number of bullets to show.
+   * </p>
+   */
   public int getCount() {
     return count;
   }
 
+  /**
+   * <p>
+   * Marks the bullet with the defined index as active.
+   * </p>
+   *
+   * @param index the index of the bullet to become active. Must be >= 0.
+   *
+   * @throws IllegalStateException when the defined index does not exist.
+   */
   public void setActive( int index ) {
     when( index < 0 ).throwIllegalArgument( "Index must be positive but was " + index );
     when( index > ( count - 1 ) ).throwIllegalState( "Index " + index + " does not exist. Count is " + count + "." );
@@ -81,40 +131,88 @@ public class PagingIndicator extends Composite {
     update();
   }
 
+  /**
+   * <p>
+   * Returns the index of the active bullet.
+   * </p>
+   */
   public int getActive() {
     return activeIndex;
   }
 
+  /**
+   * <p>
+   * Sets the color of the active bullet.
+   * </p>
+   *
+   * @param activeColor the color to use for active bullets. Must not be <code>null</code>.
+   */
   public void setActiveColor( Color activeColor ) {
     whenNull( activeColor ).throwIllegalArgument( "Active color must not be null" );
     this.activeColor = activeColor;
     update();
   }
 
+  /**
+   * <p>
+   * Returns the active color.
+   * </p>
+   */
   public Color getActiveColor() {
     return activeColor;
   }
 
+  /**
+   * <p>
+   * Sets the color of the inactive bullets.
+   * </p>
+   *
+   * @param inactiveColor the color to use for inactive bullets. Must not be <code>null</code>.
+   */
   public void setInactiveColor( Color inactiveColor ) {
     whenNull( inactiveColor ).throwIllegalArgument( "Inactive color must not be null" );
     this.inactiveColor = inactiveColor;
     update();
   }
 
+  /**
+   * <p>
+   * Returns the inactive color.
+   * </p>
+   */
   public Color getInactiveColor() {
     return inactiveColor;
   }
 
+  /**
+   * <p>
+   * Sets the spacing used between bullets.
+   * </p>
+   *
+   * @param spacing the spacing to use in pixel. Must be >= 0.
+   */
   public void setSpacing( int spacing ) {
     when( spacing < 0  ).throwIllegalArgument( "Spacing must be positive but was " + spacing );
     this.spacing = spacing;
     update();
   }
 
+  /**
+   * <p>
+   * Returns the spacing used between bullets.
+   * </p>
+   */
   public int getSpacing() {
     return spacing;
   }
 
+  /**
+   * <p>
+   * Sets the diameter of the bullets.
+   * </p>
+   *
+   * @param diameter the diameter to use for the bullets. Must be >= 0.
+   */
   public void setDiameter( int diameter ) {
     when( diameter < 0  ).throwIllegalArgument( "Diameter must be positive but was " + diameter );
     this.diameter = diameter;
