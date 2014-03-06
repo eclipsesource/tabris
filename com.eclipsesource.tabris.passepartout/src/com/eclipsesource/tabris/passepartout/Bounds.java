@@ -11,6 +11,14 @@
 package com.eclipsesource.tabris.passepartout;
 
 
+/**
+ * <p>
+ * {@link Bounds} are basically an abstraction for an area in a UI. Such an area always has an origin point and
+ * width + height.
+ * </p>
+ *
+ * @since 0.9
+ */
 public class Bounds {
 
   private final int x;
@@ -18,6 +26,16 @@ public class Bounds {
   private final int width;
   private final int height;
 
+  /**
+   * <p>
+   * Creates a new {@link Bounds} object with the defined values.
+   * </p>
+   *
+   *  @param x the x coordinate of the origin point.
+   *  @param y the y coordinate of the origin point.
+   *  @param width the width of the defined area.
+   *  @param height the height of the defined area.
+   */
   public Bounds( int x, int y, int width, int height ) {
     this.x = x;
     this.y = y;
@@ -25,18 +43,38 @@ public class Bounds {
     this.height = height;
   }
 
+  /**
+   * <p>
+   * Returns the x coordinate of the origin point.
+   * </p>
+   */
   public int getX() {
     return x;
   }
 
+  /**
+   * <p>
+   * Returns the y coordinate of the origin point.
+   * </p>
+   */
   public int getY() {
     return y;
   }
 
+  /**
+   * <p>
+   * Returns the width of the defined area.
+   * </p>
+   */
   public int getWidth() {
     return width;
   }
 
+  /**
+   * <p>
+   * Returns the height of the defined area.
+   * </p>
+   */
   public int getHeight() {
     return height;
   }

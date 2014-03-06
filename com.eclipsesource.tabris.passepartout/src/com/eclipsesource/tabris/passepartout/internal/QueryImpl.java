@@ -32,11 +32,11 @@ public class QueryImpl implements Query {
   }
 
   @Override
-  public Rule then( Instruction instruction, Instruction... instructions ) {
+  public Rule then( Instruction instruction, Instruction... additionalInstructions ) {
     whenNull( instruction ).throwIllegalArgument( "Instruction must not be null" );
     List<Instruction> actualInstructions = new ArrayList<Instruction>();
     actualInstructions.add( instruction );
-    for( Instruction actualInstruction : instructions ) {
+    for( Instruction actualInstruction : additionalInstructions ) {
       actualInstructions.add( actualInstruction );
     }
     return new RuleImpl( conditions, actualInstructions );

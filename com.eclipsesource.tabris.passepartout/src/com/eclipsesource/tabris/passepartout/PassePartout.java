@@ -34,17 +34,63 @@ import com.eclipsesource.tabris.passepartout.internal.unit.Percentage;
 import com.eclipsesource.tabris.passepartout.internal.unit.Pixel;
 
 
-public class PassePartout {
+/**
+ * <p>
+ * The whole Passe-Partout API uses {@link Query}s, {@link Condition}s and {@link Instruction}s to define adjustable UI
+ * components like a layout or resources. The {@link PassePartout} class acts as a facade to create {@link Condition}s,
+ * {@link Instruction}s and {@link Unit}s of specific types.
+ * </p>
+ *
+ * @see FluidGridLayout
+ * @see Resource
+ *
+ * @since 0.9
+ */
+public final class PassePartout {
 
-  public static FluidGridLayout createGrid() {
-    return createGrid( new FluidGridConfiguration( LayoutMode.AUTO, 720, 1872 ) );
+  /**
+   * <p>
+   * Creates a {@link FluidGridLayout} with a default configuration. The configuration defined uses the
+   * {@link LayoutMode#AUTO} and the following switches for column folding:
+   * <ul>
+   *   <li>0px - 719px = 4 columns</li>
+   *   <li>720px - 1871px = 8 columns</li>
+   *   <li>1872px - unlimited = 16 columns</li>
+   * </ul>
+   * </p>
+   *
+   * @see FluidGridLayout
+   */
+  public static FluidGridLayout createFluidGrid() {
+    return createFluidGrid( new FluidGridConfiguration( LayoutMode.AUTO, 720, 1872 ) );
   }
 
-  public static FluidGridLayout createGrid( FluidGridConfiguration configuration ) {
+  /**
+   * <p>
+   * Creates a {@link FluidGridLayout} with the defined {@link FluidGridConfiguration}.
+   * </p>
+   *
+   * @param configuration the {@link FluidGridConfiguration} to use in the {@link FluidGridLayout}. Must not
+   *                      be <code>null</code>.
+   *
+   * @see FluidGridLayout
+   * @see FluidGridConfiguration
+   */
+  public static FluidGridLayout createFluidGrid( FluidGridConfiguration configuration ) {
     return new FluidGridLayout( configuration );
   }
 
-  public static FluidGridData createGridData( Rule... rules  ) {
+  /**
+   * <p>
+   * Create a {@link FluidGridData} with the defined {@link Rule}s.
+   * <p>
+   *
+   * @param rules the {@link Rule}s to use in the {@link FluidGridData}.
+   *
+   * @see Rule
+   * @see FluidGridLayout
+   */
+  public static FluidGridData createFluidGridData( Rule... rules  ) {
     FluidGridData gridData = new FluidGridData();
     for( Rule rule : rules ) {
       gridData.addRule( rule );
@@ -52,66 +98,191 @@ public class PassePartout {
     return gridData;
   }
 
+  /**
+   * <p>
+   * Creates a {@link Resource} with the defined {@link Rule}s.
+   * </p>
+   *
+   * @param rules the {@link Rule}s to use in the {@link Resource}
+   *
+   * @see Resource
+   * @see Rule
+   */
   public static Resource createResource( Rule... rules ) {
     return new ResourceImpl( rules );
   }
 
+  /**
+   * <p>
+   * Creates a {@link Query} with the defined {@link Condition}. Out of a {@link Query} you can create a {@link Rule}
+   * that is used together a {@link FluidGridData}, a {@link Resource} and so on.
+   * </p>
+   *
+   * @param condition the condition to use in the {@link Query}. Must not be <code>null</code>.
+   *
+   * @see Query
+   * @see Condition
+   */
   public static Query when( Condition condition ) {
     return new QueryImpl( condition );
   }
 
+  /**
+   * <p>
+   * Creates a {@link Condition} that's valid when the minimum width of a parent is equal or bigger than the defined
+   * value.
+   * </p>
+   *
+   * @param minWidth the minimum width for the {@link Condition} to become valid. Must not be <code>null</code>.
+   */
   public static Condition minWidth( Unit minWidth ) {
     return new MinWidthCondition( minWidth );
   }
 
+  /**
+   * <p>
+   * Creates a {@link Condition} that's valid when the maximum width of a parent is equal or smaller than the defined
+   * value.
+   * </p>
+   *
+   * @param maxWidth the maximum width for the {@link Condition} to become valid. Must not be <code>null</code>.
+   */
   public static Condition maxWidth( Unit maxWidth ) {
     return new MaxWidthCondition( maxWidth );
   }
 
+  /**
+   * <p>
+   * Creates a {@link Unit} that defines an <i><a href="http://en.wikipedia.org/wiki/Em_(typography)#CSS">em</a></i>.
+   * An <i>em</i> is a unit of width in the field of typography, equal to the currently specified point size. In
+   * CSS an <i>em</i> is heavily used to create responsive designs.
+   * </p>
+   *
+   * @param value the value of the <i>em</i>. Needs to be > 0.
+   */
   public static Unit em( double value ) {
     return new Em( BigDecimal.valueOf( value ) );
   }
 
+  /**
+   * <p>
+   * Creates a {@link Unit} that defines a percentage. The percentage defined is always relative to a component's
+   * parent element.
+   * </p>
+   *
+   * @param value the percentage value to use. Must be >= 0.
+   */
   public static Unit percent( double value ) {
     return new Percentage( BigDecimal.valueOf( value ) );
   }
 
+  /**
+   * <p>
+   * Creates a {@link Unit} that defines an absolute pixel value.
+   * </p>
+   *
+   * @param value defines the pixel value. Must be >= 0.
+   */
   public static Unit px( int value ) {
     return new Pixel( value );
   }
 
+  /**
+   * <p>
+   * Creates an {@link Instruction} that defines how many columns a component should use in a {@link FluidGridLayout}.
+   * </p>
+   *
+   * @param columns the columns to use. Must be >= 0.
+   */
   public static Instruction columns( int columns ) {
     return new ColumnsInstruction( columns );
   }
 
-  public static Instruction height( Unit unit ) {
-    return new HeightInstruction( unit );
+  /**
+   * <p>
+   * Create an {@link Instruction} to define the height of a component in a {@link FluidGridLayout}.
+   * </p>
+   *
+   * @param height the height to use. Must not be <code>null</code>.
+   */
+  public static Instruction height( Unit height ) {
+    return new HeightInstruction( height );
   }
 
+  /**
+   * <p>
+   * Creates an {@link Instruction} to define the margins of a component in a {@link FluidGridLayout}.
+   * </p>
+   *
+   * @param top the top margin. Must not be <code>null</code>.
+   * @param right the right margin. Must not be <code>null</code>.
+   * @param bottom the bottom margin. Must not be <code>null</code>.
+   * @param left the left margin. Must not be <code>null</code>.
+   */
   public static Instruction margins( Unit top, Unit right, Unit bottom, Unit left ) {
     return new MarginInstruction( top, right, bottom, left );
   }
 
+  /**
+   * <p>
+   * Creates an {@link Instruction} that will exclude a component in a {@link FluidGridLayout} from layouting.
+   * </p>
+   */
   public static Instruction exclude() {
     return new ExcludeInstruction();
   }
 
+  /**
+   * <p>
+   * Creates an {@link Instruction} to set a font used in a {@link Resource}.
+   * </p>
+   *
+   * @param font the font to set. Must not be <code>null</code>.
+   */
   public static Instruction font( Font font ) {
     return new FontInstruction( font );
   }
 
+  /**
+   * <p>
+   * Creates an {@link Instruction} to set a foreground color used in a {@link Resource}.
+   * </p>
+   *
+   * @param color the foreground to set. Must not be <code>null</code>.
+   */
   public static Instruction foreground( Color color ) {
     return new ForegroundInstruction( color );
   }
 
+  /**
+   * <p>
+   * Creates an {@link Instruction} to set a background color used in a {@link Resource}.
+   * </p>
+   *
+   * @param color the background to set. Must not be <code>null</code>.
+   */
   public static Instruction background( Color color ) {
     return new BackgroundInstruction( color );
   }
 
+  /**
+   * <p>
+   * Creates an {@link Instruction} to set an image used in a {@link Resource}.
+   * </p>
+   *
+   * @param image the image to set. Must not be <code>null</code>.
+   */
   public static Instruction image( Image image ) {
     return new ImageInstruction( image );
   }
 
+  /**
+   * <p>
+   * Creates an {@link Instruction} to set a background image used in a {@link Resource}.
+   * </p>
+   *
+   * @param image the background image to set. Must not be <code>null</code>.
+   */
   public static Instruction backgroundImage( Image image ) {
     return new BackgroundImageInstruction( image );
   }

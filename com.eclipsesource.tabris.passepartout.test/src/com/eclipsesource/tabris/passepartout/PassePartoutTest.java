@@ -60,36 +60,36 @@ public class PassePartoutTest {
 
   @Test
   public void testCreatesFluidGridWithoutMode() {
-    FluidGridLayout grid = PassePartout.createGrid();
+    FluidGridLayout grid = PassePartout.createFluidGrid();
 
     assertNotNull( grid );
   }
 
   @Test
   public void testCreatesFluidGridWithMode() {
-    FluidGridLayout grid = PassePartout.createGrid( new FluidGridConfiguration( LayoutMode.AUTO, 100, 200 ) );
+    FluidGridLayout grid = PassePartout.createFluidGrid( new FluidGridConfiguration( LayoutMode.AUTO, 100, 200 ) );
 
     assertNotNull( grid );
   }
 
   @Test
-  public void testCreateGridData() {
-    Rule rule1 = mock( Rule.class );
-    Rule rule2 = mock( Rule.class );
-
-    FluidGridData data = PassePartout.createGridData( rule1, rule2 );
-
-    assertNotNull( data );
-    assertEquals( rule1, data.getRules().get( 1 ) );
-    assertEquals( rule2, data.getRules().get( 2 ) );
-  }
+    public void testCreateFluidGridData() {
+      Rule rule1 = mock( Rule.class );
+      Rule rule2 = mock( Rule.class );
+  
+      FluidGridData data = PassePartout.createFluidGridData( rule1, rule2 );
+  
+      assertNotNull( data );
+      assertEquals( rule1, data.getRules().get( 1 ) );
+      assertEquals( rule2, data.getRules().get( 2 ) );
+    }
 
   @Test( expected = IllegalArgumentException.class )
-  public void testCreateGridDataFailsWithNullRule() {
-    Rule rule1 = mock( Rule.class );
-
-    PassePartout.createGridData( rule1, null );
-  }
+    public void testCreateFluidGridDataFailsWithNullRule() {
+      Rule rule1 = mock( Rule.class );
+  
+      PassePartout.createFluidGridData( rule1, null );
+    }
 
   @Test
   public void testCreateResourceCreatesResource() {

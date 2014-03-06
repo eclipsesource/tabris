@@ -13,27 +13,23 @@ package com.eclipsesource.tabris.passepartout;
 
 /**
  * <p>
- * A {@link QueryListener} can be attached to a {@link FluidGridLayout} to get notified when a specific
- * {@link Query} was activated or deactivated. This is often used to exchange UI elements when the screen size changes.
+ * This adapter provides an empty default implementation of {@link QueryListener}.
  * </p>
  *
- * @see FluidGridLayout
+ * @see QueryListener
  *
  * @since 0.9
  */
-public interface QueryListener {
+public class QueryAdapter implements QueryListener {
 
-  /**
-   * <p>
-   * Will be called when a {@link Query} becomes active.
-   * </p>
-   */
-  void activated( Query query );
+  @Override
+  public void activated( Query query ) {
+    // intended to be implemented by subclasses.
+  }
 
-  /**
-   * <p>
-   * Will be called when a {@link Query} becomes deactive.
-   * </p>
-   */
-  void deactivated( Query query );
+  @Override
+  public void deactivated( Query query ) {
+    // intended to be implemented by subclasses.
+  }
+
 }

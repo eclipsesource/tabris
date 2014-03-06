@@ -11,5 +11,17 @@
 package com.eclipsesource.tabris.passepartout;
 
 
+/**
+ * <p>
+ * An {@link Instruction} is a marker interface for instructions used in a {@link Rule}. Passe-Partout comes with it's
+ * own instruction set. Those instructions can be created using the {@link PassePartout} class.
+ * </p>
+ *
+ * @see Rule
+ *
+ * @noimplement This interface is not intended to be implemented by clients.
+ *
+ * @since 0.9
+ */
 public interface Instruction {
 }

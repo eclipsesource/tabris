@@ -20,6 +20,24 @@ import java.util.List;
 import com.eclipsesource.tabris.passepartout.internal.condition.AlwaysTrueContidtion;
 
 
+/**
+ * <p>
+ * The {@link FluidGridData} is the layout data type you need to use for the {@link FluidGridLayout}.
+ * A {@link FluidGridData} object is basically a set of {@link Rule}s. This set defines how your control should be
+ * layouted. Within a {@link Rule} you need to define the {@link Condition}s and the {@link Instruction}s to use.
+ * </p>
+ * <p>
+ * If such {@link Condition}s will become valid the {@link FluidGridLayout} grabs the defined {@link Instruction}s out
+ * of the {@link FluidGridData} and applies them.
+ * <p>
+ *
+ * @see FluidGridLayout
+ * @see Rule
+ * @see Condition
+ * @see Instruction
+ *
+ * @since 0.9
+ */
 public class FluidGridData {
 
   private final List<Rule> rules;
@@ -29,12 +47,24 @@ public class FluidGridData {
     addRule( when( new AlwaysTrueContidtion() ).then( columns( 1 ) ) );
   }
 
+  /**
+   * <p>
+   * Adds a {@link Rule}.
+   * </p>
+   *
+   * @param rule the {@link Rule} to add. Must not be <code>null</code>.
+   */
   public FluidGridData addRule( Rule rule ) {
     whenNull( rule ).throwIllegalArgument( "Rule must not be null" );
     rules.add( rule );
     return this;
   }
 
+  /**
+   * <p>
+   * Returns all {@link Rule}s defined in this {@link FluidGridData}.
+   * </p>
+   */
   public List<Rule> getRules() {
     return new ArrayList<Rule>( rules );
   }

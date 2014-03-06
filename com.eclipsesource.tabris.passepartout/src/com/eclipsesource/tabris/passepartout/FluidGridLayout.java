@@ -29,21 +29,69 @@ import com.eclipsesource.tabris.passepartout.internal.QueryNotifier;
 import com.eclipsesource.tabris.passepartout.internal.RelayoutListener;
 
 
+/**
+ * <p>
+ * With the {@link FluidGridLayout} you divide your application into a grid that responds to size changes.
+ * The idea how this grid works is borrowed from the famous
+ * <a href="http://goldengridsystem.com/">Golden Grid System (GGS)</a> created by Joni Korpi. Basically the GGS splits
+ * your visible area into several columns that adjust their widths while the screen size changes. What makes the GGS
+ * special is that it defines a concept called column folding. This concept comes from the print world. The idea is
+ * that on very large screens you will have 16 columns to use. On smaller screens this number changes to 8 and on tiny
+ * screens like phone displays you only have 4 columns left. The image below shows what folding means.
+ *
+ * <img src="http://developer.eclipsesource.com/tabris/docs/1.3/working/img/ggs.gif" />
+ * </p>
+ * <p>
+ * The {@link FluidGridLayout} works exactly like the GGS. To compute how many columns should be used the
+ * {@link FluidGridLayout} measures the width of your parent composite.
+ * </p>
+ * <p>
+ * In a {@link Composite} using {@link FluidGridLayout}, the children need to have {@link FluidGridData} set as
+ * layout data.
+ * </p>
+ *
+ * @see FluidGridData
+ * @see PassePartout
+ *
+ * @since 0.9
+ */
 public class FluidGridLayout extends Layout {
 
   private final QueryNotifier notifier;
   private final FluidGridConfiguration configuration;
 
+  /**
+   * <p>
+   * Creates a {@link FluidGridLayout} with the defined {@link FluidGridConfiguration}.
+   * </p>
+   *
+   * @param configuration the configuration of the layout. Must not be <code>null</code>.
+   */
   public FluidGridLayout( FluidGridConfiguration configuration ) {
     whenNull( configuration ).throwIllegalArgument( "configuration must not be null" );
     this.configuration = configuration;
     this.notifier = new QueryNotifier();
   }
 
+  /**
+   * <p>
+   * Adds a {@link QueryListener} that will be notified when a {@link Query} was activated or deactivated.
+   * </p>
+   *
+   * @param query the query to use. Must not be <code>null</code>.
+   * @param listener the listener to notify when the query was de/activated. Must not be <code>null</code>.
+   */
   public void addQueryListener( Query query, QueryListener listener ) {
     notifier.addQueryListener( query, listener );
   }
 
+  /**
+   * <p>
+   * Removes the listener for the specified {@link Query}.
+   * </p>
+   *
+   * @param query the query to remove the listener for. Must not be <code>null</code>.
+   */
   public void removeQueryListener( Query query ) {
     notifier.removeQueryListener( query );
   }

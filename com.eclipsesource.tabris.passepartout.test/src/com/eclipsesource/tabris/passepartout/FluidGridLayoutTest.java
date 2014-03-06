@@ -153,7 +153,7 @@ public class FluidGridLayoutTest {
     setDisplayBounds();
     Composite child1 = new Composite( shell, SWT.NONE );
     Composite child2 = new Composite( shell, SWT.NONE );
-    FluidGridLayout layout = PassePartout.createGrid();
+    FluidGridLayout layout = PassePartout.createFluidGrid();
 
     layout.layout( shell, true );
 
