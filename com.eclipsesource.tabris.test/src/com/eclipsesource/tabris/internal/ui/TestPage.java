@@ -10,6 +10,11 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Composite;
 
 import com.eclipsesource.tabris.ui.Page;
@@ -25,20 +30,35 @@ public class TestPage implements Page{
   private boolean wasActivated;
   private boolean wasDestroyed;
   private Page pageAtDeactivate;
+  private final List<String> callStack;
+
+  public TestPage() {
+    callStack = new ArrayList<String>();
+  }
 
   @Override
   public void createContent( Composite parent, UI ui ) {
+    callStack.add( "create" );
     this.ui = ui;
     wasCreated = true;
+    parent.addDisposeListener( new DisposeListener() {
+
+      @Override
+      public void widgetDisposed( DisposeEvent event ) {
+        callStack.add( "dispose" );
+      }
+    } );
   }
 
   @Override
   public void activate() {
+    callStack.add( "activate" );
     wasActivated = true;
   }
 
   @Override
   public void deactivate() {
+    callStack.add( "deactivate" );
     PageOperator pageOperator = ui.getPageOperator();
     if( pageOperator != null ) {
       pageAtDeactivate = pageOperator.getCurrentPage();
@@ -64,11 +84,16 @@ public class TestPage implements Page{
 
   @Override
   public void destroy() {
+    callStack.add( "destroy" );
     wasDestroyed = true;
   }
 
   public boolean wasDestroyed() {
     return wasDestroyed;
+  }
+
+  public List<String> getCallStack() {
+    return callStack;
   }
 
 }

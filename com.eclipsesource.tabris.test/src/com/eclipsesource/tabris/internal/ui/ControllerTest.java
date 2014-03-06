@@ -712,6 +712,50 @@ public class ControllerTest {
   }
 
   @Test
+  public void testShowPreviousDeactivatesBeforeDistroy() {
+    createRootPage( "foo" );
+    PageDescriptor page = createPage( "bar" );
+    PageDescriptor page2 = createPage( "bar2" );
+    RemoteUI remoteUI = mock( RemoteUI.class );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
+    controller.createRootPages( ui );
+    controller.showPage( ui, page, mock( PageData.class ) );
+    controller.showPage( ui, page2, mock( PageData.class ) );
+    TestPage testPage = ( TestPage )controller.getCurrentPage();
+
+    controller.closeCurrentPage( ui );
+    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
+
+    List<String> callStack = testPage.getCallStack();
+    assertEquals( "create", callStack.get( 0 ) );
+    assertEquals( "activate", callStack.get( 1 ) );
+    assertEquals( "deactivate", callStack.get( 2 ) );
+    assertEquals( "destroy", callStack.get( 3 ) );
+    assertEquals( "dispose", callStack.get( 4 ) );
+  }
+
+  @Test
+  public void testShowPreviousCallsListenerBeforeDestroy() {
+    createRootPage( "foo" );
+    PageDescriptor page = createPage( "bar" );
+    PageDescriptor page2 = createPage( "bar2" );
+    RemoteUI remoteUI = mock( RemoteUI.class );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
+    controller.createRootPages( ui );
+    controller.showPage( ui, page, mock( PageData.class ) );
+    controller.showPage( ui, page2, mock( PageData.class ) );
+
+    controller.closeCurrentPage( ui );
+
+    InOrder order = inOrder( listener, remoteObject );
+    order.verify( listener ).before( any( UI.class ), any( Page.class ), any( Page.class ) );
+    order.verify( remoteObject ).destroy();
+    order.verify( listener ).after( any( UI.class ), any( Page.class ), any( Page.class ) );
+  }
+
+  @Test
   public void testShowPreviousDoesNotEffectPagePageData() {
     createRootPage( "foo" );
     PageDescriptor page = createPage( "bar" );
