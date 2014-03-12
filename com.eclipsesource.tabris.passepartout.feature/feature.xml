@@ -2,7 +2,7 @@
 <feature
       id="com.eclipsesource.tabris.passepartout.feature"
       label="Tabris Passe-Partout"
-      version="0.9.0.qualifier"
+      version="0.10.0.qualifier"
       provider-name="EclipseSource">
 
    <description url="http://developer.eclipsesource.com/tabris">
