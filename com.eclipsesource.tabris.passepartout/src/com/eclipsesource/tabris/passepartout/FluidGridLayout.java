@@ -161,10 +161,42 @@ public class FluidGridLayout extends Layout {
 
   @Override
   protected Point computeSize( Composite composite, int wHint, int hHint, boolean flushCache ) {
+    int height = computeHeight( composite, flushCache );
     Rectangle parentBounds = BoundsUtil.getRectangle( createEnvironment( composite ).getParentBounds() );
+    height = ensureValidHeight( height, parentBounds );
     int width = wHint != SWT.DEFAULT ? wHint : parentBounds.width;
-    int height = hHint != SWT.DEFAULT ? hHint : parentBounds.height;
+    height = hHint != SWT.DEFAULT ? hHint : height;
     return new Point( width, height );
+  }
+
+  private int ensureValidHeight( int height, Rectangle parentBounds ) {
+    if( height == 0 ) {
+      return parentBounds.height;
+    }
+    return height;
+  }
+
+  private int computeHeight( Composite composite, boolean flushCache ) {
+    layout( composite, flushCache );
+    int lastY = 0;
+    int lastHeight = 0;
+    int height = 0;
+    for( Control child : composite.getChildren() ) {
+      Rectangle bounds = child.getBounds();
+      if( bounds.y > lastY ) {
+        height += bounds.height;
+        lastHeight = bounds.height;
+        lastY = bounds.y;
+      } else {
+        if( bounds.height > lastHeight ) {
+          height -= lastHeight;
+          lastHeight = bounds.height;
+          height += bounds.height;
+        }
+      }
+
+    }
+    return height;
   }
 
 }

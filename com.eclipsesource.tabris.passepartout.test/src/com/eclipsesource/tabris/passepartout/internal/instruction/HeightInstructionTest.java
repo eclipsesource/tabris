@@ -20,7 +20,6 @@ import org.junit.Test;
 import com.eclipsesource.tabris.passepartout.Bounds;
 import com.eclipsesource.tabris.passepartout.PassePartout;
 import com.eclipsesource.tabris.passepartout.Unit;
-import com.eclipsesource.tabris.passepartout.internal.instruction.HeightInstruction;
 import com.eclipsesource.tabris.passepartout.internal.unit.Em;
 import com.eclipsesource.tabris.passepartout.internal.unit.Percentage;
 
@@ -79,6 +78,15 @@ public class HeightInstructionTest {
     int height = instruction.computeHeight( new Bounds( 0, 0, 100, 100 ), 16 );
 
     assertEquals( 50, height );
+  }
+
+  @Test
+  public void testCalculatesHeightWithPercentageAndZeroParentBounds() {
+    HeightInstruction instruction = new HeightInstruction( new Percentage( BigDecimal.valueOf( 50 ) ) );
+
+    int height = instruction.computeHeight( new Bounds( 0, 0, 0, 0 ), 16 );
+
+    assertEquals( 0, height );
   }
 
   @Test

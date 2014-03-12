@@ -42,7 +42,9 @@ public class HeightInstruction implements Instruction {
     if( unit instanceof Pixel ) {
       return ( ( Pixel )unit ).getValue().intValue();
     } else if( unit instanceof Percentage ) {
-      return percentageToPixel( unit, parentBounds.getHeight() );
+      if( parentBounds.getHeight() != 0 ) {
+        return percentageToPixel( unit, parentBounds.getHeight() );
+      }
     } else if( unit instanceof Em ) {
       return emToPixel( unit, parentFontSize );
     }

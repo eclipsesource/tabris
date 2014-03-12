@@ -10,6 +10,11 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.passepartout;
 
+import static com.eclipsesource.tabris.passepartout.PassePartout.columns;
+import static com.eclipsesource.tabris.passepartout.PassePartout.createFluidGridData;
+import static com.eclipsesource.tabris.passepartout.PassePartout.height;
+import static com.eclipsesource.tabris.passepartout.PassePartout.px;
+import static com.eclipsesource.tabris.passepartout.PassePartout.when;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -137,7 +142,7 @@ public class FluidGridLayoutTest {
   }
 
   @Test
-  public void testUsesParentBoundsWhenComputeSize() {
+  public void testUsesParentBoundsWhenComputeSizeWithoutChildren() {
     shell.setSize( 500, 500 );
     Composite composite = new Composite( shell, SWT.NONE );
     FluidGridLayout layout = new FluidGridLayout( new FluidGridConfiguration( LayoutMode.NONE, 100, 200 ) );
@@ -146,6 +151,52 @@ public class FluidGridLayoutTest {
 
     assertEquals( 500, size.x );
     assertEquals( 500, size.y );
+  }
+
+  @Test
+  public void testUsesChildrenSizeWhenComputeSize() {
+    shell.setSize( 500, 500 );
+    Composite composite = new Composite( shell, SWT.NONE );
+    FluidGridLayout layout = new FluidGridLayout( new FluidGridConfiguration( LayoutMode.NONE, 100, 200 ) );
+    Composite child = new Composite( composite, SWT.NONE );
+    child.setLayoutData( createFluidGridData( when( new AlwaysTrueContidtion() ).then( height( px( 100 ) ) ) ) );
+
+    Point size = layout.computeSize( composite, SWT.DEFAULT, SWT.DEFAULT, true );
+
+    assertEquals( 500, size.x );
+    assertEquals( 100, size.y );
+  }
+
+  @Test
+  public void testUsesAllChildrenSizeWhenComputeSize() {
+    shell.setSize( 500, 500 );
+    Composite composite = new Composite( shell, SWT.NONE );
+    FluidGridLayout layout = new FluidGridLayout( new FluidGridConfiguration( LayoutMode.NONE, 700, 1700 ) );
+    Composite child = new Composite( composite, SWT.NONE );
+    child.setLayoutData( createFluidGridData( when( new AlwaysTrueContidtion() ).then( height( px( 100 ) ), columns( 4 ) ) ) );
+    Composite child2 = new Composite( composite, SWT.NONE );
+    child2.setLayoutData( createFluidGridData( when( new AlwaysTrueContidtion() ).then( height( px( 50 ) ) ) ) );
+
+    Point size = layout.computeSize( composite, SWT.DEFAULT, SWT.DEFAULT, true );
+
+    assertEquals( 500, size.x );
+    assertEquals( 150, size.y );
+  }
+
+  @Test
+  public void testRespectsChildrenColumnsWhenComputeSizeAndUsesHighestChild() {
+    shell.setSize( 500, 500 );
+    Composite composite = new Composite( shell, SWT.NONE );
+    FluidGridLayout layout = new FluidGridLayout( new FluidGridConfiguration( LayoutMode.NONE, 700, 1700 ) );
+    Composite child = new Composite( composite, SWT.NONE );
+    child.setLayoutData( createFluidGridData( when( new AlwaysTrueContidtion() ).then( height( px( 100 ) ), columns( 2 ) ) ) );
+    Composite child2 = new Composite( composite, SWT.NONE );
+    child2.setLayoutData( createFluidGridData( when( new AlwaysTrueContidtion() ).then( height( px( 50 ) ) ) ) );
+
+    Point size = layout.computeSize( composite, SWT.DEFAULT, SWT.DEFAULT, true );
+
+    assertEquals( 500, size.x );
+    assertEquals( 100, size.y );
   }
 
   @Test
