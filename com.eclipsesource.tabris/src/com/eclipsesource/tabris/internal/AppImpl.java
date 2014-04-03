@@ -15,6 +15,7 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_APP_ID;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_APP_VERSION;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_BADGE_NUMBER;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_INACTIVITY_TIME;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_OPEN_URL;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SCREEN_PROTECTION;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TABRIS_VERSION;
 import static com.eclipsesource.tabris.internal.Constants.TYPE_APP;
@@ -48,6 +49,7 @@ public class AppImpl extends AbstractOperationHandler implements App {
   private String tabrisVersion;
   private boolean protect;
   private int badgeNumber;
+  private String openUrl;
 
   public AppImpl() {
     remoteObject = ( ( ConnectionImpl )RWT.getUISession().getConnection() ).createServiceObject( TYPE_APP );
@@ -106,6 +108,9 @@ public class AppImpl extends AbstractOperationHandler implements App {
     }
     if( properties.get( PROPERTY_APP_VERSION ) != null ) {
       version = properties.get( PROPERTY_APP_VERSION ).asString();
+    }
+    if( properties.get( PROPERTY_OPEN_URL ) != null ) {
+      openUrl = properties.get( PROPERTY_OPEN_URL ).asString();
     }
   }
 
@@ -193,5 +198,10 @@ public class AppImpl extends AbstractOperationHandler implements App {
   @Override
   public String getVersion() {
     return version;
+  }
+
+  @Override
+  public String getOpenUrl() {
+    return openUrl;
   }
 }

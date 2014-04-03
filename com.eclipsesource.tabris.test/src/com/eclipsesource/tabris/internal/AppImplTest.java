@@ -462,4 +462,16 @@ public class AppImplTest {
     assertEquals( "1.4.0", version );
   }
 
+  @Test
+  public void testSetsOpenurl() {
+    AppImpl app = new AppImpl();
+    JsonObject properties = new JsonObject();
+    properties.set( "openUrl", "app://foo.bar/path" );
+
+    app.handleSet( properties );
+
+    String openUrl = app.getOpenUrl();
+    assertEquals( "app://foo.bar/path", openUrl );
+  }
+
 }

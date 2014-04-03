@@ -148,6 +148,7 @@ public class Constants {
   public static final String PROPERTY_APP_VERSION = "version";
   public static final String PROPERTY_APP_ID = "id";
   public static final String PROPERTY_TABRIS_VERSION = "tabrisVersion";
+  public static final String PROPERTY_OPEN_URL = "openUrl";
 
   // AppLauncher Constants
   public static final String TYPE_APP_LAUNCHER = "tabris.AppLauncher";

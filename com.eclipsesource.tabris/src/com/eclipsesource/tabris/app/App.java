@@ -152,4 +152,15 @@ public interface App extends ClientService {
    */
   String getVersion();
 
+  /**
+   * <p>
+   * Returns the URL the client application was opened with if it was opened externally.
+   * </p>
+   *
+   * @return the URL the app was opened with or <code>null</code> if no URL was used to open the app.
+   *
+   * @since 1.4
+   */
+  String getOpenUrl();
+
 }

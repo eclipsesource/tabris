@@ -24,6 +24,11 @@ public class EventTypeTest {
   }
 
   @Test
+  public void testLaunchFromString() {
+    assertSame( EventType.OPEN, EventType.fromName( "Open" ) );
+  }
+
+  @Test
   public void testPauseFromString() {
     assertSame( EventType.PAUSE, EventType.fromName( "Pause" ) );
   }

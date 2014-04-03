@@ -24,6 +24,16 @@ public enum EventType {
 
   /**
    * <p>
+   * When an App was opened externally an Event of the type {@link EventType#OPEN} will be fired. The URL used to open
+   * the app can be obtained from {@link App#getOpenUrl()}.
+   * </p>
+   *
+   * @since 1.4
+   */
+  OPEN( "Open" ),
+
+  /**
+   * <p>
    * When an App was sent to the background a {@link EventType#PAUSE} event will be fired.
    * </p>
    */
@@ -31,7 +41,8 @@ public enum EventType {
 
   /**
    * <p>
-   * When an App was paused and becomes active again a {@link EventType#RESUME} event will be fired.
+   * When an App was paused and becomes active again a {@link EventType#RESUME} event will be fired. The resume
+   * arguments will be passed as properties to the fired {@link AppEvent}.
    * </p>
    */
   RESUME( "Resume" ),
