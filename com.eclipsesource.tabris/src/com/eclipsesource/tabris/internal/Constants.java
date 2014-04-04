@@ -195,6 +195,11 @@ public class Constants {
   public static final String PROPERTY_DUPLEX = "duplex";
   public static final String PROPERTY_QUALITY = "quality";
 
+  // RefreshComposite
+  public static final String TYPE_REFRESH_COMPOSITE = "tabris.widgets.RefreshComposite";
+  public static final String EVENT_REFRESH = "Refresh";
+  public static final String PROPERTY_CLIENT_AREA = "clientArea";
+
   private Constants() {
     // prevent instantiation
   }
