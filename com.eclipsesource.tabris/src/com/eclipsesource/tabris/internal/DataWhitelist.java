@@ -31,7 +31,9 @@ public class DataWhitelist implements Serializable {
     SHOW_TOUCH( "showTouch" ),
     BADGE_VALUE( "badgeValue" ),
     OVERLAY_COLOR( "overlayColor" ),
-    TEXT_REPLACEMENT( "textReplacement" );
+    TEXT_REPLACEMENT( "textReplacement" ),
+    AUTO_CAPITALIZE( "autoCapitalize" ),
+    AUTO_CORRECT( "autoCorrect" );
 
     private final String key;
 

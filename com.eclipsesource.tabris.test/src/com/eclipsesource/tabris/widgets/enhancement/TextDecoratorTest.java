@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.enhancement;
 
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.AUTO_CAPITALIZE;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.AUTO_CORRECT;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.KEYBOARD;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
@@ -32,6 +34,34 @@ public class TextDecoratorTest {
   @Before
   public void setUp() {
     decorator = Widgets.onText( text );
+  }
+
+  @Test
+  public void testSetAutoCorrectEnabled() {
+    decorator.setAutoCorrectionEnabled( true );
+
+    verify( text ).setData( AUTO_CORRECT.getKey(), Boolean.valueOf( true ) );
+  }
+
+  @Test
+  public void testSetAutoCorrectDisabled() {
+    decorator.setAutoCorrectionEnabled( false );
+
+    verify( text ).setData( AUTO_CORRECT.getKey(), Boolean.valueOf( false ) );
+  }
+
+  @Test
+  public void testSetAutoCapitalizeEnabled() {
+    decorator.setAutoCapitalizationEnabled( true );
+
+    verify( text ).setData( AUTO_CAPITALIZE.getKey(), Boolean.valueOf( true ) );
+  }
+
+  @Test
+  public void testSetAutoCapitalizeDisabled() {
+    decorator.setAutoCapitalizationEnabled( false );
+
+    verify( text ).setData( AUTO_CAPITALIZE.getKey(), Boolean.valueOf( false ) );
   }
 
   @Test

@@ -11,6 +11,8 @@
 package com.eclipsesource.tabris.widgets.enhancement;
 
 
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.AUTO_CAPITALIZE;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.AUTO_CORRECT;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.KEYBOARD;
 import static com.eclipsesource.tabris.internal.WidgetsUtil.setData;
 
@@ -39,6 +41,22 @@ public class TextDecorator extends WidgetDecorator<TextDecorator> {
    */
   public TextDecorator useHintText( String hint ) {
     text.setMessage( hint );
+    return this;
+  }
+
+  /**
+   * @since 1.4
+   */
+  public TextDecorator setAutoCapitalizationEnabled( boolean enabled ) {
+    setData( text, AUTO_CAPITALIZE, Boolean.valueOf( enabled ) );
+    return this;
+  }
+
+  /**
+   * @since 1.4
+   */
+  public TextDecorator setAutoCorrectionEnabled( boolean enabled ) {
+    setData( text, AUTO_CORRECT, Boolean.valueOf( enabled ) );
     return this;
   }
 
