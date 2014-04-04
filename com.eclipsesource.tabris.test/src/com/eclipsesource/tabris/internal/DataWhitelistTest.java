@@ -69,6 +69,11 @@ public class DataWhitelistTest {
   }
 
   @Test
+  public void testHasSpinningIndicator() {
+    assertContains( "spinningIndicator" );
+  }
+
+  @Test
   public void testHasKeyClientCanvas() {
     assertContains( "clientCanvas" );
   }

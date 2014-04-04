@@ -16,6 +16,7 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
@@ -110,6 +111,14 @@ public class Widgets {
   public static ShellDecorator onShell( Shell shell ) {
     checkComponent( shell );
     return new ShellDecorator( shell );
+  }
+
+  /**
+   * @since 1.4
+   */
+  public static ProgressBarDecorator onProgressBar( ProgressBar progressBar ) {
+    checkComponent( progressBar );
+    return new ProgressBarDecorator( progressBar );
   }
 
   private Widgets() {
