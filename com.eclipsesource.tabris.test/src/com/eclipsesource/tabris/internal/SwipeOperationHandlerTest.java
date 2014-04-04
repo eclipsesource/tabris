@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -36,6 +37,19 @@ public class SwipeOperationHandlerTest {
     handler.handleNotify( "Swipe", properties );
 
     verify( swipe ).show( 0 );
+  }
+
+  @Test
+  public void testSetsActiveClientItem() {
+    Swipe swipe = mock( Swipe.class );
+    SwipeOperationHandler handler = new SwipeOperationHandler( swipe );
+    JsonObject properties = new JsonObject();
+    properties.add( "item", 0 );
+
+    handler.handleNotify( "Swipe", properties );
+
+    int activeClientItem = handler.getActiveClientItem();
+    assertEquals( activeClientItem, 0 );
   }
 
   @Test( expected = IllegalArgumentException.class )

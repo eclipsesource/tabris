@@ -24,18 +24,20 @@ import com.eclipsesource.tabris.widgets.swipe.Swipe;
 public class SwipeOperationHandler extends AbstractOperationHandler {
 
   private final Swipe swipe;
+  private int activeClientItem;
 
   public SwipeOperationHandler( Swipe swipe ) {
     whenNull( swipe ).throwIllegalArgument( "Swipe must not be null" );
     this.swipe = swipe;
+    this.activeClientItem = -1;
   }
 
   @Override
   public void handleNotify( String event, JsonObject properties ) {
     if( EVENT_SWIPE.equals( event ) ) {
       verifyHasItemProperty( properties );
-      int itemIndex = properties.get( PROPERTY_ITEM ).asInt();
-      swipe.show( itemIndex );
+      activeClientItem = properties.get( PROPERTY_ITEM ).asInt();
+      swipe.show( activeClientItem );
     }
   }
 
@@ -45,5 +47,9 @@ public class SwipeOperationHandler extends AbstractOperationHandler {
       .throwIllegalArgument( "Properties of " + EVENT_SWIPE + " do not contain an item." );
     whenNot( properties.get( PROPERTY_ITEM ).isNumber() )
       .throwIllegalArgument( "Property item of " + EVENT_SWIPE + " is not an Integer." );
+  }
+
+  public int getActiveClientItem() {
+    return activeClientItem;
   }
 }

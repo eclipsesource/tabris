@@ -28,6 +28,7 @@ import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
+import org.eclipse.rap.rwt.remote.OperationHandler;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
@@ -413,6 +414,24 @@ public class SwipeCommunicationTest {
     swipe.refresh();
 
     verify( remoteObject ).set( "active", 0 );
+  }
+
+  @Test
+  public void testActivatesItemOnlyIfDifferentFromClientItem() {
+    SwipeItemProvider itemProvider = mockProvider( 2 );
+    mockSwipeItem( itemProvider, 0, true );
+    mockSwipeItem( itemProvider, 1, true );
+    Swipe swipe = new Swipe( shell, itemProvider );
+    ArgumentCaptor<OperationHandler> captor = ArgumentCaptor.forClass( OperationHandler.class );
+    verify( remoteObject ).setHandler( captor.capture() );
+    swipe.show( 0 );
+    JsonObject properties = new JsonObject();
+    properties.add( "item", 1 );
+
+    captor.getValue().handleNotify( "Swipe", properties );
+
+    verify( remoteObject, times( 1 ) ).set( "active", 0 );
+    verify( remoteObject, never() ).set( "active", 1 );
   }
 
 }

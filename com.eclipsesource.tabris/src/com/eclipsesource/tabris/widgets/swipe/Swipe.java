@@ -77,6 +77,7 @@ import com.eclipsesource.tabris.internal.ZIndexStackLayout;
  */
 public class Swipe implements Serializable {
 
+  private final SwipeOperationHandler operationHandler;
   private final Composite container;
   private final List<SwipeListener> listeners;
   private final RemoteObject remoteObject;
@@ -86,6 +87,7 @@ public class Swipe implements Serializable {
   public Swipe( Composite parent, SwipeItemProvider itemProvider ) {
     whenNull( parent ).throwIllegalArgument( "Parent must not be null" );
     whenNull( itemProvider ).throwIllegalArgument( "SwipeItemProvider must not be null" );
+    this.operationHandler = new SwipeOperationHandler( this );
     this.manager = new SwipeManager( itemProvider );
     this.listeners = new ArrayList<SwipeListener>();
     this.container = new Composite( parent, SWT.NONE );
@@ -108,7 +110,7 @@ public class Swipe implements Serializable {
   private void initialize() {
     remoteObject.set( PROPERTY_PARENT, WidgetUtil.getId( container ) );
     updateItemCount();
-    remoteObject.setHandler( new SwipeOperationHandler( this ) );
+    remoteObject.setHandler( operationHandler );
     container.setLayout( new ZIndexStackLayout() );
     if( manager.getProvider().getItemCount() > 0 ) {
       show( 0 );
@@ -298,7 +300,9 @@ public class Swipe implements Serializable {
   private void activateItem( int currentIndex ) {
     SwipeItem currentItem = manager.getItemHolder().getItem( currentIndex );
     currentItem.activate( manager.getContext() );
-    remoteObject.set( PROPERTY_ACTIVE, currentIndex );
+    if( currentIndex != operationHandler.getActiveClientItem() ) {
+      remoteObject.set( PROPERTY_ACTIVE, currentIndex );
+    }
     notifyItemActivated( listeners, currentItem, currentIndex, manager.getContext() );
   }
 
