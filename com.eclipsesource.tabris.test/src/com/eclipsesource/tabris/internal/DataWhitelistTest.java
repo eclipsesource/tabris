@@ -103,6 +103,16 @@ public class DataWhitelistTest {
     assertContains( "textReplacement" );
   }
 
+  @Test
+  public void testHasAutoCapitalize() {
+    assertContains( "autoCapitalize" );
+  }
+
+  @Test
+  public void testHasAutoCorrect() {
+    assertContains( "autoCorrect" );
+  }
+
   private void assertContains( String actualKey ) {
     WhiteListEntry[] keys = DataWhitelist.WhiteListEntry.values();
     boolean foundKey = false;
