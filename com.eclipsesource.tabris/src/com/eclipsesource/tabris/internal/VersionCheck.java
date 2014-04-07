@@ -19,7 +19,7 @@ import org.eclipse.rap.rwt.RWT;
 public class VersionCheck {
 
   private static final Pattern VERSION_PATTERN = Pattern.compile( ".*/([0-9]*\\.[0-9]*)\\.[0-9]* \\(.*\\)" );
-  static final String TABRIS_SERVER_VERSION = "1.3";
+  static final String TABRIS_SERVER_VERSION = "1.4";
 
   private final String clientVersion;
   private final String serverVersion;
