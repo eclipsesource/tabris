@@ -200,6 +200,13 @@ public class Constants {
   public static final String EVENT_REFRESH = "Refresh";
   public static final String PROPERTY_CLIENT_AREA = "clientArea";
 
+  // ClientDialog Service
+  public static final String TYPE_CLIENT_DIALOG = "tabris.ClientDialog";
+  public static final String METHOD_CLOSE = "close";
+  public static final String PROPERTY_SEVERITY = "severity";
+  public static final String PROPERTY_BUTTON = "button";
+  public static final String PROPERTY_BUTTON_TYPE = "buttonType";
+
   private Constants() {
     // prevent instantiation
   }
