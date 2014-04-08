@@ -48,6 +48,9 @@ public class Constants {
   public static final String PROPERTY_MESSAGE = "message";
   public static final String PROPERTY_ERROR_MESSAGE = "errorMessage";
   public static final String PROPERTY_ERROR_CODE = "errorCode";
+  public static final String PROPERTY_ORIENTATION = "orientation";
+  public static final String EVENT_SUCCESS = "Success";
+  public static final String EVENT_ERROR = "Error";
 
   // TabrisUI Constants
   public static final String EVENT_SHOW_PREVIOUS_PAGE = "ShowPreviousPage";
@@ -131,7 +134,6 @@ public class Constants {
   public static final String PROPERTY_TIMEZONE_OFFSET = "timezoneOffset";
   public static final String PROPERTY_CONNECTION_TYPE = "connectionType";
   public static final String PROPERTY_CAPABILITIES = "capabilities";
-  public static final String PROPERTY_ORIENTATION = "orientation";
   public static final String PROPERTY_SCALE_FACTOR = "scaleFactor";
   public static final String PROPERTY_OS_VERSION = "osVersion";
   public static final String PROPERTY_MODEL = "model";
@@ -167,8 +169,6 @@ public class Constants {
 
   // XCallbackURL Constants
   public static final String TYPE_XCALLBACK = "tabris.XCallback";
-  public static final String EVENT_SUCCESS = "Success";
-  public static final String EVENT_ERROR = "Error";
   public static final String EVENT_CANCEL = "Cancel";
   public static final String METHOD_CALL = "call";
   public static final String PROPERTY_PARAMETERS = "parameters";
@@ -182,6 +182,18 @@ public class Constants {
   public static final String SET_ITEM_HEIGHT = "setItemHeight";
   public static final String PROPERTY_ITEM_HEIGHT = "itemHeight";
   public static final String PROPERTY_TARGET = "target";
+
+  // Print Constants
+  public static final String TYPE_PRINT = "tabris.Print";
+  public static final String METHOD_PRINT = "print";
+  public static final String PROPERTY_FILE = "file";
+  public static final String PROPERTY_JOB_NAME = "jobName";
+  public static final String PROPERTY_PRINTER = "printer";
+  public static final String PROPERTY_SHOW_PAGE_RANGE = "showPageRange";
+  public static final String PROPERTY_SHOW_NUMBER_OF_COPIES = "showNumberOfCopies";
+  public static final String PROPERTY_OUTPUT_TYPE = "outputType";
+  public static final String PROPERTY_DUPLEX = "duplex";
+  public static final String PROPERTY_QUALITY = "quality";
 
   private Constants() {
     // prevent instantiation

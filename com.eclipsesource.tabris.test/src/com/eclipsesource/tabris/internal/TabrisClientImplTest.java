@@ -25,6 +25,7 @@ import com.eclipsesource.tabris.camera.Camera;
 import com.eclipsesource.tabris.device.ClientDevice;
 import com.eclipsesource.tabris.geolocation.Geolocation;
 import com.eclipsesource.tabris.interaction.AppLauncher;
+import com.eclipsesource.tabris.print.Print;
 import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 
@@ -163,6 +164,25 @@ public class TabrisClientImplTest {
     Geolocation geolocation2 = client.getService( Geolocation.class );
 
     assertSame( geolocation, geolocation2 );
+  }
+
+  @Test
+  public void testHasPrintService() {
+    TabrisClient client = new TabrisClientImpl();
+
+    Print print = client.getService( Print.class );
+
+    assertNotNull( print );
+  }
+
+  @Test
+  public void testPrintServiceIsSingleton() {
+    TabrisClient client = new TabrisClientImpl();
+
+    Print print1 = client.getService( Print.class );
+    Print print2 = client.getService( Print.class );
+
+    assertSame( print1, print2 );
   }
 
 }
