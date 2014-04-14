@@ -71,6 +71,15 @@ public class PageConfigurationTest {
   }
 
   @Test
+  public void testHasId() {
+    PageConfiguration config = new PageConfiguration( "foo", TestPage.class );
+
+    String pageId = config.getId();
+
+    assertEquals( pageId, "foo" );
+  }
+
+  @Test
   public void testSetsDefaultValues() {
     PageConfiguration config = new PageConfiguration( "foo", TestPage.class );
 
@@ -94,12 +103,30 @@ public class PageConfigurationTest {
   }
 
   @Test
+  public void testHasTopLevel() {
+    PageConfiguration config = new PageConfiguration( "foo", TestPage.class ).setTopLevel( true );
+
+    boolean topLevel = config.isTopLevel();
+
+    assertTrue( topLevel );
+  }
+
+  @Test
   public void testSetsTitle() {
     PageConfiguration config = new PageConfiguration( "foo", TestPage.class ).setTitle( "bar" );
 
     PageDescriptor descriptor = config.getAdapter( PageDescriptor.class );
 
     assertEquals( "bar", descriptor.getTitle() );
+  }
+
+  @Test
+  public void testHasTitle() {
+    PageConfiguration config = new PageConfiguration( "foo", TestPage.class ).setTitle( "bar" );
+
+    String title = config.getTitle();
+
+    assertEquals( "bar", title );
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -117,6 +144,16 @@ public class PageConfigurationTest {
     assertArrayEquals( UITestUtil.getImageBytes(), descriptor.getImage() );
   }
 
+  @Test
+  public void testHasImage() {
+    InputStream image = UITestUtil.class.getResourceAsStream( "testImage.png" );
+    PageConfiguration config = new PageConfiguration( "foo", TestPage.class ).setImage( image );
+
+    byte[] actualImage = config.getImage();
+
+    assertArrayEquals( UITestUtil.getImageBytes(), actualImage );
+  }
+
   @Test( expected = IllegalArgumentException.class )
   public void testSetImageFailsWithNull() {
     new PageConfiguration( "foo", TestPage.class ).setImage( null );
@@ -132,6 +169,17 @@ public class PageConfigurationTest {
     assertEquals( 2, pageStyle.length );
     assertSame( PageStyle.DEFAULT, pageStyle[ 0 ] );
     assertSame( PageStyle.FULLSCREEN, pageStyle[ 1 ] );
+  }
+
+  @Test
+  public void testHasStyle() {
+    PageConfiguration config = new PageConfiguration( "foo", TestPage.class ).setStyle( PageStyle.DEFAULT, PageStyle.FULLSCREEN );
+
+    List<PageStyle> style = config.getStyle();
+
+    assertEquals( 2, style.size() );
+    assertSame( PageStyle.DEFAULT, style.get( 0 ) );
+    assertSame( PageStyle.FULLSCREEN, style.get( 1 ) );
   }
 
   @Test

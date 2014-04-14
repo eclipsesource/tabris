@@ -72,6 +72,16 @@ public class ActionConfiguration implements Adaptable, Serializable {
     this.visible = true;
   }
 
+  /**<p>
+   * Returns the action id.
+   * </p>
+   *
+   * @since 1.4
+   */
+  public String getId() {
+    return actionId;
+  }
+
   /**
    * <p>
    * Defines the title of the action.
@@ -87,6 +97,17 @@ public class ActionConfiguration implements Adaptable, Serializable {
 
   /**
    * <p>
+   * Returns the action title.
+   * </p>
+   *
+   * @since 1.4
+   */
+  public String getTitle() {
+    return title;
+  }
+
+  /**
+   * <p>
    * Defines the initial visibility of the action.
    * </p>
    */
@@ -97,12 +118,34 @@ public class ActionConfiguration implements Adaptable, Serializable {
 
   /**
    * <p>
+   * Returns if the action is visible or not.
+   * </p>
+   *
+   * @since 1.4
+   */
+  public boolean isVisible() {
+    return visible;
+  }
+
+  /**
+   * <p>
    * Defines the initial enabled state of the action.
    * </p>
    */
   public ActionConfiguration setEnabled( boolean enabled ) {
     this.enabled = enabled;
     return this;
+  }
+
+  /**
+   * <p>
+   * Returns if the action is enabled or not.
+   * </p>
+   *
+   * @since 1.4
+   */
+  public boolean isEnabled() {
+    return enabled;
   }
 
   /**
@@ -122,6 +165,17 @@ public class ActionConfiguration implements Adaptable, Serializable {
 
   /**
    * <p>
+   * Returns the action image as bytes.
+   * </p>
+   *
+   * @since 1.4
+   */
+  public byte[] getImage() {
+    return image;
+  }
+
+  /**
+   * <p>
    * Defines the {@link PlacementPriority} of the action.
    * </p>
    *
@@ -134,6 +188,17 @@ public class ActionConfiguration implements Adaptable, Serializable {
     whenNull( placementPriority ).throwIllegalArgument( "PlacementPriority must not be null" );
     this.placementPriority = placementPriority;
     return this;
+  }
+
+  /**
+   * <p>
+   * Returns the action placement priority.
+   * </p>
+   *
+   * @since 1.4
+   */
+  public PlacementPriority getPlacementPriority() {
+    return placementPriority;
   }
 
   /**
