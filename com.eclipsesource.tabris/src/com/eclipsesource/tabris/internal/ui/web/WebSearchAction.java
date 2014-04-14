@@ -35,10 +35,13 @@ import org.eclipse.swt.widgets.Text;
 import com.eclipsesource.tabris.internal.ui.ActionDescriptor;
 import com.eclipsesource.tabris.internal.ui.PropertyChangeHandler;
 import com.eclipsesource.tabris.internal.ui.PropertyChangeNotifier;
+import com.eclipsesource.tabris.internal.ui.UIDescriptor;
 import com.eclipsesource.tabris.ui.Action;
+import com.eclipsesource.tabris.ui.ActionListener;
 import com.eclipsesource.tabris.ui.UI;
 import com.eclipsesource.tabris.ui.action.ProposalHandler;
 import com.eclipsesource.tabris.ui.action.SearchAction;
+import com.eclipsesource.tabris.ui.action.SearchActionListener;
 
 
 public class WebSearchAction extends WebAction implements PropertyChangeHandler {
@@ -206,7 +209,18 @@ public class WebSearchAction extends WebAction implements PropertyChangeHandler 
     public void handleEvent( Event event ) {
       if( event.detail != SWT.ICON_CANCEL ) {
         Text text = ( Text )event.widget;
-        doSearch( text.getText() );
+        String query = text.getText();
+        doSearch( query );
+        notifyListenersAboutSearch( getDescriptor().getAction(), query );
+      }
+    }
+
+    private void notifyListenersAboutSearch( Action action, String query ) {
+      UIDescriptor uiDescriptor = getUI().getConfiguration().getAdapter( UIDescriptor.class );
+      for( ActionListener listener : uiDescriptor.getActionListeners() ) {
+        if( listener instanceof SearchActionListener ) {
+          ( ( SearchActionListener )listener ).searched( getUI(), action, query );
+        }
       }
     }
 
@@ -224,7 +238,18 @@ public class WebSearchAction extends WebAction implements PropertyChangeHandler 
     public void handleEvent( Event event ) {
       Text text = ( Text )event.widget;
       SearchAction action = ( SearchAction )getDescriptor().getAction();
-      action.modified( text.getText(), proposalHandler );
+      String query = text.getText();
+      action.modified( query, proposalHandler );
+      notifyListenersAboutModify( action, query );
+    }
+
+    private void notifyListenersAboutModify( Action action, String query ) {
+      UIDescriptor uiDescriptor = getUI().getConfiguration().getAdapter( UIDescriptor.class );
+      for( ActionListener listener : uiDescriptor.getActionListeners() ) {
+        if( listener instanceof SearchActionListener ) {
+          ( ( SearchActionListener )listener ).modified( getUI(), action, query );
+        }
+      }
     }
 
   }

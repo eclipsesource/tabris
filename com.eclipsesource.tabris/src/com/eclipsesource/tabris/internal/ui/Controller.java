@@ -28,6 +28,8 @@ import com.eclipsesource.tabris.internal.ui.rendering.ActionRenderer;
 import com.eclipsesource.tabris.internal.ui.rendering.PageRenderer;
 import com.eclipsesource.tabris.internal.ui.rendering.RendererFactory;
 import com.eclipsesource.tabris.internal.ui.rendering.UIRenderer;
+import com.eclipsesource.tabris.ui.Action;
+import com.eclipsesource.tabris.ui.ActionConfiguration;
 import com.eclipsesource.tabris.ui.Page;
 import com.eclipsesource.tabris.ui.PageConfiguration;
 import com.eclipsesource.tabris.ui.PageData;
@@ -420,6 +422,48 @@ public class Controller implements UIUpdater, Serializable {
 
   Map<PageDescriptor, PageRenderer> getRootPages() {
     return topLevelPageRenderers;
+  }
+
+  public PageConfiguration getPageConfiguration( Page page ) {
+    List<PageRenderer> pages = getAllPages();
+    for( PageRenderer renderer : pages ) {
+      if( renderer.getPage() == page ) {
+        String id = renderer.getDescriptor().getId();
+        return ui.getConfiguration().getPageConfiguration( id );
+      }
+    }
+    return null;
+  }
+
+  public ActionConfiguration getActionConfiguration( Action action ) {
+    ActionConfiguration configuration = findGlobalActionConfiguration( action );
+    if( configuration != null ) {
+      return configuration;
+    }
+    return findPageActionConfiguration( action );
+  }
+
+  private ActionConfiguration findGlobalActionConfiguration( Action action ) {
+    List<ActionRenderer> actions = new ArrayList<ActionRenderer>( globalActionRenderers );
+    for( ActionRenderer actionRenderer : actions ) {
+      if( actionRenderer.getDescriptor().getAction() == action ) {
+        String id = actionRenderer.getDescriptor().getId();
+        return ui.getConfiguration().getActionConfiguration( id );
+      }
+    }
+    return null;
+  }
+
+  private ActionConfiguration findPageActionConfiguration( Action action ) {
+    List<ActionRenderer> pageActionRenderers = currentFlow.getCurrentRenderer().getActionRenderers();
+    for( ActionRenderer renderer : pageActionRenderers ) {
+      Action pageAction = renderer.getDescriptor().getAction();
+      if( pageAction == action ) {
+        String actionId = renderer.getDescriptor().getId();
+        return ui.getPageConfiguration( getCurrentPage() ).getActionConfiguration( actionId );
+      }
+    }
+    return null;
   }
 
 }

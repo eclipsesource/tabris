@@ -64,4 +64,28 @@ public interface UI {
    */
   UIConfiguration getConfiguration();
 
+  /**
+   * <p>
+   * Returns a {@link PageConfiguration} for a specific {@link Page}. Can be used to get the configuration options of a
+   * Page during runtime e.g. in a {@link TransitionListener}.
+   * </p>
+   *
+   * @throws IllegalArgumentException when the page is <code>null</code>.
+   *
+   * @since 1.4
+   */
+  PageConfiguration getPageConfiguration( Page page );
+
+  /**
+   * <p>
+   * Returns an {@link ActionConfiguration} for a specific {@link Action}. Can be used to get the configuration options
+   * of an {@link Action} during runtime e.g. in an {@link ActionListener}.
+   * </p>
+   *
+   * @throws IllegalArgumentException when the action is <code>null</code>.
+   *
+   * @since 1.4
+   */
+  ActionConfiguration getActionConfiguration( Action action );
+
 }

@@ -23,8 +23,10 @@ import org.eclipse.rap.rwt.Adaptable;
 import org.eclipse.rap.rwt.service.ServerPushSession;
 
 import com.eclipsesource.tabris.ui.Action;
+import com.eclipsesource.tabris.ui.ActionListener;
 import com.eclipsesource.tabris.ui.UI;
 import com.eclipsesource.tabris.ui.action.SearchAction;
+import com.eclipsesource.tabris.ui.action.SearchActionListener;
 
 
 public class RemoteSearchAction extends RemoteAction implements PropertyChangeHandler {
@@ -59,9 +61,39 @@ public class RemoteSearchAction extends RemoteAction implements PropertyChangeHa
     super.handleNotify( event, properties );
     SearchAction action = ( SearchAction )getDescriptor().getAction();
     if( event.equals( EVENT_SEARCH ) ) {
-      action.search( properties.get( PROPERTY_QUERY ).asString() );
+      handleSearch( properties, action );
     } else if( event.equals( EVENT_MODIFY ) ) {
-      action.modified( properties.get( PROPERTY_QUERY ).asString(), new ProposalHandlerImpl( getRemoteObject() ) );
+      handleModify( properties, action );
+    }
+  }
+
+  private void handleSearch( JsonObject properties, SearchAction action ) {
+    String query = properties.get( PROPERTY_QUERY ).asString();
+    action.search( query );
+    notifyListenersAboutSearch( action, query );
+  }
+
+  private void notifyListenersAboutSearch( Action action, String query ) {
+    UIDescriptor uiDescriptor = getUI().getConfiguration().getAdapter( UIDescriptor.class );
+    for( ActionListener listener : uiDescriptor.getActionListeners() ) {
+      if( listener instanceof SearchActionListener ) {
+        ( ( SearchActionListener )listener ).searched( getUI(), action, query );
+      }
+    }
+  }
+
+  private void handleModify( JsonObject properties, SearchAction action ) {
+    String query = properties.get( PROPERTY_QUERY ).asString();
+    action.modified( query, new ProposalHandlerImpl( getRemoteObject() ) );
+    notifyListenersAboutModify( action, query );
+  }
+
+  private void notifyListenersAboutModify( Action action, String query ) {
+    UIDescriptor uiDescriptor = getUI().getConfiguration().getAdapter( UIDescriptor.class );
+    for( ActionListener listener : uiDescriptor.getActionListeners() ) {
+      if( listener instanceof SearchActionListener ) {
+        ( ( SearchActionListener )listener ).modified( getUI(), action, query );
+      }
     }
   }
 

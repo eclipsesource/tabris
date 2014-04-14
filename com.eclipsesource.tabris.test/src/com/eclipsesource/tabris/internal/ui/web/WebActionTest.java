@@ -39,7 +39,9 @@ import com.eclipsesource.tabris.internal.ui.ImageUtil;
 import com.eclipsesource.tabris.internal.ui.RemoteActionTest;
 import com.eclipsesource.tabris.internal.ui.TestAction;
 import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.ui.ActionListener;
 import com.eclipsesource.tabris.ui.UI;
+import com.eclipsesource.tabris.ui.UIConfiguration;
 
 
 @RunWith( RWTRunner.class )
@@ -121,10 +123,28 @@ public class WebActionTest {
 
   @Test
   public void testSelectionEvent_executeAction() {
+    mockUI( mock( ActionListener.class ) );
     control.notifyListeners( SWT.Selection, new Event() );
 
     TestAction action = ( TestAction )actionDescriptor.getAction();
     assertTrue( action.wasExecuted() );
+  }
+
+  @Test
+  public void testSelectionEventNotifiesListeners() {
+    ActionListener listener = mock( ActionListener.class );
+    mockUI( listener );
+
+    control.notifyListeners( SWT.Selection, new Event() );
+
+    TestAction action = ( TestAction )actionDescriptor.getAction();
+    verify( listener ).executed( ui, action );
+  }
+
+  private void mockUI( ActionListener listener ) {
+    UIConfiguration configuration = new UIConfiguration();
+    configuration.addActionListener( listener );
+    when( ui.getConfiguration() ).thenReturn( configuration );
   }
 
   private ActionDescriptor mockDescriptor() {

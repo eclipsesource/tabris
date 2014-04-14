@@ -15,6 +15,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.Serializable;
@@ -27,7 +28,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.ActionOperator;
+import com.eclipsesource.tabris.ui.Page;
 import com.eclipsesource.tabris.ui.PageOperator;
 import com.eclipsesource.tabris.ui.UIConfiguration;
 
@@ -133,6 +136,44 @@ public class UIImplTest {
     PageOperator operator2 = ui.getPageOperator();
 
     assertSame( operator1, operator2 );
+  }
+
+  @Test
+  public void testGetsPageConfigurationFromController() {
+    Controller controller = mock( Controller.class );
+    UIImpl ui = new UIImpl( display, controller, mock( UIConfiguration.class ) );
+    Page page = mock( Page.class );
+
+    ui.getPageConfiguration( page );
+
+    verify( controller ).getPageConfiguration( page );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testGetPageConfigurationFailsWithNullPage() {
+    Controller controller = mock( Controller.class );
+    UIImpl ui = new UIImpl( display, controller, mock( UIConfiguration.class ) );
+
+    ui.getPageConfiguration( null );
+  }
+
+  @Test
+  public void testGetsActionConfigurationFromController() {
+    Controller controller = mock( Controller.class );
+    UIImpl ui = new UIImpl( display, controller, mock( UIConfiguration.class ) );
+    Action action = mock( Action.class );
+
+    ui.getActionConfiguration( action );
+
+    verify( controller ).getActionConfiguration( action );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testGetActionConfigurationFailsWithNullAction() {
+    Controller controller = mock( Controller.class );
+    UIImpl ui = new UIImpl( display, controller, mock( UIConfiguration.class ) );
+
+    ui.getActionConfiguration( null );
   }
 
 }

@@ -42,9 +42,11 @@ import org.mockito.ArgumentCaptor;
 import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 import com.eclipsesource.tabris.ui.UI;
+import com.eclipsesource.tabris.ui.UIConfiguration;
 import com.eclipsesource.tabris.ui.action.Proposal;
 import com.eclipsesource.tabris.ui.action.ProposalHandler;
 import com.eclipsesource.tabris.ui.action.SearchAction;
+import com.eclipsesource.tabris.ui.action.SearchActionListener;
 
 
 @SuppressWarnings("restriction")
@@ -61,6 +63,7 @@ public class RemoteSearchActionTest {
     Display display = new Display();
     remoteObject = ( RemoteObjectImpl )TabrisTestUtil.mockRemoteObject();
     ui = mock( UI.class );
+    mockUI( mock( SearchActionListener.class ) );
     uiRenderer = mock( RemoteUI.class );
     when( uiRenderer.getRemoteUIId() ).thenReturn( "foo" );
     when( ui.getDisplay() ).thenReturn( display );
@@ -111,6 +114,22 @@ public class RemoteSearchActionTest {
   }
 
   @Test
+  public void testNotifiesListenerOnSearchEvent() {
+    SearchActionListener listener = mock( SearchActionListener.class );
+    mockUI( listener );
+    SearchAction action = spy( new TestSearchAction() );
+    when( actionDescriptor.getAction() ).thenReturn( action );
+    RemoteSearchAction remoteAction = new RemoteSearchAction( ui, uiRenderer, actionDescriptor );
+    when( remoteObject.getHandler() ).thenReturn( remoteAction );
+    JsonObject properties = new JsonObject();
+    properties.add( "query", "bar" );
+
+    TabrisTestUtil.dispatchNotify( remoteObject, "Search", properties );
+
+    verify( listener ).searched( ui, action, "bar" );
+  }
+
+  @Test
   public void testCallsGetProposalsOnModifyEvent() {
     SearchAction action = spy( new TestSearchAction() );
     when( actionDescriptor.getAction() ).thenReturn( action );
@@ -122,6 +141,22 @@ public class RemoteSearchActionTest {
     TabrisTestUtil.dispatchNotify( remoteObject, "Modify", properties );
 
     verify( action ).modified( eq( "bar" ), any( ProposalHandler.class ) );
+  }
+
+  @Test
+  public void testNotifiesListenerOnModifyEvent() {
+    SearchActionListener listener = mock( SearchActionListener.class );
+    mockUI( listener );
+    SearchAction action = spy( new TestSearchAction() );
+    when( actionDescriptor.getAction() ).thenReturn( action );
+    RemoteSearchAction remoteAction = new RemoteSearchAction( ui, uiRenderer, actionDescriptor );
+    when( remoteObject.getHandler() ).thenReturn( remoteAction );
+    JsonObject properties = new JsonObject();
+    properties.add( "query", "bar" );
+
+    TabrisTestUtil.dispatchNotify( remoteObject, "Modify", properties );
+
+    verify( listener ).modified( ui, action, "bar" );
   }
 
   @Test
@@ -240,5 +275,11 @@ public class RemoteSearchActionTest {
     remoteAction.propertyChanged( PROPERTY_MESSAGE, "foo" );
 
     verify( remoteObject ).set( "message", "foo" );
+  }
+
+  private void mockUI( SearchActionListener listener ) {
+    UIConfiguration configuration = new UIConfiguration();
+    configuration.addActionListener( listener );
+    when( ui.getConfiguration() ).thenReturn( configuration );
   }
 }

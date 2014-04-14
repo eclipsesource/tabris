@@ -13,6 +13,7 @@ package com.eclipsesource.tabris.internal.ui;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
@@ -54,6 +55,7 @@ import com.eclipsesource.tabris.internal.ui.rendering.RendererFactory;
 import com.eclipsesource.tabris.internal.ui.rendering.UIRenderer;
 import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
+import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.ActionConfiguration;
 import com.eclipsesource.tabris.ui.Page;
 import com.eclipsesource.tabris.ui.PageConfiguration;
@@ -1004,6 +1006,115 @@ public class ControllerTest {
     boolean hasAction = controller.hasAction( "foo" );
 
     assertTrue( hasAction );
+  }
+
+  @Test
+  public void testCanGetPageConfigurationForTopLevelPage() {
+    UIConfiguration configuration = new UIConfiguration();
+    PageConfiguration pageConfiguration = new PageConfiguration( "foo", TestPage.class ).setTopLevel( true );
+    configuration.addPageConfiguration( pageConfiguration );
+    Controller controller = new Controller( new RemoteUI( shell ), configuration.getAdapter( UIDescriptor.class ) );
+    UIImpl ui = new UIImpl( shell.getDisplay(), controller, configuration );
+    controller.setUI( ui );
+    controller.createRootPages( ui );
+
+    PageConfiguration actualConfiguration = controller.getPageConfiguration( controller.getAllPages().get( 0 ).getPage() );
+
+    assertSame( pageConfiguration, actualConfiguration );
+  }
+
+  @Test
+  public void testCanGetPageConfigurationForPage() {
+    UIConfiguration configuration = new UIConfiguration();
+    PageConfiguration pageConfiguration = new PageConfiguration( "foo", TestPage.class ).setTopLevel( true );
+    PageConfiguration pageConfiguration2 = new PageConfiguration( "foo2", TestPage.class );
+    configuration.addPageConfiguration( pageConfiguration );
+    configuration.addPageConfiguration( pageConfiguration2 );
+    Controller controller = new Controller( new RemoteUI( shell ), configuration.getAdapter( UIDescriptor.class ) );
+    UIImpl ui = new UIImpl( shell.getDisplay(), controller, configuration );
+    controller.setUI( ui );
+    controller.createRootPages( ui );
+    PageRenderer page = controller.showPage( ui, pageConfiguration2.getAdapter( PageDescriptor.class ), new PageData() );
+
+    PageConfiguration actualConfiguration = controller.getPageConfiguration( page.getPage() );
+
+    assertSame( pageConfiguration2, actualConfiguration );
+  }
+
+  @Test
+  public void testCanGetActionConfigurationForGlobalAction() {
+    UIConfiguration configuration = new UIConfiguration();
+    PageConfiguration pageConfiguration = new PageConfiguration( "foo", TestPage.class ).setTopLevel( true );
+    configuration.addPageConfiguration( pageConfiguration );
+    ActionConfiguration actionConfiguration = new ActionConfiguration( "bar", TestAction.class );
+    configuration.addActionConfiguration( actionConfiguration );
+    UIDescriptor uiDescriptor = configuration.getAdapter( UIDescriptor.class );
+    Controller controller = new Controller( new RemoteUI( shell ), uiDescriptor );
+    UIImpl ui = new UIImpl( shell.getDisplay(), controller, configuration );
+    controller.setUI( ui );
+    controller.createRootPages( ui );
+    controller.createGlobalActions( ui );
+
+    ActionConfiguration actualConfiguration = controller.getActionConfiguration( uiDescriptor.getActionDescriptor( "bar" ).getAction() );
+
+    assertSame( actionConfiguration, actualConfiguration );
+  }
+
+  @Test
+  public void testCanGetActionConfigurationForPageAction() {
+    UIConfiguration configuration = new UIConfiguration();
+    PageConfiguration pageConfiguration = new PageConfiguration( "foo", TestPage.class ).setTopLevel( true );
+    PageConfiguration pageConfiguration2 = new PageConfiguration( "foo2", TestPage.class );
+    configuration.addPageConfiguration( pageConfiguration );
+    configuration.addPageConfiguration( pageConfiguration2 );
+    ActionConfiguration actionConfiguration = new ActionConfiguration( "bar", TestAction.class );
+    pageConfiguration2.addActionConfiguration( actionConfiguration );
+    UIDescriptor uiDescriptor = configuration.getAdapter( UIDescriptor.class );
+    Controller controller = new Controller( new RemoteUI( shell ), uiDescriptor );
+    UIImpl ui = new UIImpl( shell.getDisplay(), controller, configuration );
+    controller.setUI( ui );
+    controller.createRootPages( ui );
+    controller.createGlobalActions( ui );
+    PageRenderer page = controller.showPage( ui, pageConfiguration2.getAdapter( PageDescriptor.class ), new PageData() );
+    Action action = page.getActionRenderers().get( 0 ).getDescriptor().getAction();
+
+    ActionConfiguration actualConfiguration = controller.getActionConfiguration( action );
+
+    assertSame( actionConfiguration, actualConfiguration );
+  }
+
+  @Test
+  public void testGetActionConfigurationIsNullForNonExistentAction() {
+    UIConfiguration configuration = new UIConfiguration();
+    PageConfiguration pageConfiguration = new PageConfiguration( "foo", TestPage.class ).setTopLevel( true );
+    configuration.addPageConfiguration( pageConfiguration );
+    UIDescriptor uiDescriptor = configuration.getAdapter( UIDescriptor.class );
+    Controller controller = new Controller( new RemoteUI( shell ), uiDescriptor );
+    UIImpl ui = new UIImpl( shell.getDisplay(), controller, configuration );
+    controller.setUI( ui );
+    controller.createRootPages( ui );
+    controller.createGlobalActions( ui );
+
+    ActionConfiguration actualConfiguration = controller.getActionConfiguration( mock( Action.class ) );
+
+    assertNull( actualConfiguration );
+  }
+
+  @Test
+  public void testGetPageConfigurationIsNullForNonExistentPage() {
+    UIConfiguration configuration = new UIConfiguration();
+    PageConfiguration pageConfiguration = new PageConfiguration( "foo", TestPage.class ).setTopLevel( true );
+    configuration.addPageConfiguration( pageConfiguration );
+    UIDescriptor uiDescriptor = configuration.getAdapter( UIDescriptor.class );
+    Controller controller = new Controller( new RemoteUI( shell ), uiDescriptor );
+    UIImpl ui = new UIImpl( shell.getDisplay(), controller, configuration );
+    controller.setUI( ui );
+    controller.createRootPages( ui );
+    controller.createGlobalActions( ui );
+
+    PageConfiguration actualConfiguration = controller.getPageConfiguration( mock( Page.class ) );
+
+    assertNull( actualConfiguration );
   }
 
 }

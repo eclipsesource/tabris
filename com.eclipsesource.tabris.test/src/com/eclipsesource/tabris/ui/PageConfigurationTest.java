@@ -164,6 +164,40 @@ public class PageConfigurationTest {
   }
 
   @Test
+  public void testCanGetActionConfiguration() {
+    ActionConfiguration actionConfig = new ActionConfiguration( "bar", TestAction.class );
+    PageConfiguration config = new PageConfiguration( "foo", TestPage.class ).addActionConfiguration( actionConfig );
+
+    ActionConfiguration actualActionConfiguration = config.getActionConfiguration( "bar" );
+
+    assertSame( actionConfig, actualActionConfiguration );
+  }
+
+  @Test
+  public void testGetActionConfigurationReturnsNullIfActionIsNonExistent() {
+    ActionConfiguration actionConfig = new ActionConfiguration( "bar", TestAction.class );
+    PageConfiguration config = new PageConfiguration( "foo", TestPage.class ).addActionConfiguration( actionConfig );
+
+    ActionConfiguration actualActionConfiguration = config.getActionConfiguration( "bar2" );
+
+    assertNull( actualActionConfiguration );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testGetActionConfigurationFailsWithNullId() {
+    PageConfiguration config = new PageConfiguration( "foo", TestPage.class );
+
+    config.getActionConfiguration( null );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testGetActionConfigurationFailsWithEmptyId() {
+    PageConfiguration config = new PageConfiguration( "foo", TestPage.class );
+
+    config.getActionConfiguration( "" );
+  }
+
+  @Test
   public void testRemovesAction() {
     ActionConfiguration actionConfig = new ActionConfiguration( "bar", TestAction.class );
     PageConfiguration config = new PageConfiguration( "foo", TestPage.class ).addActionConfiguration( actionConfig );

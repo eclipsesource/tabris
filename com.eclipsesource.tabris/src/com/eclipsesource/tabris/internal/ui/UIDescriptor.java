@@ -19,6 +19,7 @@ import org.eclipse.rap.rwt.RWT;
 import com.eclipsesource.tabris.TabrisClient;
 import com.eclipsesource.tabris.internal.ui.rendering.RendererFactory;
 import com.eclipsesource.tabris.internal.ui.web.WebRendererFactory;
+import com.eclipsesource.tabris.ui.ActionListener;
 import com.eclipsesource.tabris.ui.TransitionListener;
 
 
@@ -27,11 +28,13 @@ public class UIDescriptor implements Serializable {
   private final List<PageDescriptor> pageDescriptors;
   private final List<ActionDescriptor> actionDescriptors;
   private final List<TransitionListener> transitionListeners;
+  private final List<ActionListener> actionListeners;
 
   public UIDescriptor() {
     pageDescriptors = new ArrayList<PageDescriptor>();
     actionDescriptors = new ArrayList<ActionDescriptor>();
     transitionListeners = new ArrayList<TransitionListener>();
+    actionListeners = new ArrayList<ActionListener>();
   }
 
   public void add( PageDescriptor descriptor ) {
@@ -118,6 +121,18 @@ public class UIDescriptor implements Serializable {
 
   public List<TransitionListener> getTransitionListeners() {
     return transitionListeners;
+  }
+
+  public void addActionListener( ActionListener listener ) {
+    actionListeners.add( listener );
+  }
+
+  public void removeActionListener( ActionListener listener ) {
+    actionListeners.remove( listener );
+  }
+
+  public List<ActionListener> getActionListeners() {
+    return actionListeners;
   }
 
   public RendererFactory getRendererFactory() {
