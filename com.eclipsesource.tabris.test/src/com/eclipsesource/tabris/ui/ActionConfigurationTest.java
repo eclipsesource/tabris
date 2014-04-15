@@ -70,6 +70,15 @@ public class ActionConfigurationTest {
   }
 
   @Test
+  public void testHasId() {
+    ActionConfiguration configuration = new ActionConfiguration( "foo", TestAction.class );
+
+    String id = configuration.getId();
+
+    assertEquals( "foo", id );
+  }
+
+  @Test
   public void testSetsDefaultAttributes() {
     ActionConfiguration configuration = new ActionConfiguration( "foo", TestAction.class );
 
@@ -92,6 +101,15 @@ public class ActionConfigurationTest {
     assertEquals( "bar", descriptor.getTitle() );
   }
 
+  @Test
+  public void testHasTitle() {
+    ActionConfiguration configuration = new ActionConfiguration( "foo", TestAction.class ).setTitle( "bar" );
+
+    String title = configuration.getTitle();
+
+    assertEquals( "bar", title );
+  }
+
   @Test( expected = IllegalArgumentException.class )
   public void testSetTitleFailsWithNull() {
     new ActionConfiguration( "foo", TestAction.class ).setTitle( null );
@@ -107,12 +125,30 @@ public class ActionConfigurationTest {
   }
 
   @Test
+  public void testIsVisible() {
+    ActionConfiguration configuration = new ActionConfiguration( "foo", TestAction.class ).setVisible( false );
+
+    boolean visible = configuration.isVisible();
+
+    assertFalse( visible );
+  }
+
+  @Test
   public void testSetsEnabled() {
     ActionConfiguration configuration = new ActionConfiguration( "foo", TestAction.class ).setEnabled( false );
 
     ActionDescriptor descriptor = configuration.getAdapter( ActionDescriptor.class );
 
     assertFalse( descriptor.isEnabled() );
+  }
+
+  @Test
+  public void testIsEnabled() {
+    ActionConfiguration configuration = new ActionConfiguration( "foo", TestAction.class ).setEnabled( false );
+
+    boolean enabled = configuration.isEnabled();
+
+    assertFalse( enabled );
   }
 
   @Test
@@ -126,6 +162,16 @@ public class ActionConfigurationTest {
   }
 
   @Test
+  public void testHasImage() {
+    InputStream image = UITestUtil.class.getResourceAsStream( "testImage.png" );
+    ActionConfiguration configuration = new ActionConfiguration( "foo", TestAction.class ).setImage( image );
+
+    byte[] actualImage = configuration.getImage();
+
+    assertArrayEquals( UITestUtil.getImageBytes(), actualImage );
+  }
+
+  @Test
   public void testSetsPlacementPriority() {
     ActionConfiguration configuration = new ActionConfiguration( "foo", TestAction.class );
 
@@ -133,6 +179,16 @@ public class ActionConfigurationTest {
 
     ActionDescriptor descriptor = configuration.getAdapter( ActionDescriptor.class );
     assertSame( PlacementPriority.HIGH, descriptor.getPlacementPriority() );
+  }
+
+  @Test
+  public void testHasPlacementPriority() {
+    ActionConfiguration configuration = new ActionConfiguration( "foo", TestAction.class );
+    configuration.setPlacementPriority( PlacementPriority.HIGH );
+
+    PlacementPriority placementPriority = configuration.getPlacementPriority();
+
+    assertSame( PlacementPriority.HIGH, placementPriority );
   }
 
   @Test

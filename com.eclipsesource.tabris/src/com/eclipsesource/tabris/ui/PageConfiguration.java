@@ -16,6 +16,7 @@ import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.rap.rwt.Adaptable;
@@ -80,12 +81,34 @@ public class PageConfiguration implements Adaptable, Serializable {
 
   /**
    * <p>
+   * Returns the id for the page.
+   * </p>
+   *
+   * @since 1.4
+   */
+  public String getId() {
+    return id;
+  }
+
+  /**
+   * <p>
    * Modifies the page to be a top level page or not. A top level page marks the starting point of a flow.
    * </p>
    */
   public PageConfiguration setTopLevel( boolean topLevel ) {
     this.topLevel = topLevel;
     return this;
+  }
+
+  /**
+   * <p>
+   * Returns if the page is a top level page or not.
+   * </p>
+   *
+   * @since 1.4
+   */
+  public boolean isTopLevel() {
+    return topLevel;
   }
 
   /**
@@ -103,12 +126,34 @@ public class PageConfiguration implements Adaptable, Serializable {
 
   /**
    * <p>
+   * Returns the page title."
+   * </p>
+   *
+   * @since 1.4
+   */
+  public String getTitle() {
+    return title;
+  }
+
+  /**
+   * <p>
    * Defines the style of a page. A page can have multiple styles.
    * </p>
    */
   public PageConfiguration setStyle( PageStyle... style ) {
     this.style = style;
     return this;
+  }
+
+  /**
+   * <p>
+   * Returns the page style as list.
+   * </p>
+   *
+   * @since 1.4
+   */
+  public List<PageStyle> getStyle() {
+    return Arrays.asList( style );
   }
 
   /**
@@ -124,6 +169,17 @@ public class PageConfiguration implements Adaptable, Serializable {
     whenNull( image ).throwIllegalArgument( "Page image must not be null" );
     this.image = ImageUtil.getBytes( image );
     return this;
+  }
+
+  /**
+   * <p>
+   * Returns the page image bytes.
+   * </p>
+   *
+   * @since 1.4
+   */
+  public byte[] getImage() {
+    return image;
   }
 
   /**
