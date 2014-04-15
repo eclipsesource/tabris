@@ -16,7 +16,11 @@ import java.io.Serializable;
 
 import org.eclipse.swt.widgets.Display;
 
+import com.eclipsesource.tabris.ui.Action;
+import com.eclipsesource.tabris.ui.ActionConfiguration;
 import com.eclipsesource.tabris.ui.ActionOperator;
+import com.eclipsesource.tabris.ui.Page;
+import com.eclipsesource.tabris.ui.PageConfiguration;
 import com.eclipsesource.tabris.ui.PageOperator;
 import com.eclipsesource.tabris.ui.UI;
 import com.eclipsesource.tabris.ui.UIConfiguration;
@@ -25,12 +29,14 @@ import com.eclipsesource.tabris.ui.UIConfiguration;
 public class UIImpl implements UI, Serializable {
 
   private final Display display;
+  private final Controller controller;
   private final UIConfiguration configuration;
   private final ActionOperatorImpl actionOperator;
   private final PageOperatorImpl pageOperator;
   private boolean initialized;
 
   public UIImpl( Display display, Controller controller, UIConfiguration configuration ) {
+    this.controller = controller;
     whenNull( display ).throwIllegalArgument( "Display must not be null" );
     whenNull( controller ).throwIllegalArgument( "Controller must not be null" );
     whenNull( configuration ).throwIllegalArgument( "Configuration must not be null" );
@@ -64,6 +70,18 @@ public class UIImpl implements UI, Serializable {
   @Override
   public UIConfiguration getConfiguration() {
     return configuration;
+  }
+
+  @Override
+  public PageConfiguration getPageConfiguration( Page page ) {
+    whenNull( page ).throwIllegalArgument( "Page must not be null" );
+    return controller.getPageConfiguration( page );
+  }
+
+  @Override
+  public ActionConfiguration getActionConfiguration( Action action ) {
+    whenNull( action ).throwIllegalArgument( "Action must not be null" );
+    return controller.getActionConfiguration( action );
   }
 
   public void markInitialized() {

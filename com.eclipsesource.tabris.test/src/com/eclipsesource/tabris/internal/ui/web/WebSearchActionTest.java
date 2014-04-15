@@ -52,8 +52,10 @@ import com.eclipsesource.tabris.internal.ui.TestSearchAction;
 import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.UI;
+import com.eclipsesource.tabris.ui.UIConfiguration;
 import com.eclipsesource.tabris.ui.action.ProposalHandler;
 import com.eclipsesource.tabris.ui.action.SearchAction;
+import com.eclipsesource.tabris.ui.action.SearchActionListener;
 
 
 @SuppressWarnings("restriction")
@@ -77,6 +79,7 @@ public class WebSearchActionTest {
     Shell shell = new Shell( display );
     shell.open();
     ui = mock( UI.class );
+    mockUI( mock( SearchActionListener.class ) );
     uiRenderer = mock( WebUI.class );
     searchAction = spy( new TestSearchAction() );
     actionDescriptor = mockDescriptor( searchAction );
@@ -238,6 +241,18 @@ public class WebSearchActionTest {
   }
 
   @Test
+  public void testDoSearchNotifiesListener() {
+    SearchActionListener listener = mock( SearchActionListener.class );
+    mockUI( listener );
+    webSearchAction.open();
+    text.setText( "foo" );
+
+    text.notifyListeners( SWT.DefaultSelection, new Event() );
+
+    verify( listener ).searched( ui, searchAction, "foo" );
+  }
+
+  @Test
   public void testDoSearch_clearsText() {
     webSearchAction.open();
     text.setText( "foo" );
@@ -290,6 +305,17 @@ public class WebSearchActionTest {
   }
 
   @Test
+  public void testModifyNotifiesListenerModify() {
+    SearchActionListener listener = mock( SearchActionListener.class );
+    mockUI( listener );
+    webSearchAction.open();
+
+    text.setText( "foo" );
+
+    verify( listener ).modified( ui, searchAction, "foo" );
+  }
+
+  @Test
   public void testShowProposals_updatesMenuItems() {
     List<String> proposals = new ArrayList<String>();
     proposals.add( "foo" );
@@ -331,6 +357,12 @@ public class WebSearchActionTest {
     doReturn( Boolean.FALSE ).when( descriptor ).isEnabled();
     doReturn( Boolean.FALSE ).when( descriptor ).isVisible();
     return descriptor;
+  }
+
+  private void mockUI( SearchActionListener listener ) {
+    UIConfiguration configuration = new UIConfiguration();
+    configuration.addActionListener( listener );
+    when( ui.getConfiguration() ).thenReturn( configuration );
   }
 
 }

@@ -23,7 +23,10 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
 import com.eclipsesource.tabris.internal.ui.ActionDescriptor;
+import com.eclipsesource.tabris.internal.ui.UIDescriptor;
 import com.eclipsesource.tabris.internal.ui.rendering.ActionRenderer;
+import com.eclipsesource.tabris.ui.Action;
+import com.eclipsesource.tabris.ui.ActionListener;
 import com.eclipsesource.tabris.ui.UI;
 
 
@@ -106,8 +109,17 @@ public class WebAction implements ActionRenderer {
   private final class ActionSelectionListener implements Listener {
     @Override
     public void handleEvent( Event event ) {
-      descriptor.getAction().execute( ui );
+      Action action = descriptor.getAction();
+      action.execute( ui );
       actionExecuted();
+      notifyActionListeners( action );
+    }
+  }
+
+  private void notifyActionListeners( Action action ) {
+    UIDescriptor uiDescriptor = ui.getConfiguration().getAdapter( UIDescriptor.class );
+    for( ActionListener listener : uiDescriptor.getActionListeners() ) {
+      listener.executed( ui, action );
     }
   }
 

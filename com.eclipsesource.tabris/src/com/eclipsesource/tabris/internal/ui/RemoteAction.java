@@ -31,6 +31,8 @@ import org.eclipse.swt.internal.graphics.ImageFactory;
 import org.eclipse.swt.widgets.Composite;
 
 import com.eclipsesource.tabris.internal.ui.rendering.ActionRenderer;
+import com.eclipsesource.tabris.ui.Action;
+import com.eclipsesource.tabris.ui.ActionListener;
 import com.eclipsesource.tabris.ui.PlacementPriority;
 import com.eclipsesource.tabris.ui.UI;
 
@@ -116,7 +118,16 @@ public class RemoteAction extends AbstractOperationHandler implements ActionRend
   @Override
   public void handleNotify( String event, JsonObject properties ) {
     if( event.equals( EVENT_SELECTION ) ) {
-      descriptor.getAction().execute( ui );
+      Action action = descriptor.getAction();
+      action.execute( ui );
+      notifyActionListeners( action );
+    }
+  }
+
+  private void notifyActionListeners( Action action ) {
+    UIDescriptor uiDescriptor = ui.getConfiguration().getAdapter( UIDescriptor.class );
+    for( ActionListener listener : uiDescriptor.getActionListeners() ) {
+      listener.executed( ui, action );
     }
   }
 

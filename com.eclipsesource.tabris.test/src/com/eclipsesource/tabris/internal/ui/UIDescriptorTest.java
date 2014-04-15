@@ -30,6 +30,7 @@ import org.junit.runner.RunWith;
 import com.eclipsesource.tabris.TabrisClient;
 import com.eclipsesource.tabris.internal.ui.web.WebRendererFactory;
 import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.ui.ActionListener;
 import com.eclipsesource.tabris.ui.TransitionListener;
 
 
@@ -122,6 +123,29 @@ public class UIDescriptorTest {
 
     List<TransitionListener> transitionListeners = uiDescriptor.getTransitionListeners();
     assertFalse( transitionListeners.contains( listener ) );
+  }
+
+  @Test
+  public void testAddsActionListener() {
+    UIDescriptor uiDescriptor = new UIDescriptor();
+    ActionListener listener = mock( ActionListener.class );
+
+    uiDescriptor.addActionListener( listener );
+
+    List<ActionListener> actionListeners = uiDescriptor.getActionListeners();
+    assertTrue( actionListeners.contains( listener ) );
+  }
+
+  @Test
+  public void testRemovesActionListener() {
+    UIDescriptor uiDescriptor = new UIDescriptor();
+    ActionListener listener = mock( ActionListener.class );
+    uiDescriptor.addActionListener( listener );
+
+    uiDescriptor.removeActionListener( listener );
+
+    List<ActionListener> actionListeners = uiDescriptor.getActionListeners();
+    assertFalse( actionListeners.contains( listener ) );
   }
 
   @Test

@@ -100,6 +100,20 @@ public class UIConfigurationTest {
   }
 
   @Test( expected = IllegalArgumentException.class )
+  public void testAddActionListenerFailsWithNullListener() {
+    UIConfiguration configuration = new UIConfiguration();
+
+    configuration.addActionListener( null );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testRemoveActionListenerFailsWithNullListener() {
+    UIConfiguration configuration = new UIConfiguration();
+
+    configuration.removeActionListener( null );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
   public void testGetPageConfigurationFailsWithNullId() {
     UIConfiguration configuration = new UIConfiguration();
 
@@ -294,6 +308,42 @@ public class UIConfigurationTest {
   }
 
   @Test
+  public void testCanGetActionConfiguration() {
+    UIConfiguration configuration = new UIConfiguration();
+    ActionConfiguration actionConfiguration = new ActionConfiguration( "foo", TestAction.class );
+    configuration.addActionConfiguration( actionConfiguration );
+
+    ActionConfiguration actualActionConfiguration = configuration.getActionConfiguration( "foo" );
+
+    assertSame( actionConfiguration, actualActionConfiguration );
+  }
+
+  @Test
+  public void testCanGetActionConfigurationReturnsNullForNonExistentAction() {
+    UIConfiguration configuration = new UIConfiguration();
+    ActionConfiguration actionConfiguration = new ActionConfiguration( "foo", TestAction.class );
+    configuration.addActionConfiguration( actionConfiguration );
+
+    ActionConfiguration actualActionConfiguration = configuration.getActionConfiguration( "foo2" );
+
+    assertNull( actualActionConfiguration );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testGetActionConfigurationFailsWithNullId() {
+    UIConfiguration configuration = new UIConfiguration();
+
+    configuration.getActionConfiguration( null );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testGetActionConfigurationFailsWithEmptyId() {
+    UIConfiguration configuration = new UIConfiguration();
+
+    configuration.getActionConfiguration( "" );
+  }
+
+  @Test
   public void testAddsTransitionListener() {
     UIConfiguration configuration = new UIConfiguration();
     TransitionListener listener = mock( TransitionListener.class );
@@ -306,13 +356,13 @@ public class UIConfigurationTest {
   }
 
   @Test
-  public void testAddsTransitionListenerReturnsUI() {
+  public void testAddsTransitionListenerReturnsUIConfiguration() {
     UIConfiguration configuration = new UIConfiguration();
     TransitionListener listener = mock( TransitionListener.class );
 
-    UIConfiguration actualUI = configuration.addTransitionListener( listener );
+    UIConfiguration actualConfiguration = configuration.addTransitionListener( listener );
 
-    assertSame( configuration, actualUI );
+    assertSame( configuration, actualConfiguration );
   }
 
   @Test
@@ -325,6 +375,62 @@ public class UIConfigurationTest {
 
     List<TransitionListener> listeners = configuration.getAdapter( UIDescriptor.class ).getTransitionListeners();
     assertTrue( listeners.isEmpty() );
+  }
+
+  @Test
+  public void testRemoveTransitionListenerReturnsConfiguration() {
+    UIConfiguration configuration = new UIConfiguration();
+    TransitionListener listener = mock( TransitionListener.class );
+    configuration.addTransitionListener( listener );
+
+    UIConfiguration actualConfiguration = configuration.removeTransitionListener( listener );
+
+    assertSame( configuration, actualConfiguration );
+  }
+
+  @Test
+  public void testAddsActionListener() {
+    UIConfiguration configuration = new UIConfiguration();
+    ActionListener listener = mock( ActionListener.class );
+
+    configuration.addActionListener( listener );
+
+    List<ActionListener> listeners = configuration.getAdapter( UIDescriptor.class ).getActionListeners();
+    assertTrue( listeners.contains( listener ) );
+    assertEquals( 1, listeners.size() );
+  }
+
+  @Test
+  public void testAddsActionListenerReturnsUIConfiguration() {
+    UIConfiguration configuration = new UIConfiguration();
+    ActionListener listener = mock( ActionListener.class );
+
+    UIConfiguration actualConfiguration = configuration.addActionListener( listener );
+
+    assertSame( configuration, actualConfiguration );
+  }
+
+  @Test
+  public void testRemovesActionListener() {
+    UIConfiguration configuration = new UIConfiguration();
+    ActionListener listener = mock( ActionListener.class );
+    configuration.addActionListener( listener );
+
+    configuration.removeActionListener( listener );
+
+    List<ActionListener> listeners = configuration.getAdapter( UIDescriptor.class ).getActionListeners();
+    assertTrue( listeners.isEmpty() );
+  }
+
+  @Test
+  public void testRemoveActionListenerReturnsConfiguration() {
+    UIConfiguration configuration = new UIConfiguration();
+    ActionListener listener = mock( ActionListener.class );
+    configuration.addActionListener( listener );
+
+    UIConfiguration actualConfiguration = configuration.removeActionListener( listener );
+
+    assertSame( configuration, actualConfiguration );
   }
 
   @Test

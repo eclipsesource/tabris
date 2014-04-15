@@ -179,7 +179,18 @@ public class UIConfiguration implements Adaptable, Serializable {
     return this;
   }
 
-  private ActionConfiguration getActionConfiguration( String actionConfigurationId ) {
+  /**
+   * <p>
+   * Returns the {@link ActionConfiguration} for the specified id or <code>null</code> if non existent.
+   * </p>
+   *
+   * @throws IllegalArgumentException when the id is null or empty.
+   *
+   * @since 1.4
+   */
+  public ActionConfiguration getActionConfiguration( String actionConfigurationId ) {
+    whenNull( actionConfigurationId ).throwIllegalArgument( "actionConfigurationId most not be null" );
+    when( actionConfigurationId.isEmpty() ).throwIllegalArgument( "actionConfigurationId most not be empty" );
     for( ActionConfiguration action : actionConfigurations ) {
       if( action.getAdapter( ActionDescriptor.class ).getId().equals( actionConfigurationId ) ) {
         return action;
@@ -280,6 +291,8 @@ public class UIConfiguration implements Adaptable, Serializable {
    * Adds a {@link TransitionListener} that notifies you when a user browses from one page to another.
    * </p>
    *
+   * @throws IllegalArgumentException when the listener is null.
+   *
    * @since 1.0
    */
   public UIConfiguration addTransitionListener( TransitionListener listener ) {
@@ -293,11 +306,43 @@ public class UIConfiguration implements Adaptable, Serializable {
    * Removes a {@link TransitionListener}.
    * </p>
    *
+   * @throws IllegalArgumentException when the listener is null.
+   *
    * @since 1.0
    */
   public UIConfiguration removeTransitionListener( TransitionListener listener ) {
     whenNull( listener ).throwIllegalArgument( "Listener must not be null" );
     uiDescriptor.removeTransitionListener( listener );
+    return this;
+  }
+
+  /**
+   * <p>
+   * Adds an {@link ActionListener} that notifies you when a user executes an {@link Action}.
+   * </p>
+   *
+   * @throws IllegalArgumentException when the listener is null.
+   *
+   * @since 1.4
+   */
+  public UIConfiguration addActionListener( ActionListener listener ) {
+    whenNull( listener ).throwIllegalArgument( "Listener must not be null" );
+    uiDescriptor.addActionListener( listener );
+    return this;
+  }
+
+  /**
+   * <p>
+   * Removes an {@link ActionListener}.
+   * </p>
+   *
+   * @throws IllegalArgumentException when the listener is null.
+   *
+   * @since 1.4
+   */
+  public UIConfiguration removeActionListener( ActionListener listener ) {
+    whenNull( listener ).throwIllegalArgument( "Listener must not be null" );
+    uiDescriptor.removeActionListener( listener );
     return this;
   }
 

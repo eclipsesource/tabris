@@ -48,10 +48,10 @@ public class PageConfiguration implements Adaptable, Serializable {
 
   private final String id;
   private final Class<? extends Page> pageType;
+  private final List<ActionConfiguration> actions;
   private String title;
   private PageStyle[] style;
   private boolean topLevel;
-  private final List<ActionConfiguration> actions;
   private byte[] image;
 
   /**
@@ -162,7 +162,18 @@ public class PageConfiguration implements Adaptable, Serializable {
     return this;
   }
 
-  private ActionConfiguration getActionConfiguration( String actionConfigurationId ) {
+  /**
+   * <p>
+   * Returns the {@link ActionConfiguration} for the specified id or <code>null</code> if non existent.
+   * </p>
+   *
+   * @throws IllegalArgumentException when the id is null or empty.
+   *
+   * @since 1.4
+   */
+  public ActionConfiguration getActionConfiguration( String actionConfigurationId ) {
+    whenNull( actionConfigurationId ).throwIllegalArgument( "actionConfigurationId most not be null" );
+    when( actionConfigurationId.isEmpty() ).throwIllegalArgument( "actionConfigurationId most not be empty" );
     for( ActionConfiguration action : actions ) {
       if( action.getAdapter( ActionDescriptor.class ).getId().equals( actionConfigurationId ) ) {
         return action;

@@ -36,8 +36,10 @@ import org.mockito.ArgumentCaptor;
 import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 import com.eclipsesource.tabris.ui.Action;
+import com.eclipsesource.tabris.ui.ActionListener;
 import com.eclipsesource.tabris.ui.PlacementPriority;
 import com.eclipsesource.tabris.ui.UI;
+import com.eclipsesource.tabris.ui.UIConfiguration;
 
 
 @SuppressWarnings("restriction")
@@ -164,11 +166,32 @@ public class RemoteActionTest {
   public void testCallsExecuteOnEvent() {
     RemoteAction remoteAction = new RemoteAction( ui, uiRenderer, actionDescriptor );
     Action action = mock( Action.class );
+    mockUI( mock( ActionListener.class ) );
     when( remoteObject.getHandler() ).thenReturn( remoteAction );
     when( actionDescriptor.getAction() ).thenReturn( action );
 
     TabrisTestUtil.dispatchNotify( remoteObject, "Selection", new JsonObject() );
 
     verify( action ).execute( ui );
+  }
+
+  @Test
+  public void testNotifiesListenerOnExecuteEvent() {
+    ActionListener listener = mock( ActionListener.class );
+    mockUI( listener );
+    RemoteAction remoteAction = new RemoteAction( ui, uiRenderer, actionDescriptor );
+    Action action = mock( Action.class );
+    when( remoteObject.getHandler() ).thenReturn( remoteAction );
+    when( actionDescriptor.getAction() ).thenReturn( action );
+
+    TabrisTestUtil.dispatchNotify( remoteObject, "Selection", new JsonObject() );
+
+    verify( listener ).executed( ui, action );
+  }
+
+  private void mockUI( ActionListener listener ) {
+    UIConfiguration configuration = new UIConfiguration();
+    configuration.addActionListener( listener );
+    when( ui.getConfiguration() ).thenReturn( configuration );
   }
 }
