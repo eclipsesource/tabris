@@ -63,7 +63,7 @@ public class PrintImplTest {
   }
 
   @Test
-  public void testSetsNoInitialCameraOptionsWithDefaultOptions() {
+  public void testSetsNoInitialPrintOptionsWithDefaultOptions() {
     RemoteObject remoteObject = mockServiceObject();
 
     new PrintImpl();
@@ -83,7 +83,7 @@ public class PrintImplTest {
     RemoteObject remoteObject = mockServiceObject();
     Print print = new PrintImpl();
 
-    print.print( createOptions() );
+    print.print( "http://localhost/file.pdf", createOptions() );
 
     ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
     verify( remoteObject ).call( eq( "print" ), captor.capture() );
@@ -100,7 +100,21 @@ public class PrintImplTest {
   public void testPrintFailsWithNullOptions() {
     Print print = new PrintImpl();
 
-    print.print( null );
+    print.print( "foo", null );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testPrintFailsWithNullUrl() {
+    Print print = new PrintImpl();
+
+    print.print( null, new PrintOptions() );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testPrintFailsWithEmptyUrl() {
+    Print print = new PrintImpl();
+
+    print.print( "", new PrintOptions() );
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -127,7 +141,7 @@ public class PrintImplTest {
     properties.add( "jobName", "" );
     properties.add( "message", "" );
 
-    print.print( createOptions() );
+    print.print( "http://localhost/file.pdf", createOptions() );
     dispatchNotify( print.getRemoteObject(), "Error", properties );
 
     verify( listener ).printFailed( any( PrintError.class ) );
@@ -139,7 +153,7 @@ public class PrintImplTest {
     PrintListener listener = mock( PrintListener.class );
     print.addPrintListener( listener );
 
-    print.print( createOptions() );
+    print.print( "http://localhost/file.pdf", createOptions() );
     dispatchNotify( print.getRemoteObject(), "Error",  new JsonObject() );
 
     verify( listener ).printFailed( any( PrintError.class ) );
@@ -157,7 +171,7 @@ public class PrintImplTest {
     properties.add( "jobName", "" );
     properties.add( "message", "" );
 
-    print.print( createOptions() );
+    print.print( "http://localhost/file.pdf", createOptions() );
     TabrisTestUtil.dispatchNotify( print.getRemoteObject(), "Error", properties );
 
     InOrder order = inOrder( listener1, listener2 );
@@ -174,7 +188,7 @@ public class PrintImplTest {
     properties.add( "printer", "" );
     properties.add( "jobName", "" );
 
-    print.print( createOptions() );
+    print.print( "http://localhost/file.pdf", createOptions() );
     dispatchNotify( print.getRemoteObject(), "Cancel", properties );
 
     verify( listener ).printCanceled( any( String.class ), any( String.class ) );
@@ -186,7 +200,7 @@ public class PrintImplTest {
     PrintListener listener = mock( PrintListener.class );
     print.addPrintListener( listener );
 
-    print.print( createOptions() );
+    print.print( "http://localhost/file.pdf", createOptions() );
     TabrisTestUtil.dispatchNotify( print.getRemoteObject(), "Cancel", new JsonObject() );
 
     verify( listener ).printCanceled( null, null );
@@ -203,7 +217,7 @@ public class PrintImplTest {
     properties.add( "printer", "" );
     properties.add( "jobName", "" );
 
-    print.print( createOptions() );
+    print.print( "http://localhost/file.pdf", createOptions() );
     dispatchNotify( print.getRemoteObject(), "Cancel", properties );
 
     InOrder order = inOrder( listener1, listener2 );
@@ -220,7 +234,7 @@ public class PrintImplTest {
     properties.add( "printer", "" );
     properties.add( "jobName", "" );
 
-    print.print( createOptions() );
+    print.print( "http://localhost/file.pdf", createOptions() );
     dispatchNotify( print.getRemoteObject(), "Success", properties );
 
     verify( listener ).printSucceeded( any( String.class ), any( String.class ) );
@@ -232,7 +246,7 @@ public class PrintImplTest {
     PrintListener listener = mock( PrintListener.class );
     print.addPrintListener( listener );
 
-    print.print( createOptions() );
+    print.print( "http://localhost/file.pdf", createOptions() );
     dispatchNotify( print.getRemoteObject(), "Success", new JsonObject() );
 
     verify( listener ).printSucceeded( null, null );
@@ -249,7 +263,7 @@ public class PrintImplTest {
     properties.add( "printer", "" );
     properties.add( "jobName", "" );
 
-    print.print( createOptions() );
+    print.print( "http://localhost/file.pdf", createOptions() );
     dispatchNotify( print.getRemoteObject(), "Success", properties );
 
     InOrder order = inOrder( listener1, listener2 );
@@ -258,7 +272,7 @@ public class PrintImplTest {
   }
 
   private PrintOptions createOptions() {
-    PrintOptions options = new PrintOptions( "http://localhost/file.pdf" );
+    PrintOptions options = new PrintOptions();
     options.setPrinter( "A Printer ID" );
     options.setJobName( "A Job Name" );
     return options;

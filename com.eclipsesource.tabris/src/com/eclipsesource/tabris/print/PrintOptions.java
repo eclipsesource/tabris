@@ -10,7 +10,6 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.print;
 
-import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.print.PrintOptions.OutputType.COLOR;
 import static com.eclipsesource.tabris.print.PrintOptions.Quality.NORMAL;
@@ -23,15 +22,6 @@ import java.io.Serializable;
  */
 public class PrintOptions implements Serializable {
 
-  private final String url;
-  private String jobName;
-  private String printer;
-  private boolean showPageRange;
-  private boolean showNumberOfCopies;
-  private OutputType outputType;
-  private boolean duplex;
-  private Quality quality;
-
   public static enum OutputType {
     COLOR, PHOTO, GRAYSCALE;
   }
@@ -40,19 +30,20 @@ public class PrintOptions implements Serializable {
     LOW, NORMAL, HIGH;
   }
 
-  public PrintOptions( String url ) {
-    whenNull( url ).throwIllegalArgument( "URL must not be null." );
-    when( url.isEmpty() ).throwIllegalArgument( "URL must not be empty" );
-    this.url = url;
+  private String jobName;
+  private String printer;
+  private boolean showPageRange;
+  private boolean showNumberOfCopies;
+  private OutputType outputType;
+  private boolean duplex;
+  private Quality quality;
+
+  public PrintOptions() {
     this.showNumberOfCopies = true;
     this.showPageRange = true;
     this.duplex = false;
     this.outputType = COLOR;
     this.quality = NORMAL;
-  }
-
-  public String getURL() {
-    return url;
   }
 
   public PrintOptions setJobName( String jobName ) {

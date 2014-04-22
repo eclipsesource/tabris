@@ -27,19 +27,9 @@ public class PrintOptionsTest {
     assertTrue( Serializable.class.isAssignableFrom( PrintOptions.class ) );
   }
 
-  @Test( expected = IllegalArgumentException.class )
-  public void testFailsWithNullUrl() {
-    new PrintOptions( null );
-  }
-
-  @Test( expected = IllegalArgumentException.class )
-  public void testFailsWithEmptyUrl() {
-    new PrintOptions( "" );
-  }
-
   @Test
   public void testSetsPrinter() {
-    PrintOptions printOptions = new PrintOptions( "foo" );
+    PrintOptions printOptions = new PrintOptions();
 
     printOptions.setPrinter( "printer" );
 
@@ -48,7 +38,7 @@ public class PrintOptionsTest {
 
   @Test
   public void testSetPrinterReturnsOptions() {
-    PrintOptions printOptions = new PrintOptions( "foo" );
+    PrintOptions printOptions = new PrintOptions();
 
     PrintOptions actualOptions = printOptions.setPrinter( "printer" );
 
@@ -57,7 +47,7 @@ public class PrintOptionsTest {
 
   @Test
   public void testSetsPrinterToNull() {
-    PrintOptions printOptions = new PrintOptions( "foo" );
+    PrintOptions printOptions = new PrintOptions();
 
     printOptions.setPrinter( "printer" );
     printOptions.setPrinter( null );
@@ -67,7 +57,7 @@ public class PrintOptionsTest {
 
   @Test
   public void testDefaultPrinterIsNull() {
-    PrintOptions printOptions = new PrintOptions( "foo" );
+    PrintOptions printOptions = new PrintOptions();
 
     String printer = printOptions.getPrinter();
 
@@ -76,7 +66,7 @@ public class PrintOptionsTest {
 
   @Test
   public void testSetsJobName() {
-    PrintOptions printOptions = new PrintOptions( "foo" );
+    PrintOptions printOptions = new PrintOptions();
 
     printOptions.setJobName( "Job Name" );
 
@@ -85,7 +75,7 @@ public class PrintOptionsTest {
 
   @Test
   public void testSetJobNameReturnsOptions() {
-    PrintOptions printOptions = new PrintOptions( "foo" );
+    PrintOptions printOptions = new PrintOptions();
 
     PrintOptions actualOptions = printOptions.setJobName( "Job Name" );
 
@@ -94,7 +84,7 @@ public class PrintOptionsTest {
 
   @Test
   public void testSetsJobNameToNull() {
-    PrintOptions printOptions = new PrintOptions( "foo" );
+    PrintOptions printOptions = new PrintOptions();
 
     printOptions.setJobName( "Job Name" );
     printOptions.setJobName( null );
@@ -104,7 +94,7 @@ public class PrintOptionsTest {
 
   @Test
   public void testDefaultJobNameIsNull() {
-    PrintOptions printOptions = new PrintOptions( "foo" );
+    PrintOptions printOptions = new PrintOptions();
 
     String jobName = printOptions.getJobName();
 
@@ -113,7 +103,7 @@ public class PrintOptionsTest {
 
   @Test
   public void testSetDuplexReturnsOptions() {
-    PrintOptions printOptions = new PrintOptions( "foo" );
+    PrintOptions printOptions = new PrintOptions();
 
     PrintOptions actualOptions = printOptions.setDuplex( true );
 
@@ -122,7 +112,7 @@ public class PrintOptionsTest {
 
   @Test
   public void testSetsDuplex() {
-    PrintOptions printOptions = new PrintOptions( "foo" );
+    PrintOptions printOptions = new PrintOptions();
 
     printOptions.setDuplex( true );
 
@@ -131,7 +121,7 @@ public class PrintOptionsTest {
 
   @Test
   public void testDefaultDuplexIsFalse() {
-    PrintOptions printOptions = new PrintOptions( "foo" );
+    PrintOptions printOptions = new PrintOptions();
 
     boolean duplex = printOptions.isDuplex();
 
@@ -140,7 +130,7 @@ public class PrintOptionsTest {
 
   @Test
   public void testSetShowNumberOfCopiesReturnsOptions() {
-    PrintOptions printOptions = new PrintOptions( "foo" );
+    PrintOptions printOptions = new PrintOptions();
 
     PrintOptions actualOptions = printOptions.setShowNumberOfCopies( false );
 
@@ -149,7 +139,7 @@ public class PrintOptionsTest {
 
   @Test
   public void testSetsShowNumberOfCopiesToFalse() {
-    PrintOptions printOptions = new PrintOptions( "foo" );
+    PrintOptions printOptions = new PrintOptions();
 
     printOptions.setShowNumberOfCopies( false );
 
@@ -158,7 +148,7 @@ public class PrintOptionsTest {
 
   @Test
   public void testDefaultShowNumberOfCopiesIsTrue() {
-    PrintOptions printOptions = new PrintOptions( "foo" );
+    PrintOptions printOptions = new PrintOptions();
 
     boolean showNumberOfCopies = printOptions.showNumberOfCopies();
 
@@ -167,7 +157,7 @@ public class PrintOptionsTest {
 
   @Test
   public void testSetShowPageRangeReturnsOptions() {
-    PrintOptions printOptions = new PrintOptions( "foo" );
+    PrintOptions printOptions = new PrintOptions();
 
     PrintOptions actualOptions = printOptions.setShowPageRange( false );
 
@@ -176,7 +166,7 @@ public class PrintOptionsTest {
 
   @Test
   public void testSetsShowPageRangeToFalse() {
-    PrintOptions printOptions = new PrintOptions( "foo" );
+    PrintOptions printOptions = new PrintOptions();
 
     printOptions.setShowPageRange( false );
 
@@ -185,7 +175,7 @@ public class PrintOptionsTest {
 
   @Test
   public void testDefaultShowPageRangeIsTrue() {
-    PrintOptions printOptions = new PrintOptions( "foo" );
+    PrintOptions printOptions = new PrintOptions();
 
     boolean showPageRange = printOptions.showPageRange();
 
@@ -194,7 +184,7 @@ public class PrintOptionsTest {
 
   @Test
   public void testSetQualityReturnsOptions() {
-    PrintOptions printOptions = new PrintOptions( "foo" );
+    PrintOptions printOptions = new PrintOptions();
 
     PrintOptions actualOptions = printOptions.setQuality( PrintOptions.Quality.LOW );
 
@@ -203,7 +193,7 @@ public class PrintOptionsTest {
 
   @Test
   public void testSetsQualityToLow() {
-    PrintOptions printOptions = new PrintOptions( "foo" );
+    PrintOptions printOptions = new PrintOptions();
 
     printOptions.setQuality( PrintOptions.Quality.LOW );
 
@@ -212,7 +202,7 @@ public class PrintOptionsTest {
 
   @Test
   public void testSetsQualityToNormal() {
-    PrintOptions printOptions = new PrintOptions( "foo" );
+    PrintOptions printOptions = new PrintOptions();
 
     printOptions.setQuality( PrintOptions.Quality.NORMAL );
 
@@ -221,7 +211,7 @@ public class PrintOptionsTest {
 
   @Test
   public void testSetsQualityToHigh() {
-    PrintOptions printOptions = new PrintOptions( "foo" );
+    PrintOptions printOptions = new PrintOptions();
 
     printOptions.setQuality( PrintOptions.Quality.HIGH );
 
@@ -230,7 +220,7 @@ public class PrintOptionsTest {
 
   @Test
   public void testDefaultQualityIsNormal() {
-    PrintOptions printOptions = new PrintOptions( "foo" );
+    PrintOptions printOptions = new PrintOptions();
 
     PrintOptions.Quality quality = printOptions.getQuality();
 
@@ -239,7 +229,7 @@ public class PrintOptionsTest {
 
   @Test
   public void testSetOutputTypeReturnsOptions() {
-    PrintOptions printOptions = new PrintOptions( "foo" );
+    PrintOptions printOptions = new PrintOptions();
 
     PrintOptions actualOptions = printOptions.setOutputType( OutputType.COLOR );
 
@@ -248,7 +238,7 @@ public class PrintOptionsTest {
 
   @Test
   public void testSetsOutputTypeToColor() {
-    PrintOptions printOptions = new PrintOptions( "foo" );
+    PrintOptions printOptions = new PrintOptions();
 
     printOptions.setOutputType( OutputType.COLOR );
 
@@ -257,7 +247,7 @@ public class PrintOptionsTest {
 
   @Test
   public void testSetsOutputTypeToGraysale() {
-    PrintOptions printOptions = new PrintOptions( "foo" );
+    PrintOptions printOptions = new PrintOptions();
 
     printOptions.setOutputType( OutputType.GRAYSCALE );
 
@@ -266,7 +256,7 @@ public class PrintOptionsTest {
 
   @Test
   public void testSetsOutputTypeToPhoto() {
-    PrintOptions printOptions = new PrintOptions( "foo" );
+    PrintOptions printOptions = new PrintOptions();
 
     printOptions.setOutputType( OutputType.PHOTO );
 
@@ -275,7 +265,7 @@ public class PrintOptionsTest {
 
   @Test
   public void testDefaultOutputTypeIsColor() {
-    PrintOptions printOptions = new PrintOptions( "foo" );
+    PrintOptions printOptions = new PrintOptions();
 
     OutputType outputType = printOptions.getOutputType();
 

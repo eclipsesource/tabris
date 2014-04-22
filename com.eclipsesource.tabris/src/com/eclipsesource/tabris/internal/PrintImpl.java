@@ -1,5 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2014 EclipseSource and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    EclipseSource - initial API and implementation
+ ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.Constants.EVENT_CANCEL;
 import static com.eclipsesource.tabris.internal.Constants.EVENT_ERROR;
@@ -46,15 +57,17 @@ public class PrintImpl extends AbstractOperationHandler implements Print {
   }
 
   @Override
-  public void print( PrintOptions options ) {
+  public void print( String url, PrintOptions options ) {
     whenNull( options ).throwIllegalArgument( "Options must not be null" );
+    whenNull( url ).throwIllegalArgument( "URL must not be null." );
+    when( url.isEmpty() ).throwIllegalArgument( "URL must not be empty" );
     JsonObject properties = createProperties( options );
+    properties.add( PROPERTY_URL, url);
     remoteObject.call( METHOD_PRINT, properties );
   }
 
   private JsonObject createProperties( PrintOptions options ) {
     JsonObject properties = new JsonObject();
-    addURL( properties, options );
     addJobName( properties, options );
     addPrinter( properties, options );
     addOutputType( properties, options );
@@ -63,11 +76,6 @@ public class PrintImpl extends AbstractOperationHandler implements Print {
     addShowNumberOfCopies( properties, options );
     addDuplex( properties, options );
     return properties;
-  }
-
-  private void addURL( JsonObject properties, PrintOptions options ) {
-    String url = options.getURL();
-    properties.add( PROPERTY_URL, url);
   }
 
   private void addPrinter( JsonObject properties, PrintOptions options ) {

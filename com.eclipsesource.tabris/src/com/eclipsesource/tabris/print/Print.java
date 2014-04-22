@@ -14,11 +14,12 @@ import org.eclipse.rap.rwt.client.service.ClientService;
 
 /**
  * @since 1.4
+ *
  * @noimplement This interface is not intended to be implemented by clients.
  */
 public interface Print extends ClientService {
 
-  void print( PrintOptions options );
+  void print( String url, PrintOptions options );
 
   void addPrintListener( PrintListener listener );
 
