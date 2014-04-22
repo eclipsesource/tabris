@@ -118,6 +118,39 @@ public class GoogleAnalyticsTrackerTest {
     assertEquals( "query", configCaptor.getValue().getParameter().get( getRequestKey( RequestKeys.CUSTOM_DIMENSION, 1 ) ) );
   }
 
+  @Test
+  public void testSendsSearchActionWithConfiguredCustomDimension() {
+    GoogleAnalytics analytics = mock( GoogleAnalytics.class );
+    GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker( analytics );
+    ActionConfiguration config = mock( ActionConfiguration.class );
+    when( config.getId() ).thenReturn( "foo" );
+    TrackingEvent event = new TrackingEvent( EventType.SEARCH, createInfo(), config, 1 );
+
+    tracker.setSearchCustomDimension( 2 );
+    tracker.handleEvent( event );
+
+    ArgumentCaptor<AdvancedConfiguration> configCaptor = ArgumentCaptor.forClass( AdvancedConfiguration.class );
+    verify( analytics ).track( any( Hit.class ), eq( "clientId" ), configCaptor.capture() );
+    assertAdvancedConfiguration( configCaptor.getValue() );
+    assertEquals( "query", configCaptor.getValue().getParameter().get( getRequestKey( RequestKeys.CUSTOM_DIMENSION, 2 ) ) );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testFailsToSetZeroSearchIndex() {
+    GoogleAnalytics analytics = mock( GoogleAnalytics.class );
+    GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker( analytics );
+
+    tracker.setSearchCustomDimension( 0 );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testFailsToSetNegativeSearchIndex() {
+    GoogleAnalytics analytics = mock( GoogleAnalytics.class );
+    GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker( analytics );
+
+    tracker.setSearchCustomDimension( -1 );
+  }
+
   private void assertAdvancedConfiguration( AdvancedConfiguration configuration ) {
     assertEquals( "appVersion", configuration.getParameter().get( getRequestKey( RequestKeys.APP_VERSION ) ) );
     assertEquals( "100x200", configuration.getParameter().get( getRequestKey( RequestKeys.SCREEN_RESOLUTION ) ) );

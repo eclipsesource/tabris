@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.tracking.tracker;
 
+import static com.eclipsesource.tabris.internal.Clauses.when;
+
 import com.eclipsesource.tabris.device.ClientDevice.Platform;
 import com.eclipsesource.tabris.tracking.Tracker;
 import com.eclipsesource.tabris.tracking.TrackingEvent;
@@ -28,6 +30,7 @@ import com.eclipsesource.tabris.ui.PageConfiguration;
 /**
  * @since 1.4
  */
+@SuppressWarnings("restriction")
 public class GoogleAnalyticsTracker implements Tracker {
 
   static final String LABEL_SEARCH = "search";
@@ -36,6 +39,7 @@ public class GoogleAnalyticsTracker implements Tracker {
   static final String CATEGORY_ACTION = "tabris.ui.action";
 
   private final GoogleAnalytics analytics;
+  private int searchIndex;
 
   public GoogleAnalyticsTracker( String trackingId, String appName ) {
     this( new GoogleAnalytics( appName, new AnalyticsConfiguration( "1", trackingId ) ) );
@@ -43,6 +47,12 @@ public class GoogleAnalyticsTracker implements Tracker {
 
   GoogleAnalyticsTracker( GoogleAnalytics analytics ) {
     this.analytics = analytics;
+    this.searchIndex = 1;
+  }
+
+  public void setSearchCustomDimension( int index ) {
+    when( index <= 0 ).throwIllegalArgument( "Index must be > 1 but was " + index );
+    this.searchIndex = index;
   }
 
   @Override
@@ -84,7 +94,7 @@ public class GoogleAnalyticsTracker implements Tracker {
     eventHit.setCategory( CATEGORY_SEARCH );
     eventHit.setAction( LABEL_SEARCH );
     eventHit.setLabel( actionConfiguration.getId() );
-    advancedConfiguration.setCustomDimension( 1, event.getInfo().getSearchQuery() );
+    advancedConfiguration.setCustomDimension( searchIndex, event.getInfo().getSearchQuery() );
     return eventHit;
   }
 

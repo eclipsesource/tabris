@@ -37,19 +37,25 @@ import com.eclipsesource.tabris.ui.action.SearchActionListener;
  * @since 1.4
  */
 @SuppressWarnings("restriction")
-public class TabrisTracking {
+public class Tracking {
 
   private final EventDispatcher dispatcher;
-  private UIConfiguration configuration;
   private final SearchActionListener actionListener;
   private final TransitionAdapter transitionListener;
+  private UIConfiguration configuration;
 
-  public TabrisTracking( Tracker tracker ) {
+  public Tracking( Tracker tracker ) {
     this( tracker, new Tracker[] {} );
   }
 
-  public TabrisTracking( Tracker tracker, Tracker... otherTrackers ) {
+  public Tracking( Tracker tracker, Tracker... otherTrackers ) {
     this( new EventDispatcher( createTrackerList( tracker, otherTrackers ) ) );
+  }
+
+  Tracking( EventDispatcher disptacher ) {
+    this.dispatcher = disptacher;
+    this.actionListener = createActionListener();
+    this.transitionListener = createTransitionListener();
   }
 
   private static List<Tracker> createTrackerList( Tracker tracker, Tracker... otherTrackers ) {
@@ -64,12 +70,6 @@ public class TabrisTracking {
   public void setUncaughtExceptionHandler( UncaughtExceptionHandler exceptionHandler ) {
     whenNull( exceptionHandler ).throwIllegalArgument( "ExceptionHandler must not be null." );
     dispatcher.setUncaughtExceptionHandler( exceptionHandler );
-  }
-
-  TabrisTracking( EventDispatcher disptacher ) {
-    this.dispatcher = disptacher;
-    this.actionListener = createActionListener();
-    this.transitionListener = createTransitionListener();
   }
 
   private SearchActionListener createActionListener() {

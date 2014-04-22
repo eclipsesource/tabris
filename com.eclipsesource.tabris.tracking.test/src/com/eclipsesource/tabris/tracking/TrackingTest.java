@@ -42,7 +42,7 @@ import com.eclipsesource.tabris.ui.UIConfiguration;
 import com.eclipsesource.tabris.ui.action.SearchActionListener;
 
 
-public class TabrisTrackingTest {
+public class TrackingTest {
 
   private Display display;
 
@@ -60,23 +60,23 @@ public class TabrisTrackingTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithNullTracker() {
-    new TabrisTracking( ( Tracker )null );
+    new Tracking( ( Tracker )null );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithNullTrackerButOtherTrackers() {
-    new TabrisTracking( null, new Tracker[] { mock( Tracker.class ) } );
+    new Tracking( null, new Tracker[] { mock( Tracker.class ) } );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithNullOtherTrackers() {
-    new TabrisTracking( mock( Tracker.class ), ( Tracker[] )null );
+    new Tracking( mock( Tracker.class ), ( Tracker[] )null );
   }
 
   @Test
   public void testAddsOneTracker() {
     Tracker tracker = mock( Tracker.class );
-    TabrisTracking tracking = new TabrisTracking( tracker );
+    Tracking tracking = new Tracking( tracker );
 
     List<Tracker> trackers = tracking.getTrackers();
 
@@ -89,7 +89,7 @@ public class TabrisTrackingTest {
     Tracker tracker1 = mock( Tracker.class );
     Tracker tracker2 = mock( Tracker.class );
     Tracker tracker3 = mock( Tracker.class );
-    TabrisTracking tracking = new TabrisTracking( tracker1, tracker2, tracker3 );
+    Tracking tracking = new Tracking( tracker1, tracker2, tracker3 );
 
     List<Tracker> trackers = tracking.getTrackers();
 
@@ -101,14 +101,14 @@ public class TabrisTrackingTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testStartFailsWithNullConfiguration() {
-    TabrisTracking tracking = new TabrisTracking( mock( Tracker.class ) );
+    Tracking tracking = new Tracking( mock( Tracker.class ) );
 
     tracking.start( null );
   }
 
   @Test
   public void testStartAddsTransitionListener() {
-    TabrisTracking tracking = new TabrisTracking( mock( Tracker.class ) );
+    Tracking tracking = new Tracking( mock( Tracker.class ) );
     UIConfiguration configuration = mock( UIConfiguration.class );
 
     tracking.start( configuration );
@@ -118,7 +118,7 @@ public class TabrisTrackingTest {
 
   @Test
   public void testStartAddsActionListener() {
-    TabrisTracking tracking = new TabrisTracking( mock( Tracker.class ) );
+    Tracking tracking = new Tracking( mock( Tracker.class ) );
     UIConfiguration configuration = mock( UIConfiguration.class );
 
     tracking.start( configuration );
@@ -128,14 +128,14 @@ public class TabrisTrackingTest {
 
   @Test( expected = IllegalStateException.class )
   public void testFailsToStopBeforeStart() {
-    TabrisTracking tracking = new TabrisTracking( mock( Tracker.class ) );
+    Tracking tracking = new Tracking( mock( Tracker.class ) );
 
     tracking.stop();
   }
 
   @Test( expected = IllegalStateException.class )
   public void testFailsToStopTwice() {
-    TabrisTracking tracking = new TabrisTracking( mock( Tracker.class ) );
+    Tracking tracking = new Tracking( mock( Tracker.class ) );
     UIConfiguration configuration = mock( UIConfiguration.class );
 
     tracking.start( configuration );
@@ -145,7 +145,7 @@ public class TabrisTrackingTest {
 
   @Test
   public void testStopRemovesTransitionListener() {
-    TabrisTracking tracking = new TabrisTracking( mock( Tracker.class ) );
+    Tracking tracking = new Tracking( mock( Tracker.class ) );
     UIConfiguration configuration = mock( UIConfiguration.class );
 
     tracking.start( configuration );
@@ -156,7 +156,7 @@ public class TabrisTrackingTest {
 
   @Test
   public void testStopRemovesActionListener() {
-    TabrisTracking tracking = new TabrisTracking( mock( Tracker.class ) );
+    Tracking tracking = new Tracking( mock( Tracker.class ) );
     UIConfiguration configuration = mock( UIConfiguration.class );
 
     tracking.start( configuration );
@@ -168,7 +168,7 @@ public class TabrisTrackingTest {
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithNullExceptionHandler() {
     EventDispatcher dispatcher = mock( EventDispatcher.class );
-    TabrisTracking tracking = new TabrisTracking( dispatcher );
+    Tracking tracking = new Tracking( dispatcher );
 
     tracking.setUncaughtExceptionHandler( null );
   }
@@ -177,7 +177,7 @@ public class TabrisTrackingTest {
   public void testSetsExceptionHandlerOnDispatcher() {
     UncaughtExceptionHandler handler = mock( UncaughtExceptionHandler.class );
     EventDispatcher dispatcher = mock( EventDispatcher.class );
-    TabrisTracking tracking = new TabrisTracking( dispatcher );
+    Tracking tracking = new Tracking( dispatcher );
 
     tracking.setUncaughtExceptionHandler( handler );
 
@@ -187,7 +187,7 @@ public class TabrisTrackingTest {
   @Test
   public void testDispatchesPageTransition() {
     EventDispatcher dispatcher = mock( EventDispatcher.class );
-    TabrisTracking tracking = new TabrisTracking( dispatcher );
+    Tracking tracking = new Tracking( dispatcher );
     PageConfiguration pageConfiguration = mock( PageConfiguration.class );
     UIConfiguration configuration = mock( UIConfiguration.class );
 
@@ -213,7 +213,7 @@ public class TabrisTrackingTest {
   @Test
   public void testDispatchesActionExecution() {
     EventDispatcher dispatcher = mock( EventDispatcher.class );
-    TabrisTracking tracking = new TabrisTracking( dispatcher );
+    Tracking tracking = new Tracking( dispatcher );
     ActionConfiguration actionConfiguration = mock( ActionConfiguration.class );
     UIConfiguration configuration = mock( UIConfiguration.class );
 
@@ -239,7 +239,7 @@ public class TabrisTrackingTest {
   @Test
   public void testDispatchesSearch() {
     EventDispatcher dispatcher = mock( EventDispatcher.class );
-    TabrisTracking tracking = new TabrisTracking( dispatcher );
+    Tracking tracking = new Tracking( dispatcher );
     ActionConfiguration actionConfiguration = mock( ActionConfiguration.class );
     UIConfiguration configuration = mock( UIConfiguration.class );
 
