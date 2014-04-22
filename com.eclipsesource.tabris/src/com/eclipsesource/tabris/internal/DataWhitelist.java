@@ -28,6 +28,7 @@ public class DataWhitelist implements Serializable {
     BACK_FOCUS( "backFocus" ),
     CLIENT_CANVAS( "clientCanvas" ),
     SWIPE( "swipe" ),
+    SPINNING_INDICATOR( "spinningIndicator" ),
     SHOW_TOUCH( "showTouch" ),
     BADGE_VALUE( "badgeValue" ),
     OVERLAY_COLOR( "overlayColor" ),
