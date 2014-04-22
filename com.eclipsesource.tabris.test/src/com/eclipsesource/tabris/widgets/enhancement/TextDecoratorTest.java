@@ -13,15 +13,24 @@ package com.eclipsesource.tabris.widgets.enhancement;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.AUTO_CAPITALIZE;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.AUTO_CORRECT;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.KEYBOARD;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.TEXT_REPLACEMENT;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import org.eclipse.rap.rwt.client.WebClient;
+import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.widgets.Text;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import com.eclipsesource.tabris.TabrisClient;
 
 
 @RunWith( MockitoJUnitRunner.class )
@@ -33,7 +42,13 @@ public class TextDecoratorTest {
 
   @Before
   public void setUp() {
+    Fixture.setUp();
     decorator = Widgets.onText( text );
+  }
+
+  @After
+  public void tearDown() {
+    Fixture.tearDown();
   }
 
   @Test
@@ -118,6 +133,33 @@ public class TextDecoratorTest {
     decorator.useDecimalKeyboard();
 
     verify( text ).setData( KEYBOARD.getKey(), "decimal" );
+  }
+
+  @Test
+  public void testSetsTextReplacement() {
+    Fixture.fakeClient( mock( TabrisClient.class ) );
+    TextReplacementData data = mock( TextReplacementData.class );
+    when( data.getId() ).thenReturn( "r42" );
+
+    decorator.setTextReplacement( data );
+
+    verify( text ).setData( TEXT_REPLACEMENT.getKey(), "r42" );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testSetTextReplacementFailsWithNullData() {
+    decorator.setTextReplacement( null );
+  }
+
+  @Test
+  public void testDoesNotSetTextReplacementWithWebClient() {
+    Fixture.fakeClient( mock( WebClient.class ) );
+    TextReplacementData data = mock( TextReplacementData.class );
+    when( data.getId() ).thenReturn( "r42" );
+
+    decorator.setTextReplacement( data );
+
+    verify( text, never() ).setData( TEXT_REPLACEMENT.getKey(), "r42" );
   }
 
 }

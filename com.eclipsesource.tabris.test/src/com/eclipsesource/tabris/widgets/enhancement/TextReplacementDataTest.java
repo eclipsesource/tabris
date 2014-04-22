@@ -8,34 +8,33 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.internal.textreplacement;
+package com.eclipsesource.tabris.widgets.enhancement;
 
-import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.TEXT_REPLACEMENT;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import java.io.Serializable;
 import java.util.List;
 
 import org.eclipse.rap.json.JsonObject;
+import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.client.WebClient;
+import org.eclipse.rap.rwt.lifecycle.PhaseId;
+import org.eclipse.rap.rwt.remote.Connection;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.eclipse.swt.widgets.Text;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
 
-import com.eclipsesource.tabris.internal.TabrisClientImpl;
+import com.eclipsesource.tabris.TabrisClient;
 import com.eclipsesource.tabris.test.RWTRunner;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 
@@ -43,37 +42,53 @@ import com.eclipsesource.tabris.test.TabrisTestUtil;
 @RunWith( RWTRunner.class )
 public class TextReplacementDataTest {
 
-  @Mock
-  private Text text;
+  private RemoteObject remoteObject;
 
   @Before
   public void setUp() {
-    text = mock( Text.class );
+    Fixture.fakeClient( mock( TabrisClient.class ) );
+    remoteObject = TabrisTestUtil.mockRemoteObject();
   }
 
   @Test
-  public void testEnableTextReplacement() {
-    TextReplacementData data = mock( TextReplacementData.class );
-    when( data.getAdapter( String.class ) ).thenReturn( "r42" );
+  public void testCreatesRemoteObject() {
+    TextReplacementData data = new TextReplacementData();
 
-    TextReplacementData.enableTextReplacement( text, data );
+    data.put( "shortcut", "replacement" );
 
-    verify( text ).setData( TEXT_REPLACEMENT.getKey(), "r42" );
+    Connection connection = RWT.getUISession().getConnection();
+    verify( connection ).createRemoteObject( "tabris.TextReplacement" );
   }
 
   @Test
-  public void testReplacementKeyInDataWhitelist() {
-    assertEquals( "textReplacement", TEXT_REPLACEMENT.getKey() );
+  public void testCreatesNoRemoteObjectWithWebClient() {
+    Fixture.fakeClient( mock( WebClient.class ) );
+    Fixture.fakePhase( PhaseId.RENDER );
+    TextReplacementData data = new TextReplacementData();
+
+    data.put( "shortcut", "replacement" );
+
+    Connection connection = RWT.getUISession().getConnection();
+    verify( connection, never() ).createRemoteObject( "tabris.TextReplacement" );
   }
 
   @Test
-  public void testDontEnableTextReplacementOnBrowser() {
-    TextReplacementData data = mock( TextReplacementData.class );
-    when( data.getAdapter( String.class ) ).thenReturn( null );
+  public void testHasRemoteObjectId() {
+    TextReplacementData data = new TextReplacementData();
 
-    TextReplacementData.enableTextReplacement( text, data );
+    String id = data.getId();
 
-    verify( text, never() ).setData( eq( TEXT_REPLACEMENT.getKey() ), any( String.class ) );
+    assertEquals( id, remoteObject.getId() );
+  }
+
+  @Test
+  public void testHasNullIdWithWebClient() {
+    Fixture.fakeClient( mock( WebClient.class ) );
+    TextReplacementData data = new TextReplacementData();
+
+    String id = data.getId();
+
+    assertNull( id );
   }
 
   @Test
@@ -87,8 +102,6 @@ public class TextReplacementDataTest {
 
   @Test
   public void testPutCreatesSetOperation() {
-    Fixture.fakeClient( new TabrisClientImpl() );
-    RemoteObject remoteObject = TabrisTestUtil.mockRemoteObject();
     TextReplacementData data = new TextReplacementData();
 
     data.put( "shortcut", "replacement" );
@@ -179,8 +192,6 @@ public class TextReplacementDataTest {
 
   @Test
   public void testRemoveCreatesSetOperations() {
-    Fixture.fakeClient( new TabrisClientImpl() );
-    RemoteObject remoteObject = TabrisTestUtil.mockRemoteObject();
     TextReplacementData data = new TextReplacementData();
     data.put( "shortcut", "replacement" );
 

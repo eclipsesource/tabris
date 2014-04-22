@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 EclipseSource and others.
+ * Copyright (c) 2012,2014 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,12 +11,17 @@
 package com.eclipsesource.tabris.widgets.enhancement;
 
 
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.AUTO_CAPITALIZE;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.AUTO_CORRECT;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.KEYBOARD;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.TEXT_REPLACEMENT;
 import static com.eclipsesource.tabris.internal.WidgetsUtil.setData;
 
+import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.widgets.Text;
+
+import com.eclipsesource.tabris.TabrisClient;
 
 
 /**
@@ -142,6 +147,23 @@ public class TextDecorator extends WidgetDecorator<TextDecorator> {
    */
   public TextDecorator useDecimalKeyboard() {
     setData( text, KEYBOARD, "decimal" );
+    return this;
+  }
+
+  /**
+   * <p>
+   * Sets the {@link TextReplacementData} on the decorated {@link Text} widget.
+   * </p>
+   *
+   * @see TextReplacementData
+   *
+   * @since 1.4
+   */
+  public TextDecorator setTextReplacement( TextReplacementData data ) {
+    whenNull( data ).throwIllegalArgument( "TextReplacementData must not be null" );
+    if( RWT.getClient() instanceof TabrisClient ) {
+      setData( text, TEXT_REPLACEMENT, data.getId() );
+    }
     return this;
   }
 

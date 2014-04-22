@@ -207,6 +207,9 @@ public class Constants {
   public static final String PROPERTY_BUTTON = "button";
   public static final String PROPERTY_BUTTON_TYPE = "buttonType";
 
+  // Text Replacement
+  public static final String TYPE_TEXT_REPLACEMENT = "tabris.TextReplacement";
+
   private Constants() {
     // prevent instantiation
   }
