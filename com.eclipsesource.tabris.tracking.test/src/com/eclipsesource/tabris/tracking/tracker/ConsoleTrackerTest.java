@@ -47,7 +47,7 @@ public class ConsoleTrackerTest {
 
     tracker.handleEvent( event );
 
-    verify( out ).println( "1970-01-01 01:00: PAGE_VIEW - foo (title) [appId, model, vendor, osVersion]" );
+    verify( out ).println( "PAGE_VIEW - foo (title) [appId, model, vendor, osVersion]" );
   }
 
   @Test
@@ -59,7 +59,7 @@ public class ConsoleTrackerTest {
 
     tracker.handleEvent( event );
 
-    verify( out ).println( "1970-01-01 01:00: ACTION - foo (title) [appId, model, vendor, osVersion]" );
+    verify( out ).println( "ACTION - foo (title) [appId, model, vendor, osVersion]" );
   }
 
   @Test
@@ -71,7 +71,7 @@ public class ConsoleTrackerTest {
 
     tracker.handleEvent( event );
 
-    verify( out ).println( "1970-01-01 01:00: SEARCH - query=query [appId, model, vendor, osVersion]" );
+    verify( out ).println( "SEARCH - query=query [appId, model, vendor, osVersion]" );
   }
 
   private TrackingInfo createInfo() {

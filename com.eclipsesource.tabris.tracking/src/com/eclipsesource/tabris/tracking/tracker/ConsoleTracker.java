@@ -10,9 +10,6 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.tracking.tracker;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import com.eclipsesource.tabris.tracking.Tracker;
 import com.eclipsesource.tabris.tracking.TrackingEvent;
 import com.eclipsesource.tabris.tracking.TrackingEvent.EventType;
@@ -40,9 +37,6 @@ public class ConsoleTracker implements Tracker {
   }
 
   private void appendEventPrefix( StringBuilder builder, TrackingEvent event ) {
-    SimpleDateFormat format = new SimpleDateFormat( "yyyy-MM-dd hh:ss" );
-    builder.append( format.format( new Date( event.getTimestamp() ) ) );
-    builder.append( ": " );
     builder.append( event.getType() + " - " );
   }
 
