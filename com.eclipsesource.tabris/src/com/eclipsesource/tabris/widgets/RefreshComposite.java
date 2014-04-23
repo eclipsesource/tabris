@@ -19,6 +19,7 @@ import org.eclipse.rap.rwt.lifecycle.WidgetLifeCycleAdapter;
 import org.eclipse.swt.widgets.Composite;
 
 import com.eclipsesource.tabris.internal.RefreshCompositeLCA;
+import com.eclipsesource.tabris.internal.RefreshCompositeLCA.ResetAdapter;
 
 
 /**
@@ -27,11 +28,13 @@ import com.eclipsesource.tabris.internal.RefreshCompositeLCA;
 public class RefreshComposite extends Composite {
 
   private final List<RefreshListener> listeners;
+  private final ResetAdapter resetAdapter;
   private String message;
 
   public RefreshComposite( Composite parent, int style ) {
     super( parent, style );
     this.listeners = new ArrayList<RefreshListener>();
+    this.resetAdapter = new ResetAdapter();
   }
 
   public void setMessage( String message ) {
@@ -57,12 +60,18 @@ public class RefreshComposite extends Composite {
     return new ArrayList<RefreshListener>( listeners );
   }
 
+  public void reset() {
+    resetAdapter.setReset( true );
+  }
+
   @Override
   @SuppressWarnings("unchecked")
   public <T> T getAdapter( Class<T> adapter ) {
     T result;
     if( adapter == WidgetLifeCycleAdapter.class ) {
       result = ( T )new RefreshCompositeLCA();
+    } else if( adapter == ResetAdapter.class ) {
+      result = ( T )resetAdapter;
     } else {
       result = super.getAdapter( adapter );
     }

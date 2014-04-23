@@ -199,6 +199,7 @@ public class Constants {
   public static final String TYPE_REFRESH_COMPOSITE = "tabris.widgets.RefreshComposite";
   public static final String EVENT_REFRESH = "Refresh";
   public static final String PROPERTY_CLIENT_AREA = "clientArea";
+  public static final String PROPERTY_RESET = "reset";
 
   // ClientDialog Service
   public static final String TYPE_CLIENT_DIALOG = "tabris.ClientDialog";

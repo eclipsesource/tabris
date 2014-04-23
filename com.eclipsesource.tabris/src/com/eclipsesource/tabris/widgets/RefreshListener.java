@@ -18,5 +18,5 @@ import java.io.Serializable;
  */
 public interface RefreshListener extends Serializable {
 
-  void refreshed();
+  void refresh();
 }

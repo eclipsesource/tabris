@@ -55,7 +55,7 @@ public class RefreshCompositeOperationHandlerTest {
 
     handler.handleNotify( "FocusIn", null );
 
-    verify( listener, never() ).refreshed();
+    verify( listener, never() ).refresh();
   }
 
   @Test
@@ -67,7 +67,7 @@ public class RefreshCompositeOperationHandlerTest {
 
     handler.handleNotify( "Refresh", null );
 
-    verify( listener ).refreshed();
+    verify( listener ).refresh();
   }
 
   @Test
@@ -82,7 +82,7 @@ public class RefreshCompositeOperationHandlerTest {
     handler.handleNotify( "Refresh", null );
 
     InOrder order = inOrder( listener, listener2 );
-    order.verify( listener ).refreshed();
-    order.verify( listener2 ).refreshed();
+    order.verify( listener ).refresh();
+    order.verify( listener2 ).refresh();
   }
 }

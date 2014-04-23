@@ -46,7 +46,7 @@ public class RefreshCompositeOperationHandler extends CompositeOperationHandler 
       public void run() {
         List<RefreshListener> refreshListeners = composite.getRefreshListeners();
         for( RefreshListener refreshListener : refreshListeners ) {
-          refreshListener.refreshed();
+          refreshListener.refresh();
         }
       }
     } );

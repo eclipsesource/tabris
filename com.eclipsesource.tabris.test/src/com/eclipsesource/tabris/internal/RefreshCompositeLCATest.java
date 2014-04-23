@@ -165,6 +165,28 @@ public class RefreshCompositeLCATest {
   }
 
   @Test
+  public void testRenderReset() {
+    composite.reset();
+
+    lca.renderReset( composite );
+
+    Message message = Fixture.getProtocolMessage();
+    assertTrue( message.findSetProperty( composite, "reset" ).asBoolean() );
+  }
+
+  @Test
+  public void testRenderResetUnchanged() {
+    Fixture.markInitialized( composite );
+    composite.reset();
+
+    lca.preserveValues( composite );
+    lca.renderReset( composite );
+
+    Message message = Fixture.getProtocolMessage();
+    assertNull( message.findSetOperation( composite, "reset" ) );
+  }
+
+  @Test
   public void testRenderClientArea() {
     composite.setSize( 110, 120 );
 

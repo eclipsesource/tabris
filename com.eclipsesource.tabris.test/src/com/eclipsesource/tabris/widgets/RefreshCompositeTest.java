@@ -11,8 +11,10 @@
 package com.eclipsesource.tabris.widgets;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
@@ -28,6 +30,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.internal.RefreshCompositeLCA;
+import com.eclipsesource.tabris.internal.RefreshCompositeLCA.ResetAdapter;
 
 
 public class RefreshCompositeTest {
@@ -57,6 +60,25 @@ public class RefreshCompositeTest {
     WidgetLifeCycleAdapter adapter = composite.getAdapter( WidgetLifeCycleAdapter.class );
 
     assertTrue( adapter instanceof RefreshCompositeLCA );
+  }
+
+  @Test
+  public void testHasResetAdapter() {
+    RefreshComposite composite = new RefreshComposite( shell, SWT.NONE );
+
+    ResetAdapter adapter = composite.getAdapter( ResetAdapter.class );
+
+    assertNotNull( adapter );
+  }
+
+  @Test
+  public void testHasOneResetAdapter() {
+    RefreshComposite composite = new RefreshComposite( shell, SWT.NONE );
+
+    ResetAdapter adapter = composite.getAdapter( ResetAdapter.class );
+    ResetAdapter adapter2 = composite.getAdapter( ResetAdapter.class );
+
+    assertSame( adapter, adapter2 );
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -139,6 +161,16 @@ public class RefreshCompositeTest {
 
     String message = composite.getMessage();
     assertEquals( "foo", message );
+  }
+
+  @Test
+  public void testResetChangesResetAdapter() {
+    RefreshComposite composite = new RefreshComposite( shell, SWT.NONE );
+
+    composite.reset();
+
+    ResetAdapter adapter = composite.getAdapter( ResetAdapter.class );
+    assertTrue( adapter.wantReset() );
   }
 
 }
