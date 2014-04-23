@@ -10,11 +10,12 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.tracking.internal.analytics.request;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RequestKeyProvider {
+public class RequestKeyProvider implements Serializable {
 
   static Map<String, String> requestNames;
 

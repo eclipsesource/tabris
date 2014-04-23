@@ -10,11 +10,13 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.tracking;
 
+import java.io.Serializable;
+
 
 /**
  * @since 1.4
  */
-public interface Tracker {
+public interface Tracker extends Serializable {
 
   void handleEvent( TrackingEvent event );
 

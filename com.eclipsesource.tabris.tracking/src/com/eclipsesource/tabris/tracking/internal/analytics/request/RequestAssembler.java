@@ -18,6 +18,7 @@ import static com.eclipsesource.tabris.tracking.internal.analytics.request.Reque
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestValueProvider.getRequestValue;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestValues.HIT_APPVIEW;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +28,7 @@ import com.eclipsesource.tabris.tracking.internal.analytics.model.Requestable;
 
 
 @SuppressWarnings("restriction")
-public class RequestAssembler {
+public class RequestAssembler implements Serializable {
 
   private final String appName;
   private final List<Requestable> requestables;

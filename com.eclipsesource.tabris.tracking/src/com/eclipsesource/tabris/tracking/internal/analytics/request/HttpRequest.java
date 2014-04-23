@@ -48,6 +48,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.Reader;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.HttpURLConnection;
@@ -93,7 +94,7 @@ import javax.net.ssl.X509TrustManager;
  * Each instance supports making a single request and cannot be reused for
  * further requests.
  */
-public class HttpRequest {
+public class HttpRequest implements Serializable {
 
   /**
    * 'UTF-8' charset name

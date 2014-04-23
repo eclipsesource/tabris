@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.tracking;
 
+import java.io.Serializable;
 import java.util.Locale;
 
 import org.eclipse.swt.graphics.Point;
@@ -20,7 +21,7 @@ import com.eclipsesource.tabris.device.ClientDevice.Platform;
 /**
  * @since 1.4
  */
-public class TrackingInfo {
+public class TrackingInfo implements Serializable {
 
   private String clientId;
   private Platform platform;

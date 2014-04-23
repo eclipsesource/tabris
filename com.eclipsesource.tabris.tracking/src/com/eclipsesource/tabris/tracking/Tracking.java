@@ -12,6 +12,7 @@ package com.eclipsesource.tabris.tracking;
 
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
+import java.io.Serializable;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,7 +38,7 @@ import com.eclipsesource.tabris.ui.action.SearchActionListener;
  * @since 1.4
  */
 @SuppressWarnings("restriction")
-public class Tracking {
+public class Tracking implements Serializable {
 
   private final EventDispatcher dispatcher;
   private final SearchActionListener actionListener;

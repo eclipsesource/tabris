@@ -10,7 +10,10 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.tracking.internal.analytics.request;
 
-public class RequestKeys {
+import java.io.Serializable;
+
+
+public class RequestKeys implements Serializable {
 
   public static final String APP_NAME = "APP_NAME";
   public static final String APP_VERSION = "APP_VERSION";

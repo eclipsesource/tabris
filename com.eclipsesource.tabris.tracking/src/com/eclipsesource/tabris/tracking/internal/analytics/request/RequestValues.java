@@ -10,7 +10,10 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.tracking.internal.analytics.request;
 
-public class RequestValues {
+import java.io.Serializable;
+
+
+public class RequestValues implements Serializable {
 
   public static final String HIT_APPVIEW = "HIT_APPVIEW";
   public static final String HIT_PAGEVIEW = "HIT_PAGEVIEW";

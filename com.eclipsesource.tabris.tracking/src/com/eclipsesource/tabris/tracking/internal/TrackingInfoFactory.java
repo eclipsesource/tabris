@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.tracking.internal;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +29,7 @@ import com.eclipsesource.tabris.ui.UI;
 
 
 @SuppressWarnings("restriction")
-public class TrackingInfoFactory {
+public class TrackingInfoFactory implements Serializable {
 
   static final String PROPERTY_ID = "com.eclipsesource.tabris.tracking.id";
 

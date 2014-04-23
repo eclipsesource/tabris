@@ -10,10 +10,11 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.tracking.internal.analytics.model;
 
+import java.io.Serializable;
 import java.util.Map;
 
 
-public interface Requestable {
+public interface Requestable extends Serializable {
 
   Map<String, Object> getParameter();
 

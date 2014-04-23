@@ -12,6 +12,7 @@ package com.eclipsesource.tabris.tracking.internal;
 
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
+import java.io.Serializable;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -25,7 +26,7 @@ import com.eclipsesource.tabris.tracking.TrackingEvent;
 
 
 @SuppressWarnings("restriction")
-public class EventDispatcher implements Runnable {
+public class EventDispatcher implements Runnable, Serializable {
 
   static final long FLUSH_DELAY = 5;
 

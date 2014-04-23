@@ -13,6 +13,7 @@ package com.eclipsesource.tabris.tracking.internal.analytics;
 import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import com.eclipsesource.tabris.tracking.internal.analytics.model.AdvancedConfiguration;
@@ -23,7 +24,7 @@ import com.eclipsesource.tabris.tracking.internal.analytics.request.RequestAssem
 
 
 @SuppressWarnings("restriction")
-public class GoogleAnalytics {
+public class GoogleAnalytics implements Serializable {
 
   static final String ANALYTICS_URL = "http://www.google-analytics.com/collect";
 

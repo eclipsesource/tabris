@@ -13,12 +13,14 @@ package com.eclipsesource.tabris.tracking;
 import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
+import java.io.Serializable;
+
 
 /**
  * @since 1.4
  */
 @SuppressWarnings("restriction")
-public class TrackingEvent {
+public class TrackingEvent implements Serializable {
 
   public static enum EventType {
     PAGE_VIEW, ACTION, SEARCH
