@@ -13,100 +13,27 @@
 * {
   font: 9px Segoe UI;
   margin: 0px 0px 0px 0px;
-  padding: 3px 2px 3px 2px;
   spacing: 0px 0px 0px 0px;
   border: none;
 }
 
 Composite {
-  padding: 0px;
+  padding: 4px;
 }
 
 Shell-Titlebar {
   height: 27px;
 }
 
-Spinner {
-  border: 3px;
-}
-
-Menu {
-  font: 0px Helvetica;
-  height: 0;
+ToolBar {
+  padding: 6px 0px 6px 0px;
 }
 
 Shell {
   padding: 0px 5px 5px 5px;
 }
 
-CoolBar {
-	
-}
-
-Label {
-  border: 3px;
-}
-
-ToolBar {
-  padding: 4px 4px 0px 4px;
-}
-
-ToolItem {
-	
-}
-
-CoolItem {
-	
-}
-
-Button {
-  padding: 6px 14px 6px 14px;
-}
-
-TabItem {
-  padding: 7px 13px 6px 13px;
-}
-
-Group {
-  padding: 0px 0px 0px 0px;
-  border: 0px;
-  border-radius: 0px;
-}
-
-Group-Frame {
-  margin: 0px 0px 0px 0px;
-  padding: 14px 5px 7px 5px;
-  spacing: 0px 0px 0px 0px;
-  border: 0px;
-  border-radius: 0px;
-}
-
-Group-Label {
-  font: 0px Helvetica;
-}
-
-Table {
-  margin: 0px 0px 0px 0px;
-  padding: 0px 0px 0px 0px;
-  spacing: 0px 0px 0px 0px;
-  border: 0px;
-  border-radius: 0px;
-}
-
-Table-Cell {
-  padding: 0px 0px 0px 0px;
-  margin: 0px 0px 0px 0px;
-  spacing: 0px 0px 0px 0px;
-}
-
 TableColumn {
-  margin: 0px 0px 0px 0px;
   padding: 9px 0px 0px 0px;
-  spacing: 0px 0px 0px 0px;
-  border: 0px;
-  border-radius: 0px;
 }
 
-CTabFolder {
-	
-}
