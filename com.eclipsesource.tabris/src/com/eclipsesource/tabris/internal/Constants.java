@@ -204,9 +204,12 @@ public class Constants {
 
   // ClientDialog Service
   public static final String TYPE_CLIENT_DIALOG = "tabris.ClientDialog";
+  public static final String EVENT_CLIENT_DIALOG_CLOSE = "ClientDialogClose";
   public static final String METHOD_CLOSE = "close";
   public static final String PROPERTY_SEVERITY = "severity";
-  public static final String PROPERTY_BUTTON = "button";
+  public static final String PROPERTY_BUTTON_OK = "buttonOk";
+  public static final String PROPERTY_BUTTON_CANCEL = "buttonCancel";
+  public static final String PROPERTY_BUTTON_CUSTOM = "buttonCustom";
   public static final String PROPERTY_BUTTON_TYPE = "buttonType";
 
   // Text Replacement

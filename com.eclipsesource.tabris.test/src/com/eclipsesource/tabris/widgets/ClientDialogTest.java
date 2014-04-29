@@ -193,7 +193,7 @@ public class ClientDialogTest {
     ClientDialog dialog = new ClientDialog();
     Listener listener = mock( Listener.class );
     JsonObject properties = new JsonObject();
-    properties.add( "buttonType", "OK" );
+    properties.add( "buttonType", "buttonOk" );
     Fixture.fakePhase( PhaseId.PROCESS_ACTION );
 
     dialog.setButton( ButtonType.OK, "bar", listener );
@@ -208,7 +208,7 @@ public class ClientDialogTest {
     ClientDialog dialog = new ClientDialog();
     Listener listener = mock( Listener.class );
     JsonObject properties = new JsonObject();
-    properties.add( "buttonType", "OK" );
+    properties.add( "buttonType", "buttonOk" );
     Fixture.fakePhase( PhaseId.PROCESS_ACTION );
 
     dialog.setButton( ButtonType.OK, "bar", listener );
@@ -227,7 +227,7 @@ public class ClientDialogTest {
 
     dialog.setButton( ButtonType.OK, "bar", listener );
 
-    verify( remoteObject ).set( "buttonOK", "bar" );
+    verify( remoteObject ).set( "buttonOk", "bar" );
   }
 
   @Test
@@ -260,7 +260,7 @@ public class ClientDialogTest {
 
     dialog.setButton( ButtonType.OK, "bar" );
 
-    verify( remoteObject ).set( "buttonOK", "bar" );
+    verify( remoteObject ).set( "buttonOk", "bar" );
   }
 
   @Test
@@ -315,5 +315,80 @@ public class ClientDialogTest {
 
     ClientDialog dialog = new ClientDialog();
     dialog.setButton( ButtonType.OK, "" );
+  }
+
+  @Test
+  public void testFailsToAddNullClientListener() {
+    thrown.expect( IllegalArgumentException.class );
+    thrown.expectMessage( "listener must not be null" );
+
+    ClientDialog dialog = new ClientDialog();
+    dialog.addClientDialogListener( null );
+  }
+
+  @Test
+  public void testFailsToRemoveNullClientListener() {
+    thrown.expect( IllegalArgumentException.class );
+    thrown.expectMessage( "listener must not be null" );
+
+    ClientDialog dialog = new ClientDialog();
+    dialog.removeClientDialogListener( null );
+  }
+
+  @Test
+  public void testAddClientDialogListenerSendsListen() {
+    RemoteObject remoteObject = mockRemoteObject();
+    ClientDialog dialog = new ClientDialog();
+
+    dialog.addClientDialogListener( mock( ClientDialogListener.class ) );
+
+    verify( remoteObject ).listen( "ClientDialogClose", true );
+  }
+
+  @Test
+  public void testAddClientDialogListenersSendsListenOnce() {
+    RemoteObject remoteObject = mockRemoteObject();
+    ClientDialog dialog = new ClientDialog();
+
+    dialog.addClientDialogListener( mock( ClientDialogListener.class ) );
+    dialog.addClientDialogListener( mock( ClientDialogListener.class ) );
+
+    verify( remoteObject, times( 1 ) ).listen( "ClientDialogClose", true );
+  }
+
+  @Test
+  public void testRemoveClientDialogListenerSendsListen() {
+    RemoteObject remoteObject = mockRemoteObject();
+    ClientDialog dialog = new ClientDialog();
+    ClientDialogListener listener = mock( ClientDialogListener.class );
+    dialog.addClientDialogListener( listener );
+
+    dialog.removeClientDialogListener( listener );
+
+    verify( remoteObject ).listen( "ClientDialogClose", false );
+  }
+
+  @Test
+  public void testOpenCallsClientDialogListener() {
+    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
+    ClientDialog dialog = new ClientDialog();
+    ClientDialogListener listener = mock( ClientDialogListener.class );
+    dialog.addClientDialogListener( listener );
+
+    dialog.open();
+
+    verify( listener ).open();
+  }
+
+  @Test
+  public void testCloseEventCallsClientDialogListener() {
+    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
+    ClientDialog dialog = new ClientDialog();
+    ClientDialogListener listener = mock( ClientDialogListener.class );
+    dialog.addClientDialogListener( listener );
+
+    TabrisTestUtil.dispatchNotify( dialog.getRemoteObject(), "ClientDialogClose", null );
+
+    verify( listener ).close();
   }
 }
