@@ -11,10 +11,11 @@
 package com.eclipsesource.tabris.internal;
 
 import static com.eclipsesource.tabris.internal.Constants.EVENT_REFRESH;
+import static com.eclipsesource.tabris.internal.Constants.METHOD_DONE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_CLIENT_AREA;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_DONE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_MESSAGE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PARENT;
-import static com.eclipsesource.tabris.internal.Constants.PROPERTY_RESET;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_STYLE;
 import static com.eclipsesource.tabris.internal.Constants.TYPE_REFRESH_COMPOSITE;
 import static org.eclipse.rap.rwt.internal.protocol.JsonUtil.createJsonArray;
@@ -37,6 +38,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import org.eclipse.rap.json.JsonValue;
+import org.eclipse.rap.rwt.internal.protocol.RemoteObjectFactory;
 import org.eclipse.rap.rwt.lifecycle.AbstractWidgetLCA;
 import org.eclipse.rap.rwt.lifecycle.ControlLCAUtil;
 import org.eclipse.rap.rwt.lifecycle.WidgetLCAUtil;
@@ -61,7 +63,7 @@ public class RefreshCompositeLCA extends AbstractWidgetLCA implements Serializab
     RefreshComposite composite = ( RefreshComposite )widget;
     preserveProperty( composite, PROPERTY_CLIENT_AREA, composite.getClientArea() );
     preserveProperty( composite, PROPERTY_MESSAGE, composite.getMessage() );
-    preserveProperty( composite, PROPERTY_RESET, composite.getAdapter( ResetAdapter.class ).wantReset() );
+    preserveProperty( composite, PROPERTY_DONE, composite.getAdapter( RefreshAdapter.class ).isDone() );
     preserveListener( composite, EVENT_REFRESH, !composite.getRefreshListeners().isEmpty() );
   }
 
@@ -100,7 +102,7 @@ public class RefreshCompositeLCA extends AbstractWidgetLCA implements Serializab
     renderClientListeners( composite );
     renderListenToRefresh( composite );
     renderMessage( composite );
-    renderReset( composite );
+    renderDone( composite );
   }
 
   void renderClientArea( RefreshComposite composite ) {
@@ -111,12 +113,13 @@ public class RefreshCompositeLCA extends AbstractWidgetLCA implements Serializab
     renderProperty( composite, PROPERTY_MESSAGE, composite.getMessage(), null );
   }
 
-  void renderReset( RefreshComposite composite ) {
-    ResetAdapter adapter = composite.getAdapter( ResetAdapter.class );
-    boolean wantReset = adapter.wantReset();
-    if( WidgetLCAUtil.hasChanged( composite, PROPERTY_RESET, Boolean.valueOf( wantReset ) ) ) {
-      renderProperty( composite, PROPERTY_RESET, Boolean.valueOf( wantReset ), null );
-      adapter.setReset( false );
+  void renderDone( RefreshComposite composite ) {
+    RefreshAdapter adapter = composite.getAdapter( RefreshAdapter.class );
+    boolean isDone = adapter.isDone();
+    if( WidgetLCAUtil.hasChanged( composite, PROPERTY_DONE, Boolean.valueOf( isDone ) ) ) {
+      RemoteObject remoteObject = RemoteObjectFactory.getRemoteObject( composite );
+      remoteObject.call( METHOD_DONE, null );
+      adapter.setDone( false );
     }
   }
 
@@ -125,16 +128,16 @@ public class RefreshCompositeLCA extends AbstractWidgetLCA implements Serializab
     renderListener( composite, EVENT_REFRESH, hasRefreshListeners, false );
   }
 
-  public static class ResetAdapter {
+  public static class RefreshAdapter {
 
-    private boolean reset;
+    private boolean done;
 
-    public void setReset( boolean reset ) {
-      this.reset = reset;
+    public void setDone( boolean reset ) {
+      this.done = reset;
     }
 
-    public boolean wantReset() {
-      return reset;
+    public boolean isDone() {
+      return done;
     }
   }
 }

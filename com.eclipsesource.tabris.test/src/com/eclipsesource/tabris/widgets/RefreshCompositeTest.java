@@ -30,7 +30,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.internal.RefreshCompositeLCA;
-import com.eclipsesource.tabris.internal.RefreshCompositeLCA.ResetAdapter;
+import com.eclipsesource.tabris.internal.RefreshCompositeLCA.RefreshAdapter;
 
 
 public class RefreshCompositeTest {
@@ -63,20 +63,20 @@ public class RefreshCompositeTest {
   }
 
   @Test
-  public void testHasResetAdapter() {
+  public void testHasRefreshAdapter() {
     RefreshComposite composite = new RefreshComposite( shell, SWT.NONE );
 
-    ResetAdapter adapter = composite.getAdapter( ResetAdapter.class );
+    RefreshAdapter adapter = composite.getAdapter( RefreshAdapter.class );
 
     assertNotNull( adapter );
   }
 
   @Test
-  public void testHasOneResetAdapter() {
+  public void testHasOneRefreshAdapter() {
     RefreshComposite composite = new RefreshComposite( shell, SWT.NONE );
 
-    ResetAdapter adapter = composite.getAdapter( ResetAdapter.class );
-    ResetAdapter adapter2 = composite.getAdapter( ResetAdapter.class );
+    RefreshAdapter adapter = composite.getAdapter( RefreshAdapter.class );
+    RefreshAdapter adapter2 = composite.getAdapter( RefreshAdapter.class );
 
     assertSame( adapter, adapter2 );
   }
@@ -164,13 +164,13 @@ public class RefreshCompositeTest {
   }
 
   @Test
-  public void testResetChangesResetAdapter() {
+    public void testDoneChangesResetAdapter() {
     RefreshComposite composite = new RefreshComposite( shell, SWT.NONE );
 
-    composite.reset();
+    composite.done();
 
-    ResetAdapter adapter = composite.getAdapter( ResetAdapter.class );
-    assertTrue( adapter.wantReset() );
+    RefreshAdapter adapter = composite.getAdapter( RefreshAdapter.class );
+    assertTrue( adapter.isDone() );
   }
 
 }

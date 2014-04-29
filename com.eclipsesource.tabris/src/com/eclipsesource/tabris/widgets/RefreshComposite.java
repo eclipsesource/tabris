@@ -19,7 +19,7 @@ import org.eclipse.rap.rwt.lifecycle.WidgetLifeCycleAdapter;
 import org.eclipse.swt.widgets.Composite;
 
 import com.eclipsesource.tabris.internal.RefreshCompositeLCA;
-import com.eclipsesource.tabris.internal.RefreshCompositeLCA.ResetAdapter;
+import com.eclipsesource.tabris.internal.RefreshCompositeLCA.RefreshAdapter;
 
 
 /**
@@ -28,13 +28,13 @@ import com.eclipsesource.tabris.internal.RefreshCompositeLCA.ResetAdapter;
 public class RefreshComposite extends Composite {
 
   private final List<RefreshListener> listeners;
-  private final ResetAdapter resetAdapter;
+  private final RefreshAdapter resetAdapter;
   private String message;
 
   public RefreshComposite( Composite parent, int style ) {
     super( parent, style );
     this.listeners = new ArrayList<RefreshListener>();
-    this.resetAdapter = new ResetAdapter();
+    this.resetAdapter = new RefreshAdapter();
   }
 
   public void setMessage( String message ) {
@@ -60,8 +60,8 @@ public class RefreshComposite extends Composite {
     return new ArrayList<RefreshListener>( listeners );
   }
 
-  public void reset() {
-    resetAdapter.setReset( true );
+  public void done() {
+    resetAdapter.setDone( true );
   }
 
   @Override
@@ -70,7 +70,7 @@ public class RefreshComposite extends Composite {
     T result;
     if( adapter == WidgetLifeCycleAdapter.class ) {
       result = ( T )new RefreshCompositeLCA();
-    } else if( adapter == ResetAdapter.class ) {
+    } else if( adapter == RefreshAdapter.class ) {
       result = ( T )resetAdapter;
     } else {
       result = super.getAdapter( adapter );
