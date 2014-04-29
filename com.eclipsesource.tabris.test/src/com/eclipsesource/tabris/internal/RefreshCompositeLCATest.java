@@ -165,25 +165,25 @@ public class RefreshCompositeLCATest {
   }
 
   @Test
-  public void testRenderReset() {
-    composite.reset();
+  public void testRenderDone() {
+    composite.done();
 
-    lca.renderReset( composite );
+    lca.renderDone( composite );
 
     Message message = Fixture.getProtocolMessage();
-    assertTrue( message.findSetProperty( composite, "reset" ).asBoolean() );
+    assertNotNull( message.findCallOperation( composite, "done" ) );
   }
 
   @Test
-  public void testRenderResetUnchanged() {
+  public void testRenderDoneUnchanged() {
     Fixture.markInitialized( composite );
-    composite.reset();
+    composite.done();
 
     lca.preserveValues( composite );
-    lca.renderReset( composite );
+    lca.renderDone( composite );
 
     Message message = Fixture.getProtocolMessage();
-    assertNull( message.findSetOperation( composite, "reset" ) );
+    assertNull( message.findCallOperation( composite, "done" ) );
   }
 
   @Test
@@ -232,12 +232,10 @@ public class RefreshCompositeLCATest {
 
   private Rectangle toRectangle( Object property ) {
     JsonArray jsonArray = ( JsonArray )property;
-    Rectangle result = new Rectangle(
-                                     jsonArray.get( 0 ).asInt(),
-                                     jsonArray.get( 1 ).asInt(),
-                                     jsonArray.get( 2 ).asInt(),
-                                     jsonArray.get( 3 ).asInt()
-        );
+    Rectangle result = new Rectangle( jsonArray.get( 0 ).asInt(),
+                                      jsonArray.get( 1 ).asInt(),
+                                      jsonArray.get( 2 ).asInt(),
+                                      jsonArray.get( 3 ).asInt() );
     return result;
   }
 
