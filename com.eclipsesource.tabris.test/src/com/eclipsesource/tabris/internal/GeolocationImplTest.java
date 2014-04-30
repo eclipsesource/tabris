@@ -10,7 +10,6 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
-import static com.eclipsesource.tabris.test.TabrisTestUtil.mockServiceObject;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -23,12 +22,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.eclipse.rap.json.JsonObject;
-import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.remote.RemoteObject;
-import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 
 import com.eclipsesource.tabris.geolocation.Coordinates;
@@ -37,17 +33,13 @@ import com.eclipsesource.tabris.geolocation.GeolocationOptions;
 import com.eclipsesource.tabris.geolocation.Position;
 import com.eclipsesource.tabris.geolocation.PositionError;
 import com.eclipsesource.tabris.geolocation.PositionError.PositionErrorCode;
-import com.eclipsesource.tabris.test.RWTRunner;
-import com.eclipsesource.tabris.test.TabrisTestUtil;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 
 
-@RunWith( RWTRunner.class )
 public class GeolocationImplTest {
 
-  @Before
-  public void setUp() {
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
-  }
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   @Test
   public void testIsSerializable() {
@@ -66,7 +58,7 @@ public class GeolocationImplTest {
 
   @Test
   public void testInitialFlavor() {
-    RemoteObject remoteObject = mockServiceObject();
+    RemoteObject remoteObject = environment.getServiceObject();
 
     new GeolocationImpl();
 
@@ -75,7 +67,7 @@ public class GeolocationImplTest {
 
   @Test
   public void testSetsOptionsWhenGetLocation() {
-    RemoteObject remoteObject = mockServiceObject();
+    RemoteObject remoteObject = environment.getServiceObject();
     GeolocationImpl geolocation = new GeolocationImpl();
     GeolocationOptions options = new GeolocationOptions();
     GeolocationListener listener = mock( GeolocationListener.class );
@@ -100,7 +92,7 @@ public class GeolocationImplTest {
 
   @Test
   public void testSetsOptionsWhenWatch() {
-    RemoteObject remoteObject = mockServiceObject();
+    RemoteObject remoteObject = environment.getServiceObject();
     GeolocationImpl geolocation = new GeolocationImpl();
     GeolocationOptions options = new GeolocationOptions();
     GeolocationListener listener = mock( GeolocationListener.class );
@@ -125,7 +117,7 @@ public class GeolocationImplTest {
 
   @Test
   public void testSetsNeverWhenClearWatch() {
-    RemoteObject remoteObject = mockServiceObject();
+    RemoteObject remoteObject = environment.getServiceObject();
     GeolocationImpl geolocation = new GeolocationImpl();
 
     geolocation.clearWatch();
@@ -141,7 +133,7 @@ public class GeolocationImplTest {
     geolocation.determineCurrentPosition( new GeolocationOptions() );
     JsonObject properties = createPositionData();
 
-    TabrisTestUtil.dispatchNotify( geolocation.getRemoteObject(), "LocationUpdate", properties );
+    environment.dispatchNotifyOnServiceObject( "LocationUpdate", properties );
 
     ArgumentCaptor<Position> captor = ArgumentCaptor.forClass( Position.class );
     verify( listener ).positionReceived( captor.capture() );
@@ -158,7 +150,7 @@ public class GeolocationImplTest {
     geolocation.determineCurrentPosition( new GeolocationOptions() );
     JsonObject properties = createPositionData();
 
-    TabrisTestUtil.dispatchNotify( geolocation.getRemoteObject(), "LocationUpdate", properties );
+    environment.dispatchNotifyOnServiceObject( "LocationUpdate", properties );
 
     ArgumentCaptor<Position> captor = ArgumentCaptor.forClass( Position.class );
     verify( listener1 ).positionReceived( captor.capture() );
@@ -175,7 +167,7 @@ public class GeolocationImplTest {
     geolocation.watchPosition( new GeolocationOptions() );
     JsonObject properties = createPositionData();
 
-    TabrisTestUtil.dispatchNotify( geolocation.getRemoteObject(), "LocationUpdate", properties );
+    environment.dispatchNotifyOnServiceObject( "LocationUpdate", properties );
 
     ArgumentCaptor<Position> captor = ArgumentCaptor.forClass( Position.class );
     verify( listener ).positionReceived( captor.capture() );
@@ -192,7 +184,7 @@ public class GeolocationImplTest {
     geolocation.watchPosition( new GeolocationOptions() );
     JsonObject properties = createPositionData();
 
-    TabrisTestUtil.dispatchNotify( geolocation.getRemoteObject(), "LocationUpdate", properties );
+    environment.dispatchNotifyOnServiceObject( "LocationUpdate", properties );
 
     ArgumentCaptor<Position> captor = ArgumentCaptor.forClass( Position.class );
     verify( listener1 ).positionReceived( captor.capture() );
@@ -239,7 +231,7 @@ public class GeolocationImplTest {
     properties.add( "errorCode", "UNKNOWN" );
     properties.add( "errorMessage", "A Message" );
 
-    TabrisTestUtil.dispatchNotify( geolocation.getRemoteObject(), "LocationUpdateError", properties );
+    environment.dispatchNotifyOnServiceObject( "LocationUpdateError", properties );
 
     ArgumentCaptor<PositionError> captor = ArgumentCaptor.forClass( PositionError.class );
     verify( listener ).errorReceived( captor.capture() );
@@ -257,7 +249,7 @@ public class GeolocationImplTest {
     properties.add( "errorCode", "UNKNOWN" );
     properties.add( "errorMessage", "A Message" );
 
-    TabrisTestUtil.dispatchNotify( geolocation.getRemoteObject(), "LocationUpdateError", properties );
+    environment.dispatchNotifyOnServiceObject( "LocationUpdateError", properties );
 
     ArgumentCaptor<PositionError> captor = ArgumentCaptor.forClass( PositionError.class );
     verify( listener ).errorReceived( captor.capture() );

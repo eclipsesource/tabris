@@ -25,16 +25,14 @@ import java.io.InputStream;
 
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
-import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.swt.widgets.Display;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 
-import com.eclipsesource.tabris.test.RWTRunner;
-import com.eclipsesource.tabris.test.TabrisTestUtil;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.ActionListener;
 import com.eclipsesource.tabris.ui.PlacementPriority;
@@ -42,11 +40,12 @@ import com.eclipsesource.tabris.ui.UI;
 import com.eclipsesource.tabris.ui.UIConfiguration;
 
 
-@SuppressWarnings("restriction")
-@RunWith( RWTRunner.class )
 public class RemoteActionTest {
 
-  private RemoteObjectImpl remoteObject;
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
+
+  private RemoteObject remoteObject;
   private ActionDescriptor actionDescriptor;
   private UI ui;
   private RemoteUI uiRenderer;
@@ -54,7 +53,7 @@ public class RemoteActionTest {
   @Before
   public void setUp() {
     new Display();
-    remoteObject = ( RemoteObjectImpl )TabrisTestUtil.mockRemoteObject();
+    remoteObject = environment.getRemoteObject();
     ui = mock( UI.class );
     uiRenderer = mock( RemoteUI.class );
     when( uiRenderer.getRemoteUIId() ).thenReturn( "foo" );
@@ -164,13 +163,12 @@ public class RemoteActionTest {
 
   @Test
   public void testCallsExecuteOnEvent() {
-    RemoteAction remoteAction = new RemoteAction( ui, uiRenderer, actionDescriptor );
+    new RemoteAction( ui, uiRenderer, actionDescriptor );
     Action action = mock( Action.class );
     mockUI( mock( ActionListener.class ) );
-    when( remoteObject.getHandler() ).thenReturn( remoteAction );
     when( actionDescriptor.getAction() ).thenReturn( action );
 
-    TabrisTestUtil.dispatchNotify( remoteObject, "Selection", new JsonObject() );
+    environment.dispatchNotify( "Selection", new JsonObject() );
 
     verify( action ).execute( ui );
   }
@@ -179,12 +177,11 @@ public class RemoteActionTest {
   public void testNotifiesListenerOnExecuteEvent() {
     ActionListener listener = mock( ActionListener.class );
     mockUI( listener );
-    RemoteAction remoteAction = new RemoteAction( ui, uiRenderer, actionDescriptor );
+    new RemoteAction( ui, uiRenderer, actionDescriptor );
     Action action = mock( Action.class );
-    when( remoteObject.getHandler() ).thenReturn( remoteAction );
     when( actionDescriptor.getAction() ).thenReturn( action );
 
-    TabrisTestUtil.dispatchNotify( remoteObject, "Selection", new JsonObject() );
+    environment.dispatchNotify( "Selection", new JsonObject() );
 
     verify( listener ).executed( ui, action );
   }

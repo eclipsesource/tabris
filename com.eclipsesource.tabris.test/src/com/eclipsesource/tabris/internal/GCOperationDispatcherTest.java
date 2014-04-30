@@ -25,16 +25,18 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.widgets.Display;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 
 
-@RunWith( RWTRunner.class )
 public class GCOperationDispatcherTest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   private GC gc;
   private GCOperationDispatcher dispatcher;

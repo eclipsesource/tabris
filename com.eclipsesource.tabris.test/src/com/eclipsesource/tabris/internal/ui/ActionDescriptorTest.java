@@ -19,16 +19,18 @@ import static org.mockito.Mockito.mock;
 import java.io.InputStream;
 import java.io.Serializable;
 
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.PlacementPriority;
 
 
-@RunWith( RWTRunner.class )
 public class ActionDescriptorTest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   @Test
   public void testIsSerializable() {

@@ -66,6 +66,14 @@
     <module>../com.eclipsesource.tabris.passepartout.feature</module>
     <module>../com.eclipsesource.tabris.repository</module>
   </modules>
+  
+  <repositories>
+    <repository>
+      <id>rap-nightly</id>
+      <layout>p2</layout>
+      <url>http://download.eclipse.org/rt/rap/nightly/runtime/</url>
+    </repository>
+  </repositories>
 
   <build>
     <plugins>

@@ -22,25 +22,24 @@ import java.io.Serializable;
 import org.eclipse.rap.rwt.internal.application.ApplicationContextImpl;
 import org.eclipse.rap.rwt.internal.lifecycle.LifeCycle;
 import org.eclipse.rap.rwt.internal.lifecycle.LifeCycleFactory;
-import org.eclipse.rap.rwt.lifecycle.PhaseId;
-import org.eclipse.rap.rwt.lifecycle.PhaseListener;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.internal.TabrisClientImpl;
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 
 
 @SuppressWarnings("restriction")
-@RunWith( RWTRunner.class )
 public class TabrisUIEntryPointTest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   @Before
   public void setUp() {
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     LifeCycleFactory lifeCycleFactory = getApplicationContext().getLifeCycleFactory();
     lifeCycleFactory.configure( TestLifeCycle.class );
     lifeCycleFactory.activate();
@@ -62,6 +61,7 @@ public class TabrisUIEntryPointTest {
     verify( tabrisUI ).create( any( Shell.class ) );
   }
 
+  @SuppressWarnings("deprecation")
   static class TestLifeCycle extends LifeCycle {
     public TestLifeCycle( ApplicationContextImpl applicationContext ) {
       super( applicationContext );
@@ -73,10 +73,10 @@ public class TabrisUIEntryPointTest {
     public void requestThreadExec( Runnable runnable ) {
     }
     @Override
-    public void addPhaseListener( PhaseListener phaseListener ) {
+    public void addPhaseListener( org.eclipse.rap.rwt.lifecycle.PhaseListener phaseListener ) {
     }
     @Override
-    public void removePhaseListener( PhaseListener phaseListener ) {
+    public void removePhaseListener( org.eclipse.rap.rwt.lifecycle.PhaseListener phaseListener ) {
     }
     @Override
     public void sleep() {

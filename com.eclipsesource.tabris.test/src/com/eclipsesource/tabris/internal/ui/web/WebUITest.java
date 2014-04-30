@@ -25,8 +25,6 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.rap.rwt.lifecycle.PhaseId;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
@@ -39,17 +37,19 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.internal.ui.PageDescriptor;
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 import com.eclipsesource.tabris.ui.PageOperator;
 import com.eclipsesource.tabris.ui.UI;
 
 
-@RunWith( RWTRunner.class )
 public class WebUITest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   private Display display;
   private Shell shell;
@@ -57,7 +57,6 @@ public class WebUITest {
 
   @Before
   public void setUp() {
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     display = new Display();
     shell = new Shell( display );
     webUI = new WebUI( shell );

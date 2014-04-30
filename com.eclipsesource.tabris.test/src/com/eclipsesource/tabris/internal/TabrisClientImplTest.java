@@ -14,9 +14,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
 import org.eclipse.rap.rwt.client.service.ClientInfo;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.ClientStore;
 import com.eclipsesource.tabris.TabrisClient;
@@ -26,17 +25,13 @@ import com.eclipsesource.tabris.device.ClientDevice;
 import com.eclipsesource.tabris.geolocation.Geolocation;
 import com.eclipsesource.tabris.interaction.AppLauncher;
 import com.eclipsesource.tabris.print.Print;
-import com.eclipsesource.tabris.test.RWTRunner;
-import com.eclipsesource.tabris.test.TabrisTestUtil;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 
 
-@RunWith( RWTRunner.class )
 public class TabrisClientImplTest {
 
-  @Before
-  public void setUp() {
-    TabrisTestUtil.mockRemoteObject();
-  }
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   @Test
   public void testHasAppLauncherService() {

@@ -27,15 +27,17 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 import com.eclipsesource.tabris.widgets.enhancement.TreeDecorator.TreePart;
 
 
-@RunWith( RWTRunner.class )
 public class TreeDecoratorTest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   private Tree tree;
   private TreeDecorator decorator;

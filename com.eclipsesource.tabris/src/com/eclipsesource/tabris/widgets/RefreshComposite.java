@@ -15,7 +15,7 @@ import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.rap.rwt.lifecycle.WidgetLifeCycleAdapter;
+import org.eclipse.rap.rwt.internal.lifecycle.WidgetLifeCycleAdapter;
 import org.eclipse.swt.widgets.Composite;
 
 import com.eclipsesource.tabris.internal.RefreshCompositeLCA;
@@ -25,6 +25,7 @@ import com.eclipsesource.tabris.internal.RefreshCompositeLCA.RefreshAdapter;
 /**
  * @since 1.4
  */
+@SuppressWarnings("restriction")
 public class RefreshComposite extends Composite {
 
   private final List<RefreshListener> listeners;
@@ -65,10 +66,10 @@ public class RefreshComposite extends Composite {
   }
 
   @Override
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "deprecation" })
   public <T> T getAdapter( Class<T> adapter ) {
     T result;
-    if( adapter == WidgetLifeCycleAdapter.class ) {
+    if( adapter == WidgetLifeCycleAdapter.class || adapter == org.eclipse.rap.rwt.lifecycle.WidgetLifeCycleAdapter.class ) {
       result = ( T )new RefreshCompositeLCA();
     } else if( adapter == RefreshAdapter.class ) {
       result = ( T )resetAdapter;

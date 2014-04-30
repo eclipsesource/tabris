@@ -19,8 +19,7 @@ import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 
 import org.eclipse.rap.json.JsonArray;
-import org.eclipse.rap.rwt.internal.protocol.ProtocolUtil;
-import org.eclipse.rap.rwt.lifecycle.PhaseId;
+import org.eclipse.rap.rwt.remote.JsonMapping;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.graphics.Image;
@@ -28,20 +27,21 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.TabrisClient;
 import com.eclipsesource.tabris.internal.ZIndexStackLayout;
 import com.eclipsesource.tabris.internal.ui.TestPage;
 import com.eclipsesource.tabris.internal.ui.UITestUtil;
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 
 
-@SuppressWarnings("restriction")
-@RunWith( RWTRunner.class )
 public class TabrisUITest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   private Shell shell;
   private RemoteObject remoteObject;
@@ -51,7 +51,6 @@ public class TabrisUITest {
     Fixture.fakeClient( mock( TabrisClient.class ) );
     Display display = new Display();
     shell = new Shell( display );
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     remoteObject = TabrisTestUtil.mockRemoteObject();
   }
 
@@ -100,7 +99,7 @@ public class TabrisUITest {
     tabrisUI.create( shell );
 
     Image image = new Image( shell.getDisplay(), new ByteArrayInputStream( configuration.getImage() ) );
-    verify( remoteObject ).set( "image", ProtocolUtil.getJsonForImage( image ) );
+    verify( remoteObject ).set( "image", JsonMapping.toJson( image ) );
   }
 
   @Test

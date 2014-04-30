@@ -22,8 +22,6 @@ import static org.mockito.Mockito.when;
 
 import java.io.InputStream;
 
-import org.eclipse.rap.rwt.lifecycle.PhaseId;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.widgets.Button;
@@ -31,21 +29,23 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.internal.ui.ActionDescriptor;
 import com.eclipsesource.tabris.internal.ui.ImageUtil;
 import com.eclipsesource.tabris.internal.ui.RemoteActionTest;
 import com.eclipsesource.tabris.internal.ui.TestAction;
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 import com.eclipsesource.tabris.ui.ActionListener;
 import com.eclipsesource.tabris.ui.UI;
 import com.eclipsesource.tabris.ui.UIConfiguration;
 
 
-@RunWith( RWTRunner.class )
 public class WebActionTest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   private UI ui;
   private WebUI webUI;
@@ -55,7 +55,6 @@ public class WebActionTest {
 
   @Before
   public void setUp() {
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     Shell shell = new Shell( new Display() );
     ui = mock( UI.class );
     actionDescriptor = mockDescriptor();

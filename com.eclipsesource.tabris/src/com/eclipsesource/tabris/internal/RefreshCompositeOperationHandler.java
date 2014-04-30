@@ -15,7 +15,7 @@ import static com.eclipsesource.tabris.internal.Constants.EVENT_REFRESH;
 import java.util.List;
 
 import org.eclipse.rap.json.JsonObject;
-import org.eclipse.rap.rwt.lifecycle.ProcessActionRunner;
+import org.eclipse.rap.rwt.internal.lifecycle.ProcessActionRunner;
 import org.eclipse.swt.internal.widgets.compositekit.CompositeOperationHandler;
 import org.eclipse.swt.widgets.Composite;
 

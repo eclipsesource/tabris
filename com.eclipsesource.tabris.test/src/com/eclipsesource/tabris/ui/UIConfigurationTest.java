@@ -24,8 +24,8 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.eclipse.swt.graphics.RGB;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.internal.ui.ImageUtil;
 import com.eclipsesource.tabris.internal.ui.PageDescriptor;
@@ -35,11 +35,13 @@ import com.eclipsesource.tabris.internal.ui.UIDescriptor;
 import com.eclipsesource.tabris.internal.ui.UITestUtil;
 import com.eclipsesource.tabris.internal.ui.UIUpdater;
 import com.eclipsesource.tabris.internal.ui.UpdateUtil;
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 
 
-@RunWith( RWTRunner.class )
 public class UIConfigurationTest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   @Test
   public void testIsSerializable() {

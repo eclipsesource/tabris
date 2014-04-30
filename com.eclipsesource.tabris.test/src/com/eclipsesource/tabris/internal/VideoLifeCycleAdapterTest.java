@@ -26,8 +26,8 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import org.eclipse.rap.json.JsonObject;
-import org.eclipse.rap.rwt.lifecycle.AbstractWidgetLCA;
-import org.eclipse.rap.rwt.lifecycle.WidgetLifeCycleAdapter;
+import org.eclipse.rap.rwt.internal.lifecycle.AbstractWidgetLCA;
+import org.eclipse.rap.rwt.internal.lifecycle.WidgetLifeCycleAdapter;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.rap.rwt.testfixture.Message;
@@ -39,12 +39,12 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.internal.VideoLifeCycleAdapter.PlaybackOptions;
 import com.eclipsesource.tabris.test.ControlLCATestUtil;
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 import com.eclipsesource.tabris.widgets.PlaybackListener;
 import com.eclipsesource.tabris.widgets.PresentationListener;
 import com.eclipsesource.tabris.widgets.Video;
@@ -52,8 +52,11 @@ import com.eclipsesource.tabris.widgets.Video.Playback;
 import com.eclipsesource.tabris.widgets.Video.Presentation;
 
 
-@RunWith( RWTRunner.class )
+@SuppressWarnings("restriction")
 public class VideoLifeCycleAdapterTest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   private Video video;
   private Shell parent;
@@ -134,6 +137,7 @@ public class VideoLifeCycleAdapterTest {
     Fixture.fakeNewRequest();
     JsonObject parameters = new JsonObject();
     parameters.add( PROPERTY_PLAYBACK, Playback.READY.name() );
+
     fakeNotifyOperation( getId(), Constants.EVENT_PLAYBACK, parameters );
     Fixture.executeLifeCycleFromServerThread();
 

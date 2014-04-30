@@ -25,8 +25,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.eclipse.rap.json.JsonObject;
-import org.eclipse.rap.rwt.lifecycle.PhaseId;
-import org.eclipse.rap.rwt.lifecycle.WidgetLifeCycleAdapter;
+import org.eclipse.rap.rwt.internal.lifecycle.WidgetLifeCycleAdapter;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -36,18 +35,21 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TypedListener;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.internal.ClientCanvasLCA;
 import com.eclipsesource.tabris.internal.ClientCanvasOperator;
 import com.eclipsesource.tabris.internal.ClientCanvasTestUtil;
 import com.eclipsesource.tabris.internal.DrawingsCache;
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 
 
-@RunWith( RWTRunner.class )
+@SuppressWarnings("restriction")
 public class ClientCanvasTest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   private ClientCanvas clientCanvas;
 
@@ -156,7 +158,6 @@ public class ClientCanvasTest {
     CheckPaintListener listener = new CheckPaintListener();
     clientCanvas.addPaintListener( listener );
 
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     clientCanvas.clear();
     Fixture.fakeNewRequest();
     fakeDrawEvent();
@@ -188,7 +189,7 @@ public class ClientCanvasTest {
     clientCanvas.addPaintListener( listener );
     fakeDrawEvent();
 
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
+    environment.runProcessAction();
     clientCanvas.undo();
 
     assertTrue( listener.wasCalled() );
@@ -219,9 +220,9 @@ public class ClientCanvasTest {
     CheckPaintListener listener = new CheckPaintListener();
     clientCanvas.addPaintListener( listener );
     fakeDrawEvent();
+    environment.runProcessAction();
     clientCanvas.undo();
 
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     clientCanvas.redo();
 
     assertTrue( listener.wasCalled() );

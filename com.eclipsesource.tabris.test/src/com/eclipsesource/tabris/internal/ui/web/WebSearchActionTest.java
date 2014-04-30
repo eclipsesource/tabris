@@ -28,8 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.rap.rwt.internal.serverpush.ServerPushManager;
-import org.eclipse.rap.rwt.lifecycle.PhaseId;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.widgets.Button;
@@ -40,8 +38,8 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.internal.ui.ActionDescriptor;
 import com.eclipsesource.tabris.internal.ui.ImageUtil;
@@ -49,7 +47,7 @@ import com.eclipsesource.tabris.internal.ui.PropertyChangeHandler;
 import com.eclipsesource.tabris.internal.ui.PropertyChangeNotifier;
 import com.eclipsesource.tabris.internal.ui.RemoteActionTest;
 import com.eclipsesource.tabris.internal.ui.TestSearchAction;
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.UI;
 import com.eclipsesource.tabris.ui.UIConfiguration;
@@ -59,8 +57,10 @@ import com.eclipsesource.tabris.ui.action.SearchActionListener;
 
 
 @SuppressWarnings("restriction")
-@RunWith( RWTRunner.class )
 public class WebSearchActionTest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   private UI ui;
   private WebUI uiRenderer;
@@ -74,7 +74,6 @@ public class WebSearchActionTest {
 
   @Before
   public void setUp() {
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     display = new Display();
     Shell shell = new Shell( display );
     shell.open();

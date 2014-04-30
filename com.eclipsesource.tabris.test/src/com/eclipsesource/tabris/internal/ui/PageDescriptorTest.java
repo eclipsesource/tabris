@@ -20,16 +20,18 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.List;
 
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 import com.eclipsesource.tabris.ui.ActionConfiguration;
 import com.eclipsesource.tabris.ui.PageStyle;
 
 
-@RunWith( RWTRunner.class )
 public class PageDescriptorTest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   @Test
   public void testIsSerializable() {

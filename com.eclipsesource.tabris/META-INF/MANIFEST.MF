@@ -5,7 +5,7 @@ Bundle-SymbolicName: com.eclipsesource.tabris
 Bundle-Version: 1.4.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.eclipse.rap.rwt;bundle-version="[2.2.0,2.4.0)"
+Require-Bundle: org.eclipse.rap.rwt;bundle-version="[2.3.0,2.4.0)"
 Export-Package: com.eclipsesource.tabris;version="1.4.0",
  com.eclipsesource.tabris.app;version="1.4.0",
  com.eclipsesource.tabris.camera;version="1.4.0",

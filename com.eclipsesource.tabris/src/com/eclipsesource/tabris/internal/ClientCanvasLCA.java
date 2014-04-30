@@ -12,8 +12,8 @@ package com.eclipsesource.tabris.internal;
 
 import java.io.IOException;
 
+import org.eclipse.rap.rwt.internal.lifecycle.AbstractWidgetLCA;
 import org.eclipse.rap.rwt.internal.protocol.RemoteObjectFactory;
-import org.eclipse.rap.rwt.lifecycle.AbstractWidgetLCA;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.swt.internal.widgets.canvaskit.CanvasLCA;
 import org.eclipse.swt.widgets.Widget;

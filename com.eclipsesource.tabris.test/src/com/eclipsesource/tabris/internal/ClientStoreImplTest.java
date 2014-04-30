@@ -16,32 +16,21 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.json.JsonValue;
-import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
-import org.eclipse.rap.rwt.remote.RemoteObject;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 
-import com.eclipsesource.tabris.test.RWTRunner;
-import com.eclipsesource.tabris.test.TabrisTestUtil;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 
 
-@SuppressWarnings("restriction")
-@RunWith( RWTRunner.class )
 public class ClientStoreImplTest {
 
-  private RemoteObject serviceObject;
-
-  @Before
-  public void setUp() {
-    serviceObject = TabrisTestUtil.mockServiceObject();
-  }
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   @Test( expected = IllegalArgumentException.class )
   public void testAddFailsWithNullKey() {
@@ -104,7 +93,7 @@ public class ClientStoreImplTest {
     store.remove( "foo" );
 
     ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
-    verify( serviceObject ).call( eq( "remove" ), captor.capture() );
+    verify( environment.getServiceObject() ).call( eq( "remove" ), captor.capture() );
     JsonArray removedKeys = captor.getValue().get( "keys" ).asArray();
     assertEquals( JsonValue.valueOf( "foo" ), removedKeys.get( 0 ) );
     assertEquals( 1, removedKeys.size() );
@@ -118,7 +107,7 @@ public class ClientStoreImplTest {
 
     store.remove();
 
-    verify( serviceObject, never() ).call( eq( "remove" ), any( JsonObject.class ) );
+    verify( environment.getServiceObject(), never() ).call( eq( "remove" ), any( JsonObject.class ) );
   }
 
   @Test
@@ -130,7 +119,7 @@ public class ClientStoreImplTest {
     store.remove( "foo" ,"foo1" );
 
     ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
-    verify( serviceObject ).call( eq( "remove" ), captor.capture() );
+    verify( environment.getServiceObject() ).call( eq( "remove" ), captor.capture() );
     JsonArray removedKeys = captor.getValue().get( "keys" ).asArray();
     assertEquals( JsonValue.valueOf( "foo" ), removedKeys.get( 0 ) );
     assertEquals( JsonValue.valueOf( "foo1" ), removedKeys.get( 1 ) );
@@ -174,7 +163,7 @@ public class ClientStoreImplTest {
 
     store.clear();
 
-    verify( serviceObject ).call( "clear", null );
+    verify( environment.getServiceObject() ).call( "clear", null );
   }
 
   @Test
@@ -184,7 +173,7 @@ public class ClientStoreImplTest {
     store.add( "foo", "bar" );
 
     ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
-    verify( serviceObject ).call( eq( "add" ), captor.capture() );
+    verify( environment.getServiceObject() ).call( eq( "add" ), captor.capture() );
     assertEquals( "foo", captor.getValue().get( "key" ).asString() );
     assertEquals( "bar", captor.getValue().get( "value" ).asString() );
   }
@@ -192,12 +181,11 @@ public class ClientStoreImplTest {
   @Test
   public void testSynchronizeCallAddsValues() {
     ClientStoreImpl store = new ClientStoreImpl();
-    when( ( ( RemoteObjectImpl )serviceObject ).getHandler() ).thenReturn( store );
     JsonObject properties = new JsonObject();
     properties.add( "foo", "bar" );
     properties.add( "foo1", "bar1" );
 
-    TabrisTestUtil.dispatchCall( serviceObject, "synchronize", properties  );
+    environment.dispatchCallOnServiceObject( "synchronize", properties );
 
     assertEquals( "bar", store.get( "foo" ) );
     assertEquals( "bar1", store.get( "foo1" ) );

@@ -10,7 +10,6 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
-import static com.eclipsesource.tabris.test.TabrisTestUtil.mockServiceObject;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
@@ -27,29 +26,27 @@ import java.io.Serializable;
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.json.JsonValue;
-import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.remote.RemoteObject;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 
 import com.eclipsesource.tabris.camera.Camera;
 import com.eclipsesource.tabris.camera.CameraListener;
 import com.eclipsesource.tabris.camera.CameraOptions;
-import com.eclipsesource.tabris.test.RWTRunner;
-import com.eclipsesource.tabris.test.TabrisTestUtil;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 
 
-@RunWith( RWTRunner.class )
 public class CameraImplTest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   @Before
   public void setUp() {
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     new Display();
   }
 
@@ -65,7 +62,7 @@ public class CameraImplTest {
 
   @Test
   public void testSetsNoInitialCameraOptionsWithDefaultOptions() {
-    RemoteObject remoteObject = mockServiceObject();
+    RemoteObject remoteObject = environment.getServiceObject();
 
     new CameraImpl();
 
@@ -77,7 +74,7 @@ public class CameraImplTest {
 
   @Test
   public void testSendsOpenWithTakePhotoCall() {
-    RemoteObject remoteObject = mockServiceObject();
+    RemoteObject remoteObject = environment.getServiceObject();
     Camera camera = new CameraImpl();
     CameraListener listener = mock( CameraListener.class );
     camera.addCameraListener( listener );
@@ -121,7 +118,7 @@ public class CameraImplTest {
     camera.addCameraListener( listener );
 
     camera.takePicture( createOptions() );
-    TabrisTestUtil.dispatchNotify( camera.getRemoteObject(), "ImageSelectionError", null );
+    environment.dispatchNotifyOnServiceObject( "ImageSelectionError", null );
 
     verify( listener ).receivedPicture( null );
   }
@@ -135,7 +132,7 @@ public class CameraImplTest {
     camera.addCameraListener( listener2 );
 
     camera.takePicture( createOptions() );
-    TabrisTestUtil.dispatchNotify( camera.getRemoteObject(), "ImageSelectionError", null );
+    environment.dispatchNotifyOnServiceObject( "ImageSelectionError", null );
 
     verify( listener1 ).receivedPicture( null );
     verify( listener2 ).receivedPicture( null );
@@ -149,7 +146,7 @@ public class CameraImplTest {
     camera.addCameraListener( listener );
 
     camera.takePicture( createOptions() );
-    TabrisTestUtil.dispatchNotify( camera.getRemoteObject(), "ImageSelectionCancel", null );
+    environment.dispatchNotifyOnServiceObject( "ImageSelectionCancel", null );
 
     verify( listener ).receivedPicture( null );
   }
@@ -163,7 +160,7 @@ public class CameraImplTest {
     camera.addCameraListener( listener2 );
 
     camera.takePicture( createOptions() );
-    TabrisTestUtil.dispatchNotify( camera.getRemoteObject(), "ImageSelectionCancel", null );
+    environment.dispatchNotifyOnServiceObject( "ImageSelectionCancel", null );
 
     verify( listener1 ).receivedPicture( null );
     verify( listener2 ).receivedPicture( null );
@@ -173,14 +170,13 @@ public class CameraImplTest {
   public void testDelegatesImage() throws IOException {
     String encodedImage = getEncodedImage();
     CameraImpl camera = new CameraImpl();
-    RemoteObject remoteObject = camera.getRemoteObject();
     CameraListener listener = mock( CameraListener.class );
     camera.addCameraListener( listener );
 
     camera.takePicture( createOptions() );
     JsonObject properties = new JsonObject();
     properties.add( "image", encodedImage );
-    TabrisTestUtil.dispatchNotify( remoteObject, "ImageSelection", properties );
+    environment.dispatchNotifyOnServiceObject( "ImageSelection", properties );
 
     verify( listener ).receivedPicture( any( Image.class ) );
   }
@@ -189,7 +185,6 @@ public class CameraImplTest {
   public void testDelegatesImageToAllListeners() throws IOException {
     String encodedImage = getEncodedImage();
     CameraImpl camera = new CameraImpl();
-    RemoteObject remoteObject = camera.getRemoteObject();
     CameraListener listener1 = mock( CameraListener.class );
     CameraListener listener2 = mock( CameraListener.class );
     camera.addCameraListener( listener1 );
@@ -198,7 +193,7 @@ public class CameraImplTest {
     camera.takePicture( createOptions() );
     JsonObject properties = new JsonObject();
     properties.add( "image", encodedImage );
-    TabrisTestUtil.dispatchNotify( remoteObject, "ImageSelection", properties );
+    environment.dispatchNotifyOnServiceObject( "ImageSelection", properties );
 
     verify( listener1 ).receivedPicture( any( Image.class ) );
     verify( listener2 ).receivedPicture( any( Image.class ) );

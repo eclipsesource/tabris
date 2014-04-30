@@ -24,10 +24,10 @@ import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.ActionOperator;
 import com.eclipsesource.tabris.ui.Page;
@@ -35,8 +35,10 @@ import com.eclipsesource.tabris.ui.PageOperator;
 import com.eclipsesource.tabris.ui.UIConfiguration;
 
 
-@RunWith( RWTRunner.class )
 public class UIImplTest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   private Display display;
   private Controller controller;

@@ -24,21 +24,17 @@ import static org.mockito.Mockito.verify;
 import java.io.Serializable;
 
 import org.eclipse.rap.json.JsonObject;
-import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.remote.RemoteObject;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.ArgumentCaptor;
 
 import com.eclipsesource.tabris.internal.Constants;
-import com.eclipsesource.tabris.test.TabrisTestUtil;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 import com.eclipsesource.tabris.widgets.ClientDialog.ButtonType;
 import com.eclipsesource.tabris.widgets.ClientDialog.Severity;
 
@@ -46,17 +42,9 @@ import com.eclipsesource.tabris.widgets.ClientDialog.Severity;
 public class ClientDialogTest {
 
   @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
+  @Rule
   public ExpectedException thrown = ExpectedException.none();
-
-  @Before
-  public void setUp() {
-    Fixture.setUp();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
-  }
 
   @Test
   public void testIsSerializable() {
@@ -194,10 +182,9 @@ public class ClientDialogTest {
     Listener listener = mock( Listener.class );
     JsonObject properties = new JsonObject();
     properties.add( "buttonType", "buttonOk" );
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
 
     dialog.setButton( ButtonType.OK, "bar", listener );
-    TabrisTestUtil.dispatchNotify( dialog.getRemoteObject(), "Selection", properties );
+    environment.dispatchNotify( "Selection", properties );
 
     verify( listener ).handleEvent( any( Event.class ) );
   }
@@ -209,10 +196,9 @@ public class ClientDialogTest {
     Listener listener = mock( Listener.class );
     JsonObject properties = new JsonObject();
     properties.add( "buttonType", "buttonOk" );
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
 
     dialog.setButton( ButtonType.OK, "bar", listener );
-    TabrisTestUtil.dispatchNotify( dialog.getRemoteObject(), "Selection", properties );
+    environment.dispatchNotify( "Selection", properties );
 
     ArgumentCaptor<Event> captor = ArgumentCaptor.forClass( Event.class );
     verify( listener ).handleEvent( captor.capture() );
@@ -370,7 +356,6 @@ public class ClientDialogTest {
 
   @Test
   public void testOpenCallsClientDialogListener() {
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     ClientDialog dialog = new ClientDialog();
     ClientDialogListener listener = mock( ClientDialogListener.class );
     dialog.addClientDialogListener( listener );
@@ -382,12 +367,11 @@ public class ClientDialogTest {
 
   @Test
   public void testCloseEventCallsClientDialogListener() {
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     ClientDialog dialog = new ClientDialog();
     ClientDialogListener listener = mock( ClientDialogListener.class );
     dialog.addClientDialogListener( listener );
 
-    TabrisTestUtil.dispatchNotify( dialog.getRemoteObject(), "ClientDialogClose", null );
+    environment.dispatchNotify( "ClientDialogClose", null );
 
     verify( listener ).close();
   }

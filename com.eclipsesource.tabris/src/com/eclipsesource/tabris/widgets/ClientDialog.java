@@ -33,7 +33,7 @@ import java.util.Map;
 
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.RWT;
-import org.eclipse.rap.rwt.lifecycle.ProcessActionRunner;
+import org.eclipse.rap.rwt.internal.lifecycle.ProcessActionRunner;
 import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.swt.widgets.Display;
@@ -46,6 +46,7 @@ import com.eclipsesource.tabris.internal.Constants;
 /**
  * @since 1.4
  */
+@SuppressWarnings("restriction")
 public class ClientDialog implements Serializable {
 
   public static enum ButtonType {

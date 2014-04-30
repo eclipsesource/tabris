@@ -16,8 +16,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-import org.eclipse.rap.rwt.lifecycle.PhaseId;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Point;
@@ -30,14 +28,16 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 
 
-@RunWith( RWTRunner.class )
 public class ScrollingCompositeTest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   private Shell shell;
 
@@ -45,7 +45,6 @@ public class ScrollingCompositeTest {
   public void setUp() {
     Display display = new Display();
     shell = new Shell( display );
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
   }
 
   @Test( expected = IllegalArgumentException.class )

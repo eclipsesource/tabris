@@ -10,8 +10,6 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
-import static com.eclipsesource.tabris.test.TabrisTestUtil.dispatchNotify;
-import static com.eclipsesource.tabris.test.TabrisTestUtil.mockServiceObject;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
@@ -25,13 +23,9 @@ import java.io.Serializable;
 
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.json.JsonValue;
-import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.remote.RemoteObject;
-import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.eclipse.swt.widgets.Display;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 
@@ -39,18 +33,13 @@ import com.eclipsesource.tabris.print.Print;
 import com.eclipsesource.tabris.print.PrintError;
 import com.eclipsesource.tabris.print.PrintListener;
 import com.eclipsesource.tabris.print.PrintOptions;
-import com.eclipsesource.tabris.test.RWTRunner;
-import com.eclipsesource.tabris.test.TabrisTestUtil;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 
 
-@RunWith( RWTRunner.class )
 public class PrintImplTest {
 
-  @Before
-  public void setUp() {
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
-    new Display();
-  }
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   @Test
   public void testIsSerializable() {
@@ -64,7 +53,7 @@ public class PrintImplTest {
 
   @Test
   public void testSetsNoInitialPrintOptionsWithDefaultOptions() {
-    RemoteObject remoteObject = mockServiceObject();
+    RemoteObject remoteObject = environment.getServiceObject();
 
     new PrintImpl();
 
@@ -80,7 +69,7 @@ public class PrintImplTest {
 
   @Test
   public void testSendsPrintWithPrintCall() {
-    RemoteObject remoteObject = mockServiceObject();
+    RemoteObject remoteObject = environment.getServiceObject();
     Print print = new PrintImpl();
 
     print.print( "http://localhost/file.pdf", createOptions() );
@@ -142,7 +131,7 @@ public class PrintImplTest {
     properties.add( "message", "" );
 
     print.print( "http://localhost/file.pdf", createOptions() );
-    dispatchNotify( print.getRemoteObject(), "Error", properties );
+    environment.dispatchNotifyOnServiceObject( "Error", properties );
 
     verify( listener ).printFailed( any( PrintError.class ) );
   }
@@ -154,7 +143,7 @@ public class PrintImplTest {
     print.addPrintListener( listener );
 
     print.print( "http://localhost/file.pdf", createOptions() );
-    dispatchNotify( print.getRemoteObject(), "Error",  new JsonObject() );
+    environment.dispatchNotifyOnServiceObject( "Error", new JsonObject() );
 
     verify( listener ).printFailed( any( PrintError.class ) );
   }
@@ -172,7 +161,7 @@ public class PrintImplTest {
     properties.add( "message", "" );
 
     print.print( "http://localhost/file.pdf", createOptions() );
-    TabrisTestUtil.dispatchNotify( print.getRemoteObject(), "Error", properties );
+    environment.dispatchNotifyOnServiceObject( "Error", properties );
 
     InOrder order = inOrder( listener1, listener2 );
     order.verify( listener1 ).printFailed( any( PrintError.class ) );
@@ -189,7 +178,7 @@ public class PrintImplTest {
     properties.add( "jobName", "" );
 
     print.print( "http://localhost/file.pdf", createOptions() );
-    dispatchNotify( print.getRemoteObject(), "Cancel", properties );
+    environment.dispatchNotifyOnServiceObject( "Cancel", properties );
 
     verify( listener ).printCanceled( any( String.class ), any( String.class ) );
   }
@@ -201,7 +190,7 @@ public class PrintImplTest {
     print.addPrintListener( listener );
 
     print.print( "http://localhost/file.pdf", createOptions() );
-    TabrisTestUtil.dispatchNotify( print.getRemoteObject(), "Cancel", new JsonObject() );
+    environment.dispatchNotifyOnServiceObject( "Cancel", new JsonObject() );
 
     verify( listener ).printCanceled( null, null );
   }
@@ -218,7 +207,7 @@ public class PrintImplTest {
     properties.add( "jobName", "" );
 
     print.print( "http://localhost/file.pdf", createOptions() );
-    dispatchNotify( print.getRemoteObject(), "Cancel", properties );
+    environment.dispatchNotifyOnServiceObject( "Cancel", properties );
 
     InOrder order = inOrder( listener1, listener2 );
     order.verify( listener1 ).printCanceled( any( String.class ), any( String.class ) );
@@ -235,7 +224,7 @@ public class PrintImplTest {
     properties.add( "jobName", "" );
 
     print.print( "http://localhost/file.pdf", createOptions() );
-    dispatchNotify( print.getRemoteObject(), "Success", properties );
+    environment.dispatchNotifyOnServiceObject( "Success", properties );
 
     verify( listener ).printSucceeded( any( String.class ), any( String.class ) );
   }
@@ -247,7 +236,7 @@ public class PrintImplTest {
     print.addPrintListener( listener );
 
     print.print( "http://localhost/file.pdf", createOptions() );
-    dispatchNotify( print.getRemoteObject(), "Success", new JsonObject() );
+    environment.dispatchNotifyOnServiceObject( "Success", new JsonObject() );
 
     verify( listener ).printSucceeded( null, null );
   }
@@ -264,7 +253,7 @@ public class PrintImplTest {
     properties.add( "jobName", "" );
 
     print.print( "http://localhost/file.pdf", createOptions() );
-    dispatchNotify( print.getRemoteObject(), "Success", properties );
+    environment.dispatchNotifyOnServiceObject( "Success", properties );
 
     InOrder order = inOrder( listener1, listener2 );
     order.verify( listener1 ).printSucceeded( any( String.class ), any( String.class ) );

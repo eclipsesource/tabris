@@ -15,16 +15,15 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-import org.eclipse.rap.rwt.lifecycle.PhaseId;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.InOrder;
 
+import com.eclipsesource.tabris.test.RWTEnvironment;
 import com.eclipsesource.tabris.widgets.RefreshComposite;
 import com.eclipsesource.tabris.widgets.RefreshListener;
 
@@ -32,19 +31,16 @@ import com.eclipsesource.tabris.widgets.RefreshListener;
 @SuppressWarnings("restriction")
 public class RefreshCompositeOperationHandlerTest {
 
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
+
   private Shell shell;
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     shell = new Shell( new Display() );
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
   }
 
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
-  }
 
   @Test
   public void testNotifiesNoRefreshListenerForOtherEvent() {

@@ -10,7 +10,6 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
-import static com.eclipsesource.tabris.test.TabrisTestUtil.mockServiceObject;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -18,7 +17,6 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import java.io.Serializable;
 import java.util.Locale;
@@ -26,13 +24,10 @@ import java.util.Locale;
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.RWT;
-import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
-import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.rap.rwt.testfixture.TestRequest;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.device.ClientDevice;
 import com.eclipsesource.tabris.device.ClientDevice.Capability;
@@ -40,21 +35,13 @@ import com.eclipsesource.tabris.device.ClientDevice.ConnectionType;
 import com.eclipsesource.tabris.device.ClientDevice.Orientation;
 import com.eclipsesource.tabris.device.ClientDevice.Platform;
 import com.eclipsesource.tabris.device.ClientDeviceListener;
-import com.eclipsesource.tabris.test.RWTRunner;
-import com.eclipsesource.tabris.test.TabrisTestUtil;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 
 
-@SuppressWarnings("restriction")
-@RunWith( RWTRunner.class )
 public class ClientDeviceImplTest {
 
-  private RemoteObjectImpl serviceObject;
-
-  @Before
-  public void setUp() {
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
-    serviceObject = ( RemoteObjectImpl )mockServiceObject();
-  }
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   @Test
   public void testIsSerializable() {
@@ -179,11 +166,10 @@ public class ClientDeviceImplTest {
   @Test
   public void testGetTimezoneOffset_readsTimezoneOffsetFromHandler() {
     ClientDeviceImpl deviceImpl = new ClientDeviceImpl();
-    when( serviceObject.getHandler() ).thenReturn( deviceImpl );
     JsonObject parameters = new JsonObject();
     parameters.add( "timezoneOffset", -90 );
 
-    TabrisTestUtil.dispatchSet( serviceObject, parameters );
+    environment.dispatchSetOnServiceObject( parameters );
     int timezoneOffset = deviceImpl.getTimezoneOffset();
 
     assertEquals( -90, timezoneOffset );
@@ -192,10 +178,9 @@ public class ClientDeviceImplTest {
   @Test
   public void testDetectsPortraitMode() {
     ClientDeviceImpl deviceImpl = new ClientDeviceImpl();
-    when( serviceObject.getHandler() ).thenReturn( deviceImpl );
     JsonObject properties = new JsonObject();
     properties.add( "orientation", "PORTRAIT" );
-    TabrisTestUtil.dispatchSet( serviceObject, properties );
+    environment.dispatchSetOnServiceObject( properties );
 
     Orientation orientation = deviceImpl.getOrientation();
 
@@ -205,10 +190,9 @@ public class ClientDeviceImplTest {
   @Test
   public void testDetectsLandscapeMode() {
     ClientDeviceImpl deviceImpl = new ClientDeviceImpl();
-    when( serviceObject.getHandler() ).thenReturn( deviceImpl );
     JsonObject properties = new JsonObject();
     properties.add( "orientation", "LANDSCAPE" );
-    TabrisTestUtil.dispatchSet( serviceObject, properties );
+    environment.dispatchSetOnServiceObject( properties );
 
     Orientation orientation = deviceImpl.getOrientation();
 
@@ -218,7 +202,6 @@ public class ClientDeviceImplTest {
   @Test( expected = IllegalStateException.class )
   public void testFailsWithoutConnectionType() {
     ClientDeviceImpl deviceImpl = new ClientDeviceImpl();
-    when( serviceObject.getHandler() ).thenReturn( deviceImpl );
 
     deviceImpl.getConnectionType();
   }
@@ -226,11 +209,10 @@ public class ClientDeviceImplTest {
   @Test
   public void testKnowsConnectionTypeWifi() {
     ClientDeviceImpl deviceImpl = new ClientDeviceImpl();
-    when( serviceObject.getHandler() ).thenReturn( deviceImpl );
     JsonObject properties = new JsonObject();
     properties.add( "connectionType", "WIFI" );
 
-    TabrisTestUtil.dispatchSet( serviceObject, properties );
+    environment.dispatchSetOnServiceObject( properties );
     ConnectionType connectionType = deviceImpl.getConnectionType();
 
     assertSame( ConnectionType.WIFI, connectionType );
@@ -239,11 +221,10 @@ public class ClientDeviceImplTest {
   @Test
   public void testKnowsConnectionTypeCelular() {
     ClientDeviceImpl deviceImpl = new ClientDeviceImpl();
-    when( serviceObject.getHandler() ).thenReturn( deviceImpl );
     JsonObject properties = new JsonObject();
     properties.add( "connectionType", "CELLULAR" );
 
-    TabrisTestUtil.dispatchSet( serviceObject, properties );
+    environment.dispatchSetOnServiceObject( properties );
     ConnectionType connectionType = deviceImpl.getConnectionType();
 
     assertSame( ConnectionType.CELLULAR, connectionType );
@@ -252,7 +233,6 @@ public class ClientDeviceImplTest {
   @Test( expected = IllegalStateException.class )
   public void testFailsWithoutCapabilities() {
     ClientDeviceImpl deviceImpl = new ClientDeviceImpl();
-    when( serviceObject.getHandler() ).thenReturn( deviceImpl );
 
     deviceImpl.hasCapability( Capability.LOCATION );
   }
@@ -260,14 +240,13 @@ public class ClientDeviceImplTest {
   @Test
   public void testCanFindCapabilities() {
     ClientDeviceImpl deviceImpl = new ClientDeviceImpl();
-    when( serviceObject.getHandler() ).thenReturn( deviceImpl );
     JsonObject properties = new JsonObject();
     JsonArray jsonArray = new JsonArray();
     jsonArray.add( "CAMERA" );
     jsonArray.add( "LOCATION" );
     properties.add( "capabilities", jsonArray );
 
-    TabrisTestUtil.dispatchSet( serviceObject, properties );
+    environment.dispatchSetOnServiceObject( properties );
 
     assertTrue( deviceImpl.hasCapability( Capability.LOCATION ) );
     assertTrue( deviceImpl.hasCapability( Capability.CAMERA ) );
@@ -279,7 +258,6 @@ public class ClientDeviceImplTest {
   @Test
   public void testCanFindAllCapabilities() {
     ClientDeviceImpl deviceImpl = new ClientDeviceImpl();
-    when( serviceObject.getHandler() ).thenReturn( deviceImpl );
     JsonObject properties = new JsonObject();
     JsonArray jsonArray = new JsonArray();
     jsonArray.add( "CAMERA" );
@@ -289,7 +267,7 @@ public class ClientDeviceImplTest {
     jsonArray.add( "PHONE" );
     properties.add( "capabilities", jsonArray );
 
-    TabrisTestUtil.dispatchSet( serviceObject, properties );
+    environment.dispatchSetOnServiceObject( properties );
 
     assertTrue( deviceImpl.hasCapability( Capability.LOCATION ) );
     assertTrue( deviceImpl.hasCapability( Capability.CAMERA ) );
@@ -315,13 +293,12 @@ public class ClientDeviceImplTest {
   @Test
   public void testOrientationChangeNotifiesListener() {
     ClientDeviceImpl device = new ClientDeviceImpl();
-    when( serviceObject.getHandler() ).thenReturn( device );
     ClientDeviceListener listener = mock( ClientDeviceListener.class );
     device.addClientDeviceListener( listener );
     JsonObject properties = new JsonObject();
     properties.add( "orientation", "PORTRAIT" );
 
-    TabrisTestUtil.dispatchSet( serviceObject, properties );
+    environment.dispatchSetOnServiceObject( properties );
 
     verify( listener ).orientationChange( Orientation.PORTRAIT );
   }
@@ -329,13 +306,12 @@ public class ClientDeviceImplTest {
   @Test
   public void testConnectionTypeChangeNotifiesListener() {
     ClientDeviceImpl device = new ClientDeviceImpl();
-    when( serviceObject.getHandler() ).thenReturn( device );
     ClientDeviceListener listener = mock( ClientDeviceListener.class );
     device.addClientDeviceListener( listener );
     JsonObject properties = new JsonObject();
     properties.add( "connectionType", "WIFI" );
 
-    TabrisTestUtil.dispatchSet( serviceObject, properties );
+    environment.dispatchSetOnServiceObject( properties );
 
     verify( listener ).connectionTypeChanged( ConnectionType.WIFI );
   }

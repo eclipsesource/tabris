@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.rap.rwt.lifecycle.WidgetLifeCycleAdapter;
+import org.eclipse.rap.rwt.internal.lifecycle.WidgetLifeCycleAdapter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
@@ -38,6 +38,7 @@ import com.eclipsesource.tabris.internal.VideoLifeCycleAdapter.PlaybackOptions;
  *
  * @since 0.7
  */
+@SuppressWarnings("restriction")
 public class Video extends Composite {
 
   /**
@@ -403,10 +404,10 @@ public class Video extends Composite {
   }
 
   @Override
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "deprecation" })
   public <T> T getAdapter( Class<T> adapter ) {
     T result;
-    if( adapter == WidgetLifeCycleAdapter.class ) {
+    if( adapter == WidgetLifeCycleAdapter.class || adapter == org.eclipse.rap.rwt.lifecycle.WidgetLifeCycleAdapter.class ) {
       result = ( T )new VideoLifeCycleAdapter();
     } else if( adapter == PlaybackAdapter.class ) {
       result = ( T )new PlaybackAdapter();

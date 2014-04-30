@@ -23,36 +23,33 @@ import java.util.List;
 
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
-import org.eclipse.rap.rwt.internal.protocol.ProtocolUtil;
-import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
+import org.eclipse.rap.rwt.remote.JsonMapping;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.internal.ui.rendering.PageRenderer;
-import com.eclipsesource.tabris.test.RWTRunner;
-import com.eclipsesource.tabris.test.TabrisTestUtil;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 import com.eclipsesource.tabris.ui.PageOperator;
 import com.eclipsesource.tabris.ui.UI;
 
 
-@SuppressWarnings("restriction")
-@RunWith( RWTRunner.class )
 public class RemoteUITest {
 
-  private RemoteObjectImpl remoteObject;
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
+
   private Shell shell;
 
   @Before
   public void setUp() {
     shell = new Shell( new Display() );
-    remoteObject = ( RemoteObjectImpl )TabrisTestUtil.mockRemoteObject();
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -66,14 +63,14 @@ public class RemoteUITest {
   public void testSetsShellIdId() {
     new RemoteUI( shell );
 
-    verify( remoteObject ).set( "shell", WidgetUtil.getId( shell ) );
+    verify( environment.getRemoteObject() ).set( "shell", WidgetUtil.getId( shell ) );
   }
 
   @Test
   public void testGetRemoteUIId() {
     RemoteUI remoteUI = new RemoteUI( shell );
 
-    assertEquals( remoteObject.getId(), remoteUI.getRemoteUIId() );
+    assertEquals( environment.getRemoteObject().getId(), remoteUI.getRemoteUIId() );
   }
 
   @Test
@@ -102,7 +99,7 @@ public class RemoteUITest {
 
     remoteUI.activate( page );
 
-    verify( remoteObject ).set( "activePage", "foo" );
+    verify( environment.getRemoteObject() ).set( "activePage", "foo" );
   }
 
   @Test
@@ -113,11 +110,11 @@ public class RemoteUITest {
     RemoteUI remoteUI = spy( new RemoteUI( shell ) );
     remoteUI.setUi( ui );
     remoteUI.setController( mock( Controller.class ) );
-    when( remoteObject.getHandler() ).thenReturn( remoteUI );
     doReturn( "bar" ).when( remoteUI ).getPageId( "foo" );
+    environment.getRemoteObject().setHandler( remoteUI );
 
     JsonObject properties = new JsonObject().add( "pageId", "foo" );
-    TabrisTestUtil.dispatchNotify( remoteObject, "ShowPage", properties );
+    environment.dispatchNotify( "ShowPage", properties );
 
     verify( pageOperator ).openPage( "bar" );
   }
@@ -129,7 +126,7 @@ public class RemoteUITest {
     when( ui.getPageOperator() ).thenReturn( pageOperator );
     createRemoteUI( ui );
 
-    TabrisTestUtil.dispatchNotify( remoteObject, "ShowPreviousPage", null );
+    environment.dispatchNotify( "ShowPreviousPage", null );
 
     verify( pageOperator ).closeCurrentPage();
   }
@@ -140,7 +137,7 @@ public class RemoteUITest {
 
     remoteUI.setForeground( new Color( shell.getDisplay(), 100, 200, 150 ) );
 
-    verify( remoteObject ).set( "foreground", new JsonArray().add( 100 ).add( 200 ).add( 150 ) );
+    verify( environment.getRemoteObject() ).set( "foreground", new JsonArray().add( 100 ).add( 200 ).add( 150 ) );
   }
 
   @Test
@@ -149,7 +146,7 @@ public class RemoteUITest {
 
     remoteUI.setBackground( new Color( shell.getDisplay(), 100, 120, 150 ) );
 
-    verify( remoteObject ).set( "background", new JsonArray().add( 100 ).add( 120 ).add( 150 ) );
+    verify( environment.getRemoteObject() ).set( "background", new JsonArray().add( 100 ).add( 120 ).add( 150 ) );
   }
 
   @Test
@@ -159,7 +156,7 @@ public class RemoteUITest {
 
     remoteUI.setImage( image );
 
-    verify( remoteObject ).set( "image", ProtocolUtil.getJsonForImage( image ) );
+    verify( environment.getRemoteObject() ).set( "image", JsonMapping.toJson( image ) );
   }
 
   @Test
@@ -183,7 +180,6 @@ public class RemoteUITest {
 
   private RemoteUI createRemoteUI( UI ui ) {
     RemoteUI remoteUI = new RemoteUI( shell );
-    when( remoteObject.getHandler() ).thenReturn( remoteUI );
     remoteUI.setUi( ui );
     return remoteUI;
   }

@@ -30,15 +30,17 @@ import org.eclipse.rap.rwt.service.ResourceLoader;
 import org.eclipse.rap.rwt.testfixture.TestRequest;
 import org.eclipse.rap.rwt.testfixture.internal.engine.ThemeManagerHelper;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 
 
 @SuppressWarnings("restriction")
-@RunWith( RWTRunner.class )
 public class TabrisSWTClientProviderTest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   private static final String CURRENT_THEME_ID = "org.eclipse.rap.theme.current";
 

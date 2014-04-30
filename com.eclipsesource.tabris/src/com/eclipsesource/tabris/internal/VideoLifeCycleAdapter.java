@@ -17,12 +17,12 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PLAYBACK;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PRESENTATION;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_URL;
 import static com.eclipsesource.tabris.internal.Constants.TYPE_VIDEO;
-import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.readEventPropertyValueAsString;
+import static org.eclipse.rap.rwt.internal.lifecycle.WidgetLCAUtil.preserveListener;
+import static org.eclipse.rap.rwt.internal.lifecycle.WidgetLCAUtil.preserveProperty;
+import static org.eclipse.rap.rwt.internal.lifecycle.WidgetLCAUtil.renderListener;
+import static org.eclipse.rap.rwt.internal.lifecycle.WidgetLCAUtil.renderProperty;
+import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.readEventPropertyValue;
 import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.wasEventSent;
-import static org.eclipse.rap.rwt.lifecycle.WidgetLCAUtil.preserveListener;
-import static org.eclipse.rap.rwt.lifecycle.WidgetLCAUtil.preserveProperty;
-import static org.eclipse.rap.rwt.lifecycle.WidgetLCAUtil.renderListener;
-import static org.eclipse.rap.rwt.lifecycle.WidgetLCAUtil.renderProperty;
 import static org.eclipse.rap.rwt.lifecycle.WidgetUtil.getId;
 
 import java.io.IOException;
@@ -30,10 +30,10 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.rap.rwt.internal.lifecycle.AbstractWidgetLCA;
+import org.eclipse.rap.rwt.internal.lifecycle.ControlLCAUtil;
+import org.eclipse.rap.rwt.internal.lifecycle.ProcessActionRunner;
 import org.eclipse.rap.rwt.internal.protocol.RemoteObjectFactory;
-import org.eclipse.rap.rwt.lifecycle.AbstractWidgetLCA;
-import org.eclipse.rap.rwt.lifecycle.ControlLCAUtil;
-import org.eclipse.rap.rwt.lifecycle.ProcessActionRunner;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.swt.widgets.Control;
@@ -60,7 +60,7 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA implements Serializ
 
   private void readPlaybackMode( Widget widget ) {
     if( wasEventSent( getId( widget ), EVENT_PLAYBACK ) ) {
-      String playbackMode = readEventPropertyValueAsString( getId( widget ), EVENT_PLAYBACK, PROPERTY_PLAYBACK );
+      String playbackMode = readEventPropertyValue( getId( widget ), EVENT_PLAYBACK, PROPERTY_PLAYBACK ).asString();
       Playback newMode = Playback.valueOf( playbackMode.toUpperCase() );
       Video video = ( Video )widget;
       video.getAdapter( PlaybackAdapter.class ).setPlaybackMode( newMode );
@@ -79,7 +79,7 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA implements Serializ
 
   private void readPresentationMode( Widget widget ) {
     if( wasEventSent( getId( widget ), EVENT_PRESENTATION ) ) {
-      String presentationMode = readEventPropertyValueAsString( getId( widget ), EVENT_PRESENTATION, PROPERTY_PRESENTATION );
+      String presentationMode = readEventPropertyValue( getId( widget ), EVENT_PRESENTATION, PROPERTY_PRESENTATION ).asString();
       Presentation newMode = Presentation.valueOf( presentationMode.toUpperCase() );
       Video video = ( Video )widget;
       video.getAdapter( PlaybackAdapter.class ).getOptions().put( PlaybackOptions.PRESENTATION, newMode );

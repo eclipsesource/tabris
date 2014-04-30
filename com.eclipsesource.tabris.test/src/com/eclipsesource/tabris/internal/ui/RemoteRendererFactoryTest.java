@@ -19,20 +19,22 @@ import static org.mockito.Mockito.when;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.internal.ui.rendering.ActionRenderer;
 import com.eclipsesource.tabris.internal.ui.rendering.PageRenderer;
 import com.eclipsesource.tabris.internal.ui.rendering.UIRenderer;
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.PageData;
 import com.eclipsesource.tabris.ui.UI;
 
 
-@RunWith( RWTRunner.class )
 public class RemoteRendererFactoryTest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   private RemoteRendererFactory rendererFactory;
   private UI ui;

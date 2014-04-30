@@ -25,22 +25,23 @@ import java.util.List;
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.client.WebClient;
-import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.remote.Connection;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 
 import com.eclipsesource.tabris.TabrisClient;
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 
 
-@RunWith( RWTRunner.class )
 public class TextReplacementDataTest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   private RemoteObject remoteObject;
 
@@ -63,7 +64,6 @@ public class TextReplacementDataTest {
   @Test
   public void testCreatesNoRemoteObjectWithWebClient() {
     Fixture.fakeClient( mock( WebClient.class ) );
-    Fixture.fakePhase( PhaseId.RENDER );
     TextReplacementData data = new TextReplacementData();
 
     data.put( "shortcut", "replacement" );

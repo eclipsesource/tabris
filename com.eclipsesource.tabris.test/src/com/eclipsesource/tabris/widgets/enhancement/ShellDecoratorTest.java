@@ -18,15 +18,17 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry;
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 
 
-@RunWith( RWTRunner.class )
 public class ShellDecoratorTest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   private Shell shell;
   private ShellDecorator decorator;

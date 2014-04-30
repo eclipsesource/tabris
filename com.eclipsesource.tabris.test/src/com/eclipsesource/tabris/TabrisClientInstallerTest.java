@@ -22,23 +22,24 @@ import javax.servlet.ServletContext;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.internal.application.ApplicationContextImpl;
 import org.eclipse.rap.rwt.internal.application.ApplicationImpl;
-import org.eclipse.rap.rwt.internal.lifecycle.PhaseListenerRegistry;
 import org.eclipse.rap.rwt.internal.resources.ResourceRegistry;
 import org.eclipse.rap.rwt.internal.theme.ThemeManager;
 import org.eclipse.rap.rwt.service.ResourceLoader;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.internal.Constants;
 import com.eclipsesource.tabris.internal.TabrisResourceLoader;
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 
 
 @SuppressWarnings("restriction")
-@RunWith( RWTRunner.class )
 public class TabrisClientInstallerTest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   @Before
   public void setUp() {
@@ -103,8 +104,6 @@ public class TabrisClientInstallerTest {
     ApplicationContextImpl context = mock( ApplicationContextImpl.class );
     ThemeManager themeManager = mock( ThemeManager.class );
     when( context.getThemeManager() ).thenReturn( themeManager );
-    PhaseListenerRegistry registry = mock( PhaseListenerRegistry.class );
-    when( context.getPhaseListenerRegistry() ).thenReturn( registry );
     when( context.getServletContext() ).thenReturn( mock( ServletContext.class ) );
     when( application.getApplicationContext() ).thenReturn( context );
     ResourceRegistry resourceRegistry = mock( ResourceRegistry.class );

@@ -26,17 +26,19 @@ import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 import com.eclipsesource.tabris.ui.Page;
 import com.eclipsesource.tabris.ui.PageData;
 import com.eclipsesource.tabris.ui.UIConfiguration;
 
 
-@RunWith( RWTRunner.class )
 public class PageOperatorImplTest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   private Display display;
   private Controller controller;

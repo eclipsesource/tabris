@@ -14,25 +14,26 @@ import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
-import org.eclipse.rap.rwt.lifecycle.PhaseId;
+import org.eclipse.rap.json.JsonValue;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 import com.eclipsesource.tabris.widgets.ClientCanvas;
 import com.eclipsesource.tabris.widgets.ClientDrawListener;
 
 
-@RunWith( RWTRunner.class )
 public class ClientCanvasOperatorTest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   private Shell shell;
 
@@ -55,9 +56,9 @@ public class ClientCanvasOperatorTest {
     ClientCanvasOperator operator = new ClientCanvasOperator( clientCanvas );
     Fixture.fakeNewRequest();
     JsonObject drawings = new JsonObject();
-    drawings.add( ClientCanvasOperator.DRAWINGS_PROPERTY, JsonArray.readFrom( ClientCanvasTestUtil.createDrawings( 1 ) ) );
+    drawings.add( ClientCanvasOperator.DRAWINGS_PROPERTY, JsonValue.valueOf( ClientCanvasTestUtil.createDrawings( 1 ) ) );
     Fixture.fakeNotifyOperation( WidgetUtil.getId( clientCanvas ), ClientCanvasOperator.DRAWING_EVENT, drawings );
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
+    environment.runProcessAction();
 
     operator.handleNotify( clientCanvas, ClientCanvasOperator.DRAWING_EVENT, drawings );
 
@@ -72,9 +73,9 @@ public class ClientCanvasOperatorTest {
     ClientCanvasOperator operator = new ClientCanvasOperator( clientCanvas );
     Fixture.fakeNewRequest();
     JsonObject drawings = new JsonObject();
-    drawings.add( ClientCanvasOperator.DRAWINGS_PROPERTY, JsonArray.readFrom( ClientCanvasTestUtil.createDrawings( 1 ) ) );
+    drawings.add( ClientCanvasOperator.DRAWINGS_PROPERTY, JsonValue.valueOf( ClientCanvasTestUtil.createDrawings( 1 ) ) );
     Fixture.fakeNotifyOperation( WidgetUtil.getId( clientCanvas ), ClientCanvasOperator.DRAWING_EVENT, drawings );
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
+    environment.runProcessAction();
 
     operator.handleNotify( clientCanvas, ClientCanvasOperator.DRAWING_EVENT, drawings );
 

@@ -26,34 +26,32 @@ import java.util.List;
 
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
-import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
-import org.eclipse.rap.rwt.remote.OperationHandler;
 import org.eclipse.rap.rwt.remote.RemoteObject;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 import com.eclipsesource.tabris.widgets.swipe.SwipeTest.TestItem;
 
 
-@RunWith( RWTRunner.class )
 public class SwipeCommunicationTest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   private RemoteObject remoteObject;
   private Shell shell;
 
   @Before
   public void setUp() {
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     shell = new Shell( new Display() );
     remoteObject = TabrisTestUtil.mockRemoteObject();
   }
@@ -422,13 +420,11 @@ public class SwipeCommunicationTest {
     mockSwipeItem( itemProvider, 0, true );
     mockSwipeItem( itemProvider, 1, true );
     Swipe swipe = new Swipe( shell, itemProvider );
-    ArgumentCaptor<OperationHandler> captor = ArgumentCaptor.forClass( OperationHandler.class );
-    verify( remoteObject ).setHandler( captor.capture() );
     swipe.show( 0 );
     JsonObject properties = new JsonObject();
     properties.add( "item", 1 );
 
-    captor.getValue().handleNotify( "Swipe", properties );
+    environment.dispatchNotify( "Swipe", properties );
 
     verify( remoteObject, times( 1 ) ).set( "active", 0 );
     verify( remoteObject, never() ).set( "active", 1 );

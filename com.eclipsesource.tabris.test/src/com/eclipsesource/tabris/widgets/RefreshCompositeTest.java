@@ -20,7 +20,7 @@ import static org.mockito.Mockito.mock;
 
 import java.util.List;
 
-import org.eclipse.rap.rwt.lifecycle.WidgetLifeCycleAdapter;
+import org.eclipse.rap.rwt.internal.lifecycle.WidgetLifeCycleAdapter;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
@@ -33,6 +33,7 @@ import com.eclipsesource.tabris.internal.RefreshCompositeLCA;
 import com.eclipsesource.tabris.internal.RefreshCompositeLCA.RefreshAdapter;
 
 
+@SuppressWarnings("restriction")
 public class RefreshCompositeTest {
 
   private Shell shell;

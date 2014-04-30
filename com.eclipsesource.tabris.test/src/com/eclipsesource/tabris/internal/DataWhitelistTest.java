@@ -16,16 +16,18 @@ import java.io.Serializable;
 import java.util.Collection;
 
 import org.eclipse.rap.rwt.internal.lifecycle.WidgetDataUtil;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry;
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 
 
 @SuppressWarnings("restriction")
-@RunWith( RWTRunner.class )
 public class DataWhitelistTest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   @Test
   public void testIsSerializable() {

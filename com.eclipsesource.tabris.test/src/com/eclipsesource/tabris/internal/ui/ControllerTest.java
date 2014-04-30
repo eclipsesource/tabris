@@ -32,16 +32,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.rap.rwt.RWT;
-import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
-import org.eclipse.rap.rwt.lifecycle.PhaseId;
+import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 import org.mockito.invocation.InvocationOnMock;
@@ -53,8 +52,7 @@ import com.eclipsesource.tabris.internal.ui.rendering.ActionRenderer;
 import com.eclipsesource.tabris.internal.ui.rendering.PageRenderer;
 import com.eclipsesource.tabris.internal.ui.rendering.RendererFactory;
 import com.eclipsesource.tabris.internal.ui.rendering.UIRenderer;
-import com.eclipsesource.tabris.test.RWTRunner;
-import com.eclipsesource.tabris.test.TabrisTestUtil;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.ActionConfiguration;
 import com.eclipsesource.tabris.ui.Page;
@@ -65,14 +63,15 @@ import com.eclipsesource.tabris.ui.UI;
 import com.eclipsesource.tabris.ui.UIConfiguration;
 
 
-@SuppressWarnings("restriction")
-@RunWith( RWTRunner.class )
 public class ControllerTest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   private Shell shell;
   private UIDescriptor uiDescriptor;
   private UIImpl ui;
-  private RemoteObjectImpl remoteObject;
+  private RemoteObject remoteObject;
   private ZIndexStackLayout layout;
   private TransitionListener listener;
 
@@ -86,8 +85,7 @@ public class ControllerTest {
     uiDescriptor = spy( new UIDescriptor() );
     ui = mock( UIImpl.class );
     mockUI();
-    remoteObject = ( RemoteObjectImpl )TabrisTestUtil.mockRemoteObject();
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
+    remoteObject = environment.getRemoteObject();
   }
 
   private void mockUI() {
@@ -727,7 +725,6 @@ public class ControllerTest {
     TestPage testPage = ( TestPage )controller.getCurrentPage();
 
     controller.closeCurrentPage( ui );
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
 
     List<String> callStack = testPage.getCallStack();
     assertEquals( "create", callStack.get( 0 ) );

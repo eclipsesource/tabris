@@ -17,7 +17,6 @@ import java.io.Serializable;
 
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectRegistry;
-import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
@@ -30,6 +29,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+
 @SuppressWarnings("restriction")
 public class TableItemHeightServiceTest {
 
@@ -41,7 +41,6 @@ public class TableItemHeightServiceTest {
   @Before
   public void setUp() {
     Fixture.setUp();
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     Display display = new Display();
     Shell shell = new Shell( display );
     table = new Table( shell, SWT.NONE );

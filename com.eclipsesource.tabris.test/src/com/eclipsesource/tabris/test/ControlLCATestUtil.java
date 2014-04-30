@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.test;
 
+import static org.eclipse.rap.rwt.internal.lifecycle.WidgetUtil.getLCA;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -17,7 +18,6 @@ import static org.mockito.Mockito.mock;
 
 import java.io.IOException;
 
-import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.rap.rwt.testfixture.Message;
 import org.eclipse.swt.SWT;
@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Listener;
 
 
+@SuppressWarnings("restriction")
 public class ControlLCATestUtil {
 
   public static void testActivateListener( Control control ) throws IOException {
@@ -106,7 +107,7 @@ public class ControlLCATestUtil {
     Fixture.preserveWidgets();
 
     control.addListener( eventType, listener );
-    WidgetUtil.getLCA( control ).renderChanges( control );
+    getLCA( control ).renderChanges( control );
 
     Message message = Fixture.getProtocolMessage();
     String listenerName = getListenerName( eventType );
@@ -124,7 +125,7 @@ public class ControlLCATestUtil {
     Fixture.preserveWidgets();
 
     control.removeListener( eventType, listener );
-    WidgetUtil.getLCA( control ).renderChanges( control );
+    getLCA( control ).renderChanges( control );
 
     Message message = Fixture.getProtocolMessage();
     String listenerName = getListenerName( eventType );
@@ -140,7 +141,7 @@ public class ControlLCATestUtil {
 
     control.addListener( eventType, listener );
     Fixture.preserveWidgets();
-    WidgetUtil.getLCA( control ).renderChanges( control );
+    getLCA( control ).renderChanges( control );
 
     Message message = Fixture.getProtocolMessage();
     String listenerName = getListenerName( eventType );

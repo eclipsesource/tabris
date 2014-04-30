@@ -6,7 +6,7 @@ Bundle-Version: 1.4.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: com.eclipsesource.tabris;bundle-version="[1.4.0,1.5.0)",
- org.eclipse.rap.rwt;bundle-version="[2.2.0,2.3.0)"
+ org.eclipse.rap.rwt;bundle-version="[2.3.0,2.4.0)"
 Export-Package: com.eclipsesource.tabris.tracking;version="1.4.0",
  com.eclipsesource.tabris.tracking.internal;version="1.4.0";x-internal:=true,
  com.eclipsesource.tabris.tracking.internal.analytics;version="1.4.0";x-internal:=true,

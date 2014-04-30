@@ -13,12 +13,13 @@ package com.eclipsesource.tabris.widgets;
 import static com.eclipsesource.tabris.internal.ClientCanvasOperator.DRAWINGS_PROPERTY;
 import static com.eclipsesource.tabris.internal.ClientCanvasOperator.DRAWING_EVENT;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.CLIENT_CANVAS;
-import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.readEventPropertyValueAsString;
+import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.readEventPropertyValue;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.rap.rwt.lifecycle.WidgetLifeCycleAdapter;
+import org.eclipse.rap.json.JsonValue;
+import org.eclipse.rap.rwt.internal.lifecycle.WidgetLifeCycleAdapter;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -163,9 +164,9 @@ public class ClientCanvas extends Canvas {
   }
 
   private void processClientDrawings( GC gc ) {
-    String drawings = readEventPropertyValueAsString( WidgetUtil.getId( this ), DRAWING_EVENT, DRAWINGS_PROPERTY );
+    JsonValue drawings = readEventPropertyValue( WidgetUtil.getId( this ), DRAWING_EVENT, DRAWINGS_PROPERTY );
     if( drawings != null ) {
-      cacheDrawings( drawings );
+      cacheDrawings( drawings.asString() );
       cache.clearRemoved();
       fireDrawEvent();
     }
@@ -194,13 +195,13 @@ public class ClientCanvas extends Canvas {
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "deprecation" })
   @Override
   public <T> T getAdapter( Class<T> adapter ) {
     T result = super.getAdapter( adapter );
     if( adapter == DrawingsCache.class ) {
       result = ( T )cache;
-    } else if( adapter == WidgetLifeCycleAdapter.class ) {
+    } else if( adapter == WidgetLifeCycleAdapter.class || adapter == org.eclipse.rap.rwt.lifecycle.WidgetLifeCycleAdapter.class ) {
       return ( T )CLIENT_CANVAS_LCA;
     } else if( adapter == List.class ) {
       return ( T )drawListeners;

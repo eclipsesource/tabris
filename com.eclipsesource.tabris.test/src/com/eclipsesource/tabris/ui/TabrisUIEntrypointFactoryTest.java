@@ -17,14 +17,16 @@ import static org.junit.Assert.assertTrue;
 import java.io.Serializable;
 
 import org.eclipse.rap.rwt.application.EntryPoint;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 
 
-@RunWith( RWTRunner.class )
 public class TabrisUIEntrypointFactoryTest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   @Test
   public void testIsSerializable() {

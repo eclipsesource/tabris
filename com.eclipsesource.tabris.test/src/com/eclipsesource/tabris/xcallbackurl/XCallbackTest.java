@@ -12,17 +12,19 @@ import java.util.Map;
 
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.remote.RemoteObject;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 import com.eclipsesource.tabris.test.TabrisTestUtil;
 
 
-@RunWith( RWTRunner.class )
 public class XCallbackTest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithNullConfiguration() {
@@ -90,7 +92,6 @@ public class XCallbackTest {
   @SuppressWarnings("unchecked")
   public void testNotifiesCallbackOnSuccess() {
     XCallback xCallback = new XCallback( mock( XCallbackConfiguration.class ) );
-    RemoteObject remoteObject = xCallback.getRemoteObject();
     XCallbackListener listener = mock( XCallbackListener.class );
     xCallback.addXCallbackListener( listener );
     JsonObject properties = new JsonObject();
@@ -98,7 +99,7 @@ public class XCallbackTest {
     parameters.add( "foo", "bar" );
     properties.add( "parameters", parameters );
 
-    TabrisTestUtil.dispatchNotify( remoteObject, "Success", properties );
+    environment.dispatchNotify( "Success", properties );
 
     ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
     verify( listener ).onSuccess( captor.capture() );
@@ -110,13 +111,12 @@ public class XCallbackTest {
   @SuppressWarnings("unchecked")
   public void testNotifiesAllCallbacksOnSuccess() {
     XCallback xCallback = new XCallback( mock( XCallbackConfiguration.class ) );
-    RemoteObject remoteObject = xCallback.getRemoteObject();
     XCallbackListener listener = mock( XCallbackListener.class );
     XCallbackListener listener2 = mock( XCallbackListener.class );
     xCallback.addXCallbackListener( listener );
     xCallback.addXCallbackListener( listener2 );
 
-    TabrisTestUtil.dispatchNotify( remoteObject, "Success", null );
+    environment.dispatchNotify( "Success", null );
 
     InOrder order = inOrder( listener, listener2 );
     order.verify( listener ).onSuccess( anyMap() );
@@ -126,14 +126,13 @@ public class XCallbackTest {
   @Test
   public void testNotifiesCallbackOnError() {
     XCallback xCallback = new XCallback( mock( XCallbackConfiguration.class ) );
-    RemoteObject remoteObject = xCallback.getRemoteObject();
     XCallbackListener listener = mock( XCallbackListener.class );
     xCallback.addXCallbackListener( listener );
     JsonObject parameters = new JsonObject();
     parameters.add( "errorCode", "42" );
     parameters.add( "errorMessage", "foo" );
 
-    TabrisTestUtil.dispatchNotify( remoteObject, "Error", parameters );
+    environment.dispatchNotify( "Error", parameters );
 
     verify( listener ).onError( "42", "foo" );
   }
@@ -141,7 +140,6 @@ public class XCallbackTest {
   @Test
   public void testNotifiesAllCallbacksOnError() {
     XCallback xCallback = new XCallback( mock( XCallbackConfiguration.class ) );
-    RemoteObject remoteObject = xCallback.getRemoteObject();
     XCallbackListener listener = mock( XCallbackListener.class );
     XCallbackListener listener2 = mock( XCallbackListener.class );
     xCallback.addXCallbackListener( listener );
@@ -150,7 +148,7 @@ public class XCallbackTest {
     parameters.add( "errorCode", "42" );
     parameters.add( "errorMessage", "foo" );
 
-    TabrisTestUtil.dispatchNotify( remoteObject, "Error", parameters );
+    environment.dispatchNotify( "Error", parameters );
 
     InOrder order = inOrder( listener, listener2 );
     order.verify( listener ).onError( "42", "foo" );
@@ -160,11 +158,10 @@ public class XCallbackTest {
   @Test
   public void testNotifiesCallbackOnCancel() {
     XCallback xCallback = new XCallback( mock( XCallbackConfiguration.class ) );
-    RemoteObject remoteObject = xCallback.getRemoteObject();
     XCallbackListener listener = mock( XCallbackListener.class );
     xCallback.addXCallbackListener( listener );
 
-    TabrisTestUtil.dispatchNotify( remoteObject, "Cancel", null );
+    environment.dispatchNotify( "Cancel", null );
 
     verify( listener ).onCancel();
   }
@@ -172,13 +169,12 @@ public class XCallbackTest {
   @Test
   public void testNotifiesAllCallbacksOnCancel() {
     XCallback xCallback = new XCallback( mock( XCallbackConfiguration.class ) );
-    RemoteObject remoteObject = xCallback.getRemoteObject();
     XCallbackListener listener = mock( XCallbackListener.class );
     XCallbackListener listener2 = mock( XCallbackListener.class );
     xCallback.addXCallbackListener( listener );
     xCallback.addXCallbackListener( listener2 );
 
-    TabrisTestUtil.dispatchNotify( remoteObject, "Cancel", null );
+    environment.dispatchNotify( "Cancel", null );
 
     InOrder order = inOrder( listener, listener2 );
     order.verify( listener ).onCancel();

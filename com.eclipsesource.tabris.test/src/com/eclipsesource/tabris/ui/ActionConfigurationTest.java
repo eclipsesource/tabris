@@ -21,24 +21,19 @@ import static org.junit.Assert.assertTrue;
 import java.io.InputStream;
 import java.io.Serializable;
 
-import org.eclipse.swt.widgets.Display;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import com.eclipsesource.tabris.internal.ui.ActionDescriptor;
 import com.eclipsesource.tabris.internal.ui.TestAction;
 import com.eclipsesource.tabris.internal.ui.UITestUtil;
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 
 
-@RunWith( RWTRunner.class )
 public class ActionConfigurationTest {
 
-  @Before
-  public void setUp() {
-    new Display();
-  }
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   @Test
   public void testIsSerializable() {

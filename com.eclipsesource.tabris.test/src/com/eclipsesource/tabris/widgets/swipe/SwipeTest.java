@@ -11,7 +11,6 @@
 package com.eclipsesource.tabris.widgets.swipe;
 
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.SWIPE;
-import static com.eclipsesource.tabris.test.TabrisTestUtil.mockRemoteObject;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
@@ -30,33 +29,30 @@ import static org.mockito.Mockito.when;
 
 import java.io.Serializable;
 
-import org.eclipse.rap.rwt.lifecycle.PhaseId;
-import org.eclipse.rap.rwt.remote.RemoteObject;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 
 import com.eclipsesource.tabris.internal.SwipeItemHolder;
 import com.eclipsesource.tabris.internal.ZIndexStackLayout;
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 
 
-@RunWith( RWTRunner.class )
 public class SwipeTest {
 
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
+
   private Shell shell;
-  private RemoteObject remoteObject;
 
   @Before
   public void setUp() {
-    remoteObject = mockRemoteObject();
     shell = new Shell( new Display() );
   }
 
@@ -634,14 +630,13 @@ public class SwipeTest {
 
   @Test
   public void testRegistersDisposeListenerOnControl() {
-    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     SwipeItemProvider itemProvider = mockProvider( 0 );
     Swipe swipe = new Swipe( shell, itemProvider );
     Control control = swipe.getControl();
 
     control.dispose();
 
-    verify( remoteObject ).destroy();
+    verify( environment.getRemoteObject() ).destroy();
   }
 
   @Test
@@ -658,11 +653,11 @@ public class SwipeTest {
   @Test
   public void testDisposeDestroysRemoteObject() {
     SwipeItemProvider itemProvider = mockProvider( 0 );
-    Swipe swipe = new Swipe( shell, itemProvider );
+    new Swipe( shell, itemProvider );
 
-    swipe.dispose();
+    shell.dispose();
 
-    verify( remoteObject ).destroy();
+    verify( environment.getRemoteObject() ).destroy();
   }
 
   @Test
@@ -687,7 +682,7 @@ public class SwipeTest {
     swipe.addSwipeListener( listener );
     swipe.show( 0 );
 
-    swipe.dispose();
+    shell.dispose();
 
     verify( listener ).disposed( swipe.getContext() );
   }

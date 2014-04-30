@@ -24,24 +24,27 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
-import org.eclipse.rap.rwt.lifecycle.WidgetLifeCycleAdapter;
+import org.eclipse.rap.rwt.internal.lifecycle.WidgetLifeCycleAdapter;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 
 import com.eclipsesource.tabris.internal.VideoLifeCycleAdapter;
 import com.eclipsesource.tabris.internal.VideoLifeCycleAdapter.PlaybackOptions;
-import com.eclipsesource.tabris.test.RWTRunner;
+import com.eclipsesource.tabris.test.RWTEnvironment;
 import com.eclipsesource.tabris.widgets.Video.Playback;
 import com.eclipsesource.tabris.widgets.Video.PlaybackAdapter;
 import com.eclipsesource.tabris.widgets.Video.Presentation;
 
 
-@RunWith( RWTRunner.class )
+@SuppressWarnings("restriction")
 public class VideoTest {
+
+  @Rule
+  public RWTEnvironment environment = new RWTEnvironment();
 
   private Video video;
   private Shell parent;
