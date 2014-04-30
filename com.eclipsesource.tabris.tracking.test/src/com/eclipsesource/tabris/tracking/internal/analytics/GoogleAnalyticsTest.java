@@ -13,6 +13,7 @@ package com.eclipsesource.tabris.tracking.internal.analytics;
 import static com.github.restdriver.clientdriver.RestClientDriver.giveEmptyResponse;
 import static com.github.restdriver.clientdriver.RestClientDriver.onRequestTo;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -53,7 +54,7 @@ public class GoogleAnalyticsTest {
   public void testSendFailsWithNullHit() {
     GoogleAnalytics analytics = new GoogleAnalytics( "foo", new AnalyticsConfiguration( "foo", "bar" ) );
 
-    analytics.track( null, "id" );
+    analytics.track( null, "id", mock( AdvancedConfiguration.class ) );
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -61,13 +62,6 @@ public class GoogleAnalyticsTest {
     GoogleAnalytics analytics = new GoogleAnalytics( "foo", new AnalyticsConfiguration( "foo", "bar" ) );
 
     analytics.track( new AppViewHit( "foo" ), "id", null );
-  }
-
-  @Test( expected = IllegalArgumentException.class )
-  public void testSendFailsWithNullClientIdWithoutConfig() {
-    GoogleAnalytics analytics = new GoogleAnalytics( "foo", new AnalyticsConfiguration( "foo", "bar" ) );
-
-    analytics.track( new AppViewHit( "foo" ), null );
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -84,7 +78,7 @@ public class GoogleAnalyticsTest {
     AnalyticsConfiguration configuration = new AnalyticsConfiguration( "1", "baz" );
     GoogleAnalytics analytics = new GoogleAnalytics( driver.getBaseUrl(), "foo", configuration );
 
-    analytics.track( new AppViewHit( "screenName" ), "baz" );
+    analytics.track( new AppViewHit( "screenName" ), "baz", mock( AdvancedConfiguration.class ) );
   }
 
   @Test
@@ -100,7 +94,7 @@ public class GoogleAnalyticsTest {
     AnalyticsConfiguration configuration = new AnalyticsConfiguration( "1", "bar" );
     GoogleAnalytics analytics = new GoogleAnalytics( driver.getBaseUrl(), "foo", configuration );
 
-    analytics.track( new AppViewHit( "screenName" ), "baz" );
+    analytics.track( new AppViewHit( "screenName" ), "baz", mock( AdvancedConfiguration.class ) );
   }
 
 
