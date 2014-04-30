@@ -10,7 +10,6 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.tracking.tracker;
 
-import com.eclipsesource.tabris.device.ClientDevice.Platform;
 import com.eclipsesource.tabris.tracking.Tracker;
 import com.eclipsesource.tabris.tracking.TrackingEvent;
 import com.eclipsesource.tabris.tracking.TrackingEvent.EventType;
@@ -21,6 +20,7 @@ import com.eclipsesource.tabris.tracking.internal.analytics.model.AnalyticsConfi
 import com.eclipsesource.tabris.tracking.internal.analytics.model.hit.AppViewHit;
 import com.eclipsesource.tabris.tracking.internal.analytics.model.hit.EventHit;
 import com.eclipsesource.tabris.tracking.internal.analytics.model.hit.Hit;
+import com.eclipsesource.tabris.tracking.internal.util.UserAgentUtil;
 import com.eclipsesource.tabris.ui.ActionConfiguration;
 import com.eclipsesource.tabris.ui.PageConfiguration;
 
@@ -95,39 +95,10 @@ public class GoogleAnalyticsTracker implements Tracker {
     configuration.setScreenResolution( screenResolution );
     configuration.setAppVersion( info.getAppVersion() );
     configuration.setIpOverride( info.getClientIp() );
-    configuration.setUserAgentOverride( computeUserAgent( info ) );
+    configuration.setUserAgentOverride( UserAgentUtil.getProvider( info.getPlatform() ).getUserAgent( info ) );
     configuration.setUserLanguage( info.getClientLocale().getLanguage() + "-" + info.getClientLocale().getCountry() );
     configuration.setViewportSize( screenResolution );
     return configuration;
-  }
-
-  private String computeUserAgent( TrackingInfo info ) {
-    if( info.getPlatform() == Platform.ANDROID ) {
-      return computeAndroidUserAgent( info );
-    } else if( info.getPlatform() == Platform.IOS ) {
-      return computeIOSUserAgent( info );
-    }
-    return info.getUserAgent();
-  }
-
-  private String computeAndroidUserAgent( TrackingInfo info ) {
-    return "Mozilla/5.0 (Linux; U; Android "
-           + info.getDeviceOsVersion()
-           + "; "
-           + info.getClientLocale()
-           + "; "
-           + info.getDeviceModel()
-           + ") AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1";
-  }
-
-  private String computeIOSUserAgent( TrackingInfo info ) {
-    return "Mozilla/5.0 ("
-           + info.getDeviceModel()
-           + "; U; CPU iPhone OS "
-           + info.getDeviceOsVersion().replace( ".", "_" )
-           + " like Mac OS X; "
-           + info.getClientLocale()
-           + " ) AppleWebKit/532.9 (KHTML, like Gecko) Version/4.0.5 Mobile/8A293 Safari/6531.22.7";
   }
 
 }
