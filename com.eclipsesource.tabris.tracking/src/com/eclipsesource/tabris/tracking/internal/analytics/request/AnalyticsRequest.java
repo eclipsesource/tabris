@@ -24,17 +24,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.eclipsesource.tabris.tracking.internal.analytics.model.Requestable;
+import com.eclipsesource.tabris.tracking.internal.Requestable;
 
 
 @SuppressWarnings("restriction")
-public class RequestAssembler implements Serializable {
+public class AnalyticsRequest implements Serializable {
 
   private final String appName;
   private final List<Requestable> requestables;
   private final String clientId;
 
-  public RequestAssembler( String appName, String clientId, Requestable... requestables ) {
+  public AnalyticsRequest( String appName, String clientId, Requestable... requestables ) {
     validateArguments( appName, clientId );
     this.appName = appName;
     this.clientId = clientId;

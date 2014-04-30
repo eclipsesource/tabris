@@ -8,7 +8,7 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.tracking.internal.analytics.model;
+package com.eclipsesource.tabris.tracking.internal;
 
 import java.io.Serializable;
 import java.util.Map;

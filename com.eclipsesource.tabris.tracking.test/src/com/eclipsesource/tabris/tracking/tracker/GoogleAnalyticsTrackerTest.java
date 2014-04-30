@@ -209,6 +209,7 @@ public class GoogleAnalyticsTrackerTest {
     info.setSearchQuery( "query" );
     info.setUserAgent( "userAgent" );
     info.setClientIp( "ip" );
+    info.setPlatform( Platform.WEB );
     return info;
   }
 

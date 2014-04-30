@@ -20,7 +20,7 @@ import com.eclipsesource.tabris.tracking.internal.analytics.model.AdvancedConfig
 import com.eclipsesource.tabris.tracking.internal.analytics.model.AnalyticsConfiguration;
 import com.eclipsesource.tabris.tracking.internal.analytics.model.hit.Hit;
 import com.eclipsesource.tabris.tracking.internal.analytics.request.HttpRequest;
-import com.eclipsesource.tabris.tracking.internal.analytics.request.RequestAssembler;
+import com.eclipsesource.tabris.tracking.internal.analytics.request.AnalyticsRequest;
 
 
 @SuppressWarnings("restriction")
@@ -55,7 +55,7 @@ public class GoogleAnalytics implements Serializable {
 
   public void track( Hit hit, String clientId, AdvancedConfiguration advancedConfiguration ) {
     validateArguments( hit, clientId, advancedConfiguration );
-    RequestAssembler requestAssembler = new RequestAssembler( appName, clientId, configuration, hit, advancedConfiguration );
+    AnalyticsRequest requestAssembler = new AnalyticsRequest( appName, clientId, configuration, hit, advancedConfiguration );
     Map<String, Object> request = requestAssembler.assemble();
     HttpRequest httpRequest = HttpRequest.get( baseUrl, request, true );
     verifyResponse( httpRequest );
