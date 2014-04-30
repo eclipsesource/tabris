@@ -20,45 +20,45 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.eclipsesource.tabris.tracking.internal.analytics.model.Requestable;
+import com.eclipsesource.tabris.tracking.internal.Requestable;
 import com.eclipsesource.tabris.tracking.internal.analytics.model.hit.AppViewHit;
 
-public class RequestAssemblerTest {
+public class AnalyticsRequestTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithNullAppName() {
-    new RequestAssembler( null, "foo", new AppViewHit( "qaz" ) );
+    new AnalyticsRequest( null, "foo", new AppViewHit( "qaz" ) );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithEmptyAppName() {
-    new RequestAssembler( "", "foo", new AppViewHit( "qaz" ) );
+    new AnalyticsRequest( "", "foo", new AppViewHit( "qaz" ) );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithNullClientId() {
-    new RequestAssembler( "foo", null, new AppViewHit( "qaz" ) );
+    new AnalyticsRequest( "foo", null, new AppViewHit( "qaz" ) );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithEmptyClientId() {
-    new RequestAssembler( "foo", "", new AppViewHit( "qaz" ) );
+    new AnalyticsRequest( "foo", "", new AppViewHit( "qaz" ) );
   }
 
   @Test
   public void testSetsAppName() {
-    RequestAssembler assembler = new RequestAssembler( "appName", "foo", new TestRequestable( "foo", "bar" ) );
+    AnalyticsRequest request = new AnalyticsRequest( "appName", "foo", new TestRequestable( "foo", "bar" ) );
 
-    String appName = ( String )assembler.assemble().get( getRequestKey( APP_NAME ) );
+    String appName = ( String )request.assemble().get( getRequestKey( APP_NAME ) );
 
     assertEquals( "appName", appName );
   }
 
   @Test
   public void testSetsClientIdAsParameter() {
-    RequestAssembler assembler = new RequestAssembler( "appName", "foo", new TestRequestable( "foo", "bar" ) );
+    AnalyticsRequest request = new AnalyticsRequest( "appName", "foo", new TestRequestable( "foo", "bar" ) );
 
-    String clientId = ( String )assembler.assemble().get( getRequestKey( CLIENT_ID ) );
+    String clientId = ( String )request.assemble().get( getRequestKey( CLIENT_ID ) );
 
     assertEquals( "foo", clientId );
   }
@@ -67,9 +67,9 @@ public class RequestAssemblerTest {
   public void testAddsParameterFromRequestables() {
     TestRequestable requestable1 = new TestRequestable( "foo", "bar" );
     TestRequestable requestable2 = new TestRequestable( "foo2", "bar2" );
-    RequestAssembler assembler = new RequestAssembler( "foo", "foo", requestable1, requestable2 );
+    AnalyticsRequest request = new AnalyticsRequest( "foo", "foo", requestable1, requestable2 );
 
-    Map<String, Object> parameter = assembler.assemble();
+    Map<String, Object> parameter = request.assemble();
 
     assertEquals( "bar", parameter.get( "foo" ) );
     assertEquals( "bar2", parameter.get( "foo2" ) );

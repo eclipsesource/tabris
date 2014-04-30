@@ -32,6 +32,8 @@ import static com.eclipsesource.tabris.tracking.internal.analytics.request.Reque
 import java.util.HashMap;
 import java.util.Map;
 
+import com.eclipsesource.tabris.tracking.internal.Requestable;
+
 
 @SuppressWarnings("restriction")
 public class AdvancedConfiguration implements Requestable {
