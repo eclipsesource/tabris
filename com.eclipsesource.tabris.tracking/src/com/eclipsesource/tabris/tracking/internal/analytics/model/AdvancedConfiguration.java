@@ -13,6 +13,7 @@ package com.eclipsesource.tabris.tracking.internal.analytics.model;
 import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeyProvider.getRequestKey;
+import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.APP_ID;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.APP_VERSION;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.CONTENT_DESCRIPTION;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.CURRENCY_CODE;
@@ -97,6 +98,13 @@ public class AdvancedConfiguration implements Requestable {
     whenNull( appVersion ).throwIllegalArgument( "AppVersion must not be null." );
     when( appVersion.isEmpty() ).throwIllegalArgument( "AppVersion must not be empty." );
     parameter.put( getRequestKey( APP_VERSION ), appVersion );
+    return this;
+  }
+
+  public AdvancedConfiguration setAppId( String appId ) {
+    whenNull( appId ).throwIllegalArgument( "AppId must not be null." );
+    when( appId.isEmpty() ).throwIllegalArgument( "AppId must not be empty." );
+    parameter.put( getRequestKey( APP_ID ), appId );
     return this;
   }
 

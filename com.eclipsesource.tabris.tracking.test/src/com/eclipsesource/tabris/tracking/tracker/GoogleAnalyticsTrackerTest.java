@@ -152,6 +152,7 @@ public class GoogleAnalyticsTrackerTest {
   }
 
   private void assertAdvancedConfiguration( AdvancedConfiguration configuration ) {
+    assertEquals( "appId", configuration.getParameter().get( getRequestKey( RequestKeys.APP_ID ) ) );
     assertEquals( "appVersion", configuration.getParameter().get( getRequestKey( RequestKeys.APP_VERSION ) ) );
     assertEquals( "100x200", configuration.getParameter().get( getRequestKey( RequestKeys.SCREEN_RESOLUTION ) ) );
     assertEquals( "100x200", configuration.getParameter().get( getRequestKey( RequestKeys.VIEWPORT_SIZE ) ) );

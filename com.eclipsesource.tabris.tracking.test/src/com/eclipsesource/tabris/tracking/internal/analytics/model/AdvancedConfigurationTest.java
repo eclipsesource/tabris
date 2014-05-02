@@ -11,6 +11,7 @@
 package com.eclipsesource.tabris.tracking.internal.analytics.model;
 
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeyProvider.getRequestKey;
+import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.APP_ID;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.APP_VERSION;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.CONTENT_DESCRIPTION;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.CURRENCY_CODE;
@@ -46,9 +47,9 @@ public class AdvancedConfigurationTest {
 
   @Test
   public void testSetsUserId() {
-    AdvancedConfiguration optional = new AdvancedConfiguration().setUserId( "foo" );
+    AdvancedConfiguration configuration = new AdvancedConfiguration().setUserId( "foo" );
 
-    Map<String, Object> parameter = optional.getParameter();
+    Map<String, Object> parameter = configuration.getParameter();
 
     assertEquals( "foo", parameter.get( getRequestKey( USER_ID ) ) );
   }
@@ -65,9 +66,9 @@ public class AdvancedConfigurationTest {
 
   @Test
   public void testSetsSessionControl() {
-    AdvancedConfiguration optional = new AdvancedConfiguration().setSessionControl( "foo" );
+    AdvancedConfiguration configuration = new AdvancedConfiguration().setSessionControl( "foo" );
 
-    Map<String, Object> parameter = optional.getParameter();
+    Map<String, Object> parameter = configuration.getParameter();
 
     assertEquals( "foo", parameter.get( getRequestKey( SESSION_CONTROL ) ) );
   }
@@ -84,9 +85,9 @@ public class AdvancedConfigurationTest {
 
   @Test
   public void testSetsIpOverride() {
-    AdvancedConfiguration optional = new AdvancedConfiguration().setIpOverride( "foo" );
+    AdvancedConfiguration configuration = new AdvancedConfiguration().setIpOverride( "foo" );
 
-    Map<String, Object> parameter = optional.getParameter();
+    Map<String, Object> parameter = configuration.getParameter();
 
     assertEquals( "foo", parameter.get( getRequestKey( IP_OVERRIDE ) ) );
   }
@@ -103,9 +104,9 @@ public class AdvancedConfigurationTest {
 
   @Test
   public void testSetsUserAgentOverride() {
-    AdvancedConfiguration optional = new AdvancedConfiguration().setUserAgentOverride( "foo" );
+    AdvancedConfiguration configuration = new AdvancedConfiguration().setUserAgentOverride( "foo" );
 
-    Map<String, Object> parameter = optional.getParameter();
+    Map<String, Object> parameter = configuration.getParameter();
 
     assertEquals( "foo", parameter.get( getRequestKey( USER_AGENT_OVERRIDE ) ) );
   }
@@ -122,9 +123,9 @@ public class AdvancedConfigurationTest {
 
   @Test
   public void testSetsScreenResolution() {
-    AdvancedConfiguration optional = new AdvancedConfiguration().setScreenResolution( "foo" );
+    AdvancedConfiguration configuration = new AdvancedConfiguration().setScreenResolution( "foo" );
 
-    Map<String, Object> parameter = optional.getParameter();
+    Map<String, Object> parameter = configuration.getParameter();
 
     assertEquals( "foo", parameter.get( getRequestKey( SCREEN_RESOLUTION ) ) );
   }
@@ -141,9 +142,9 @@ public class AdvancedConfigurationTest {
 
   @Test
   public void testSetsViewportSize() {
-    AdvancedConfiguration optional = new AdvancedConfiguration().setViewportSize( "foo" );
+    AdvancedConfiguration configuration = new AdvancedConfiguration().setViewportSize( "foo" );
 
-    Map<String, Object> parameter = optional.getParameter();
+    Map<String, Object> parameter = configuration.getParameter();
 
     assertEquals( "foo", parameter.get( getRequestKey( VIEWPORT_SIZE ) ) );
   }
@@ -160,11 +161,30 @@ public class AdvancedConfigurationTest {
 
   @Test
   public void testSetsUserLanguage() {
-    AdvancedConfiguration optional = new AdvancedConfiguration().setUserLanguage( "foo" );
+    AdvancedConfiguration configuration = new AdvancedConfiguration().setUserLanguage( "foo" );
 
-    Map<String, Object> parameter = optional.getParameter();
+    Map<String, Object> parameter = configuration.getParameter();
 
     assertEquals( "foo", parameter.get( getRequestKey( USER_LANGUAGE ) ) );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testFailsWithNullAppId() {
+    new AdvancedConfiguration().setAppId( null );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testFailsWithEmptyAppId() {
+    new AdvancedConfiguration().setAppId( "" );
+  }
+
+  @Test
+  public void testSetsAppId() {
+    AdvancedConfiguration configuration = new AdvancedConfiguration().setAppId( "foo" );
+
+    Map<String, Object> parameter = configuration.getParameter();
+
+    assertEquals( "foo", parameter.get( getRequestKey( APP_ID ) ) );
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -179,9 +199,9 @@ public class AdvancedConfigurationTest {
 
   @Test
   public void testSetsAppVersion() {
-    AdvancedConfiguration optional = new AdvancedConfiguration().setAppVersion( "foo" );
+    AdvancedConfiguration configuration = new AdvancedConfiguration().setAppVersion( "foo" );
 
-    Map<String, Object> parameter = optional.getParameter();
+    Map<String, Object> parameter = configuration.getParameter();
 
     assertEquals( "foo", parameter.get( getRequestKey( APP_VERSION ) ) );
   }
@@ -198,9 +218,9 @@ public class AdvancedConfigurationTest {
 
   @Test
   public void testSetsDocumentHostName() {
-    AdvancedConfiguration optional = new AdvancedConfiguration().setDocumentHostName( "foo" );
+    AdvancedConfiguration configuration = new AdvancedConfiguration().setDocumentHostName( "foo" );
 
-    Map<String, Object> parameter = optional.getParameter();
+    Map<String, Object> parameter = configuration.getParameter();
 
     assertEquals( "foo", parameter.get( getRequestKey( DOCUMENT_HOST_NAME ) ) );
   }
@@ -217,9 +237,9 @@ public class AdvancedConfigurationTest {
 
   @Test
   public void testSetsDocumentPath() {
-    AdvancedConfiguration optional = new AdvancedConfiguration().setDocumentPath( "foo" );
+    AdvancedConfiguration configuration = new AdvancedConfiguration().setDocumentPath( "foo" );
 
-    Map<String, Object> parameter = optional.getParameter();
+    Map<String, Object> parameter = configuration.getParameter();
 
     assertEquals( "foo", parameter.get( getRequestKey( DOCUMENT_PATH ) ) );
   }
@@ -236,9 +256,9 @@ public class AdvancedConfigurationTest {
 
   @Test
   public void testSetsDocumentSettings() {
-    AdvancedConfiguration optional = new AdvancedConfiguration().setDocumentTitle( "foo" );
+    AdvancedConfiguration configuration = new AdvancedConfiguration().setDocumentTitle( "foo" );
 
-    Map<String, Object> parameter = optional.getParameter();
+    Map<String, Object> parameter = configuration.getParameter();
 
     assertEquals( "foo", parameter.get( getRequestKey( DOCUMENT_TITLE ) ) );
   }
@@ -255,9 +275,9 @@ public class AdvancedConfigurationTest {
 
   @Test
   public void testSetsContentDescription() {
-    AdvancedConfiguration optional = new AdvancedConfiguration().setContentDescription( "foo" );
+    AdvancedConfiguration configuration = new AdvancedConfiguration().setContentDescription( "foo" );
 
-    Map<String, Object> parameter = optional.getParameter();
+    Map<String, Object> parameter = configuration.getParameter();
 
     assertEquals( "foo", parameter.get( getRequestKey( CONTENT_DESCRIPTION ) ) );
   }
@@ -274,9 +294,9 @@ public class AdvancedConfigurationTest {
 
   @Test
   public void testSetsCurrencyCode() {
-    AdvancedConfiguration optional = new AdvancedConfiguration().setCurrencyCode( "foo" );
+    AdvancedConfiguration configuration = new AdvancedConfiguration().setCurrencyCode( "foo" );
 
-    Map<String, Object> parameter = optional.getParameter();
+    Map<String, Object> parameter = configuration.getParameter();
 
     assertEquals( "foo", parameter.get( getRequestKey( CURRENCY_CODE ) ) );
   }
@@ -303,9 +323,9 @@ public class AdvancedConfigurationTest {
 
   @Test
   public void testSetsCustomDimension() {
-    AdvancedConfiguration optional = new AdvancedConfiguration().setCustomDimension( 2, "foo" );
+    AdvancedConfiguration configuration = new AdvancedConfiguration().setCustomDimension( 2, "foo" );
 
-    Map<String, Object> parameter = optional.getParameter();
+    Map<String, Object> parameter = configuration.getParameter();
 
     assertEquals( "foo", parameter.get( getRequestKey( CUSTOM_DIMENSION, 2 ) ) );
   }
@@ -332,9 +352,9 @@ public class AdvancedConfigurationTest {
 
   @Test
   public void testSetsCustomMetric() {
-    AdvancedConfiguration optional = new AdvancedConfiguration().setCustomMetric( 2, "foo" );
+    AdvancedConfiguration configuration = new AdvancedConfiguration().setCustomMetric( 2, "foo" );
 
-    Map<String, Object> parameter = optional.getParameter();
+    Map<String, Object> parameter = configuration.getParameter();
 
     assertEquals( "foo", parameter.get( getRequestKey( CUSTOM_METRIC, 2 ) ) );
   }

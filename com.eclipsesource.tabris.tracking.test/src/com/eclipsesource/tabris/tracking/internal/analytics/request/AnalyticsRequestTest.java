@@ -21,28 +21,28 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.tracking.internal.Requestable;
-import com.eclipsesource.tabris.tracking.internal.analytics.model.hit.AppViewHit;
+import com.eclipsesource.tabris.tracking.internal.analytics.model.hit.ScreenViewHit;
 
 public class AnalyticsRequestTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithNullAppName() {
-    new AnalyticsRequest( null, "foo", new AppViewHit( "qaz" ) );
+    new AnalyticsRequest( null, "foo", new ScreenViewHit( "qaz" ) );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithEmptyAppName() {
-    new AnalyticsRequest( "", "foo", new AppViewHit( "qaz" ) );
+    new AnalyticsRequest( "", "foo", new ScreenViewHit( "qaz" ) );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithNullClientId() {
-    new AnalyticsRequest( "foo", null, new AppViewHit( "qaz" ) );
+    new AnalyticsRequest( "foo", null, new ScreenViewHit( "qaz" ) );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithEmptyClientId() {
-    new AnalyticsRequest( "foo", "", new AppViewHit( "qaz" ) );
+    new AnalyticsRequest( "foo", "", new ScreenViewHit( "qaz" ) );
   }
 
   @Test

@@ -14,37 +14,37 @@ import static com.eclipsesource.tabris.tracking.internal.analytics.request.Reque
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.CONTENT_DESCRIPTION;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.HIT_TYPE;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestValueProvider.getRequestValue;
-import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestValues.HIT_APPVIEW;
+import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestValues.HIT_SCREENVIEW;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Map;
 
 import org.junit.Test;
 
-public class AppViewHitTest {
+public class ScreenViewHitTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithNullScreenName() {
-    new AppViewHit( null );
+    new ScreenViewHit( null );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithEmptyScreenName() {
-    new AppViewHit( "" );
+    new ScreenViewHit( "" );
   }
 
   @Test
-  public void testSetsAppViewHit() {
-    AppViewHit appViewHit = new AppViewHit( "foo" );
+  public void testSetsScreenViewHit() {
+    ScreenViewHit screenViewHit = new ScreenViewHit( "foo" );
 
-    Object hitType = appViewHit.getParameter().get( getRequestKey( HIT_TYPE ) );
+    Object hitType = screenViewHit.getParameter().get( getRequestKey( HIT_TYPE ) );
 
-    assertEquals( getRequestValue( HIT_APPVIEW ), hitType );
+    assertEquals( getRequestValue( HIT_SCREENVIEW ), hitType );
   }
 
   @Test
   public void testSetsScreenName() {
-    AppViewHit hit = new AppViewHit( "foo" );
+    ScreenViewHit hit = new ScreenViewHit( "foo" );
 
     Map<String, Object> parameter = hit.getParameter();
 

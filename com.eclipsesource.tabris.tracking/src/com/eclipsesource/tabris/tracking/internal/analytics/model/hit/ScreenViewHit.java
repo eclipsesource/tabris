@@ -15,14 +15,14 @@ import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeyProvider.getRequestKey;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.CONTENT_DESCRIPTION;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestValueProvider.getRequestValue;
-import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestValues.HIT_APPVIEW;
+import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestValues.HIT_SCREENVIEW;
 
 
 @SuppressWarnings("restriction")
-public class AppViewHit extends Hit {
+public class ScreenViewHit extends Hit {
 
-  public AppViewHit( String screenName ) {
-    super( getRequestValue( HIT_APPVIEW ) );
+  public ScreenViewHit( String screenName ) {
+    super( getRequestValue( HIT_SCREENVIEW ) );
     whenNull( screenName ).throwIllegalArgument( "ScreenName must not be null." );
     when( screenName.isEmpty() ).throwIllegalArgument( "ScreenName must not be empty." );
     addParameter( getRequestKey( CONTENT_DESCRIPTION ), screenName );

@@ -16,6 +16,7 @@ import java.io.Serializable;
 public class RequestKeys implements Serializable {
 
   public static final String APP_NAME = "APP_NAME";
+  public static final String APP_ID = "APP_ID";
   public static final String APP_VERSION = "APP_VERSION";
   public static final String CLIENT_ID = "CLIENT_ID";
   public static final String CONTENT_DESCRIPTION = "CONTENT_DESCRIPTION";

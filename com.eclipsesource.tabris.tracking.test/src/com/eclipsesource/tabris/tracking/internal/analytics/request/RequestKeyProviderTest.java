@@ -57,6 +57,11 @@ public class RequestKeyProviderTest {
   }
 
   @Test
+  public void testStoresAppId() {
+    assertEquals( "aid", requestNames.get( "APP_ID" ) );
+  }
+
+  @Test
   public void testStoresAppVersion() {
     assertEquals( "av", requestNames.get( "APP_VERSION" ) );
   }

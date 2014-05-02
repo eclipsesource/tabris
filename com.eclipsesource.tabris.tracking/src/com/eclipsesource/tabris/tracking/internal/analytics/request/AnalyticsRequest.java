@@ -16,7 +16,7 @@ import static com.eclipsesource.tabris.tracking.internal.analytics.request.Reque
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.APP_NAME;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.CLIENT_ID;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestValueProvider.getRequestValue;
-import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestValues.HIT_APPVIEW;
+import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestValues.HIT_SCREENVIEW;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -71,7 +71,8 @@ public class AnalyticsRequest implements Serializable {
   }
 
   private void checkAppNameSet( Map<String, Object> hitRequestChunk ) {
-    when( hitRequestChunk.containsValue( getRequestValue( HIT_APPVIEW ) ) && appName == null )
-      .throwIllegalState( "AppName must be set when assembling an AppViewHit request." );
+    when( hitRequestChunk.containsValue( getRequestValue( HIT_SCREENVIEW ) ) && appName == null )
+      .throwIllegalState( "AppName must be set when assembling an ScreenViewHit request." );
   }
+
 }

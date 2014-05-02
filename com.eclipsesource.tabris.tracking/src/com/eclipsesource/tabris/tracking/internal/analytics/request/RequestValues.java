@@ -15,7 +15,7 @@ import java.io.Serializable;
 
 public class RequestValues implements Serializable {
 
-  public static final String HIT_APPVIEW = "HIT_APPVIEW";
+  public static final String HIT_SCREENVIEW = "HIT_SCREENVIEW";
   public static final String HIT_PAGEVIEW = "HIT_PAGEVIEW";
   public static final String HIT_TRANSACTION = "HIT_TRANSACTION";
   public static final String HIT_EVENT = "HIT_EVENT";

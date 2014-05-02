@@ -19,9 +19,9 @@ import com.eclipsesource.tabris.tracking.TrackingInfo;
 import com.eclipsesource.tabris.tracking.internal.analytics.GoogleAnalytics;
 import com.eclipsesource.tabris.tracking.internal.analytics.model.AdvancedConfiguration;
 import com.eclipsesource.tabris.tracking.internal.analytics.model.AnalyticsConfiguration;
-import com.eclipsesource.tabris.tracking.internal.analytics.model.hit.AppViewHit;
 import com.eclipsesource.tabris.tracking.internal.analytics.model.hit.EventHit;
 import com.eclipsesource.tabris.tracking.internal.analytics.model.hit.Hit;
+import com.eclipsesource.tabris.tracking.internal.analytics.model.hit.ScreenViewHit;
 import com.eclipsesource.tabris.tracking.internal.util.UserAgentUtil;
 import com.eclipsesource.tabris.ui.ActionConfiguration;
 import com.eclipsesource.tabris.ui.PageConfiguration;
@@ -65,7 +65,7 @@ public class GoogleAnalyticsTracker implements Tracker {
   private Hit createHit( TrackingEvent event, AdvancedConfiguration advancedConfiguration ) {
     Hit result = null;
     if( event.getType() == EventType.PAGE_VIEW ) {
-      result = createAppViewHit( event );
+      result = createScreenViewHit( event );
     } else if( event.getType() == EventType.ACTION ) {
       result = createActionHit( event );
     } else if( event.getType() == EventType.SEARCH ) {
@@ -74,9 +74,9 @@ public class GoogleAnalyticsTracker implements Tracker {
     return result;
   }
 
-  private Hit createAppViewHit( TrackingEvent event ) {
+  private Hit createScreenViewHit( TrackingEvent event ) {
     PageConfiguration pageConfiguration = ( PageConfiguration )event.getDetail();
-    return new AppViewHit( pageConfiguration.getId() );
+    return new ScreenViewHit( pageConfiguration.getId() );
   }
 
   private Hit createActionHit( TrackingEvent event ) {
@@ -103,6 +103,7 @@ public class GoogleAnalyticsTracker implements Tracker {
     TrackingInfo info = event.getInfo();
     String screenResolution = info.getScreenResolution().x + "x" + info.getScreenResolution().y;
     configuration.setScreenResolution( screenResolution );
+    configuration.setAppId( info.getAppId() );
     configuration.setAppVersion( info.getAppVersion() );
     configuration.setIpOverride( info.getClientIp() );
     configuration.setUserAgentOverride( UserAgentUtil.getProvider( info.getPlatform() ).getUserAgent( info ) );

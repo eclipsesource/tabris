@@ -18,8 +18,8 @@ import org.junit.Test;
 public class RequestValueProviderTest {
 
   @Test
-  public void testStoresAppViewHit() {
-    assertEquals( "appview", values.get( "HIT_APPVIEW" ) );
+  public void testStoresScreenViewHit() {
+    assertEquals( "screenview", values.get( "HIT_SCREENVIEW" ) );
   }
 
   @Test

@@ -20,7 +20,7 @@ import org.junit.Test;
 
 import com.eclipsesource.tabris.tracking.internal.analytics.model.AdvancedConfiguration;
 import com.eclipsesource.tabris.tracking.internal.analytics.model.AnalyticsConfiguration;
-import com.eclipsesource.tabris.tracking.internal.analytics.model.hit.AppViewHit;
+import com.eclipsesource.tabris.tracking.internal.analytics.model.hit.ScreenViewHit;
 import com.github.restdriver.clientdriver.ClientDriverRule;
 
 public class GoogleAnalyticsTest {
@@ -61,14 +61,14 @@ public class GoogleAnalyticsTest {
   public void testSendFailsWithNullAdvancedConfiguration() {
     GoogleAnalytics analytics = new GoogleAnalytics( "foo", new AnalyticsConfiguration( "foo", "bar" ) );
 
-    analytics.track( new AppViewHit( "foo" ), "id", null );
+    analytics.track( new ScreenViewHit( "foo" ), "id", null );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testSendFailsWithNullClientIdAndConfig() {
     GoogleAnalytics analytics = new GoogleAnalytics( "foo", new AnalyticsConfiguration( "foo", "bar" ) );
 
-    analytics.track( new AppViewHit( "foo" ), null, new AdvancedConfiguration() );
+    analytics.track( new ScreenViewHit( "foo" ), null, new AdvancedConfiguration() );
   }
 
   @Test( expected = IllegalStateException.class )
@@ -78,7 +78,7 @@ public class GoogleAnalyticsTest {
     AnalyticsConfiguration configuration = new AnalyticsConfiguration( "1", "baz" );
     GoogleAnalytics analytics = new GoogleAnalytics( driver.getBaseUrl(), "foo", configuration );
 
-    analytics.track( new AppViewHit( "screenName" ), "baz", mock( AdvancedConfiguration.class ) );
+    analytics.track( new ScreenViewHit( "screenName" ), "baz", mock( AdvancedConfiguration.class ) );
   }
 
   @Test
@@ -86,7 +86,7 @@ public class GoogleAnalyticsTest {
     driver.addExpectation( onRequestTo( "/" ).withParam( "v", "1" )
                                                 .withParam( "tid", "bar" )
                                                 .withParam( "cid", "baz" )
-                                                .withParam( "t", "appview" )
+                                                .withParam( "t", "screenview" )
                                                 .withParam( "cd", "screenName" )
                                                 .withParam( "an", "foo" ),
                            giveEmptyResponse().withStatus( 200 ) );
@@ -94,7 +94,7 @@ public class GoogleAnalyticsTest {
     AnalyticsConfiguration configuration = new AnalyticsConfiguration( "1", "bar" );
     GoogleAnalytics analytics = new GoogleAnalytics( driver.getBaseUrl(), "foo", configuration );
 
-    analytics.track( new AppViewHit( "screenName" ), "baz", mock( AdvancedConfiguration.class ) );
+    analytics.track( new ScreenViewHit( "screenName" ), "baz", mock( AdvancedConfiguration.class ) );
   }
 
 
@@ -103,7 +103,7 @@ public class GoogleAnalyticsTest {
     driver.addExpectation( onRequestTo( "/" ).withParam( "v", "1" )
                                                 .withParam( "tid", "bar" )
                                                 .withParam( "cid", "baz" )
-                                                .withParam( "t", "appview" )
+                                                .withParam( "t", "screenview" )
                                                 .withParam( "cd", "screenName" )
                                                 .withParam( "uip", "62.34.56.7" )
                                                 .withParam( "an", "foo" ),
@@ -114,6 +114,6 @@ public class GoogleAnalyticsTest {
     AdvancedConfiguration advancedConfiguration = new AdvancedConfiguration();
     advancedConfiguration.setIpOverride( "62.34.56.7" );
 
-    analytics.track( new AppViewHit( "screenName" ), "baz", advancedConfiguration );
+    analytics.track( new ScreenViewHit( "screenName" ), "baz", advancedConfiguration );
   }
 }

@@ -22,7 +22,7 @@ public class RequestValueProvider implements Serializable {
 
   static {
     Map<String, String> map = new HashMap<String, String>();
-    map.put( RequestValues.HIT_APPVIEW, "appview" );
+    map.put( RequestValues.HIT_SCREENVIEW, "screenview" );
     map.put( RequestValues.HIT_PAGEVIEW, "pageview" );
     map.put( RequestValues.HIT_TRANSACTION, "transaction" );
     map.put( RequestValues.HIT_ITEM, "item" );
