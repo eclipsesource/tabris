@@ -22,13 +22,13 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry;
-import com.eclipsesource.tabris.test.RWTEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
 public class ShellDecoratorTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   private Shell shell;
   private ShellDecorator decorator;

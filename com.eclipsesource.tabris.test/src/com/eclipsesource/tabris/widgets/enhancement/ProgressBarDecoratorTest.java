@@ -13,30 +13,28 @@ package com.eclipsesource.tabris.widgets.enhancement;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
 public class ProgressBarDecoratorTest {
+
+  @Rule
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   private ProgressBar progressBar;
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     Shell shell = new Shell( new Display() );
     progressBar = new ProgressBar( shell, SWT.INDETERMINATE );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

@@ -10,35 +10,43 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets;
 
+import static com.eclipsesource.tabris.test.util.MessageUtil.OperationType.CALL;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
+import java.io.IOException;
+
+import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
-import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.eclipse.rap.rwt.testfixture.Message;
-import org.eclipse.rap.rwt.testfixture.Message.CallOperation;
-import org.eclipse.rap.rwt.testfixture.Message.Operation;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.internal.widgets.canvaskit.CanvasLCA;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.eclipsesource.tabris.test.RWTEnvironment;
+import com.eclipsesource.tabris.test.util.MessageUtil;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
+@SuppressWarnings("restriction")
 public class PagingIndicatorTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   private Shell parent;
+  private PagingIndicator indicator;
+
 
   @Before
   public void setUp() {
     parent = new Shell( new Display() );
+    indicator = new PagingIndicator( parent );
+    renderInitialization( indicator );
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -48,8 +56,6 @@ public class PagingIndicatorTest {
 
   @Test
   public void testHasDefaultForCount() {
-    PagingIndicator indicator = new PagingIndicator( parent );
-
     int count = indicator.getCount();
 
     assertEquals( 1, count );
@@ -57,8 +63,6 @@ public class PagingIndicatorTest {
 
   @Test
   public void testSavesSettedCount() {
-    PagingIndicator indicator = new PagingIndicator( parent );
-
     indicator.setCount( 10 );
 
     int count = indicator.getCount();
@@ -67,15 +71,11 @@ public class PagingIndicatorTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsToSetNegativeCount() {
-    PagingIndicator indicator = new PagingIndicator( parent );
-
     indicator.setCount( -1 );
   }
 
   @Test
   public void testHasDefaultForActive() {
-    PagingIndicator indicator = new PagingIndicator( parent );
-
     int active = indicator.getActive();
 
     assertEquals( 0, active );
@@ -83,7 +83,6 @@ public class PagingIndicatorTest {
 
   @Test
   public void testSavesSettedActive() {
-    PagingIndicator indicator = new PagingIndicator( parent );
     indicator.setCount( 2 );
 
     indicator.setActive( 1 );
@@ -94,22 +93,16 @@ public class PagingIndicatorTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsToSetActiveWithNegativeIndex() {
-    PagingIndicator indicator = new PagingIndicator( parent );
-
     indicator.setActive( -1 );
   }
 
   @Test( expected = IllegalStateException.class )
   public void testFailsToSetActiveWithNonExistingIndex() {
-    PagingIndicator indicator = new PagingIndicator( parent );
-
     indicator.setActive( 2 );
   }
 
   @Test
   public void testHasDefaultForSpacing() {
-    PagingIndicator indicator = new PagingIndicator( parent );
-
     int spacing = indicator.getSpacing();
 
     assertEquals( 9, spacing );
@@ -117,8 +110,6 @@ public class PagingIndicatorTest {
 
   @Test
   public void testSavesSettedSpacing() {
-    PagingIndicator indicator = new PagingIndicator( parent );
-
     indicator.setSpacing( 5 );
 
     int spacing = indicator.getSpacing();
@@ -127,15 +118,11 @@ public class PagingIndicatorTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsToSetNegativeSpacing() {
-    PagingIndicator indicator = new PagingIndicator( parent );
-
     indicator.setSpacing( -1 );
   }
 
   @Test
   public void testHasDefaultForDiameter() {
-    PagingIndicator indicator = new PagingIndicator( parent );
-
     int diameter = indicator.getDiameter();
 
     assertEquals( 7, diameter );
@@ -143,8 +130,6 @@ public class PagingIndicatorTest {
 
   @Test
   public void testSavesSettedDiameter() {
-    PagingIndicator indicator = new PagingIndicator( parent );
-
     indicator.setDiameter( 5 );
 
     int diameter = indicator.getDiameter();
@@ -153,15 +138,11 @@ public class PagingIndicatorTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsToSetNegativeDiameter() {
-    PagingIndicator indicator = new PagingIndicator( parent );
-
     indicator.setDiameter( -1 );
   }
 
   @Test
   public void testHasDefaultForActiveColor() {
-    PagingIndicator indicator = new PagingIndicator( parent );
-
     Color activeColor = indicator.getActiveColor();
 
     assertEquals( activeColor.getRGB(), new RGB( 0, 122, 255 ) );
@@ -169,8 +150,6 @@ public class PagingIndicatorTest {
 
   @Test
   public void testSavesSettedActiveColor() {
-    PagingIndicator indicator = new PagingIndicator( parent );
-
     indicator.setActiveColor( new Color( parent.getDisplay(), 0, 0, 0 ) );
 
     Color activeColor = indicator.getActiveColor();
@@ -179,15 +158,11 @@ public class PagingIndicatorTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsToSetNullActiveColor() {
-    PagingIndicator indicator = new PagingIndicator( parent );
-
     indicator.setActiveColor( null );
   }
 
   @Test
   public void testHasDefaultForInactiveColor() {
-    PagingIndicator indicator = new PagingIndicator( parent );
-
     Color inactiveColor = indicator.getInactiveColor();
 
     assertEquals( inactiveColor.getRGB(), new RGB( 192, 192, 192 ) );
@@ -195,8 +170,6 @@ public class PagingIndicatorTest {
 
   @Test
   public void testSavesSettedInactiveColor() {
-    PagingIndicator indicator = new PagingIndicator( parent );
-
     indicator.setInactiveColor( new Color( parent.getDisplay(), 255, 0, 0 ) );
 
     Color inactiveColor = indicator.getInactiveColor();
@@ -205,14 +178,11 @@ public class PagingIndicatorTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsToSetNullInactiveColor() {
-    PagingIndicator indicator = new PagingIndicator( parent );
-
     indicator.setInactiveColor( null );
   }
 
   @Test
   public void testSetActiveDrawsIndicator() {
-    PagingIndicator indicator = new PagingIndicator( parent );
     indicator.setCount( 2 );
 
     indicator.setActive( 1 );
@@ -222,8 +192,6 @@ public class PagingIndicatorTest {
 
   @Test
   public void testSetCountDrawsIndicator() {
-    PagingIndicator indicator = new PagingIndicator( parent );
-
     indicator.setCount( 2 );
 
     verifyDraw( indicator );
@@ -231,8 +199,6 @@ public class PagingIndicatorTest {
 
   @Test
   public void testSetSpacingDrawsIndicator() {
-    PagingIndicator indicator = new PagingIndicator( parent );
-
     indicator.setSpacing( 2 );
 
     verifyDraw( indicator );
@@ -240,8 +206,6 @@ public class PagingIndicatorTest {
 
   @Test
   public void testSetDiameterDrawsIndicator() {
-    PagingIndicator indicator = new PagingIndicator( parent );
-
     indicator.setDiameter( 10 );
 
     verifyDraw( indicator );
@@ -249,8 +213,6 @@ public class PagingIndicatorTest {
 
   @Test
   public void testSetActiveColorDrawsIndicator() {
-    PagingIndicator indicator = new PagingIndicator( parent );
-
     indicator.setActiveColor( new Color( parent.getDisplay(), 0, 0, 0 ) );
 
     verifyDraw( indicator );
@@ -258,8 +220,6 @@ public class PagingIndicatorTest {
 
   @Test
   public void testSetInactiveColorDrawsIndicator() {
-    PagingIndicator indicator = new PagingIndicator( parent );
-
     indicator.setInactiveColor( new Color( parent.getDisplay(), 0, 0, 0 ) );
 
     verifyDraw( indicator );
@@ -267,27 +227,35 @@ public class PagingIndicatorTest {
 
   @Test
   public void testUpdateDrawsIndicator() {
-    PagingIndicator indicator = new PagingIndicator( parent );
-
     indicator.update();
 
     verifyDraw( indicator );
   }
 
   private void verifyDraw( PagingIndicator indicator ) {
-    boolean found = false;
+    renderChanges( indicator );
     String gcId = WidgetUtil.getId( indicator.getCanvas() ) + ".gc";
-    Fixture.executeLifeCycleFromServerThread();
-    Message message = Fixture.getProtocolMessage();
-    for( int i = 0; i < message.getOperationCount(); i++ ) {
-      Operation operation = message.getOperation( i );
-      if( operation instanceof CallOperation && operation.getTarget().equals( gcId ) ) {
-        CallOperation call = ( CallOperation )operation;
-        assertEquals( "init", call.getMethodName() );
-        found = true;
-        break;
-      }
+    JsonObject properties = MessageUtil.getOperationProperties( gcId, CALL, "init" );
+    assertNotNull( properties );
+  }
+
+  @SuppressWarnings("deprecation")
+  private void renderChanges( PagingIndicator indicator ) {
+    CanvasLCA adapter = ( CanvasLCA )indicator.getCanvas().getAdapter( org.eclipse.rap.rwt.lifecycle.WidgetLifeCycleAdapter.class );
+    try {
+      adapter.renderChanges( indicator.getCanvas() );
+    } catch( IOException shouldNotHappen ) {
+      fail( shouldNotHappen.getMessage() );
     }
-    assertTrue( found );
+  }
+
+  @SuppressWarnings("deprecation")
+  private void renderInitialization( PagingIndicator indicator ) {
+    CanvasLCA adapter = ( CanvasLCA )indicator.getCanvas().getAdapter( org.eclipse.rap.rwt.lifecycle.WidgetLifeCycleAdapter.class );
+    try {
+      adapter.renderInitialization( indicator.getCanvas() );
+    } catch( IOException shouldNotHappen ) {
+      fail( shouldNotHappen.getMessage() );
+    }
   }
 }

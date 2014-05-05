@@ -23,7 +23,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.InOrder;
 
-import com.eclipsesource.tabris.test.RWTEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 import com.eclipsesource.tabris.widgets.RefreshComposite;
 import com.eclipsesource.tabris.widgets.RefreshListener;
 
@@ -32,7 +32,7 @@ import com.eclipsesource.tabris.widgets.RefreshListener;
 public class RefreshCompositeOperationHandlerTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   private Shell shell;
 

@@ -25,7 +25,7 @@ import org.junit.Test;
 import com.eclipsesource.tabris.internal.ui.rendering.ActionRenderer;
 import com.eclipsesource.tabris.internal.ui.rendering.PageRenderer;
 import com.eclipsesource.tabris.internal.ui.rendering.UIRenderer;
-import com.eclipsesource.tabris.test.RWTEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.PageData;
 import com.eclipsesource.tabris.ui.UI;
@@ -34,7 +34,7 @@ import com.eclipsesource.tabris.ui.UI;
 public class RemoteRendererFactoryTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   private RemoteRendererFactory rendererFactory;
   private UI ui;

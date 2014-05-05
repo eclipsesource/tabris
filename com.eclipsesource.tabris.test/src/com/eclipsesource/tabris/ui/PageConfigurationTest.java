@@ -35,13 +35,13 @@ import com.eclipsesource.tabris.internal.ui.TestPage;
 import com.eclipsesource.tabris.internal.ui.UITestUtil;
 import com.eclipsesource.tabris.internal.ui.UIUpdater;
 import com.eclipsesource.tabris.internal.ui.UpdateUtil;
-import com.eclipsesource.tabris.test.RWTEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
 public class PageConfigurationTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   @Test
   public void testIsSerializable() {

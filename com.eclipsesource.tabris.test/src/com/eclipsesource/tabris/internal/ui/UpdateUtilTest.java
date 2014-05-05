@@ -17,11 +17,10 @@ import static org.mockito.Mockito.verify;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.internal.service.ContextProvider;
-import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 import com.eclipsesource.tabris.ui.PageConfiguration;
 import com.eclipsesource.tabris.ui.UIConfiguration;
 
@@ -29,17 +28,8 @@ import com.eclipsesource.tabris.ui.UIConfiguration;
 @SuppressWarnings("restriction")
 public class UpdateUtilTest {
 
-  @Before
-  public void setUp() {
-    Fixture.setUp();
-  }
-
-  @After
-  public void tearDown() {
-    if( ContextProvider.hasContext() ) {
-      Fixture.tearDown();
-    }
-  }
+  @Rule
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   @Test
   public void testRegistersUpdaterInUISession() {

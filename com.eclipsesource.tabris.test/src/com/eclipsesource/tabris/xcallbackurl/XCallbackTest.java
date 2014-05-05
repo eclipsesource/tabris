@@ -17,14 +17,13 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 
-import com.eclipsesource.tabris.test.RWTEnvironment;
-import com.eclipsesource.tabris.test.TabrisTestUtil;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
 public class XCallbackTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithNullConfiguration() {
@@ -47,7 +46,7 @@ public class XCallbackTest {
 
   @Test
   public void testUsesConfigAsCallParameter() {
-    RemoteObject remoteObject = TabrisTestUtil.mockRemoteObject();
+    RemoteObject remoteObject = environment.getRemoteObject();
     XCallbackConfiguration configuration = new XCallbackConfiguration( "foo", "bar" );
     XCallback xCallback = new XCallback( configuration );
 
@@ -61,7 +60,7 @@ public class XCallbackTest {
 
   @Test
   public void testUsesConfigAsCallParameterWithXSource() {
-    RemoteObject remoteObject = TabrisTestUtil.mockRemoteObject();
+    RemoteObject remoteObject = environment.getRemoteObject();
     XCallbackConfiguration configuration = new XCallbackConfiguration( "foo", "bar" );
     XCallback xCallback = new XCallback( configuration );
     configuration.setXSource( "foo" );
@@ -75,7 +74,7 @@ public class XCallbackTest {
 
   @Test
   public void testUsesConfigAsCallParameterWithActionParameters() {
-    RemoteObject remoteObject = TabrisTestUtil.mockRemoteObject();
+    RemoteObject remoteObject = environment.getRemoteObject();
     XCallbackConfiguration configuration = new XCallbackConfiguration( "foo", "bar" );
     XCallback xCallback = new XCallback( configuration );
     configuration.addActionParameter( "foo1", "bar1" );
@@ -202,7 +201,7 @@ public class XCallbackTest {
 
   @Test
   public void testDisposeDestroysRemoteObject() {
-    RemoteObject remoteObject = TabrisTestUtil.mockRemoteObject();
+    RemoteObject remoteObject = environment.getRemoteObject();
     XCallbackConfiguration configuration = mock( XCallbackConfiguration.class );
     XCallback xCallback = new XCallback( configuration );
 

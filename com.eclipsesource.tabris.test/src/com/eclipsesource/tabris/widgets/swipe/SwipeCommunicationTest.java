@@ -37,15 +37,14 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 
-import com.eclipsesource.tabris.test.RWTEnvironment;
-import com.eclipsesource.tabris.test.TabrisTestUtil;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 import com.eclipsesource.tabris.widgets.swipe.SwipeTest.TestItem;
 
 
 public class SwipeCommunicationTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   private RemoteObject remoteObject;
   private Shell shell;
@@ -53,7 +52,7 @@ public class SwipeCommunicationTest {
   @Before
   public void setUp() {
     shell = new Shell( new Display() );
-    remoteObject = TabrisTestUtil.mockRemoteObject();
+    remoteObject = environment.getRemoteObject();
   }
 
   @Test

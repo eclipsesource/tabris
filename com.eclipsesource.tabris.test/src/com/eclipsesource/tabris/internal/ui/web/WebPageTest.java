@@ -27,7 +27,6 @@ import java.util.List;
 
 import org.eclipse.rap.rwt.client.WebClient;
 import org.eclipse.rap.rwt.client.service.JavaScriptExecutor;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
@@ -41,7 +40,7 @@ import com.eclipsesource.tabris.internal.ui.TestAction;
 import com.eclipsesource.tabris.internal.ui.TestPage;
 import com.eclipsesource.tabris.internal.ui.UITestUtil;
 import com.eclipsesource.tabris.internal.ui.rendering.ActionRenderer;
-import com.eclipsesource.tabris.test.RWTEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 import com.eclipsesource.tabris.ui.Page;
 import com.eclipsesource.tabris.ui.PageData;
 import com.eclipsesource.tabris.ui.PageStyle;
@@ -51,7 +50,7 @@ import com.eclipsesource.tabris.ui.UI;
 public class WebPageTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   private Shell shell;
   private UI ui;
@@ -127,7 +126,7 @@ public class WebPageTest {
     WebClient webClient = mock( WebClient.class );
     JavaScriptExecutor javaScriptExecutor = mock( JavaScriptExecutor.class );
     when( webClient.getService( JavaScriptExecutor.class ) ).thenReturn( javaScriptExecutor );
-    Fixture.fakeClient( webClient );
+    environment.setClient( webClient );
 
     webPage.setTitle( "foo" );
 
@@ -139,7 +138,7 @@ public class WebPageTest {
     WebClient webClient = mock( WebClient.class );
     JavaScriptExecutor javaScriptExecutor = mock( JavaScriptExecutor.class );
     when( webClient.getService( JavaScriptExecutor.class ) ).thenReturn( javaScriptExecutor );
-    Fixture.fakeClient( webClient );
+    environment.setClient( webClient );
 
     webPage.setTitle( "foo" );
 
@@ -151,7 +150,7 @@ public class WebPageTest {
     WebClient webClient = mock( WebClient.class );
     JavaScriptExecutor javaScriptExecutor = mock( JavaScriptExecutor.class );
     when( webClient.getService( JavaScriptExecutor.class ) ).thenReturn( javaScriptExecutor );
-    Fixture.fakeClient( webClient );
+    environment.setClient( webClient );
 
     webPage.pageActivated();
 

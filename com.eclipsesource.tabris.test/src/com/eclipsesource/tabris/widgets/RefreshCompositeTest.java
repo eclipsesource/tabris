@@ -21,32 +21,29 @@ import static org.mockito.Mockito.mock;
 import java.util.List;
 
 import org.eclipse.rap.rwt.internal.lifecycle.WidgetLifeCycleAdapter;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.internal.RefreshCompositeLCA;
 import com.eclipsesource.tabris.internal.RefreshCompositeLCA.RefreshAdapter;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
 @SuppressWarnings("restriction")
 public class RefreshCompositeTest {
 
+  @Rule
+  public TabrisEnvironment environment = new TabrisEnvironment();
+
   private Shell shell;
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     shell = new Shell( new Display() );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test( expected = IllegalArgumentException.class )

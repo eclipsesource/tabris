@@ -32,7 +32,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
-import com.eclipsesource.tabris.test.RWTEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.ActionListener;
 import com.eclipsesource.tabris.ui.PlacementPriority;
@@ -43,7 +43,7 @@ import com.eclipsesource.tabris.ui.UIConfiguration;
 public class RemoteActionTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   private RemoteObject remoteObject;
   private ActionDescriptor actionDescriptor;

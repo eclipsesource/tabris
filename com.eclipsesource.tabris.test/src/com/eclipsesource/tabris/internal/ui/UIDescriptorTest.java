@@ -21,13 +21,12 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.eclipse.rap.rwt.client.WebClient;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.junit.Rule;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.TabrisClient;
 import com.eclipsesource.tabris.internal.ui.web.WebRendererFactory;
-import com.eclipsesource.tabris.test.RWTEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 import com.eclipsesource.tabris.ui.ActionListener;
 import com.eclipsesource.tabris.ui.TransitionListener;
 
@@ -35,7 +34,7 @@ import com.eclipsesource.tabris.ui.TransitionListener;
 public class UIDescriptorTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   @Test
   public void testIsSerializable() {
@@ -183,7 +182,7 @@ public class UIDescriptorTest {
 
   @Test
   public void testGetRendererFactory_tabris() {
-    Fixture.fakeClient( mock( TabrisClient.class ) );
+    environment.setClient( mock( TabrisClient.class ) );
     UIDescriptor uiDescriptor = new UIDescriptor();
 
     assertTrue( uiDescriptor.getRendererFactory() instanceof RemoteRendererFactory );
@@ -191,7 +190,7 @@ public class UIDescriptorTest {
 
   @Test
   public void testGetRendererFactory_web() {
-    Fixture.fakeClient( mock( WebClient.class ) );
+    environment.setClient( mock( WebClient.class ) );
     UIDescriptor uiDescriptor = new UIDescriptor();
 
     assertTrue( uiDescriptor.getRendererFactory() instanceof WebRendererFactory );

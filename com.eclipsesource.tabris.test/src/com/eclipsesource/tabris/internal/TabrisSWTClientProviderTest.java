@@ -27,20 +27,19 @@ import org.eclipse.rap.rwt.internal.theme.ThemeManager;
 import org.eclipse.rap.rwt.internal.theme.css.CssFileReader;
 import org.eclipse.rap.rwt.internal.theme.css.StyleSheet;
 import org.eclipse.rap.rwt.service.ResourceLoader;
-import org.eclipse.rap.rwt.testfixture.TestRequest;
-import org.eclipse.rap.rwt.testfixture.internal.engine.ThemeManagerHelper;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.eclipsesource.tabris.test.RWTEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisRequest;
 
 
 @SuppressWarnings("restriction")
 public class TabrisSWTClientProviderTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   private static final String CURRENT_THEME_ID = "org.eclipse.rap.theme.current";
 
@@ -58,7 +57,7 @@ public class TabrisSWTClientProviderTest {
 
   @Test
   public void testAcceptForSWT() {
-    TestRequest request = ( TestRequest )RWT.getRequest();
+    TabrisRequest request = environment.getRequest();
     request.setHeader( Constants.USER_AGENT, Constants.ID_SWT );
 
     assertTrue( provider.accept( request ) );
@@ -77,7 +76,7 @@ public class TabrisSWTClientProviderTest {
   @Test
   public void testUsesSWTTheme() throws IOException {
     registerTheme( Constants.THEME_ID_SWT );
-    TestRequest request = ( TestRequest )RWT.getRequest();
+    TabrisRequest request = environment.getRequest();
     request.setHeader( Constants.USER_AGENT, Constants.ID_SWT );
 
     provider.accept( request );
@@ -97,7 +96,7 @@ public class TabrisSWTClientProviderTest {
     StyleSheet styleSheet = CssFileReader.readStyleSheet( "", resourceLoader );
     Theme theme = new Theme( themeId, "unknown", styleSheet );
     ApplicationContextImpl applicationContext = ContextProvider.getContext().getApplicationContext();
-    ThemeManagerHelper.resetThemeManager();
+    environment.resetThemes();
     ThemeManager themeManager = applicationContext.getThemeManager();
     themeManager.registerTheme( theme );
   }

@@ -21,7 +21,6 @@ import java.io.Serializable;
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.rwt.remote.JsonMapping;
 import org.eclipse.rap.rwt.remote.RemoteObject;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
@@ -30,28 +29,25 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.eclipsesource.tabris.TabrisClient;
 import com.eclipsesource.tabris.internal.ZIndexStackLayout;
 import com.eclipsesource.tabris.internal.ui.TestPage;
 import com.eclipsesource.tabris.internal.ui.UITestUtil;
-import com.eclipsesource.tabris.test.RWTEnvironment;
-import com.eclipsesource.tabris.test.TabrisTestUtil;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
 public class TabrisUITest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   private Shell shell;
   private RemoteObject remoteObject;
 
   @Before
   public void setUp() {
-    Fixture.fakeClient( mock( TabrisClient.class ) );
     Display display = new Display();
     shell = new Shell( display );
-    remoteObject = TabrisTestUtil.mockRemoteObject();
+    remoteObject = environment.getRemoteObject();
   }
 
   @Test

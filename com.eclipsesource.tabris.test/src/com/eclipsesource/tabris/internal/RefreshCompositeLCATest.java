@@ -10,37 +10,48 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import static com.eclipsesource.tabris.test.util.MessageUtil.getOperationProperties;
+import static com.eclipsesource.tabris.test.util.MessageUtil.hasCreateOperation;
+import static com.eclipsesource.tabris.test.util.MessageUtil.hasOperation;
+import static com.eclipsesource.tabris.test.util.MessageUtil.isParentOfCreate;
+import static com.eclipsesource.tabris.test.util.MessageUtil.OperationType.CALL;
+import static com.eclipsesource.tabris.test.util.MessageUtil.OperationType.CREATE;
+import static com.eclipsesource.tabris.test.util.MessageUtil.OperationType.LISTEN;
+import static com.eclipsesource.tabris.test.util.MessageUtil.OperationType.SET;
 import static org.eclipse.rap.rwt.lifecycle.WidgetUtil.getId;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import java.io.IOException;
 
 import org.eclipse.rap.json.JsonArray;
+import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectRegistry;
+import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.remote.OperationHandler;
 import org.eclipse.rap.rwt.scripting.ClientListener;
-import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.eclipse.rap.rwt.testfixture.Message;
-import org.eclipse.rap.rwt.testfixture.Message.CreateOperation;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
-import com.eclipsesource.tabris.test.ControlLCATestUtil;
+import com.eclipsesource.tabris.test.util.ControlLCATestUtil;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 import com.eclipsesource.tabris.widgets.RefreshComposite;
 import com.eclipsesource.tabris.widgets.RefreshListener;
 
 
 @SuppressWarnings("restriction")
 public class RefreshCompositeLCATest {
+
+  @Rule
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   private Display display;
   private Shell shell;
@@ -49,17 +60,10 @@ public class RefreshCompositeLCATest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     display = new Display();
     shell = new Shell( display );
     lca = new RefreshCompositeLCA();
-    Fixture.fakeNewRequest();
     composite = new RefreshComposite( shell, SWT.BORDER );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test
@@ -77,9 +81,7 @@ public class RefreshCompositeLCATest {
   public void testRenderCreate() throws IOException {
     lca.renderInitialization( composite );
 
-    Message message = Fixture.getProtocolMessage();
-    CreateOperation operation = message.findCreateOperation( composite );
-    assertEquals( "tabris.widgets.RefreshComposite", operation.getType() );
+    assertTrue( hasCreateOperation( "tabris.widgets.RefreshComposite" ) );
   }
 
   @Test
@@ -97,8 +99,8 @@ public class RefreshCompositeLCATest {
 
     lca.renderInitialization( composite );
 
-    Message message = Fixture.getProtocolMessage();
-    assertEquals( "foo", message.findCreateProperty( composite, "message" ).asString() );
+    JsonObject properties = getOperationProperties( WidgetUtil.getId( composite ), CREATE, null );
+    assertEquals( "foo", properties.get( "message" ).asString() );
   }
 
   @Test
@@ -107,17 +109,15 @@ public class RefreshCompositeLCATest {
 
     lca.renderInitialization( composite );
 
-    Message message = Fixture.getProtocolMessage();
-    assertTrue( message.findListenProperty( composite, "Refresh" ).asBoolean() );
+    JsonObject properties = getOperationProperties( WidgetUtil.getId( composite ), LISTEN, null );
+    assertTrue( properties.get( "Refresh" ).asBoolean() );
   }
 
   @Test
   public void testRenderParent() throws IOException {
     lca.renderInitialization( composite );
 
-    Message message = Fixture.getProtocolMessage();
-    CreateOperation operation = message.findCreateOperation( composite );
-    assertEquals( getId( composite.getParent() ), operation.getParent() );
+    assertTrue( isParentOfCreate( "tabris.widgets.RefreshComposite", getId( composite.getParent() ) ) );
   }
 
   @Test
@@ -126,20 +126,18 @@ public class RefreshCompositeLCATest {
 
     lca.renderListenToRefresh( composite );
 
-    Message message = Fixture.getProtocolMessage();
-    assertTrue( message.findListenProperty( composite, "Refresh" ).asBoolean() );
+    JsonObject properties = getOperationProperties( WidgetUtil.getId( composite ), LISTEN, null );
+    assertTrue( properties.get( "Refresh" ).asBoolean() );
   }
 
   @Test
   public void testRenderListenToRefreshToRefreshUnchanged() {
-    Fixture.markInitialized( composite );
     composite.addRefreshListener( mock( RefreshListener.class ) );
 
     lca.preserveValues( composite );
     lca.renderClientArea( composite );
 
-    Message message = Fixture.getProtocolMessage();
-    assertNull( message.findListenOperation( composite, "Refresh" ) );
+    assertFalse( hasOperation( WidgetUtil.getId( composite ), LISTEN, null ) );
   }
 
   @Test
@@ -148,20 +146,19 @@ public class RefreshCompositeLCATest {
 
     lca.renderMessage( composite );
 
-    Message message = Fixture.getProtocolMessage();
-    assertEquals( "foo", message.findSetProperty( composite, "message" ).asString() );
+    JsonObject properties = getOperationProperties( WidgetUtil.getId( composite ), SET, null );
+    assertEquals( "foo", properties.get( "message" ).asString() );
   }
 
   @Test
-  public void testRenderMessageUnchanged() {
-    Fixture.markInitialized( composite );
+  public void testRenderMessageUnchanged() throws IOException {
     composite.setMessage( "foo" );
 
+    lca.renderInitialization( composite );
     lca.preserveValues( composite );
     lca.renderClientArea( composite );
 
-    Message message = Fixture.getProtocolMessage();
-    assertNull( message.findSetOperation( composite, "message" ) );
+    assertFalse( hasOperation( WidgetUtil.getId( composite ), SET, null ) );
   }
 
   @Test
@@ -170,20 +167,18 @@ public class RefreshCompositeLCATest {
 
     lca.renderDone( composite );
 
-    Message message = Fixture.getProtocolMessage();
-    assertNotNull( message.findCallOperation( composite, "done" ) );
+    JsonObject properties = getOperationProperties( WidgetUtil.getId( composite ), CALL, "done" );
+    assertTrue( properties.isEmpty() );
   }
 
   @Test
   public void testRenderDoneUnchanged() {
-    Fixture.markInitialized( composite );
     composite.done();
 
     lca.preserveValues( composite );
     lca.renderDone( composite );
 
-    Message message = Fixture.getProtocolMessage();
-    assertNull( message.findCallOperation( composite, "done" ) );
+    assertFalse( hasOperation( WidgetUtil.getId( composite ), CALL, "done" ) );
   }
 
   @Test
@@ -192,9 +187,9 @@ public class RefreshCompositeLCATest {
 
     lca.renderClientArea( composite );
 
-    Message message = Fixture.getProtocolMessage();
     Rectangle clientArea = composite.getClientArea();
-    assertEquals( clientArea, toRectangle( message.findSetProperty( composite, "clientArea" ) ) );
+    JsonObject properties = getOperationProperties( WidgetUtil.getId( composite ), SET, null );
+    assertEquals( clientArea, toRectangle( properties.get( "clientArea" ) ) );
   }
 
   @Test
@@ -203,21 +198,20 @@ public class RefreshCompositeLCATest {
 
     lca.renderClientArea( composite );
 
-    Message message = Fixture.getProtocolMessage();
     Rectangle clientArea = new Rectangle( 0, 0, 0, 0 );
-    assertEquals( clientArea, toRectangle( message.findSetProperty( composite, "clientArea" ) ) );
+    JsonObject properties = getOperationProperties( WidgetUtil.getId( composite ), SET, null );
+    assertEquals( clientArea, toRectangle( properties.get( "clientArea" ) ) );
   }
 
   @Test
-  public void testRenderClientAreaSizeUnchanged() {
-    Fixture.markInitialized( composite );
+  public void testRenderClientAreaSizeUnchanged() throws IOException {
     composite.setSize( 110, 120 );
 
+    lca.renderInitialization( composite );
     lca.preserveValues( composite );
     lca.renderClientArea( composite );
 
-    Message message = Fixture.getProtocolMessage();
-    assertNull( message.findSetOperation( composite, "clientArea" ) );
+    assertFalse( hasOperation( WidgetUtil.getId( composite ), SET, null ) );
   }
 
   @Test
@@ -226,8 +220,8 @@ public class RefreshCompositeLCATest {
 
     lca.renderChanges( composite );
 
-    Message message = Fixture.getProtocolMessage();
-    assertNotNull( message.findCallOperation( composite, "addListener" ) );
+    JsonObject properties = getOperationProperties( WidgetUtil.getId( composite ), CALL, "addListener" );
+    assertNotNull( properties );
   }
 
   private Rectangle toRectangle( Object property ) {

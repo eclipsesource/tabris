@@ -21,20 +21,22 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.eclipse.rap.rwt.client.WebClient;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.widgets.Text;
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.eclipsesource.tabris.TabrisClient;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
 @RunWith( MockitoJUnitRunner.class )
 public class TextDecoratorTest {
+
+  @Rule
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   @Mock
   private Text text;
@@ -42,13 +44,7 @@ public class TextDecoratorTest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     decorator = Widgets.onText( text );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test
@@ -137,7 +133,6 @@ public class TextDecoratorTest {
 
   @Test
   public void testSetsTextReplacement() {
-    Fixture.fakeClient( mock( TabrisClient.class ) );
     TextReplacementData data = mock( TextReplacementData.class );
     when( data.getId() ).thenReturn( "r42" );
 
@@ -153,7 +148,7 @@ public class TextDecoratorTest {
 
   @Test
   public void testDoesNotSetTextReplacementWithWebClient() {
-    Fixture.fakeClient( mock( WebClient.class ) );
+    environment.setClient( mock( WebClient.class ) );
     TextReplacementData data = mock( TextReplacementData.class );
     when( data.getId() ).thenReturn( "r42" );
 

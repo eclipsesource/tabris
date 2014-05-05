@@ -8,30 +8,35 @@
 package com.eclipsesource.tabris.internal;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.verify;
 
 import java.io.Serializable;
 
 import org.eclipse.rap.json.JsonObject;
-import org.eclipse.rap.rwt.internal.remote.RemoteObjectRegistry;
+import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.internal.remote.ConnectionImpl;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.Widget;
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
 @SuppressWarnings("restriction")
 public class TableItemHeightServiceTest {
+
+  @Rule
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   private Table table;
   private Tree tree;
@@ -40,18 +45,12 @@ public class TableItemHeightServiceTest {
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     Display display = new Display();
     Shell shell = new Shell( display );
     table = new Table( shell, SWT.NONE );
     tree = new Tree(shell, SWT.NONE);
     parameters = new JsonObject();
     itemHeightService = new TableItemHeightService();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test
@@ -61,7 +60,9 @@ public class TableItemHeightServiceTest {
 
   @Test
   public void testServiceCreated() {
-    assertNotNull( RemoteObjectRegistry.getInstance().get( Constants.GRID_ITEM_HEIGHT_SETTER ) );
+    ConnectionImpl connection = ( ConnectionImpl )RWT.getUISession().getConnection();
+
+    verify( connection ).createServiceObject( Constants.GRID_ITEM_HEIGHT_SETTER );
   }
 
   @Test

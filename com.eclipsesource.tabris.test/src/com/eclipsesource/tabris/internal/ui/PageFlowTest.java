@@ -33,7 +33,7 @@ import org.junit.Test;
 import org.mockito.InOrder;
 
 import com.eclipsesource.tabris.internal.ui.rendering.PageRenderer;
-import com.eclipsesource.tabris.test.RWTEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 import com.eclipsesource.tabris.ui.PageData;
 import com.eclipsesource.tabris.ui.UI;
 
@@ -41,7 +41,7 @@ import com.eclipsesource.tabris.ui.UI;
 public class PageFlowTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   private Shell shell;
 

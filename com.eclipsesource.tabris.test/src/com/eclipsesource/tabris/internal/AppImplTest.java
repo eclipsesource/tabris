@@ -36,13 +36,13 @@ import com.eclipsesource.tabris.app.App;
 import com.eclipsesource.tabris.app.AppEvent;
 import com.eclipsesource.tabris.app.AppListener;
 import com.eclipsesource.tabris.app.BackNavigationListener;
-import com.eclipsesource.tabris.test.RWTEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
 public class AppImplTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   @Test
   public void testIsSerializable() {

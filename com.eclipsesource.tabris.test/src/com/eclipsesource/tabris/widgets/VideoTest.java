@@ -34,7 +34,7 @@ import org.mockito.InOrder;
 
 import com.eclipsesource.tabris.internal.VideoLifeCycleAdapter;
 import com.eclipsesource.tabris.internal.VideoLifeCycleAdapter.PlaybackOptions;
-import com.eclipsesource.tabris.test.RWTEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 import com.eclipsesource.tabris.widgets.Video.Playback;
 import com.eclipsesource.tabris.widgets.Video.PlaybackAdapter;
 import com.eclipsesource.tabris.widgets.Video.Presentation;
@@ -44,7 +44,7 @@ import com.eclipsesource.tabris.widgets.Video.Presentation;
 public class VideoTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   private Video video;
   private Shell parent;

@@ -14,13 +14,13 @@ import org.eclipse.rap.rwt.client.service.BrowserNavigation;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.eclipsesource.tabris.test.RWTEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
 public class TabrisSWTClientTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   @Test
   public void testHasBrowserNavigationService() {

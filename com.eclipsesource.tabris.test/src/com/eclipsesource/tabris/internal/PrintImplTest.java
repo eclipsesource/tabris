@@ -33,13 +33,13 @@ import com.eclipsesource.tabris.print.Print;
 import com.eclipsesource.tabris.print.PrintError;
 import com.eclipsesource.tabris.print.PrintListener;
 import com.eclipsesource.tabris.print.PrintOptions;
-import com.eclipsesource.tabris.test.RWTEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
 public class PrintImplTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   @Test
   public void testIsSerializable() {

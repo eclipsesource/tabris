@@ -47,7 +47,7 @@ import com.eclipsesource.tabris.internal.ui.PropertyChangeHandler;
 import com.eclipsesource.tabris.internal.ui.PropertyChangeNotifier;
 import com.eclipsesource.tabris.internal.ui.RemoteActionTest;
 import com.eclipsesource.tabris.internal.ui.TestSearchAction;
-import com.eclipsesource.tabris.test.RWTEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.UI;
 import com.eclipsesource.tabris.ui.UIConfiguration;
@@ -60,7 +60,7 @@ import com.eclipsesource.tabris.ui.action.SearchActionListener;
 public class WebSearchActionTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   private UI ui;
   private WebUI uiRenderer;

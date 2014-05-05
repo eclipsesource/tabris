@@ -8,7 +8,7 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.test;
+package com.eclipsesource.tabris.test.util;
 
 import static org.eclipse.rap.rwt.internal.lifecycle.WidgetUtil.getLCA;
 import static org.junit.Assert.assertFalse;

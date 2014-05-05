@@ -23,9 +23,6 @@ import java.util.Locale;
 
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
-import org.eclipse.rap.rwt.RWT;
-import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.eclipse.rap.rwt.testfixture.TestRequest;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -35,13 +32,14 @@ import com.eclipsesource.tabris.device.ClientDevice.ConnectionType;
 import com.eclipsesource.tabris.device.ClientDevice.Orientation;
 import com.eclipsesource.tabris.device.ClientDevice.Platform;
 import com.eclipsesource.tabris.device.ClientDeviceListener;
-import com.eclipsesource.tabris.test.RWTEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisRequest;
 
 
 public class ClientDeviceImplTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   @Test
   public void testIsSerializable() {
@@ -55,7 +53,7 @@ public class ClientDeviceImplTest {
 
   @Test
   public void testGetPlatformIsAndroid() {
-    TestRequest request = ( TestRequest )RWT.getRequest();
+    TabrisRequest request = environment.getRequest();
     request.setHeader( Constants.USER_AGENT, "com.eclipsesource.tabris.android" );
     ClientDevice device = new ClientDeviceImpl();
 
@@ -66,7 +64,7 @@ public class ClientDeviceImplTest {
 
   @Test
   public void testGetPlatformIsIOS() {
-    TestRequest request = ( TestRequest )RWT.getRequest();
+    TabrisRequest request = environment.getRequest();
     request.setHeader( Constants.USER_AGENT, "com.eclipsesource.tabris.ios" );
     ClientDevice device = new ClientDeviceImpl();
 
@@ -77,7 +75,7 @@ public class ClientDeviceImplTest {
 
   @Test
   public void testGetPlatformIsSWT() {
-    TestRequest request = ( TestRequest )RWT.getRequest();
+    TabrisRequest request = environment.getRequest();
     request.setHeader( Constants.USER_AGENT, "com.eclipsesource.tabris.swt" );
     ClientDevice device = new ClientDeviceImpl();
 
@@ -88,7 +86,7 @@ public class ClientDeviceImplTest {
 
   @Test
   public void testGetPlatformIsWebByDefault() {
-    TestRequest request = ( TestRequest )RWT.getRequest();
+    TabrisRequest request = environment.getRequest();
     request.setHeader( Constants.USER_AGENT, "Mozilla/bla" );
     ClientDevice device = new ClientDeviceImpl();
 
@@ -99,7 +97,7 @@ public class ClientDeviceImplTest {
 
   @Test
   public void testGetLocaleReturnsNullWhenLocaleNotSet() {
-    Fixture.fakeNewGetRequest();
+    environment.newGetRequest();
     ClientDeviceImpl deviceImpl = new ClientDeviceImpl();
 
     Locale locale = deviceImpl.getLocale();
@@ -109,7 +107,7 @@ public class ClientDeviceImplTest {
 
   @Test
   public void testGetLocalesReturnsEmptyArrayWhenLocaleNotSet() {
-    Fixture.fakeNewGetRequest();
+    environment.newGetRequest();
     ClientDeviceImpl deviceImpl = new ClientDeviceImpl();
 
     Locale[] locales = deviceImpl.getLocales();
@@ -119,7 +117,7 @@ public class ClientDeviceImplTest {
 
   @Test
   public void testGetLocaleReadsLocaleFromRequest() {
-    TestRequest request = Fixture.fakeNewGetRequest();
+    TabrisRequest request = environment.newGetRequest();
     request.setHeader( "Accept-Language", "anything" );
     request.setLocales( new Locale( "en-US" ) );
     ClientDeviceImpl deviceImpl = new ClientDeviceImpl();
@@ -131,7 +129,7 @@ public class ClientDeviceImplTest {
 
   @Test
   public void testGetLocalesReadsLocalesFromRequest() {
-    TestRequest request = Fixture.fakeNewGetRequest();
+    TabrisRequest request = environment.newGetRequest();
     request.setHeader( "Accept-Language", "anything" );
     request.setLocales( new Locale( "en-US" ), new Locale( "de-DE" ) );
     ClientDeviceImpl deviceImpl = new ClientDeviceImpl();
@@ -145,7 +143,7 @@ public class ClientDeviceImplTest {
 
   @Test
   public void testReturnsSaveLocalesCopy() {
-    TestRequest request = Fixture.fakeNewGetRequest();
+    TabrisRequest request = environment.newGetRequest();
     request.setHeader( "Accept-Language", "anything" );
     request.setLocales( new Locale( "en-US" ) );
     ClientDeviceImpl deviceImpl = new ClientDeviceImpl();

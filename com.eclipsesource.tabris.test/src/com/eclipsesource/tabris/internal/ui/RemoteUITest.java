@@ -35,7 +35,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.internal.ui.rendering.PageRenderer;
-import com.eclipsesource.tabris.test.RWTEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 import com.eclipsesource.tabris.ui.PageOperator;
 import com.eclipsesource.tabris.ui.UI;
 
@@ -43,7 +43,7 @@ import com.eclipsesource.tabris.ui.UI;
 public class RemoteUITest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   private Shell shell;
 

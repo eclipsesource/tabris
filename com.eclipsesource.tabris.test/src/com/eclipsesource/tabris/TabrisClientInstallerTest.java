@@ -25,26 +25,19 @@ import org.eclipse.rap.rwt.internal.application.ApplicationImpl;
 import org.eclipse.rap.rwt.internal.resources.ResourceRegistry;
 import org.eclipse.rap.rwt.internal.theme.ThemeManager;
 import org.eclipse.rap.rwt.service.ResourceLoader;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.internal.Constants;
 import com.eclipsesource.tabris.internal.TabrisResourceLoader;
-import com.eclipsesource.tabris.test.RWTEnvironment;
-import com.eclipsesource.tabris.test.TabrisTestUtil;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
 @SuppressWarnings("restriction")
 public class TabrisClientInstallerTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
-
-  @Before
-  public void setUp() {
-    TabrisTestUtil.mockRemoteObject();
-  }
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   @Test
   public void testRegistersTheme() {

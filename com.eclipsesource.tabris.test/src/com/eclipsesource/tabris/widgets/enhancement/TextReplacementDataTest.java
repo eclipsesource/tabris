@@ -27,28 +27,24 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.client.WebClient;
 import org.eclipse.rap.rwt.remote.Connection;
 import org.eclipse.rap.rwt.remote.RemoteObject;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
-import com.eclipsesource.tabris.TabrisClient;
-import com.eclipsesource.tabris.test.RWTEnvironment;
-import com.eclipsesource.tabris.test.TabrisTestUtil;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
 public class TextReplacementDataTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   private RemoteObject remoteObject;
 
   @Before
   public void setUp() {
-    Fixture.fakeClient( mock( TabrisClient.class ) );
-    remoteObject = TabrisTestUtil.mockRemoteObject();
+    remoteObject = environment.getRemoteObject();
   }
 
   @Test
@@ -63,7 +59,7 @@ public class TextReplacementDataTest {
 
   @Test
   public void testCreatesNoRemoteObjectWithWebClient() {
-    Fixture.fakeClient( mock( WebClient.class ) );
+    environment.setClient( mock( WebClient.class ) );
     TextReplacementData data = new TextReplacementData();
 
     data.put( "shortcut", "replacement" );
@@ -83,7 +79,7 @@ public class TextReplacementDataTest {
 
   @Test
   public void testHasNullIdWithWebClient() {
-    Fixture.fakeClient( mock( WebClient.class ) );
+    environment.setClient( mock( WebClient.class ) );
     TextReplacementData data = new TextReplacementData();
 
     String id = data.getId();

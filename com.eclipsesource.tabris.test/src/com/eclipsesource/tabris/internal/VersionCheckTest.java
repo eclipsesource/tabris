@@ -14,29 +14,21 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.eclipse.rap.rwt.RWT;
-import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.eclipse.rap.rwt.testfixture.TestRequest;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisRequest;
 
 
 public class VersionCheckTest {
 
-  @Before
-  public void setUp() {
-    Fixture.setUp();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
-  }
+  @Rule
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   @Test
   public void testFindsHasServerServsion() {
-    TestRequest request = ( TestRequest )RWT.getRequest();
+    TabrisRequest request = environment.getRequest();
     request.setHeader( Constants.USER_AGENT, "com.eclipsesource.tabris.android/1.3.0 (foo)" );
     VersionCheck versionCheck = new VersionCheck( "1.3" );
 
@@ -47,7 +39,7 @@ public class VersionCheckTest {
 
   @Test
   public void testFindsClientVersionOnAndroid() {
-    TestRequest request = ( TestRequest )RWT.getRequest();
+    TabrisRequest request = environment.getRequest();
     request.setHeader( Constants.USER_AGENT, "com.eclipsesource.tabris.android/1.3.0 (foo)" );
     VersionCheck versionCheck = new VersionCheck( "1.3" );
 
@@ -58,7 +50,7 @@ public class VersionCheckTest {
 
   @Test
   public void testFindsClientVersionOnIOS() {
-    TestRequest request = ( TestRequest )RWT.getRequest();
+    TabrisRequest request = environment.getRequest();
     request.setHeader( Constants.USER_AGENT, "com.eclipsesource.tabris.ios/1.3.0 (foo)" );
     VersionCheck versionCheck = new VersionCheck( "1.3" );
 
@@ -69,7 +61,7 @@ public class VersionCheckTest {
 
   @Test
   public void testMatchesIdenticalVersionOnAdnroid() {
-    TestRequest request = ( TestRequest )RWT.getRequest();
+    TabrisRequest request = environment.getRequest();
     request.setHeader( Constants.USER_AGENT, "com.eclipsesource.tabris.android/1.3.0 (foo)" );
     VersionCheck versionCheck = new VersionCheck( "1.3" );
 
@@ -80,7 +72,7 @@ public class VersionCheckTest {
 
   @Test
   public void testMatchesIdenticalVersionOnIOS() {
-    TestRequest request = ( TestRequest )RWT.getRequest();
+    TabrisRequest request = environment.getRequest();
     request.setHeader( Constants.USER_AGENT, "com.eclipsesource.tabris.ios/1.3.0 (foo)" );
     VersionCheck versionCheck = new VersionCheck( "1.3" );
 
@@ -91,7 +83,7 @@ public class VersionCheckTest {
 
   @Test
   public void testMatchesMajorMinorVersionOnAdnroid() {
-    TestRequest request = ( TestRequest )RWT.getRequest();
+    TabrisRequest request = environment.getRequest();
     request.setHeader( Constants.USER_AGENT, "com.eclipsesource.tabris.android/1.3.1 (foo)" );
     VersionCheck versionCheck = new VersionCheck( "1.3" );
 
@@ -102,7 +94,7 @@ public class VersionCheckTest {
 
   @Test
   public void testMatchesMajorMinorVersionOnIOS() {
-    TestRequest request = ( TestRequest )RWT.getRequest();
+    TabrisRequest request = environment.getRequest();
     request.setHeader( Constants.USER_AGENT, "com.eclipsesource.tabris.ios/1.3.1 (foo)" );
     VersionCheck versionCheck = new VersionCheck( "1.3" );
 
@@ -113,7 +105,7 @@ public class VersionCheckTest {
 
   @Test
   public void testMatchesNotDifferentMinorOnAndroid() {
-    TestRequest request = ( TestRequest )RWT.getRequest();
+    TabrisRequest request = environment.getRequest();
     request.setHeader( Constants.USER_AGENT, "com.eclipsesource.tabris.android/1.4 (foo)" );
     VersionCheck versionCheck = new VersionCheck( "1.3" );
 
@@ -124,7 +116,7 @@ public class VersionCheckTest {
 
   @Test
   public void testMatchesNotDifferentMinorOnIOS() {
-    TestRequest request = ( TestRequest )RWT.getRequest();
+    TabrisRequest request = environment.getRequest();
     request.setHeader( Constants.USER_AGENT, "com.eclipsesource.tabris.ios/1.4 (foo)" );
     VersionCheck versionCheck = new VersionCheck( "1.3" );
 
@@ -135,7 +127,7 @@ public class VersionCheckTest {
 
   @Test
   public void testMatchesNotDifferentMajorOnAndroid() {
-    TestRequest request = ( TestRequest )RWT.getRequest();
+    TabrisRequest request = environment.getRequest();
     request.setHeader( Constants.USER_AGENT, "com.eclipsesource.tabris.android/2.3 (foo)" );
     VersionCheck versionCheck = new VersionCheck( "1.3" );
 
@@ -146,7 +138,7 @@ public class VersionCheckTest {
 
   @Test
   public void testMatchesNotDifferentMajorOnIOS() {
-    TestRequest request = ( TestRequest )RWT.getRequest();
+    TabrisRequest request = environment.getRequest();
     request.setHeader( Constants.USER_AGENT, "com.eclipsesource.tabris.ios/2.3 (foo)" );
     VersionCheck versionCheck = new VersionCheck( "1.3" );
 
@@ -157,7 +149,7 @@ public class VersionCheckTest {
 
   @Test
   public void testMatchesNotDifferentHighMajorOnAndroid() {
-    TestRequest request = ( TestRequest )RWT.getRequest();
+    TabrisRequest request = environment.getRequest();
     request.setHeader( Constants.USER_AGENT, "com.eclipsesource.tabris.android/41.1.0 (foo)" );
     VersionCheck versionCheck = new VersionCheck( "1.3" );
 
@@ -168,7 +160,7 @@ public class VersionCheckTest {
 
   @Test
   public void testMatchesNotDifferentHighMajorOnIOS() {
-    TestRequest request = ( TestRequest )RWT.getRequest();
+    TabrisRequest request = environment.getRequest();
     request.setHeader( Constants.USER_AGENT, "com.eclipsesource.tabris.ios/42.1.0 (foo)" );
     VersionCheck versionCheck = new VersionCheck( "1.3" );
 

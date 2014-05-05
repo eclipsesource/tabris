@@ -1,3 +1,4 @@
+package com.eclipsesource.tabris.test.util;
 /*******************************************************************************
  * Copyright (c) 2014 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
@@ -8,24 +9,31 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.tabris.test;
+
+
+import static org.mockito.Mockito.mock;
 
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.client.Client;
 import org.eclipse.rap.rwt.internal.remote.ConnectionImpl;
+import org.eclipse.rap.rwt.internal.service.ContextProvider;
 import org.eclipse.rap.rwt.lifecycle.PhaseId;
 import org.eclipse.rap.rwt.remote.Connection;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
+import org.eclipse.rap.rwt.testfixture.TestRequest;
+import org.eclipse.rap.rwt.testfixture.internal.engine.ThemeManagerHelper;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
-import com.eclipsesource.tabris.test.TabrisTestUtil.TestRemoteObject;
+import com.eclipsesource.tabris.TabrisClient;
+import com.eclipsesource.tabris.test.util.internal.RemoteObjectHelper;
 
 
 @SuppressWarnings( { "restriction", "deprecation" } )
-public class RWTEnvironment implements TestRule {
+public class TabrisEnvironment implements TestRule {
 
   @Override
   public Statement apply( final Statement base, Description description ) {
@@ -37,12 +45,15 @@ public class RWTEnvironment implements TestRule {
           Fixture.setSkipResourceRegistration( true );
           Fixture.setUp();
           Fixture.fakePhase( PhaseId.PROCESS_ACTION );
-          TabrisTestUtil.mockRemoteObject();
+          Fixture.fakeClient( mock( TabrisClient.class ) );
+          RemoteObjectHelper.mockRemoteObject();
           base.evaluate();
         } catch( Throwable shouldNotHappen ) {
           throw shouldNotHappen;
         } finally {
-          Fixture.tearDown();
+          if( ContextProvider.hasContext() ) {
+            Fixture.tearDown();
+          }
         }
       }
     };
@@ -55,6 +66,18 @@ public class RWTEnvironment implements TestRule {
   public RemoteObject getServiceObject() {
     Connection connection = RWT.getUISession().getConnection();
     return ( ( ConnectionImpl )connection ).createServiceObject( "foo" );
+  }
+
+  public TabrisRequest getRequest() {
+    return new TabrisRequest( ( TestRequest )RWT.getRequest() );
+  }
+
+  public void resetThemes() {
+    ThemeManagerHelper.resetThemeManager();
+  }
+
+  public void setClient( Client client ) {
+    Fixture.fakeClient( client );
   }
 
   public void dispatchSet( JsonObject properties ) {
@@ -81,7 +104,16 @@ public class RWTEnvironment implements TestRule {
     ( ( TestRemoteObject )getServiceObject() ).getHandler().handleCall( methodName, parameters );
   }
 
-  public void runProcessAction() {
+  public TabrisRequest newRequest() {
+    TabrisRequest request = new TabrisRequest( Fixture.fakeNewRequest() );
     Fixture.fakePhase( PhaseId.PROCESS_ACTION );
+    return request;
   }
+
+  public TabrisRequest newGetRequest() {
+    TabrisRequest request = new TabrisRequest( Fixture.fakeNewGetRequest() );
+    Fixture.fakePhase( PhaseId.PROCESS_ACTION );
+    return request;
+  }
+
 }

@@ -16,8 +16,6 @@ import static org.mockito.Mockito.verify;
 
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.json.JsonValue;
-import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -25,7 +23,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.eclipsesource.tabris.test.RWTEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 import com.eclipsesource.tabris.widgets.ClientCanvas;
 import com.eclipsesource.tabris.widgets.ClientDrawListener;
 
@@ -33,7 +31,7 @@ import com.eclipsesource.tabris.widgets.ClientDrawListener;
 public class ClientCanvasOperatorTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   private Shell shell;
 
@@ -54,11 +52,10 @@ public class ClientCanvasOperatorTest {
     ClientDrawListener drawListener = mock( ClientDrawListener.class );
     clientCanvas.addClientDrawListener( drawListener );
     ClientCanvasOperator operator = new ClientCanvasOperator( clientCanvas );
-    Fixture.fakeNewRequest();
+    environment.newRequest();
     JsonObject drawings = new JsonObject();
     drawings.add( ClientCanvasOperator.DRAWINGS_PROPERTY, JsonValue.valueOf( ClientCanvasTestUtil.createDrawings( 1 ) ) );
-    Fixture.fakeNotifyOperation( WidgetUtil.getId( clientCanvas ), ClientCanvasOperator.DRAWING_EVENT, drawings );
-    environment.runProcessAction();
+    environment.dispatchNotify( ClientCanvasOperator.DRAWING_EVENT, drawings );
 
     operator.handleNotify( clientCanvas, ClientCanvasOperator.DRAWING_EVENT, drawings );
 
@@ -71,11 +68,10 @@ public class ClientCanvasOperatorTest {
     ClientDrawListener drawListener = mock( ClientDrawListener.class );
     clientCanvas.addClientDrawListener( drawListener );
     ClientCanvasOperator operator = new ClientCanvasOperator( clientCanvas );
-    Fixture.fakeNewRequest();
+    environment.newRequest();
     JsonObject drawings = new JsonObject();
     drawings.add( ClientCanvasOperator.DRAWINGS_PROPERTY, JsonValue.valueOf( ClientCanvasTestUtil.createDrawings( 1 ) ) );
-    Fixture.fakeNotifyOperation( WidgetUtil.getId( clientCanvas ), ClientCanvasOperator.DRAWING_EVENT, drawings );
-    environment.runProcessAction();
+    environment.dispatchNotify( ClientCanvasOperator.DRAWING_EVENT, drawings );
 
     operator.handleNotify( clientCanvas, ClientCanvasOperator.DRAWING_EVENT, drawings );
 

@@ -10,19 +10,14 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
-import static org.mockito.Mockito.mock;
-
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.eclipsesource.tabris.TabrisClient;
 import com.eclipsesource.tabris.internal.ZIndexStackLayout;
-import com.eclipsesource.tabris.test.RWTEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 import com.eclipsesource.tabris.ui.AbstractPage;
 import com.eclipsesource.tabris.ui.ActionConfiguration;
 import com.eclipsesource.tabris.ui.PageConfiguration;
@@ -33,12 +28,7 @@ import com.eclipsesource.tabris.ui.UIConfiguration;
 public class TabrisUIIntegrationTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
-
-  @Before
-  public void setUp() {
-    Fixture.fakeClient( mock( TabrisClient.class ) );
-  }
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   @Test
   public void testCanEnableActionInPageCreate() {

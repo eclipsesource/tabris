@@ -11,7 +11,6 @@
 package com.eclipsesource.tabris.widgets;
 
 import static com.eclipsesource.tabris.internal.Constants.EVENT_SELECTION;
-import static com.eclipsesource.tabris.test.TabrisTestUtil.mockRemoteObject;
 import static com.eclipsesource.tabris.widgets.ClientDialog.Severity.INFO;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
@@ -34,7 +33,7 @@ import org.junit.rules.ExpectedException;
 import org.mockito.ArgumentCaptor;
 
 import com.eclipsesource.tabris.internal.Constants;
-import com.eclipsesource.tabris.test.RWTEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 import com.eclipsesource.tabris.widgets.ClientDialog.ButtonType;
 import com.eclipsesource.tabris.widgets.ClientDialog.Severity;
 
@@ -42,7 +41,7 @@ import com.eclipsesource.tabris.widgets.ClientDialog.Severity;
 public class ClientDialogTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
@@ -72,7 +71,7 @@ public class ClientDialogTest {
 
   @Test
   public void testSetsTitleOnRemoteObject() {
-    RemoteObject remoteObject = mockRemoteObject();
+    RemoteObject remoteObject = environment.getRemoteObject();
     ClientDialog dialog = new ClientDialog();
 
     dialog.setTitle( "foo" );
@@ -101,7 +100,7 @@ public class ClientDialogTest {
 
   @Test
   public void testSetsMessageOnRemoteObject() {
-    RemoteObject remoteObject = mockRemoteObject();
+    RemoteObject remoteObject = environment.getRemoteObject();
     ClientDialog dialog = new ClientDialog();
 
     dialog.setMessage( "bar" );
@@ -139,7 +138,7 @@ public class ClientDialogTest {
 
   @Test
   public void testSetsSeverityOnRemoteObject() {
-    RemoteObject remoteObject = mockRemoteObject();
+    RemoteObject remoteObject = environment.getRemoteObject();
     ClientDialog dialog = new ClientDialog();
 
     dialog.setSeverity( INFO );
@@ -158,7 +157,7 @@ public class ClientDialogTest {
 
   @Test
   public void testOpenCreatesCallOperation() {
-    RemoteObject remoteObject = mockRemoteObject();
+    RemoteObject remoteObject = environment.getRemoteObject();
     ClientDialog dialog = new ClientDialog();
 
     dialog.open();
@@ -168,7 +167,7 @@ public class ClientDialogTest {
 
   @Test
   public void testCloseCreatesCallOperation() {
-    RemoteObject remoteObject = mockRemoteObject();
+    RemoteObject remoteObject = environment.getRemoteObject();
     ClientDialog dialog = new ClientDialog();
 
     dialog.close();
@@ -207,7 +206,7 @@ public class ClientDialogTest {
 
   @Test
   public void testSetsButtonSetsButtonPropertyOnRemoteObject() {
-    RemoteObject remoteObject = mockRemoteObject();
+    RemoteObject remoteObject = environment.getRemoteObject();
     ClientDialog dialog = new ClientDialog();
     Listener listener = mock( Listener.class );
 
@@ -218,7 +217,7 @@ public class ClientDialogTest {
 
   @Test
   public void testSetsButtonCreateListenOnRemoteObject() {
-    RemoteObject remoteObject = mockRemoteObject();
+    RemoteObject remoteObject = environment.getRemoteObject();
     ClientDialog dialog = new ClientDialog();
     Listener listener = mock( Listener.class );
 
@@ -229,7 +228,7 @@ public class ClientDialogTest {
 
   @Test
   public void testSetsButtonCreateListenOnRemoteObjectOnce() {
-    RemoteObject remoteObject = mockRemoteObject();
+    RemoteObject remoteObject = environment.getRemoteObject();
     ClientDialog dialog = new ClientDialog();
     Listener listener = mock( Listener.class );
 
@@ -241,7 +240,7 @@ public class ClientDialogTest {
 
   @Test
   public void testSetsButtonWithoutListenerSetsButtonPropertyOnRemoteObject() {
-    RemoteObject remoteObject = mockRemoteObject();
+    RemoteObject remoteObject = environment.getRemoteObject();
     ClientDialog dialog = new ClientDialog();
 
     dialog.setButton( ButtonType.OK, "bar" );
@@ -323,7 +322,7 @@ public class ClientDialogTest {
 
   @Test
   public void testAddClientDialogListenerSendsListen() {
-    RemoteObject remoteObject = mockRemoteObject();
+    RemoteObject remoteObject = environment.getRemoteObject();
     ClientDialog dialog = new ClientDialog();
 
     dialog.addClientDialogListener( mock( ClientDialogListener.class ) );
@@ -333,7 +332,7 @@ public class ClientDialogTest {
 
   @Test
   public void testAddClientDialogListenersSendsListenOnce() {
-    RemoteObject remoteObject = mockRemoteObject();
+    RemoteObject remoteObject = environment.getRemoteObject();
     ClientDialog dialog = new ClientDialog();
 
     dialog.addClientDialogListener( mock( ClientDialogListener.class ) );
@@ -344,7 +343,7 @@ public class ClientDialogTest {
 
   @Test
   public void testRemoveClientDialogListenerSendsListen() {
-    RemoteObject remoteObject = mockRemoteObject();
+    RemoteObject remoteObject = environment.getRemoteObject();
     ClientDialog dialog = new ClientDialog();
     ClientDialogListener listener = mock( ClientDialogListener.class );
     dialog.addClientDialogListener( listener );

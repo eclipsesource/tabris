@@ -41,13 +41,13 @@ import org.mockito.InOrder;
 
 import com.eclipsesource.tabris.internal.SwipeItemHolder;
 import com.eclipsesource.tabris.internal.ZIndexStackLayout;
-import com.eclipsesource.tabris.test.RWTEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
 public class SwipeTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   private Shell shell;
 

@@ -28,14 +28,13 @@ import com.eclipsesource.tabris.interaction.AppLauncher;
 import com.eclipsesource.tabris.interaction.LaunchOptions;
 import com.eclipsesource.tabris.interaction.LaunchOptions.App;
 import com.eclipsesource.tabris.interaction.MailOptions;
-import com.eclipsesource.tabris.test.RWTEnvironment;
-import com.eclipsesource.tabris.test.TabrisTestUtil;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
 public class AppLauncherTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   @Test
   public void testIsSerializable() {
@@ -51,7 +50,7 @@ public class AppLauncherTest {
 
   @Test
   public void testOpenCreatsCallOperation() {
-    RemoteObject remoteObject = TabrisTestUtil.mockRemoteObject();
+    RemoteObject remoteObject = environment.getRemoteObject();
     AppLauncher launcher = new AppLauncherImpl();
 
     launcher.open( new MailOptions( "foo" ) );
@@ -63,7 +62,7 @@ public class AppLauncherTest {
 
   @Test
   public void testOpenCreatsCallOperationWithProperties() {
-    RemoteObject remoteObject = TabrisTestUtil.mockRemoteObject();
+    RemoteObject remoteObject = environment.getRemoteObject();
     AppLauncher launcher = new AppLauncherImpl();
     LaunchOptions options = new MailOptions( "foo" );
     options.add( "foo", "bar" );
@@ -79,7 +78,7 @@ public class AppLauncherTest {
 
   @Test
   public void testOpenUrlCreatesCallOperation() {
-    RemoteObject remoteObject = TabrisTestUtil.mockRemoteObject();
+    RemoteObject remoteObject = environment.getRemoteObject();
     AppLauncher launcher = new AppLauncherImpl();
 
     launcher.openUrl( "http://foo.bar" );

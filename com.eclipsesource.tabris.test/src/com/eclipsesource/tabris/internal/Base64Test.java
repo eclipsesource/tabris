@@ -6,11 +6,9 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Random;
 
-import org.junit.Test;
-
 import junit.framework.TestCase;
 
-import com.eclipsesource.tabris.internal.Base64;
+import org.junit.Test;
 
 public class Base64Test extends TestCase {
 

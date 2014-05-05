@@ -11,7 +11,6 @@
 package com.eclipsesource.tabris.widgets;
 
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.CLIENT_CANVAS;
-import static org.eclipse.rap.rwt.lifecycle.WidgetUtil.getId;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -26,7 +25,6 @@ import java.util.List;
 
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.internal.lifecycle.WidgetLifeCycleAdapter;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -42,14 +40,14 @@ import com.eclipsesource.tabris.internal.ClientCanvasLCA;
 import com.eclipsesource.tabris.internal.ClientCanvasOperator;
 import com.eclipsesource.tabris.internal.ClientCanvasTestUtil;
 import com.eclipsesource.tabris.internal.DrawingsCache;
-import com.eclipsesource.tabris.test.RWTEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
 @SuppressWarnings("restriction")
 public class ClientCanvasTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   private ClientCanvas clientCanvas;
 
@@ -145,9 +143,7 @@ public class ClientCanvasTest {
     clientCanvas.addPaintListener( paintListener );
 
     fakeDrawEvent();
-    JsonObject parameters = new JsonObject();
-    parameters.add( ClientCanvasOperator.DRAWINGS_PROPERTY, ClientCanvasTestUtil.createDrawingsWithoutLineWidth() );
-    Fixture.fakeNewRequest();
+    environment.newRequest();
     fakeDrawEvent();
 
     assertEquals( 1, clientCanvas.getAdapter( DrawingsCache.class ).getCachedDrawings().size() );
@@ -159,7 +155,7 @@ public class ClientCanvasTest {
     clientCanvas.addPaintListener( listener );
 
     clientCanvas.clear();
-    Fixture.fakeNewRequest();
+    environment.newRequest();
     fakeDrawEvent();
 
     assertTrue( listener.wasCalled() );
@@ -189,7 +185,6 @@ public class ClientCanvasTest {
     clientCanvas.addPaintListener( listener );
     fakeDrawEvent();
 
-    environment.runProcessAction();
     clientCanvas.undo();
 
     assertTrue( listener.wasCalled() );
@@ -220,7 +215,6 @@ public class ClientCanvasTest {
     CheckPaintListener listener = new CheckPaintListener();
     clientCanvas.addPaintListener( listener );
     fakeDrawEvent();
-    environment.runProcessAction();
     clientCanvas.undo();
 
     clientCanvas.redo();
@@ -304,11 +298,9 @@ public class ClientCanvasTest {
   }
 
   private void fakeDrawEvent() {
+    environment.getRemoteObject().setHandler( new ClientCanvasOperator( clientCanvas ) );
     JsonObject parameters = new JsonObject();
     parameters.add( ClientCanvasOperator.DRAWINGS_PROPERTY, ClientCanvasTestUtil.createDrawings( 2 ) );
-    Fixture.executeLifeCycleFromServerThread();
-    Fixture.fakeNewRequest();
-    Fixture.fakeNotifyOperation( getId( clientCanvas ), ClientCanvasOperator.DRAWING_EVENT, parameters );
-    Fixture.executeLifeCycleFromServerThread();
+    environment.dispatchNotify( ClientCanvasOperator.DRAWING_EVENT, parameters );
   }
 }

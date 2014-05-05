@@ -21,21 +21,21 @@ import static org.eclipse.rap.rwt.internal.lifecycle.WidgetLCAUtil.preserveListe
 import static org.eclipse.rap.rwt.internal.lifecycle.WidgetLCAUtil.preserveProperty;
 import static org.eclipse.rap.rwt.internal.lifecycle.WidgetLCAUtil.renderListener;
 import static org.eclipse.rap.rwt.internal.lifecycle.WidgetLCAUtil.renderProperty;
-import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.readEventPropertyValue;
-import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.wasEventSent;
-import static org.eclipse.rap.rwt.lifecycle.WidgetUtil.getId;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.internal.lifecycle.AbstractWidgetLCA;
 import org.eclipse.rap.rwt.internal.lifecycle.ControlLCAUtil;
 import org.eclipse.rap.rwt.internal.lifecycle.ProcessActionRunner;
 import org.eclipse.rap.rwt.internal.protocol.RemoteObjectFactory;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.remote.RemoteObject;
+import org.eclipse.swt.internal.widgets.compositekit.CompositeOperationHandler;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
 
@@ -50,50 +50,6 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA implements Serializ
 
   public static enum PlaybackOptions {
     SPEED, REPEAT, CONTROLS_VISIBLE, PLAYBACK, PRESENTATION, HEAD_POSITION
-  }
-
-  @Override
-  public void readData( Widget widget ) {
-    readPlaybackMode( widget );
-    readPresentationMode( widget );
-  }
-
-  private void readPlaybackMode( Widget widget ) {
-    if( wasEventSent( getId( widget ), EVENT_PLAYBACK ) ) {
-      String playbackMode = readEventPropertyValue( getId( widget ), EVENT_PLAYBACK, PROPERTY_PLAYBACK ).asString();
-      Playback newMode = Playback.valueOf( playbackMode.toUpperCase() );
-      Video video = ( Video )widget;
-      video.getAdapter( PlaybackAdapter.class ).setPlaybackMode( newMode );
-      notifyListenersAboutPlaybackModeChange( newMode, video );
-    }
-  }
-
-  private void notifyListenersAboutPlaybackModeChange( final Playback newMode, final Video video ) {
-    ProcessActionRunner.add( new Runnable() {
-      @Override
-      public void run() {
-        video.getAdapter( PlaybackAdapter.class ).firePlaybackChange( newMode );
-      }
-    } );
-  }
-
-  private void readPresentationMode( Widget widget ) {
-    if( wasEventSent( getId( widget ), EVENT_PRESENTATION ) ) {
-      String presentationMode = readEventPropertyValue( getId( widget ), EVENT_PRESENTATION, PROPERTY_PRESENTATION ).asString();
-      Presentation newMode = Presentation.valueOf( presentationMode.toUpperCase() );
-      Video video = ( Video )widget;
-      video.getAdapter( PlaybackAdapter.class ).getOptions().put( PlaybackOptions.PRESENTATION, newMode );
-      notifyListenersAboutPresentationModeChange( newMode, video );
-    }
-  }
-
-  private void notifyListenersAboutPresentationModeChange( final Presentation newMode, final Video video ) {
-    ProcessActionRunner.add( new Runnable() {
-      @Override
-      public void run() {
-        video.getAdapter( PlaybackAdapter.class ).firePresentationChange( newMode );
-      }
-    } );
   }
 
   @Override
@@ -124,10 +80,63 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA implements Serializ
 
   @Override
   public void renderInitialization( Widget widget ) throws IOException {
-    Video video = ( Video ) widget;
+    Video video = ( Video )widget;
     RemoteObject remoteObject = RemoteObjectFactory.createRemoteObject( video, TYPE_VIDEO );
+    remoteObject.setHandler( new VideoOperationHandler( video ) );
     remoteObject.set( PROPERTY_PARENT, WidgetUtil.getId( video.getParent() ) );
     remoteObject.set( PROPERTY_URL, video.getURL().toString() );
+  }
+
+  public static class VideoOperationHandler extends CompositeOperationHandler {
+
+    public VideoOperationHandler( Composite composite ) {
+      super( composite );
+    }
+
+    @Override
+    public void handleNotify( Composite control, String eventName, JsonObject properties ) {
+      if( eventName.equals( EVENT_PLAYBACK ) ) {
+        handlePlaybackMode( control, properties );
+      } else if( eventName.equals( EVENT_PRESENTATION ) ) {
+        handlePresentationMode( control, properties );
+      } else {
+        super.handleNotify( control, eventName, properties );
+      }
+    }
+
+    private void handlePlaybackMode( Widget widget, JsonObject properties ) {
+      String playbackMode = properties.get( PROPERTY_PLAYBACK ).asString();
+      Playback newMode = Playback.valueOf( playbackMode.toUpperCase() );
+      Video video = ( Video )widget;
+      video.getAdapter( PlaybackAdapter.class ).setPlaybackMode( newMode );
+      notifyListenersAboutPlaybackModeChange( newMode, video );
+    }
+
+    private void notifyListenersAboutPlaybackModeChange( final Playback newMode, final Video video ) {
+      ProcessActionRunner.add( new Runnable() {
+        @Override
+        public void run() {
+          video.getAdapter( PlaybackAdapter.class ).firePlaybackChange( newMode );
+        }
+      } );
+    }
+
+    private void handlePresentationMode( Widget widget, JsonObject properties ) {
+      String presentationMode = properties.get( PROPERTY_PRESENTATION ).asString();
+      Presentation newMode = Presentation.valueOf( presentationMode.toUpperCase() );
+      Video video = ( Video )widget;
+      video.getAdapter( PlaybackAdapter.class ).getOptions().put( PlaybackOptions.PRESENTATION, newMode );
+      notifyListenersAboutPresentationModeChange( newMode, video );
+    }
+
+    private void notifyListenersAboutPresentationModeChange( final Presentation newMode, final Video video ) {
+      ProcessActionRunner.add( new Runnable() {
+        @Override
+        public void run() {
+          video.getAdapter( PlaybackAdapter.class ).firePresentationChange( newMode );
+        }
+      } );
+    }
   }
 
   private static Object jsonizeValue( Entry<PlaybackOptions, Object> entry ) {

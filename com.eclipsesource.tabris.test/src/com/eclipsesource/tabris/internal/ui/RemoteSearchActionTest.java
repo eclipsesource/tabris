@@ -37,7 +37,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
-import com.eclipsesource.tabris.test.RWTEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 import com.eclipsesource.tabris.ui.UI;
 import com.eclipsesource.tabris.ui.UIConfiguration;
 import com.eclipsesource.tabris.ui.action.Proposal;
@@ -50,7 +50,7 @@ import com.eclipsesource.tabris.ui.action.SearchActionListener;
 public class RemoteSearchActionTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   private RemoteObject remoteObject;
   private ActionDescriptor actionDescriptor;

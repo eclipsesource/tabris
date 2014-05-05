@@ -11,7 +11,6 @@
 package com.eclipsesource.tabris.internal;
 
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
-import static org.eclipse.rap.rwt.internal.protocol.ProtocolUtil.readEventPropertyValue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,6 @@ import java.util.List;
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.json.JsonValue;
 import org.eclipse.rap.rwt.internal.lifecycle.ProcessActionRunner;
-import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.swt.internal.widgets.canvaskit.CanvasOperationHandler;
 import org.eclipse.swt.widgets.Canvas;
 
@@ -41,19 +39,19 @@ public class ClientCanvasOperator extends CanvasOperationHandler {
   @Override
   public void handleNotify( final Canvas control, String eventName, JsonObject properties ) {
     if( eventName.equals( DRAWING_EVENT ) ) {
-      handleDrawings( control );
+      handleDrawings( control, properties );
     } else {
       super.handleNotify( control, eventName, properties );
     }
   }
 
-  private void handleDrawings( final Canvas control ) {
+  private void handleDrawings( final Canvas control, final JsonObject properties ) {
     ProcessActionRunner.add( new Runnable() {
 
       @Override
       public void run() {
         DrawingsCache cache = control.getAdapter( DrawingsCache.class );
-        JsonValue drawings = readEventPropertyValue( WidgetUtil.getId( control ), DRAWING_EVENT, DRAWINGS_PROPERTY );
+        JsonValue drawings = properties.get( DRAWINGS_PROPERTY );
         if( drawings != null ) {
           cache.cache( drawings.asString() );
           cache.clearRemoved();

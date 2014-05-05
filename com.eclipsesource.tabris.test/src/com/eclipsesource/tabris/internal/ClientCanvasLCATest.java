@@ -28,7 +28,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.eclipsesource.tabris.test.RWTEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 import com.eclipsesource.tabris.widgets.ClientCanvas;
 
 
@@ -36,7 +36,7 @@ import com.eclipsesource.tabris.widgets.ClientCanvas;
 public class ClientCanvasLCATest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   private ClientCanvas clientCanvas;
 

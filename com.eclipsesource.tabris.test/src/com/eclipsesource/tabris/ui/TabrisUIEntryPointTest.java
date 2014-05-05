@@ -22,28 +22,25 @@ import java.io.Serializable;
 import org.eclipse.rap.rwt.internal.application.ApplicationContextImpl;
 import org.eclipse.rap.rwt.internal.lifecycle.LifeCycle;
 import org.eclipse.rap.rwt.internal.lifecycle.LifeCycleFactory;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.eclipsesource.tabris.internal.TabrisClientImpl;
-import com.eclipsesource.tabris.test.RWTEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
 @SuppressWarnings("restriction")
 public class TabrisUIEntryPointTest {
 
   @Rule
-  public RWTEnvironment environment = new RWTEnvironment();
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   @Before
   public void setUp() {
     LifeCycleFactory lifeCycleFactory = getApplicationContext().getLifeCycleFactory();
     lifeCycleFactory.configure( TestLifeCycle.class );
     lifeCycleFactory.activate();
-    Fixture.fakeClient( new TabrisClientImpl() );
   }
 
   @Test
