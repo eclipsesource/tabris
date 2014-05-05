@@ -20,7 +20,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -29,28 +28,26 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.passepartout.internal.RelayoutListener;
 import com.eclipsesource.tabris.passepartout.internal.condition.AlwaysTrueContidtion;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
 @SuppressWarnings("restriction")
 public class FluidGridLayoutTest {
 
+  @Rule
+  public TabrisEnvironment environment = new TabrisEnvironment();
+
   private Shell shell;
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     shell = new Shell( new Display() );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test( expected = IllegalArgumentException.class )

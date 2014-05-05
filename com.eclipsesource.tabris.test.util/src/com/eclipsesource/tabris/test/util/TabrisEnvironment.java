@@ -24,6 +24,8 @@ import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.rap.rwt.testfixture.TestRequest;
 import org.eclipse.rap.rwt.testfixture.internal.engine.ThemeManagerHelper;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
@@ -114,6 +116,10 @@ public class TabrisEnvironment implements TestRule {
     TabrisRequest request = new TabrisRequest( Fixture.fakeNewGetRequest() );
     Fixture.fakePhase( PhaseId.PROCESS_ACTION );
     return request;
+  }
+
+  public Image getTestImage() {
+    return new Image( Display.getCurrent(), Fixture.class.getResourceAsStream( "/" + Fixture.IMAGE1 ) );
   }
 
 }

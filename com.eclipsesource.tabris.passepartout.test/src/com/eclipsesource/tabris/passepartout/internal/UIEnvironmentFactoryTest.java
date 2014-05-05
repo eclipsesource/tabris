@@ -12,34 +12,31 @@ package com.eclipsesource.tabris.passepartout.internal;
 
 import static org.junit.Assert.assertEquals;
 
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.passepartout.Bounds;
 import com.eclipsesource.tabris.passepartout.UIEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
 public class UIEnvironmentFactoryTest {
+
+  @Rule
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   private Shell shell;
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     shell = new Shell( new Display() );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test( expected = IllegalArgumentException.class )

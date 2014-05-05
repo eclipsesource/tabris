@@ -12,24 +12,23 @@ package com.eclipsesource.tabris.passepartout.internal.instruction;
 
 import static org.junit.Assert.assertSame;
 
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
 public class ImageInstructionTest {
 
+  @Rule
+  public TabrisEnvironment environment = new TabrisEnvironment();
+
   @Before
   public void setUp() {
-    Fixture.setUp();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
+    new Display();
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -39,8 +38,7 @@ public class ImageInstructionTest {
 
   @Test
   public void testHasImage() {
-    Display display = new Display();
-    Image image = new Image( display, Fixture.class.getResourceAsStream( "/" + Fixture.IMAGE1 ) );
+    Image image = environment.getTestImage();
     ImageInstruction instruction = new ImageInstruction( image );
 
     Image actualimage = instruction.getImage();

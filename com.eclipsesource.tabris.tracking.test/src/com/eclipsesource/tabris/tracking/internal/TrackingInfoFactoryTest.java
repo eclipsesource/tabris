@@ -23,38 +23,40 @@ import java.util.Locale;
 import java.util.UUID;
 
 import org.eclipse.rap.rwt.client.Client;
-import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.eclipse.rap.rwt.testfixture.TestRequest;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.ClientStore;
 import com.eclipsesource.tabris.app.App;
 import com.eclipsesource.tabris.device.ClientDevice;
 import com.eclipsesource.tabris.device.ClientDevice.Platform;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
+import com.eclipsesource.tabris.test.util.TabrisRequest;
 import com.eclipsesource.tabris.tracking.TrackingInfo;
 import com.eclipsesource.tabris.ui.UI;
 
 
 public class TrackingInfoFactoryTest {
 
+  @Rule
+  public TabrisEnvironment environment = new TabrisEnvironment();
+
   private UI ui;
   private ClientStore clientStore;
-  private TestRequest request;
+  private TabrisRequest request;
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     Client client = mock( Client.class );
     mockApp( client );
     mockDevice( client );
     mockClientStore( client );
-    Fixture.fakeClient( client );
-    request = Fixture.fakeNewRequest();
+    environment.setClient( client );
+    request = environment.newRequest();
     mockUi();
   }
 
@@ -87,11 +89,6 @@ public class TrackingInfoFactoryTest {
   private void mockClientStore( Client client ) {
     clientStore = mock( ClientStore.class );
     when( client.getService( ClientStore.class ) ).thenReturn( clientStore );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test

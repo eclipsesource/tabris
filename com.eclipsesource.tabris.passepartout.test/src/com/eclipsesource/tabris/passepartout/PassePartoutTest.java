@@ -18,11 +18,8 @@ import static org.mockito.Mockito.mock;
 
 import java.math.BigDecimal;
 
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,21 +38,19 @@ import com.eclipsesource.tabris.passepartout.internal.instruction.MarginInstruct
 import com.eclipsesource.tabris.passepartout.internal.unit.Em;
 import com.eclipsesource.tabris.passepartout.internal.unit.Percentage;
 import com.eclipsesource.tabris.passepartout.internal.unit.Pixel;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
 public class PassePartoutTest {
+
+  @org.junit.Rule
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   private Display display;
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     display = new Display();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test
@@ -73,23 +68,23 @@ public class PassePartoutTest {
   }
 
   @Test
-    public void testCreateFluidGridData() {
-      Rule rule1 = mock( Rule.class );
-      Rule rule2 = mock( Rule.class );
-  
-      FluidGridData data = PassePartout.createFluidGridData( rule1, rule2 );
-  
-      assertNotNull( data );
-      assertEquals( rule1, data.getRules().get( 1 ) );
-      assertEquals( rule2, data.getRules().get( 2 ) );
-    }
+  public void testCreateFluidGridData() {
+    Rule rule1 = mock( Rule.class );
+    Rule rule2 = mock( Rule.class );
+
+    FluidGridData data = PassePartout.createFluidGridData( rule1, rule2 );
+
+    assertNotNull( data );
+    assertEquals( rule1, data.getRules().get( 1 ) );
+    assertEquals( rule2, data.getRules().get( 2 ) );
+  }
 
   @Test( expected = IllegalArgumentException.class )
-    public void testCreateFluidGridDataFailsWithNullRule() {
-      Rule rule1 = mock( Rule.class );
-  
-      PassePartout.createFluidGridData( rule1, null );
-    }
+  public void testCreateFluidGridDataFailsWithNullRule() {
+    Rule rule1 = mock( Rule.class );
+
+    PassePartout.createFluidGridData( rule1, null );
+  }
 
   @Test
   public void testCreateResourceCreatesResource() {
@@ -280,16 +275,14 @@ public class PassePartoutTest {
 
   @Test
   public void testImageCreatesImageInstruction() {
-    Instruction instruction = PassePartout.image( new Image( display,
-                                                             Fixture.class.getResourceAsStream( "/" + Fixture.IMAGE1 ) ) );
+    Instruction instruction = PassePartout.image( environment.getTestImage() );
 
     assertTrue( instruction instanceof ImageInstruction );
   }
 
   @Test
   public void testBackgroundImageCreatesBackgroundImageInstruction() {
-    Instruction instruction = PassePartout.backgroundImage( new Image( display,
-                                                                       Fixture.class.getResourceAsStream( "/" + Fixture.IMAGE1 ) ) );
+    Instruction instruction = PassePartout.backgroundImage( environment.getTestImage() );
 
     assertTrue( instruction instanceof BackgroundImageInstruction );
   }

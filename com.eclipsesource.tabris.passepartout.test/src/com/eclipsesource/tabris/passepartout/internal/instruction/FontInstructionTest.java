@@ -12,24 +12,25 @@ package com.eclipsesource.tabris.passepartout.internal.instruction;
 
 import static org.junit.Assert.assertSame;
 
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Display;
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
 public class FontInstructionTest {
 
+  @Rule
+  public TabrisEnvironment environment = new TabrisEnvironment();
+
+  private Display display;
+
   @Before
   public void setUp() {
-    Fixture.setUp();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
+    display = new Display();
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -39,7 +40,6 @@ public class FontInstructionTest {
 
   @Test
   public void testHasFont() {
-    Display display = new Display();
     Font font = display.getSystemFont();
     FontInstruction instruction = new FontInstruction( font );
 

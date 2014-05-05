@@ -21,14 +21,13 @@ import static org.mockito.Mockito.when;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.List;
 
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.widgets.Display;
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
-import com.eclipsesource.tabris.TabrisClient;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 import com.eclipsesource.tabris.tracking.TrackingEvent.EventType;
 import com.eclipsesource.tabris.tracking.internal.EventDispatcher;
 import com.eclipsesource.tabris.ui.Action;
@@ -44,18 +43,14 @@ import com.eclipsesource.tabris.ui.action.SearchActionListener;
 
 public class TrackingTest {
 
+  @Rule
+  public TabrisEnvironment environment = new TabrisEnvironment();
+
   private Display display;
 
   @Before
   public void setUp() {
-    Fixture.setUp();
-    Fixture.fakeClient( mock( TabrisClient.class ) );
     display = new Display();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test( expected = IllegalArgumentException.class )

@@ -12,25 +12,24 @@ package com.eclipsesource.tabris.passepartout.internal.instruction;
 
 import static org.junit.Assert.assertSame;
 
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
 public class BackgroundInstructionTest {
 
+  @Rule
+  public TabrisEnvironment environment = new TabrisEnvironment();
+
   @Before
   public void setUp() {
-    Fixture.setUp();
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
+    new Display();
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -40,8 +39,7 @@ public class BackgroundInstructionTest {
 
   @Test
   public void testHasColor() {
-    Display display = new Display();
-    Color color = display.getSystemColor( SWT.COLOR_BLACK );
+    Color color = Display.getCurrent().getSystemColor( SWT.COLOR_BLACK );
     BackgroundInstruction instruction = new BackgroundInstruction( color );
 
     Color actualColor = instruction.getColor();

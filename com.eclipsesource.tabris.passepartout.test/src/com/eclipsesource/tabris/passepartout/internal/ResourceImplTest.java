@@ -15,7 +15,6 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import org.eclipse.jface.resource.FontDescriptor;
-import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -28,7 +27,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Widget;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,21 +38,19 @@ import com.eclipsesource.tabris.passepartout.internal.instruction.BackgroundInst
 import com.eclipsesource.tabris.passepartout.internal.instruction.FontInstruction;
 import com.eclipsesource.tabris.passepartout.internal.instruction.ForegroundInstruction;
 import com.eclipsesource.tabris.passepartout.internal.instruction.ImageInstruction;
+import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
 public class ResourceImplTest {
+
+  @org.junit.Rule
+  public TabrisEnvironment environment = new TabrisEnvironment();
 
   private Shell shell;
 
   @Before
   public void setUp() {
-    Fixture.setUp();
     shell = new Shell( new Display() );
-  }
-
-  @After
-  public void tearDown() {
-    Fixture.tearDown();
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -124,7 +120,7 @@ public class ResourceImplTest {
 
   @Test
   public void testAppliesBackgroundImage() {
-    Image image = new Image( shell.getDisplay(), Fixture.class.getResourceAsStream( "/" + Fixture.IMAGE1 ) );
+    Image image = environment.getTestImage();
     Rule rule = PassePartout.when( new AlwaysTrueContidtion() ).then( new BackgroundImageInstruction( image ) );
     ResourceImpl resource = new ResourceImpl( rule );
 
@@ -136,7 +132,7 @@ public class ResourceImplTest {
   @Test
   public void testAppliesImageOnLabel() {
     Label label = new Label( shell, SWT.NONE );
-    Image image = new Image( shell.getDisplay(), Fixture.class.getResourceAsStream( "/" + Fixture.IMAGE1 ) );
+    Image image = environment.getTestImage();
     Rule rule = PassePartout.when( new AlwaysTrueContidtion() ).then( new ImageInstruction( image ) );
     ResourceImpl resource = new ResourceImpl( rule );
 
@@ -148,7 +144,7 @@ public class ResourceImplTest {
   @Test
   public void testAppliesImageOnButton() {
     Button button = new Button( shell, SWT.PUSH );
-    Image image = new Image( shell.getDisplay(), Fixture.class.getResourceAsStream( "/" + Fixture.IMAGE1 ) );
+    Image image = environment.getTestImage();
     Rule rule = PassePartout.when( new AlwaysTrueContidtion() ).then( new ImageInstruction( image ) );
     ResourceImpl resource = new ResourceImpl( rule );
 
@@ -161,7 +157,7 @@ public class ResourceImplTest {
   public void testAppliesImageOnItem() {
     ToolBar toolBar = new ToolBar( shell, SWT.NONE );
     ToolItem toolItem = new ToolItem( toolBar, SWT.NONE );
-    Image image = new Image( shell.getDisplay(), Fixture.class.getResourceAsStream( "/" + Fixture.IMAGE1 ) );
+    Image image = environment.getTestImage();
     Rule rule = PassePartout.when( new AlwaysTrueContidtion() ).then( new ImageInstruction( image ) );
     ResourceImpl resource = new ResourceImpl( rule );
     shell.open();
