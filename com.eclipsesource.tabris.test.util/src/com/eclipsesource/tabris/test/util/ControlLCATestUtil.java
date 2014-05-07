@@ -19,7 +19,7 @@ import static org.mockito.Mockito.mock;
 import java.io.IOException;
 
 import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.eclipse.rap.rwt.testfixture.Message;
+import org.eclipse.rap.rwt.testfixture.TestMessage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Listener;
@@ -109,7 +109,7 @@ public class ControlLCATestUtil {
     control.addListener( eventType, listener );
     getLCA( control ).renderChanges( control );
 
-    Message message = Fixture.getProtocolMessage();
+    TestMessage message = Fixture.getProtocolMessage();
     String listenerName = getListenerName( eventType );
     assertTrue( message.findListenProperty( control, listenerName ).asBoolean() );
 
@@ -127,7 +127,7 @@ public class ControlLCATestUtil {
     control.removeListener( eventType, listener );
     getLCA( control ).renderChanges( control );
 
-    Message message = Fixture.getProtocolMessage();
+    TestMessage message = Fixture.getProtocolMessage();
     String listenerName = getListenerName( eventType );
     assertFalse( message.findListenProperty( control, listenerName ).asBoolean() );
   }
@@ -143,7 +143,7 @@ public class ControlLCATestUtil {
     Fixture.preserveWidgets();
     getLCA( control ).renderChanges( control );
 
-    Message message = Fixture.getProtocolMessage();
+    TestMessage message = Fixture.getProtocolMessage();
     String listenerName = getListenerName( eventType );
     assertNull( message.findListenOperation( control, listenerName ) );
 

@@ -14,12 +14,12 @@ import java.util.List;
 
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.testfixture.Fixture;
-import org.eclipse.rap.rwt.testfixture.Message;
-import org.eclipse.rap.rwt.testfixture.Message.CallOperation;
-import org.eclipse.rap.rwt.testfixture.Message.CreateOperation;
-import org.eclipse.rap.rwt.testfixture.Message.ListenOperation;
-import org.eclipse.rap.rwt.testfixture.Message.Operation;
-import org.eclipse.rap.rwt.testfixture.Message.SetOperation;
+import org.eclipse.rap.rwt.testfixture.TestMessage;
+import org.eclipse.rap.rwt.testfixture.TestMessage.CallOperation;
+import org.eclipse.rap.rwt.testfixture.TestMessage.CreateOperation;
+import org.eclipse.rap.rwt.testfixture.TestMessage.ListenOperation;
+import org.eclipse.rap.rwt.testfixture.TestMessage.Operation;
+import org.eclipse.rap.rwt.testfixture.TestMessage.SetOperation;
 
 
 public class MessageUtil {
@@ -30,7 +30,7 @@ public class MessageUtil {
 
   public static boolean hasCreateOperation( String type ) {
     boolean found = false;
-    Message protocolMessage = Fixture.getProtocolMessage();
+    TestMessage protocolMessage = Fixture.getProtocolMessage();
     int operationCount = protocolMessage.getOperationCount();
     for( int i = 0; i < operationCount; i++ ) {
       Operation operation = protocolMessage.getOperation( i );
@@ -46,7 +46,7 @@ public class MessageUtil {
 
   public static boolean isParentOfCreate( String type, String parentId ) {
     boolean found = false;
-    Message protocolMessage = Fixture.getProtocolMessage();
+    TestMessage protocolMessage = Fixture.getProtocolMessage();
     int operationCount = protocolMessage.getOperationCount();
     for( int i = 0; i < operationCount; i++ ) {
       Operation operation = protocolMessage.getOperation( i );
@@ -65,7 +65,7 @@ public class MessageUtil {
   }
 
   public static boolean hasOperation( String target, OperationType type, String operationName ) {
-    Message message = Fixture.getProtocolMessage();
+    TestMessage message = Fixture.getProtocolMessage();
     if( type == OperationType.CREATE ) {
       CreateOperation operation = message.findCreateOperation( target );
       if( operation != null ) {
@@ -91,7 +91,7 @@ public class MessageUtil {
   }
 
   public static JsonObject getOperationProperties( String target, OperationType type, String operationName ) {
-    Message message = Fixture.getProtocolMessage();
+    TestMessage message = Fixture.getProtocolMessage();
     if( type == OperationType.CREATE ) {
       CreateOperation operation = message.findCreateOperation( target );
       if( operation != null ) {
@@ -116,8 +116,8 @@ public class MessageUtil {
     return new JsonObject();
   }
 
-  private static SetOperation findSetOperation( Message message, String target ) {
-    Message protocolMessage = Fixture.getProtocolMessage();
+  private static SetOperation findSetOperation( TestMessage message, String target ) {
+    TestMessage protocolMessage = Fixture.getProtocolMessage();
     int operationCount = protocolMessage.getOperationCount();
     for( int i = 0; i < operationCount; i++ ) {
       Operation operation = protocolMessage.getOperation( i );
@@ -131,8 +131,8 @@ public class MessageUtil {
     return null;
   }
 
-  private static ListenOperation findListenOperation( Message message, String target ) {
-    Message protocolMessage = Fixture.getProtocolMessage();
+  private static ListenOperation findListenOperation( TestMessage message, String target ) {
+    TestMessage protocolMessage = Fixture.getProtocolMessage();
     int operationCount = protocolMessage.getOperationCount();
     for( int i = 0; i < operationCount; i++ ) {
       Operation operation = protocolMessage.getOperation( i );
