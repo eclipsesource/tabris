@@ -17,6 +17,7 @@ import static org.mockito.Mockito.verify;
 
 import java.io.Serializable;
 
+import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.widgets.Widget;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,6 +62,20 @@ public class WidgetDecoratorTest {
     decorator.showLocalTouch( false );
 
     verify( widget ).setData( SHOW_TOUCH.getKey(), Boolean.FALSE );
+  }
+
+  @Test
+  public void testEnablesMarkup() {
+    decorator.enableMarkup( true );
+
+    verify( widget ).setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
+  }
+
+  @Test
+  public void testDisablesMarkup() {
+    decorator.enableMarkup( false );
+
+    verify( widget ).setData( RWT.MARKUP_ENABLED, Boolean.FALSE );
   }
 
 }

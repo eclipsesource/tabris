@@ -16,6 +16,7 @@ import static com.eclipsesource.tabris.internal.WidgetsUtil.setData;
 
 import java.io.Serializable;
 
+import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.widgets.Widget;
 
 
@@ -67,6 +68,21 @@ public class WidgetDecorator<T extends WidgetDecorator> implements Serializable 
   @SuppressWarnings("unchecked")
   public T showLocalTouch( boolean show ) {
     setData( widget, SHOW_TOUCH, Boolean.valueOf( show ) );
+    return ( T )this;
+  }
+
+  /**
+   * <p>
+   * Instructs a {@link Widget} to use html markup to render texts.
+   * </p>
+   *
+   * @see RWT#MARKUP_ENABLED
+   *
+   * @since 1.4
+   */
+  @SuppressWarnings("unchecked")
+  public T enableMarkup( boolean enabled ) {
+    widget.setData( RWT.MARKUP_ENABLED, Boolean.valueOf( enabled ) );
     return ( T )this;
   }
 
