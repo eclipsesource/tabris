@@ -195,8 +195,9 @@ public class Constants {
   public static final String PROPERTY_DUPLEX = "duplex";
   public static final String PROPERTY_QUALITY = "quality";
 
-  // RefreshComposite
+  // RefreshComposite & RefreshHandler
   public static final String TYPE_REFRESH_COMPOSITE = "tabris.widgets.RefreshComposite";
+  public static final String TYPE_REFRESH_HANDLER = "tabris.RefreshHandler";
   public static final String EVENT_REFRESH = "Refresh";
   public static final String METHOD_DONE = "done";
   public static final String PROPERTY_CLIENT_AREA = "clientArea";
@@ -211,6 +212,7 @@ public class Constants {
   public static final String PROPERTY_BUTTON_CANCEL = "buttonCancel";
   public static final String PROPERTY_BUTTON_CUSTOM = "buttonCustom";
   public static final String PROPERTY_BUTTON_TYPE = "buttonType";
+  public static final String PROPERTY_WIDGET = "widget";
 
   // Text Replacement
   public static final String TYPE_TEXT_REPLACEMENT = "tabris.TextReplacement";

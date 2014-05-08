@@ -34,7 +34,8 @@ public class DataWhitelist implements Serializable {
     OVERLAY_COLOR( "overlayColor" ),
     TEXT_REPLACEMENT( "textReplacement" ),
     AUTO_CAPITALIZE( "autoCapitalize" ),
-    AUTO_CORRECT( "autoCorrect" );
+    AUTO_CORRECT( "autoCorrect" ),
+    REFRESH_HANDLER( "refreshHandler" );
 
     private final String key;
 

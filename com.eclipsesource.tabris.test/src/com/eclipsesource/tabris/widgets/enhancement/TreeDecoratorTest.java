@@ -18,7 +18,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.template.Template;
@@ -30,6 +32,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry;
 import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 import com.eclipsesource.tabris.widgets.enhancement.TreeDecorator.TreePart;
 
@@ -45,8 +48,8 @@ public class TreeDecoratorTest {
 
   @Before
   public void setUp() {
-    tree = mock( Tree.class );
     display = new Display();
+    tree = spy( new Tree( new Shell( display ), SWT.NONE ) );
     decorator = Widgets.onTree( tree );
   }
 
@@ -209,6 +212,40 @@ public class TreeDecoratorTest {
     decorator.setItemHeight( 23 );
 
     verify( tree ).setData( RWT.CUSTOM_ITEM_HEIGHT, Integer.valueOf( 23 ) );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testSetRefreshHandlerFailsWithNullHandler() {
+    decorator.setRefreshHandler( null );
+  }
+
+  @Test
+  public void testSetRefreshHandlerReturnsDecorator() {
+    RefreshHandler refreshHandler = mock( RefreshHandler.class );
+
+    TreeDecorator actualDecorator = decorator.setRefreshHandler( refreshHandler );
+
+    assertSame( decorator, actualDecorator );
+  }
+
+  @Test
+  public void testSetRefreshHandlerHooksTree() {
+    RefreshHandler refreshHandler = mock( RefreshHandler.class );
+
+    decorator.setRefreshHandler( refreshHandler );
+
+    verify( refreshHandler ).hookToWidget( tree );
+  }
+
+  @Test
+  public void testSetRefreshHandlerSetsTreeData() {
+    RefreshHandler refreshHandler = mock( RefreshHandler.class );
+    when( refreshHandler.getId() ).thenReturn( "foo" );
+
+    decorator.setRefreshHandler( refreshHandler );
+
+    Object data = tree.getData( WhiteListEntry.REFRESH_HANDLER.getKey() );
+    assertEquals( "foo", data );
   }
 
 }

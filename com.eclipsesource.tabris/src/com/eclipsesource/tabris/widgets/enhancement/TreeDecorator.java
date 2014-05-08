@@ -11,6 +11,7 @@ import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.ALT_SELECTION;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.BACK_FOCUS;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.REFRESH_HANDLER;
 import static com.eclipsesource.tabris.internal.WidgetsUtil.setData;
 
 import org.eclipse.rap.rwt.RWT;
@@ -183,6 +184,16 @@ public class TreeDecorator extends WidgetDecorator<TreeDecorator> {
   public TreeDecorator setItemHeight( int itemHeight ) {
     when( itemHeight < 0 ).throwIllegalArgument( "ItemHeight must be >= 0 but was " + itemHeight );
     tree.setData( RWT.CUSTOM_ITEM_HEIGHT, Integer.valueOf( itemHeight ) );
+    return this;
+  }
+
+  /**
+   * @since 1.4
+   */
+  public TreeDecorator setRefreshHandler( RefreshHandler handler ) {
+    whenNull( handler ).throwIllegalArgument( "RefreshHandler must not be null" );
+    setData( tree, REFRESH_HANDLER, handler.getId() );
+    handler.hookToWidget( tree );
     return this;
   }
 

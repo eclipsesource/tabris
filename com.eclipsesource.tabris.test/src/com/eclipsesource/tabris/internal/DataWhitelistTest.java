@@ -120,6 +120,11 @@ public class DataWhitelistTest {
     assertContains( "autoCorrect" );
   }
 
+  @Test
+  public void testHasRefreshHandler() {
+    assertContains( "refreshHandler" );
+  }
+
   private void assertContains( String actualKey ) {
     WhiteListEntry[] keys = DataWhitelist.WhiteListEntry.values();
     boolean foundKey = false;
