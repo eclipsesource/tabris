@@ -10,18 +10,17 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.test.util;
 
-import java.util.List;
-
 import org.eclipse.rap.json.JsonObject;
+import org.eclipse.rap.rwt.internal.protocol.Operation;
+import org.eclipse.rap.rwt.internal.protocol.Operation.CallOperation;
+import org.eclipse.rap.rwt.internal.protocol.Operation.CreateOperation;
+import org.eclipse.rap.rwt.internal.protocol.Operation.ListenOperation;
+import org.eclipse.rap.rwt.internal.protocol.Operation.SetOperation;
 import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.rap.rwt.testfixture.TestMessage;
-import org.eclipse.rap.rwt.testfixture.TestMessage.CallOperation;
-import org.eclipse.rap.rwt.testfixture.TestMessage.CreateOperation;
-import org.eclipse.rap.rwt.testfixture.TestMessage.ListenOperation;
-import org.eclipse.rap.rwt.testfixture.TestMessage.Operation;
-import org.eclipse.rap.rwt.testfixture.TestMessage.SetOperation;
 
 
+@SuppressWarnings("restriction")
 public class MessageUtil {
 
   public static enum OperationType {
@@ -52,7 +51,7 @@ public class MessageUtil {
       Operation operation = protocolMessage.getOperation( i );
       if( operation instanceof CreateOperation ) {
         CreateOperation create = ( CreateOperation )operation;
-        if( create.getType().equals( type ) && create.getParent().equals( parentId ) ) {
+        if( create.getType().equals( type ) && create.getProperties().get( "parent" ).asString().equals( parentId ) ) {
           found = true;
         }
       }
@@ -95,22 +94,22 @@ public class MessageUtil {
     if( type == OperationType.CREATE ) {
       CreateOperation operation = message.findCreateOperation( target );
       if( operation != null ) {
-        return createProperties( operation );
+        return operation.getProperties();
       }
     } else if( type == OperationType.CALL ) {
       CallOperation operation = message.findCallOperation( target, operationName );
       if( operation != null ) {
-        return createProperties( operation );
+        return operation.getParameters();
       }
     } else if( type == OperationType.SET ) {
       SetOperation operation = findSetOperation( message, target );
       if( operation != null ) {
-        return createProperties( operation );
+        return operation.getProperties();
       }
     } else if( type == OperationType.LISTEN ) {
       ListenOperation operation = findListenOperation( message, target );
       if( operation != null ) {
-        return createProperties( operation );
+        return operation.getProperties();
       }
     }
     return new JsonObject();
@@ -144,15 +143,6 @@ public class MessageUtil {
       }
     }
     return null;
-  }
-
-  private static JsonObject createProperties( Operation operation ) {
-    JsonObject result = new JsonObject();
-    List<String> propertyNames = operation.getPropertyNames();
-    for( String name : propertyNames ) {
-      result.add( name, operation.getProperty( name ) );
-    }
-    return result;
   }
 
   private MessageUtil() {
