@@ -32,15 +32,10 @@ import com.eclipsesource.tabris.tracking.TrackingEvent;
 
 public class EventDispatcherTest {
 
-  @Test( expected = IllegalArgumentException.class )
-  public void testFailsWithNullTrackers() {
-    new EventDispatcher( null );
-  }
-
   @Test
   public void testSchedulesItselfOnExecutor() {
     ScheduledExecutorService executor = mock( ScheduledExecutorService.class );
-    EventDispatcher dispatcher = new EventDispatcher( executor, new ArrayList<Tracker>() );
+    EventDispatcher dispatcher = new EventDispatcher( executor );
 
     verify( executor ).scheduleWithFixedDelay( dispatcher, 5, EventDispatcher.FLUSH_DELAY, TimeUnit.SECONDS );
   }
@@ -50,11 +45,12 @@ public class EventDispatcherTest {
     Tracker tracker = mock( Tracker.class );
     List<Tracker> trackers = new ArrayList<Tracker>();
     trackers.add( tracker );
+
     doThrow( RuntimeException.class ).when( tracker ).handleEvent( any( TrackingEvent.class ) );
-    EventDispatcher dispatcher = new EventDispatcher( mock( ScheduledExecutorService.class ), trackers );
+    EventDispatcher dispatcher = new EventDispatcher( mock( ScheduledExecutorService.class ) );
     TrackingEvent event = mock( TrackingEvent.class );
 
-    dispatcher.dispatch( event );
+    dispatcher.dispatch( new DispatchTask( trackers, event ) );
     dispatcher.run();
   }
 
@@ -64,12 +60,12 @@ public class EventDispatcherTest {
     List<Tracker> trackers = new ArrayList<Tracker>();
     trackers.add( tracker );
     doThrow( RuntimeException.class ).when( tracker ).handleEvent( any( TrackingEvent.class ) );
-    EventDispatcher dispatcher = new EventDispatcher( mock( ScheduledExecutorService.class ), trackers );
+    EventDispatcher dispatcher = new EventDispatcher( mock( ScheduledExecutorService.class ) );
     UncaughtExceptionHandler handler = mock( UncaughtExceptionHandler.class );
     dispatcher.setUncaughtExceptionHandler( handler );
     TrackingEvent event = mock( TrackingEvent.class );
 
-    dispatcher.dispatch( event );
+    dispatcher.dispatch( new DispatchTask( trackers, event ) );
     dispatcher.run();
 
     verify( handler ).uncaughtException( any( Thread.class ), any( Throwable.class ) );
@@ -80,10 +76,10 @@ public class EventDispatcherTest {
     Tracker tracker = mock( Tracker.class );
     List<Tracker> trackers = new ArrayList<Tracker>();
     trackers.add( tracker );
-    EventDispatcher dispatcher = new EventDispatcher( mock( ScheduledExecutorService.class ), trackers );
+    EventDispatcher dispatcher = new EventDispatcher( mock( ScheduledExecutorService.class ) );
     TrackingEvent event = mock( TrackingEvent.class );
 
-    dispatcher.dispatch( event );
+    dispatcher.dispatch( new DispatchTask( trackers, event ) );
     dispatcher.run();
 
     verify( tracker ).handleEvent( event );
@@ -94,10 +90,10 @@ public class EventDispatcherTest {
     Tracker tracker = mock( Tracker.class );
     List<Tracker> trackers = new ArrayList<Tracker>();
     trackers.add( tracker );
-    EventDispatcher dispatcher = new EventDispatcher( mock( ScheduledExecutorService.class ), trackers );
+    EventDispatcher dispatcher = new EventDispatcher( mock( ScheduledExecutorService.class ) );
     TrackingEvent event = mock( TrackingEvent.class );
 
-    dispatcher.dispatch( event );
+    dispatcher.dispatch( new DispatchTask( trackers, event ) );
 
     verify( tracker, never() ).handleEvent( event );
   }
@@ -107,12 +103,12 @@ public class EventDispatcherTest {
     Tracker tracker = mock( Tracker.class );
     List<Tracker> trackers = new ArrayList<Tracker>();
     trackers.add( tracker );
-    EventDispatcher dispatcher = new EventDispatcher( mock( ScheduledExecutorService.class ), trackers );
+    EventDispatcher dispatcher = new EventDispatcher( mock( ScheduledExecutorService.class ) );
     TrackingEvent event1 = mock( TrackingEvent.class );
     TrackingEvent event2 = mock( TrackingEvent.class );
 
-    dispatcher.dispatch( event1 );
-    dispatcher.dispatch( event2 );
+    dispatcher.dispatch( new DispatchTask( trackers, event1 ) );
+    dispatcher.dispatch( new DispatchTask( trackers, event2 ) );
     dispatcher.run();
 
     InOrder order = inOrder( tracker );

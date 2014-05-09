@@ -19,6 +19,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Display;
@@ -29,6 +30,7 @@ import org.mockito.ArgumentCaptor;
 
 import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 import com.eclipsesource.tabris.tracking.TrackingEvent.EventType;
+import com.eclipsesource.tabris.tracking.internal.DispatchTask;
 import com.eclipsesource.tabris.tracking.internal.EventDispatcher;
 import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.ActionConfiguration;
@@ -95,75 +97,36 @@ public class TrackingTest {
   }
 
   @Test( expected = IllegalArgumentException.class )
-  public void testStartFailsWithNullConfiguration() {
+  public void testAttachFailsWithNullConfiguration() {
     Tracking tracking = new Tracking( mock( Tracker.class ) );
 
-    tracking.start( null );
+    tracking.attach( null );
   }
 
   @Test
-  public void testStartAddsTransitionListener() {
+  public void testAttachAddsTransitionListener() {
     Tracking tracking = new Tracking( mock( Tracker.class ) );
     UIConfiguration configuration = mock( UIConfiguration.class );
 
-    tracking.start( configuration );
+    tracking.attach( configuration );
 
     verify( configuration ).addTransitionListener( any( TransitionListener.class ) );
   }
 
   @Test
-  public void testStartAddsActionListener() {
+  public void testAttachAddsActionListener() {
     Tracking tracking = new Tracking( mock( Tracker.class ) );
     UIConfiguration configuration = mock( UIConfiguration.class );
 
-    tracking.start( configuration );
+    tracking.attach( configuration );
 
     verify( configuration ).addActionListener( any( SearchActionListener.class ) );
-  }
-
-  @Test( expected = IllegalStateException.class )
-  public void testFailsToStopBeforeStart() {
-    Tracking tracking = new Tracking( mock( Tracker.class ) );
-
-    tracking.stop();
-  }
-
-  @Test( expected = IllegalStateException.class )
-  public void testFailsToStopTwice() {
-    Tracking tracking = new Tracking( mock( Tracker.class ) );
-    UIConfiguration configuration = mock( UIConfiguration.class );
-
-    tracking.start( configuration );
-    tracking.stop();
-    tracking.stop();
-  }
-
-  @Test
-  public void testStopRemovesTransitionListener() {
-    Tracking tracking = new Tracking( mock( Tracker.class ) );
-    UIConfiguration configuration = mock( UIConfiguration.class );
-
-    tracking.start( configuration );
-    tracking.stop();
-
-    verify( configuration ).removeTransitionListener( any( TransitionListener.class ) );
-  }
-
-  @Test
-  public void testStopRemovesActionListener() {
-    Tracking tracking = new Tracking( mock( Tracker.class ) );
-    UIConfiguration configuration = mock( UIConfiguration.class );
-
-    tracking.start( configuration );
-    tracking.stop();
-
-    verify( configuration ).removeActionListener( any( SearchActionListener.class ) );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithNullExceptionHandler() {
     EventDispatcher dispatcher = mock( EventDispatcher.class );
-    Tracking tracking = new Tracking( dispatcher );
+    Tracking tracking = new Tracking( dispatcher, new ArrayList<Tracker>() );
 
     tracking.setUncaughtExceptionHandler( null );
   }
@@ -172,7 +135,7 @@ public class TrackingTest {
   public void testSetsExceptionHandlerOnDispatcher() {
     UncaughtExceptionHandler handler = mock( UncaughtExceptionHandler.class );
     EventDispatcher dispatcher = mock( EventDispatcher.class );
-    Tracking tracking = new Tracking( dispatcher );
+    Tracking tracking = new Tracking( dispatcher, new ArrayList<Tracker>() );
 
     tracking.setUncaughtExceptionHandler( handler );
 
@@ -182,18 +145,19 @@ public class TrackingTest {
   @Test
   public void testDispatchesPageTransition() {
     EventDispatcher dispatcher = mock( EventDispatcher.class );
-    Tracking tracking = new Tracking( dispatcher );
+    Tracking tracking = new Tracking( dispatcher, new ArrayList<Tracker>() );
     PageConfiguration pageConfiguration = mock( PageConfiguration.class );
     UIConfiguration configuration = mock( UIConfiguration.class );
 
-    tracking.start( configuration );
+    tracking.attach( configuration );
     fakePageTransition( configuration, pageConfiguration );
 
-    ArgumentCaptor<TrackingEvent> captor = ArgumentCaptor.forClass( TrackingEvent.class );
+    ArgumentCaptor<DispatchTask> captor = ArgumentCaptor.forClass( DispatchTask.class );
     verify( dispatcher ).dispatch( captor.capture() );
-    assertSame( EventType.PAGE_VIEW, captor.getValue().getType() );
-    assertNotNull( captor.getValue().getInfo() );
-    assertSame( pageConfiguration, captor.getValue().getDetail() );
+    assertSame( EventType.PAGE_VIEW, captor.getValue().getEvent().getType() );
+    assertNotNull( captor.getValue().getEvent().getInfo() );
+    assertSame( pageConfiguration, captor.getValue().getEvent().getDetail() );
+    assertSame( tracking.getTrackers(), captor.getValue().getTrackers() );
   }
 
   private void fakePageTransition( UIConfiguration configuration, PageConfiguration pageConfiguration ) {
@@ -208,18 +172,19 @@ public class TrackingTest {
   @Test
   public void testDispatchesActionExecution() {
     EventDispatcher dispatcher = mock( EventDispatcher.class );
-    Tracking tracking = new Tracking( dispatcher );
+    Tracking tracking = new Tracking( dispatcher, new ArrayList<Tracker>() );
     ActionConfiguration actionConfiguration = mock( ActionConfiguration.class );
     UIConfiguration configuration = mock( UIConfiguration.class );
 
-    tracking.start( configuration );
+    tracking.attach( configuration );
     fakeActionExecution( configuration, actionConfiguration );
 
-    ArgumentCaptor<TrackingEvent> captor = ArgumentCaptor.forClass( TrackingEvent.class );
+    ArgumentCaptor<DispatchTask> captor = ArgumentCaptor.forClass( DispatchTask.class );
     verify( dispatcher ).dispatch( captor.capture() );
-    assertSame( EventType.ACTION, captor.getValue().getType() );
-    assertNotNull( captor.getValue().getInfo() );
-    assertSame( actionConfiguration, captor.getValue().getDetail() );
+    assertSame( EventType.ACTION, captor.getValue().getEvent().getType() );
+    assertNotNull( captor.getValue().getEvent().getInfo() );
+    assertSame( actionConfiguration, captor.getValue().getEvent().getDetail() );
+    assertSame( tracking.getTrackers(), captor.getValue().getTrackers() );
   }
 
   private void fakeActionExecution( UIConfiguration configuration, ActionConfiguration actionConfiguration ) {
@@ -234,19 +199,20 @@ public class TrackingTest {
   @Test
   public void testDispatchesSearch() {
     EventDispatcher dispatcher = mock( EventDispatcher.class );
-    Tracking tracking = new Tracking( dispatcher );
+    Tracking tracking = new Tracking( dispatcher, new ArrayList<Tracker>() );
     ActionConfiguration actionConfiguration = mock( ActionConfiguration.class );
     UIConfiguration configuration = mock( UIConfiguration.class );
 
-    tracking.start( configuration );
+    tracking.attach( configuration );
     fakeSearch( configuration, actionConfiguration, "foo" );
 
-    ArgumentCaptor<TrackingEvent> captor = ArgumentCaptor.forClass( TrackingEvent.class );
+    ArgumentCaptor<DispatchTask> captor = ArgumentCaptor.forClass( DispatchTask.class );
     verify( dispatcher ).dispatch( captor.capture() );
-    assertSame( EventType.SEARCH, captor.getValue().getType() );
-    assertNotNull( captor.getValue().getInfo() );
-    assertEquals( "foo", captor.getValue().getInfo().getSearchQuery() );
-    assertSame( actionConfiguration, captor.getValue().getDetail() );
+    assertSame( EventType.SEARCH, captor.getValue().getEvent().getType() );
+    assertNotNull( captor.getValue().getEvent().getInfo() );
+    assertEquals( "foo", captor.getValue().getEvent().getInfo().getSearchQuery() );
+    assertSame( actionConfiguration, captor.getValue().getEvent().getDetail() );
+    assertSame( tracking.getTrackers(), captor.getValue().getTrackers() );
   }
 
   private void fakeSearch( UIConfiguration configuration, ActionConfiguration actionConfiguration, String query ) {

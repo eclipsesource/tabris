@@ -10,55 +10,43 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.tracking.internal;
 
-import static com.eclipsesource.tabris.internal.Clauses.whenNull;
-
 import java.io.Serializable;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import com.eclipsesource.tabris.tracking.Tracker;
-import com.eclipsesource.tabris.tracking.TrackingEvent;
 
 
-@SuppressWarnings("restriction")
 public class EventDispatcher implements Runnable, Serializable {
 
   static final long FLUSH_DELAY = 5;
 
-  private final List<Tracker> trackers;
-  private final Deque<TrackingEvent> queue;
+  private final Deque<DispatchTask> queue;
   private final Object lock = new Object();
 
   private UncaughtExceptionHandler exceptionHandler;
 
-  public EventDispatcher( List<Tracker> trackers ) {
-    this( Executors.newSingleThreadScheduledExecutor(), trackers );
+  EventDispatcher() {
+    this( Executors.newSingleThreadScheduledExecutor() );
   }
 
   public void setUncaughtExceptionHandler( UncaughtExceptionHandler exceptionHandler ) {
     this.exceptionHandler = exceptionHandler;
   }
 
-  EventDispatcher( ScheduledExecutorService executor, List<Tracker> trackers ) {
-    whenNull( trackers ).throwIllegalArgument( "Trackers must not be null." );
-    this.queue = new ArrayDeque<TrackingEvent>();
-    this.trackers = trackers;
+  EventDispatcher( ScheduledExecutorService executor ) {
+    this.queue = new ArrayDeque<DispatchTask>();
     executor.scheduleWithFixedDelay( this, 5, FLUSH_DELAY, TimeUnit.SECONDS );
   }
 
-  public void dispatch( TrackingEvent event ) {
+  public void dispatch( DispatchTask task ) {
     synchronized( lock ) {
-      queue.add( event );
+      queue.add( task );
     }
-  }
-
-  public List<Tracker> getTrackers() {
-    return trackers;
   }
 
   @Override
@@ -80,10 +68,10 @@ public class EventDispatcher implements Runnable, Serializable {
 
   void flushQueue() {
     synchronized( lock ) {
-      TrackingEvent event;
-      while( ( event = queue.poll() ) != null ) {
-        for( Tracker tracker : trackers ) {
-          tracker.handleEvent( event );
+      DispatchTask task;
+      while( ( task = queue.poll() ) != null ) {
+        for( Tracker tracker : task.getTrackers() ) {
+          tracker.handleEvent( task.getEvent() );
         }
       }
     }

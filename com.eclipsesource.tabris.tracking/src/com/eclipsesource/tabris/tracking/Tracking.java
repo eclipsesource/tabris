@@ -22,7 +22,9 @@ import org.eclipse.rap.rwt.RWT;
 
 import com.eclipsesource.tabris.TabrisClient;
 import com.eclipsesource.tabris.tracking.TrackingEvent.EventType;
+import com.eclipsesource.tabris.tracking.internal.DispatchTask;
 import com.eclipsesource.tabris.tracking.internal.EventDispatcher;
+import com.eclipsesource.tabris.tracking.internal.EventDispatcherProvider;
 import com.eclipsesource.tabris.tracking.internal.TrackingInfoFactory;
 import com.eclipsesource.tabris.ui.Action;
 import com.eclipsesource.tabris.ui.ActionConfiguration;
@@ -43,18 +45,19 @@ public class Tracking implements Serializable {
   private final EventDispatcher dispatcher;
   private final SearchActionListener actionListener;
   private final TransitionAdapter transitionListener;
-  private UIConfiguration configuration;
+  private final List<Tracker> trackers;
 
   public Tracking( Tracker tracker ) {
     this( tracker, new Tracker[] {} );
   }
 
   public Tracking( Tracker tracker, Tracker... otherTrackers ) {
-    this( new EventDispatcher( createTrackerList( tracker, otherTrackers ) ) );
+    this( EventDispatcherProvider.getDispatcher(), createTrackerList( tracker, otherTrackers ) );
   }
 
-  Tracking( EventDispatcher disptacher ) {
+  Tracking( EventDispatcher disptacher, List<Tracker> trackers ) {
     this.dispatcher = disptacher;
+    this.trackers = trackers;
     this.actionListener = createActionListener();
     this.transitionListener = createTransitionListener();
   }
@@ -110,9 +113,8 @@ public class Tracking implements Serializable {
     };
   }
 
-  public void start( UIConfiguration configuration ) {
+  public void attach( UIConfiguration configuration ) {
     whenNull( configuration ).throwIllegalArgument( "UIConfiguration must not be null." );
-    this.configuration = configuration;
     configuration.addTransitionListener( transitionListener );
     configuration.addActionListener( actionListener );
   }
@@ -136,22 +138,15 @@ public class Tracking implements Serializable {
 
   private void dispatchEvent( EventType type, TrackingInfo info, Object detail ) {
     TrackingEvent event = new TrackingEvent( type, info, detail, System.currentTimeMillis() );
-    dispatcher.dispatch( event );
+    dispatcher.dispatch( new DispatchTask( trackers, event ) );
   }
 
   private TrackingInfo createInfo( UI ui ) {
     return TrackingInfoFactory.createInfo( ui );
   }
 
-  public void stop() {
-    whenNull( configuration ).throwIllegalState( "Tracking was not active." );
-    configuration.removeTransitionListener( transitionListener );
-    configuration.removeActionListener( actionListener );
-    configuration = null;
-  }
-
   List<Tracker> getTrackers() {
-    return dispatcher.getTrackers();
+    return trackers;
   }
 
 }
