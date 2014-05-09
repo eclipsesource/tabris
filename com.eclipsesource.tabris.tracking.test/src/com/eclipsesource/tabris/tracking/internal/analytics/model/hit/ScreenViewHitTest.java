@@ -11,7 +11,7 @@
 package com.eclipsesource.tabris.tracking.internal.analytics.model.hit;
 
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeyProvider.getRequestKey;
-import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.CONTENT_DESCRIPTION;
+import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.SCREEN_NAME;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.HIT_TYPE;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestValueProvider.getRequestValue;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestValues.HIT_SCREENVIEW;
@@ -48,6 +48,6 @@ public class ScreenViewHitTest {
 
     Map<String, Object> parameter = hit.getParameter();
 
-    assertEquals( "foo", parameter.get( getRequestKey( CONTENT_DESCRIPTION ) ) );
+    assertEquals( "foo", parameter.get( getRequestKey( SCREEN_NAME ) ) );
   }
 }

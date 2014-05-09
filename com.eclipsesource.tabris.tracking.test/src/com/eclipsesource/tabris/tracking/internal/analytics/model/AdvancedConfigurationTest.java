@@ -13,7 +13,7 @@ package com.eclipsesource.tabris.tracking.internal.analytics.model;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeyProvider.getRequestKey;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.APP_ID;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.APP_VERSION;
-import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.CONTENT_DESCRIPTION;
+import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.SCREEN_NAME;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.CURRENCY_CODE;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.CUSTOM_DIMENSION;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.CUSTOM_METRIC;
@@ -264,22 +264,22 @@ public class AdvancedConfigurationTest {
   }
 
   @Test( expected = IllegalArgumentException.class )
-  public void testFailsWithNullContentDescription() {
-    new AdvancedConfiguration().setContentDescription( null );
+  public void testFailsWithNullScreenName() {
+    new AdvancedConfiguration().setScreenName( null );
   }
 
   @Test( expected = IllegalArgumentException.class )
-  public void testFailsWithEmptyContentDescription() {
-    new AdvancedConfiguration().setContentDescription( "" );
+  public void testFailsWithEmptyScreenName() {
+    new AdvancedConfiguration().setScreenName( "" );
   }
 
   @Test
-  public void testSetsContentDescription() {
-    AdvancedConfiguration configuration = new AdvancedConfiguration().setContentDescription( "foo" );
+  public void testSetsScreenName() {
+    AdvancedConfiguration configuration = new AdvancedConfiguration().setScreenName( "foo" );
 
     Map<String, Object> parameter = configuration.getParameter();
 
-    assertEquals( "foo", parameter.get( getRequestKey( CONTENT_DESCRIPTION ) ) );
+    assertEquals( "foo", parameter.get( getRequestKey( SCREEN_NAME ) ) );
   }
 
   @Test( expected = IllegalArgumentException.class )

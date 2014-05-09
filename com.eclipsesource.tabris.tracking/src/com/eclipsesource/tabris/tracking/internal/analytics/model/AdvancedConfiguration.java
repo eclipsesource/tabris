@@ -15,7 +15,6 @@ import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeyProvider.getRequestKey;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.APP_ID;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.APP_VERSION;
-import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.CONTENT_DESCRIPTION;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.CURRENCY_CODE;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.CUSTOM_DIMENSION;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.CUSTOM_METRIC;
@@ -23,6 +22,7 @@ import static com.eclipsesource.tabris.tracking.internal.analytics.request.Reque
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.DOCUMENT_PATH;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.DOCUMENT_TITLE;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.IP_OVERRIDE;
+import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.SCREEN_NAME;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.SCREEN_RESOLUTION;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.SESSION_CONTROL;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.USER_AGENT_OVERRIDE;
@@ -129,10 +129,10 @@ public class AdvancedConfiguration implements Requestable {
     return this;
   }
 
-  public AdvancedConfiguration setContentDescription( String contentDescription ) {
-    whenNull( contentDescription ).throwIllegalArgument( "ContentDescription must not be null." );
-    when( contentDescription.isEmpty() ).throwIllegalArgument( "ContentDescription must not be empty." );
-    parameter.put( getRequestKey( CONTENT_DESCRIPTION ), contentDescription );
+  public AdvancedConfiguration setScreenName( String screenName ) {
+    whenNull( screenName ).throwIllegalArgument( "ScreenName must not be null." );
+    when( screenName.isEmpty() ).throwIllegalArgument( "ScreenName must not be empty." );
+    parameter.put( getRequestKey( SCREEN_NAME ), screenName );
     return this;
   }
 

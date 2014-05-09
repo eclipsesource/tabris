@@ -28,7 +28,7 @@ public class RequestKeyProvider implements Serializable {
     mapping.put( RequestKeys.APP_NAME, "an" );
     mapping.put( RequestKeys.APP_ID, "aid" );
     mapping.put( RequestKeys.APP_VERSION, "av" );
-    mapping.put( RequestKeys.CONTENT_DESCRIPTION, "cd" );
+    mapping.put( RequestKeys.SCREEN_NAME, "cd" );
     mapping.put( RequestKeys.CURRENCY_CODE, "cu" );
     mapping.put( RequestKeys.CUSTOM_DIMENSION, "cd" );
     mapping.put( RequestKeys.CUSTOM_METRIC, "cm" );

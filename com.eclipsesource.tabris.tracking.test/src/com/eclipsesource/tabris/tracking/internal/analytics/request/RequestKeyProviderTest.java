@@ -67,8 +67,8 @@ public class RequestKeyProviderTest {
   }
 
   @Test
-  public void testStoresContentDescription() {
-    assertEquals( "cd", requestNames.get( "CONTENT_DESCRIPTION" ) );
+  public void testStoresScreenName() {
+    assertEquals( "cd", requestNames.get( "SCREEN_NAME" ) );
   }
 
   @Test

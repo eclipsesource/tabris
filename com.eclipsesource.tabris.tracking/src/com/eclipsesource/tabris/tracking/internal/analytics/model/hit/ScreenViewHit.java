@@ -13,7 +13,7 @@ package com.eclipsesource.tabris.tracking.internal.analytics.model.hit;
 import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeyProvider.getRequestKey;
-import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.CONTENT_DESCRIPTION;
+import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys.SCREEN_NAME;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestValueProvider.getRequestValue;
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestValues.HIT_SCREENVIEW;
 
@@ -25,7 +25,7 @@ public class ScreenViewHit extends Hit {
     super( getRequestValue( HIT_SCREENVIEW ) );
     whenNull( screenName ).throwIllegalArgument( "ScreenName must not be null." );
     when( screenName.isEmpty() ).throwIllegalArgument( "ScreenName must not be empty." );
-    addParameter( getRequestKey( CONTENT_DESCRIPTION ), screenName );
+    addParameter( getRequestKey( SCREEN_NAME ), screenName );
   }
 
 }

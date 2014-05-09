@@ -19,7 +19,7 @@ public class RequestKeys implements Serializable {
   public static final String APP_ID = "APP_ID";
   public static final String APP_VERSION = "APP_VERSION";
   public static final String CLIENT_ID = "CLIENT_ID";
-  public static final String CONTENT_DESCRIPTION = "CONTENT_DESCRIPTION";
+  public static final String SCREEN_NAME = "SCREEN_NAME";
   public static final String CUSTOM_DIMENSION = "CUSTOM_DIMENSION";
   public static final String CUSTOM_METRIC = "CUSTOM_METRIC";
   public static final String DOCUMENT_HOST_NAME = "DOCUMENT_HOST_NAME";

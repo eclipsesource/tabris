@@ -76,7 +76,7 @@ public class GoogleAnalyticsTrackerTest {
     ArgumentCaptor<AdvancedConfiguration> configCaptor = ArgumentCaptor.forClass( AdvancedConfiguration.class );
     verify( analytics ).track( hitCaptor.capture(), eq( "clientId" ), configCaptor.capture() );
     assertAdvancedConfiguration( configCaptor.getValue() );
-    assertEquals( "foo", hitCaptor.getValue().getParameter().get( getRequestKey( RequestKeys.CONTENT_DESCRIPTION ) ) );
+    assertEquals( "foo", hitCaptor.getValue().getParameter().get( getRequestKey( RequestKeys.SCREEN_NAME ) ) );
   }
 
   @Test
