@@ -19,8 +19,8 @@ import java.util.Map;
 import com.eclipsesource.tabris.tracking.internal.analytics.model.AdvancedConfiguration;
 import com.eclipsesource.tabris.tracking.internal.analytics.model.AnalyticsConfiguration;
 import com.eclipsesource.tabris.tracking.internal.analytics.model.hit.Hit;
-import com.eclipsesource.tabris.tracking.internal.analytics.request.AnalyticsRequest;
 import com.eclipsesource.tabris.tracking.internal.analytics.request.HttpRequest;
+import com.eclipsesource.tabris.tracking.internal.analytics.request.AnalyticsRequest;
 
 
 @SuppressWarnings("restriction")
@@ -47,6 +47,10 @@ public class GoogleAnalytics implements Serializable {
     whenNull( configuration ).throwIllegalArgument( "BaseAnalyticsConfiguration must not be null." );
     whenNull( appName ).throwIllegalArgument( "AppName must not be null." );
     when( "".equals( appName ) ).throwIllegalArgument( "AppName must not be empty." );
+  }
+
+  public void track( Hit hit, String clientId ) {
+    track( hit, clientId, new AdvancedConfiguration() );
   }
 
   public void track( Hit hit, String clientId, AdvancedConfiguration advancedConfiguration ) {

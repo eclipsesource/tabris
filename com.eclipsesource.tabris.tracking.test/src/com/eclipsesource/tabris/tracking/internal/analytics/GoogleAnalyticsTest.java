@@ -54,7 +54,7 @@ public class GoogleAnalyticsTest {
   public void testSendFailsWithNullHit() {
     GoogleAnalytics analytics = new GoogleAnalytics( "foo", new AnalyticsConfiguration( "foo", "bar" ) );
 
-    analytics.track( null, "id", mock( AdvancedConfiguration.class ) );
+    analytics.track( null, "id" );
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -62,6 +62,13 @@ public class GoogleAnalyticsTest {
     GoogleAnalytics analytics = new GoogleAnalytics( "foo", new AnalyticsConfiguration( "foo", "bar" ) );
 
     analytics.track( new ScreenViewHit( "foo" ), "id", null );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testSendFailsWithNullClientIdWithoutConfig() {
+    GoogleAnalytics analytics = new GoogleAnalytics( "foo", new AnalyticsConfiguration( "foo", "bar" ) );
+
+    analytics.track( new ScreenViewHit( "foo" ), null );
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -96,7 +103,6 @@ public class GoogleAnalyticsTest {
 
     analytics.track( new ScreenViewHit( "screenName" ), "baz", mock( AdvancedConfiguration.class ) );
   }
-
 
   @Test
   public void testSendsRequestWithAdvancedConfigurationParameter() {
