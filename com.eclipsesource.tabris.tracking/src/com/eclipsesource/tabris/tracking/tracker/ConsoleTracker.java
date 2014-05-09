@@ -10,12 +10,11 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.tracking.tracker;
 
+import com.eclipsesource.tabris.tracking.Order;
 import com.eclipsesource.tabris.tracking.Tracker;
 import com.eclipsesource.tabris.tracking.TrackingEvent;
 import com.eclipsesource.tabris.tracking.TrackingEvent.EventType;
 import com.eclipsesource.tabris.tracking.TrackingInfo;
-import com.eclipsesource.tabris.ui.ActionConfiguration;
-import com.eclipsesource.tabris.ui.PageConfiguration;
 
 
 /**
@@ -47,28 +46,36 @@ public class ConsoleTracker implements Tracker {
       appendAction( builder, event );
     } else if( event.getType() == EventType.SEARCH ) {
       appendSearch( builder, event );
+    } else if( event.getType() == EventType.ORDER ) {
+      appendOrder( builder, event );
+    } else if( event.getType() == EventType.EVENT ) {
+      appendEvent( builder, event );
     }
   }
 
   private void appendPageView( StringBuilder builder, TrackingEvent event ) {
-    PageConfiguration configuration = ( PageConfiguration )event.getDetail();
-    builder.append( configuration.getId() );
-    builder.append( " (" );
-    builder.append( configuration.getTitle() );
-    builder.append( ")" );
+    builder.append( ( String )event.getDetail() );
   }
 
   private void appendAction( StringBuilder builder, TrackingEvent event ) {
-    ActionConfiguration configuration = ( ActionConfiguration )event.getDetail();
-    builder.append( configuration.getId() );
-    builder.append( " (" );
-    builder.append( configuration.getTitle() );
-    builder.append( ")" );
+    builder.append( ( String )event.getDetail() );
   }
 
   private void appendSearch( StringBuilder builder, TrackingEvent event ) {
     builder.append( "query=" );
     builder.append( event.getInfo().getSearchQuery() );
+  }
+
+  private void appendOrder( StringBuilder builder, TrackingEvent event ) {
+    Order info = ( Order )event.getDetail();
+    builder.append( info.getOrderId() );
+    builder.append( " (" );
+    builder.append( info.getRevenue() + ", " + info.getShipping() + ", " + info.getTax() );
+    builder.append( ")" );
+  }
+
+  private void appendEvent( StringBuilder builder, TrackingEvent event ) {
+    builder.append( ( String )event.getDetail() );
   }
 
   private void appendEventInfo( StringBuilder builder, TrackingEvent event ) {

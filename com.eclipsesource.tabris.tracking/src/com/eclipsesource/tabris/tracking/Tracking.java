@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.tracking;
 
+import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
 import java.io.Serializable;
@@ -19,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.rap.rwt.RWT;
+import org.eclipse.swt.widgets.Display;
 
 import com.eclipsesource.tabris.TabrisClient;
 import com.eclipsesource.tabris.tracking.TrackingEvent.EventType;
@@ -43,8 +45,6 @@ import com.eclipsesource.tabris.ui.action.SearchActionListener;
 public class Tracking implements Serializable {
 
   private final EventDispatcher dispatcher;
-  private final SearchActionListener actionListener;
-  private final TransitionAdapter transitionListener;
   private final List<Tracker> trackers;
 
   public Tracking( Tracker tracker ) {
@@ -58,8 +58,6 @@ public class Tracking implements Serializable {
   Tracking( EventDispatcher disptacher, List<Tracker> trackers ) {
     this.dispatcher = disptacher;
     this.trackers = trackers;
-    this.actionListener = createActionListener();
-    this.transitionListener = createTransitionListener();
   }
 
   private static List<Tracker> createTrackerList( Tracker tracker, Tracker... otherTrackers ) {
@@ -74,6 +72,40 @@ public class Tracking implements Serializable {
   public void setUncaughtExceptionHandler( UncaughtExceptionHandler exceptionHandler ) {
     whenNull( exceptionHandler ).throwIllegalArgument( "ExceptionHandler must not be null." );
     dispatcher.setUncaughtExceptionHandler( exceptionHandler );
+  }
+
+  public void submitOrder( Display display, Order order ) {
+    whenNull( display ).throwIllegalArgument( "Display must not be null" );
+    whenNull( order ).throwIllegalArgument( "Order must not be null" );
+    TrackingInfo info = createInfo( display );
+    dispatchEvent( EventType.ORDER, info, order );
+  }
+
+  public void submitEvent( Display display, String eventId ) {
+    whenNull( display ).throwIllegalArgument( "Display must not be null" );
+    whenNull( eventId ).throwIllegalArgument( "EventId must not be null" );
+    when( eventId.isEmpty() ).throwIllegalArgument( "EventId must not be empty" );
+    TrackingInfo info = createInfo( display );
+    dispatchEvent( EventType.EVENT, info, eventId );
+  }
+
+  public void attach( UIConfiguration configuration ) {
+    whenNull( configuration ).throwIllegalArgument( "UIConfiguration must not be null." );
+    configuration.addTransitionListener( createTransitionListener() );
+    configuration.addActionListener( createActionListener() );
+  }
+
+  private TransitionAdapter createTransitionListener() {
+    return new TransitionAdapter() {
+
+      @Override
+      public void after( UI ui, Page from, Page to ) {
+        if( RWT.getClient() instanceof TabrisClient ) {
+          dispatchPageView( ui, to );
+        }
+      }
+
+    };
   }
 
   private SearchActionListener createActionListener() {
@@ -100,49 +132,30 @@ public class Tracking implements Serializable {
     };
   }
 
-  private TransitionAdapter createTransitionListener() {
-    return new TransitionAdapter() {
-
-      @Override
-      public void after( UI ui, Page from, Page to ) {
-        if( RWT.getClient() instanceof TabrisClient ) {
-          dispatchPageView( ui, to );
-        }
-      }
-
-    };
-  }
-
-  public void attach( UIConfiguration configuration ) {
-    whenNull( configuration ).throwIllegalArgument( "UIConfiguration must not be null." );
-    configuration.addTransitionListener( transitionListener );
-    configuration.addActionListener( actionListener );
-  }
-
   private void dispatchPageView( UI ui, Page to ) {
     PageConfiguration pageConfiguration = ui.getPageConfiguration( to );
-    dispatchEvent( EventType.PAGE_VIEW, createInfo( ui ), pageConfiguration );
+    dispatchEvent( EventType.PAGE_VIEW, createInfo( ui.getDisplay() ), pageConfiguration.getId() );
   }
 
   private void dispatchAction( UI ui, Action action ) {
     ActionConfiguration actionConfiguration = ui.getActionConfiguration( action );
-    dispatchEvent( EventType.ACTION, createInfo( ui ), actionConfiguration );
+    dispatchEvent( EventType.ACTION, createInfo( ui.getDisplay() ), actionConfiguration.getId() );
   }
 
   private void dispatchSearch( UI ui, Action action, String query ) {
     ActionConfiguration actionConfiguration = ui.getActionConfiguration( action );
-    TrackingInfo info = createInfo( ui );
+    TrackingInfo info = createInfo( ui.getDisplay() );
     info.setSearchQuery( query );
-    dispatchEvent( EventType.SEARCH, info, actionConfiguration );
+    dispatchEvent( EventType.SEARCH, info, actionConfiguration.getId() );
+  }
+
+  private TrackingInfo createInfo( Display display ) {
+    return TrackingInfoFactory.createInfo( display );
   }
 
   private void dispatchEvent( EventType type, TrackingInfo info, Object detail ) {
     TrackingEvent event = new TrackingEvent( type, info, detail, System.currentTimeMillis() );
     dispatcher.dispatch( new DispatchTask( trackers, event ) );
-  }
-
-  private TrackingInfo createInfo( UI ui ) {
-    return TrackingInfoFactory.createInfo( ui );
   }
 
   List<Tracker> getTrackers() {

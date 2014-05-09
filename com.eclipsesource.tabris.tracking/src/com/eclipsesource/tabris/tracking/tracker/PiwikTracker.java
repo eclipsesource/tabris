@@ -22,8 +22,6 @@ import com.eclipsesource.tabris.tracking.internal.piwik.model.VisitorInformation
 import com.eclipsesource.tabris.tracking.internal.piwik.model.action.Action;
 import com.eclipsesource.tabris.tracking.internal.piwik.model.action.SearchAction;
 import com.eclipsesource.tabris.tracking.internal.util.UserAgentUtil;
-import com.eclipsesource.tabris.ui.ActionConfiguration;
-import com.eclipsesource.tabris.ui.PageConfiguration;
 
 
 @SuppressWarnings("restriction")
@@ -65,18 +63,18 @@ public class PiwikTracker implements Tracker {
   }
 
   private Action createPageViewAction( TrackingEvent event ) {
-    PageConfiguration pageConfiguration = ( PageConfiguration )event.getDetail();
-    return new Action( createHost( event ) + "/page/" + pageConfiguration.getId() );
+    String pageId = ( String )event.getDetail();
+    return new Action( createHost( event ) + "/page/" + pageId );
   }
 
   private Action createActionHitAction( TrackingEvent event ) {
-    ActionConfiguration actionConfiguration = ( ActionConfiguration )event.getDetail();
-    return new Action( createHost( event ) + "/action/" + actionConfiguration.getId() );
+    String actionId = ( String )event.getDetail();
+    return new Action( createHost( event ) + "/action/" + actionId );
   }
 
   private Action createSearchAction( TrackingEvent event ) {
-    ActionConfiguration actionConfiguration = ( ActionConfiguration )event.getDetail();
-    return new SearchAction( createHost( event ) + "/action/search/" + actionConfiguration.getId(),
+    String actionId = ( String )event.getDetail();
+    return new SearchAction( createHost( event ) + "/action/search/" + actionId,
                              event.getInfo().getSearchQuery() );
   }
 

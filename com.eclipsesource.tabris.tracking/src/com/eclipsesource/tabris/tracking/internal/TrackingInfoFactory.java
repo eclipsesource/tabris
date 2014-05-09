@@ -25,7 +25,6 @@ import com.eclipsesource.tabris.app.App;
 import com.eclipsesource.tabris.device.ClientDevice;
 import com.eclipsesource.tabris.internal.Constants;
 import com.eclipsesource.tabris.tracking.TrackingInfo;
-import com.eclipsesource.tabris.ui.UI;
 
 
 @SuppressWarnings("restriction")
@@ -33,12 +32,12 @@ public class TrackingInfoFactory implements Serializable {
 
   static final String PROPERTY_ID = "com.eclipsesource.tabris.tracking.id";
 
-  public static TrackingInfo createInfo( UI ui ) {
+  public static TrackingInfo createInfo( Display display ) {
     TrackingInfo trackingInfo = new TrackingInfo();
     trackingInfo.setClientId( getClientId() );
     setClientDeviceInfo( trackingInfo );
     setAppInfo( trackingInfo );
-    setDisplayInfo( ui.getDisplay(), trackingInfo );
+    setDisplayInfo( display, trackingInfo );
     setClientIpInfo( trackingInfo );
     trackingInfo.setUserAgent( RWT.getRequest().getHeader( Constants.USER_AGENT ) );
     return trackingInfo;

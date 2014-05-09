@@ -12,6 +12,11 @@ package com.eclipsesource.tabris.tracking.tracker;
 
 import static com.eclipsesource.tabris.internal.Clauses.when;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.eclipsesource.tabris.tracking.Order;
+import com.eclipsesource.tabris.tracking.OrderItem;
 import com.eclipsesource.tabris.tracking.Tracker;
 import com.eclipsesource.tabris.tracking.TrackingEvent;
 import com.eclipsesource.tabris.tracking.TrackingEvent.EventType;
@@ -21,10 +26,10 @@ import com.eclipsesource.tabris.tracking.internal.analytics.model.AdvancedConfig
 import com.eclipsesource.tabris.tracking.internal.analytics.model.AnalyticsConfiguration;
 import com.eclipsesource.tabris.tracking.internal.analytics.model.hit.EventHit;
 import com.eclipsesource.tabris.tracking.internal.analytics.model.hit.Hit;
+import com.eclipsesource.tabris.tracking.internal.analytics.model.hit.ItemHit;
 import com.eclipsesource.tabris.tracking.internal.analytics.model.hit.ScreenViewHit;
+import com.eclipsesource.tabris.tracking.internal.analytics.model.hit.TransactionHit;
 import com.eclipsesource.tabris.tracking.internal.util.UserAgentUtil;
-import com.eclipsesource.tabris.ui.ActionConfiguration;
-import com.eclipsesource.tabris.ui.PageConfiguration;
 
 
 /**
@@ -35,8 +40,10 @@ public class GoogleAnalyticsTracker implements Tracker {
 
   static final String LABEL_SEARCH = "search";
   static final String LABEL_EXECUTE = "execute";
+  static final String LABEL_EVENT = "custom";
   static final String CATEGORY_SEARCH = "tabris.ui.action.search";
   static final String CATEGORY_ACTION = "tabris.ui.action";
+  static final String CATEGORY_EVENT = "tabris.event";
 
   private final GoogleAnalytics analytics;
   private int searchIndex;
@@ -58,43 +65,90 @@ public class GoogleAnalyticsTracker implements Tracker {
   @Override
   public void handleEvent( TrackingEvent event ) {
     AdvancedConfiguration advancedConfiguration = createAdvancedConfiguration( event );
-    Hit hit = createHit( event, advancedConfiguration );
-    analytics.track( hit, event.getInfo().getClientId(), advancedConfiguration );
+    List<Hit> hits = createHits( event, advancedConfiguration );
+    for( Hit hit : hits ) {
+      analytics.track( hit, event.getInfo().getClientId(), advancedConfiguration );
+    }
   }
 
-  private Hit createHit( TrackingEvent event, AdvancedConfiguration advancedConfiguration ) {
-    Hit result = null;
+  private List<Hit> createHits( TrackingEvent event, AdvancedConfiguration advancedConfiguration ) {
+    List<Hit> result = new ArrayList<Hit>();
     if( event.getType() == EventType.PAGE_VIEW ) {
-      result = createScreenViewHit( event );
+      result.add( createScreenViewHit( event ) );
     } else if( event.getType() == EventType.ACTION ) {
-      result = createActionHit( event );
+      result.add( createActionHit( event ) );
     } else if( event.getType() == EventType.SEARCH ) {
-      result = createSearchHit( event, advancedConfiguration );
+      result.add( createSearchHit( event, advancedConfiguration ) );
+    } else if( event.getType() == EventType.ORDER ) {
+      result.add( createTransactionHit( event, advancedConfiguration ) );
+      result.addAll( createItemHits( event, advancedConfiguration ) );
+    } else if( event.getType() == EventType.EVENT ) {
+      result.add( createEventHit( event ) );
     }
     return result;
   }
 
   private Hit createScreenViewHit( TrackingEvent event ) {
-    PageConfiguration pageConfiguration = ( PageConfiguration )event.getDetail();
-    return new ScreenViewHit( pageConfiguration.getId() );
+    String pageId = ( String )event.getDetail();
+    return new ScreenViewHit( pageId );
   }
 
   private Hit createActionHit( TrackingEvent event ) {
-    ActionConfiguration actionConfiguration = ( ActionConfiguration )event.getDetail();
+    String actionId = ( String )event.getDetail();
     EventHit eventHit = new EventHit();
     eventHit.setCategory( CATEGORY_ACTION );
     eventHit.setAction( LABEL_EXECUTE );
-    eventHit.setLabel( actionConfiguration.getId() );
+    eventHit.setLabel( actionId );
     return eventHit;
   }
 
   private Hit createSearchHit( TrackingEvent event, AdvancedConfiguration advancedConfiguration ) {
-    ActionConfiguration actionConfiguration = ( ActionConfiguration )event.getDetail();
+    String actionId = ( String )event.getDetail();
     EventHit eventHit = new EventHit();
     eventHit.setCategory( CATEGORY_SEARCH );
     eventHit.setAction( LABEL_SEARCH );
-    eventHit.setLabel( actionConfiguration.getId() );
+    eventHit.setLabel( actionId );
     advancedConfiguration.setCustomDimension( searchIndex, event.getInfo().getSearchQuery() );
+    return eventHit;
+  }
+
+  private Hit createTransactionHit( TrackingEvent event, AdvancedConfiguration advancedConfiguration ) {
+    Order order = ( Order )event.getDetail();
+    TransactionHit hit = new TransactionHit( order.getOrderId() );
+    hit.setRevenue( order.getRevenue() );
+    hit.setShipping( order.getShipping() );
+    hit.setTax( order.getTax() );
+    return hit;
+  }
+
+  private List<Hit> createItemHits( TrackingEvent event, AdvancedConfiguration advancedConfiguration ) {
+    Order order = ( Order )event.getDetail();
+    List<Hit> itemHits = new ArrayList<Hit>();
+    for( OrderItem item : order.getItems() ) {
+      itemHits.add( createItemHit( order.getOrderId(), item ) );
+    }
+    return itemHits;
+  }
+
+  private Hit createItemHit( String orderId, OrderItem item ) {
+    ItemHit itemHit = new ItemHit( item.getName(), orderId );
+    if( item.getCategory() != null ) {
+      itemHit.setCategory( item.getCategory() );
+    }
+    if( item.getSKU() != null ) {
+      itemHit.setCode( item.getSKU() );
+    }
+    itemHit.setPrice( item.getPrice() );
+    itemHit.setQuantity( item.getQuantity() );
+    return itemHit;
+  }
+
+  private Hit createEventHit( TrackingEvent event ) {
+    String eventId = ( String )event.getDetail();
+    EventHit eventHit = new EventHit();
+    eventHit.setCategory( CATEGORY_EVENT );
+    eventHit.setAction( LABEL_EVENT );
+    eventHit.setLabel( eventId );
     return eventHit;
   }
 

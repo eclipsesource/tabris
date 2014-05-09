@@ -12,18 +12,16 @@ package com.eclipsesource.tabris.tracking.tracker;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import java.io.PrintStream;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.eclipsesource.tabris.tracking.Order;
 import com.eclipsesource.tabris.tracking.TrackingEvent;
 import com.eclipsesource.tabris.tracking.TrackingEvent.EventType;
 import com.eclipsesource.tabris.tracking.TrackingInfo;
-import com.eclipsesource.tabris.ui.ActionConfiguration;
-import com.eclipsesource.tabris.ui.PageConfiguration;
 
 
 public class ConsoleTrackerTest {
@@ -40,38 +38,48 @@ public class ConsoleTrackerTest {
 
   @Test
   public void testPrintsPageView() {
-    PageConfiguration config = mock( PageConfiguration.class );
-    when( config.getId() ).thenReturn( "foo" );
-    when( config.getTitle() ).thenReturn( "title" );
-    TrackingEvent event = new TrackingEvent( EventType.PAGE_VIEW, createInfo(), config, 23 );
+    TrackingEvent event = new TrackingEvent( EventType.PAGE_VIEW, createInfo(), "foo", 23 );
 
     tracker.handleEvent( event );
 
-    verify( out ).println( "PAGE_VIEW - foo (title) [appId, model, vendor, osVersion]" );
+    verify( out ).println( "PAGE_VIEW - foo [appId, model, vendor, osVersion]" );
   }
 
   @Test
   public void testPrintsAction() {
-    ActionConfiguration config = mock( ActionConfiguration.class );
-    when( config.getId() ).thenReturn( "foo" );
-    when( config.getTitle() ).thenReturn( "title" );
-    TrackingEvent event = new TrackingEvent( EventType.ACTION, createInfo(), config, 23 );
+    TrackingEvent event = new TrackingEvent( EventType.ACTION, createInfo(), "foo", 23 );
 
     tracker.handleEvent( event );
 
-    verify( out ).println( "ACTION - foo (title) [appId, model, vendor, osVersion]" );
+    verify( out ).println( "ACTION - foo [appId, model, vendor, osVersion]" );
   }
 
   @Test
   public void testPrintsSearch() {
-    ActionConfiguration config = mock( ActionConfiguration.class );
-    when( config.getId() ).thenReturn( "foo" );
-    when( config.getTitle() ).thenReturn( "title" );
-    TrackingEvent event = new TrackingEvent( EventType.SEARCH, createInfo(), config, 23 );
+    TrackingEvent event = new TrackingEvent( EventType.SEARCH, createInfo(), "foo", 23 );
 
     tracker.handleEvent( event );
 
     verify( out ).println( "SEARCH - query=query [appId, model, vendor, osVersion]" );
+  }
+
+  @Test
+  public void testPrintsOrder() {
+    Order order = new Order( "foo", 1 );
+    TrackingEvent event = new TrackingEvent( EventType.ORDER, createInfo(), order, 23 );
+
+    tracker.handleEvent( event );
+
+    verify( out ).println( "ORDER - " + order.getOrderId() + " (1.0, 0.0, 0.0) [appId, model, vendor, osVersion]" );
+  }
+
+  @Test
+  public void testPrintsEvent() {
+    TrackingEvent event = new TrackingEvent( EventType.EVENT, createInfo(), "foo", 23 );
+
+    tracker.handleEvent( event );
+
+    verify( out ).println( "EVENT - foo [appId, model, vendor, osVersion]" );
   }
 
   private TrackingInfo createInfo() {

@@ -93,7 +93,7 @@ public class TrackingInfoFactoryTest {
 
   @Test
   public void testCreatesNewClientIdOnFirstAccess() {
-    TrackingInfo info = TrackingInfoFactory.createInfo( ui );
+    TrackingInfo info = TrackingInfoFactory.createInfo( ui.getDisplay() );
 
     String clientId = info.getClientId();
 
@@ -102,7 +102,7 @@ public class TrackingInfoFactoryTest {
 
   @Test
   public void testStoresNewClientIdInClientStore() {
-    TrackingInfo info = TrackingInfoFactory.createInfo( ui );
+    TrackingInfo info = TrackingInfoFactory.createInfo( ui.getDisplay() );
 
     String clientId = info.getClientId();
 
@@ -113,7 +113,7 @@ public class TrackingInfoFactoryTest {
   public void testUsesClientIdFromClientStore() {
     String id = UUID.randomUUID().toString();
     when( clientStore.get( TrackingInfoFactory.PROPERTY_ID ) ).thenReturn( id );
-    TrackingInfo info = TrackingInfoFactory.createInfo( ui );
+    TrackingInfo info = TrackingInfoFactory.createInfo( ui.getDisplay() );
 
     String clientId = info.getClientId();
 
@@ -122,7 +122,7 @@ public class TrackingInfoFactoryTest {
 
   @Test
   public void testObtainsAppId() {
-    TrackingInfo info = TrackingInfoFactory.createInfo( ui );
+    TrackingInfo info = TrackingInfoFactory.createInfo( ui.getDisplay() );
 
     String appId = info.getAppId();
 
@@ -131,7 +131,7 @@ public class TrackingInfoFactoryTest {
 
   @Test
   public void testObtainsTabrisVersion() {
-    TrackingInfo info = TrackingInfoFactory.createInfo( ui );
+    TrackingInfo info = TrackingInfoFactory.createInfo( ui.getDisplay() );
 
     String tabrisVersion = info.getTabrisVersion();
 
@@ -140,7 +140,7 @@ public class TrackingInfoFactoryTest {
 
   @Test
   public void testObtainsAppVersion() {
-    TrackingInfo info = TrackingInfoFactory.createInfo( ui );
+    TrackingInfo info = TrackingInfoFactory.createInfo( ui.getDisplay() );
 
     String appVersion = info.getAppVersion();
 
@@ -149,7 +149,7 @@ public class TrackingInfoFactoryTest {
 
   @Test
   public void testObtainsLocale() {
-    TrackingInfo info = TrackingInfoFactory.createInfo( ui );
+    TrackingInfo info = TrackingInfoFactory.createInfo( ui.getDisplay() );
 
     Locale clientLocale = info.getClientLocale();
 
@@ -158,7 +158,7 @@ public class TrackingInfoFactoryTest {
 
   @Test
   public void testObtainsModel() {
-    TrackingInfo info = TrackingInfoFactory.createInfo( ui );
+    TrackingInfo info = TrackingInfoFactory.createInfo( ui.getDisplay() );
 
     String deviceModel = info.getDeviceModel();
 
@@ -167,7 +167,7 @@ public class TrackingInfoFactoryTest {
 
   @Test
   public void testObtainsOsVersion() {
-    TrackingInfo info = TrackingInfoFactory.createInfo( ui );
+    TrackingInfo info = TrackingInfoFactory.createInfo( ui.getDisplay() );
 
     String deviceOsVersion = info.getDeviceOsVersion();
 
@@ -176,7 +176,7 @@ public class TrackingInfoFactoryTest {
 
   @Test
   public void testObtainsVendor() {
-    TrackingInfo info = TrackingInfoFactory.createInfo( ui );
+    TrackingInfo info = TrackingInfoFactory.createInfo( ui.getDisplay() );
 
     String deviceVendor = info.getDeviceVendor();
 
@@ -185,7 +185,7 @@ public class TrackingInfoFactoryTest {
 
   @Test
   public void testObtainsPlatform() {
-    TrackingInfo info = TrackingInfoFactory.createInfo( ui );
+    TrackingInfo info = TrackingInfoFactory.createInfo( ui.getDisplay() );
 
     Platform platform = info.getPlatform();
 
@@ -194,7 +194,7 @@ public class TrackingInfoFactoryTest {
 
   @Test
   public void testObtainsTimezoneOffset() {
-    TrackingInfo info = TrackingInfoFactory.createInfo( ui );
+    TrackingInfo info = TrackingInfoFactory.createInfo( ui.getDisplay() );
 
     int clientTimezoneOffset = info.getClientTimezoneOffset();
 
@@ -203,7 +203,7 @@ public class TrackingInfoFactoryTest {
 
   @Test
   public void testObtainsScaleFactor() {
-    TrackingInfo info = TrackingInfoFactory.createInfo( ui );
+    TrackingInfo info = TrackingInfoFactory.createInfo( ui.getDisplay() );
 
     float scaleFactor = info.getScaleFactor();
 
@@ -212,7 +212,7 @@ public class TrackingInfoFactoryTest {
 
   @Test
   public void testObtainsScreenResolution() {
-    TrackingInfo info = TrackingInfoFactory.createInfo( ui );
+    TrackingInfo info = TrackingInfoFactory.createInfo( ui.getDisplay() );
 
     Point screenResolution = info.getScreenResolution();
 
@@ -224,7 +224,7 @@ public class TrackingInfoFactoryTest {
   @Test
   public void testObtainsUserAgent() {
     request.setHeader( "User-Agent", "foo" );
-    TrackingInfo info = TrackingInfoFactory.createInfo( ui );
+    TrackingInfo info = TrackingInfoFactory.createInfo( ui.getDisplay() );
 
     String userAgent = info.getUserAgent();
 
@@ -234,7 +234,7 @@ public class TrackingInfoFactoryTest {
   @Test
   public void testObtainsClientIpFrom_X_Forwarded_For() {
     request.setHeader( "X-Forwarded-For", "12.34.56.78" );
-    TrackingInfo info = TrackingInfoFactory.createInfo( ui );
+    TrackingInfo info = TrackingInfoFactory.createInfo( ui.getDisplay() );
 
     String ip = info.getClientIp();
 
@@ -244,7 +244,7 @@ public class TrackingInfoFactoryTest {
   @Test
   public void testObtainsClientIpFrom_Proxy_Client_IP() {
     request.setHeader( "Proxy-Client-IP", "12.34.56.78" );
-    TrackingInfo info = TrackingInfoFactory.createInfo( ui );
+    TrackingInfo info = TrackingInfoFactory.createInfo( ui.getDisplay() );
 
     String ip = info.getClientIp();
 
@@ -254,7 +254,7 @@ public class TrackingInfoFactoryTest {
   @Test
   public void testObtainsClientIpFrom_WL_Proxy_Client_IP() {
     request.setHeader( "WL-Proxy-Client-IP", "12.34.56.78" );
-    TrackingInfo info = TrackingInfoFactory.createInfo( ui );
+    TrackingInfo info = TrackingInfoFactory.createInfo( ui.getDisplay() );
 
     String ip = info.getClientIp();
 
@@ -264,7 +264,7 @@ public class TrackingInfoFactoryTest {
   @Test
   public void testObtainsClientIpFrom_HTTP_CLIENT_IP() {
     request.setHeader( "HTTP_CLIENT_IP", "12.34.56.78" );
-    TrackingInfo info = TrackingInfoFactory.createInfo( ui );
+    TrackingInfo info = TrackingInfoFactory.createInfo( ui.getDisplay() );
 
     String ip = info.getClientIp();
 
@@ -274,7 +274,7 @@ public class TrackingInfoFactoryTest {
   @Test
   public void testObtainsClientIpFrom_HTTP_X_FORWARDED_FOR() {
     request.setHeader( "HTTP_X_FORWARDED_FOR", "12.34.56.78" );
-    TrackingInfo info = TrackingInfoFactory.createInfo( ui );
+    TrackingInfo info = TrackingInfoFactory.createInfo( ui.getDisplay() );
 
     String ip = info.getClientIp();
 
@@ -283,7 +283,7 @@ public class TrackingInfoFactoryTest {
 
   @Test
   public void testObtainsClientIpFromRemoteAddressWithoutHeaders() {
-    TrackingInfo info = TrackingInfoFactory.createInfo( ui );
+    TrackingInfo info = TrackingInfoFactory.createInfo( ui.getDisplay() );
 
     String ip = info.getClientIp();
 

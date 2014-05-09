@@ -11,7 +11,6 @@ import static com.eclipsesource.tabris.tracking.internal.piwik.request.RequestKe
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import java.util.Locale;
 import java.util.UUID;
@@ -30,8 +29,6 @@ import com.eclipsesource.tabris.tracking.internal.piwik.model.AdvancedConfigurat
 import com.eclipsesource.tabris.tracking.internal.piwik.model.VisitorInformation;
 import com.eclipsesource.tabris.tracking.internal.piwik.model.action.Action;
 import com.eclipsesource.tabris.tracking.internal.piwik.request.RequestKeys;
-import com.eclipsesource.tabris.ui.ActionConfiguration;
-import com.eclipsesource.tabris.ui.PageConfiguration;
 
 
 public class PiwikTrackerTest {
@@ -67,9 +64,7 @@ public class PiwikTrackerTest {
   public void testSendsPageView() {
     Piwik piwik = mock( Piwik.class );
     PiwikTracker tracker = new PiwikTracker( piwik, fakeTokenAuth );
-    PageConfiguration config = mock( PageConfiguration.class );
-    when( config.getId() ).thenReturn( "foo" );
-    TrackingEvent event = new TrackingEvent( EventType.PAGE_VIEW, createInfo(), config, 1 );
+    TrackingEvent event = new TrackingEvent( EventType.PAGE_VIEW, createInfo(), "foo", 1 );
 
     tracker.handleEvent( event );
 
@@ -87,9 +82,7 @@ public class PiwikTrackerTest {
   public void testSendsAction() {
     Piwik piwik = mock( Piwik.class );
     PiwikTracker tracker = new PiwikTracker( piwik, fakeTokenAuth );
-    ActionConfiguration config = mock( ActionConfiguration.class );
-    when( config.getId() ).thenReturn( "foo" );
-    TrackingEvent event = new TrackingEvent( EventType.ACTION, createInfo(), config, 1 );
+    TrackingEvent event = new TrackingEvent( EventType.ACTION, createInfo(), "foo", 1 );
 
     tracker.handleEvent( event );
 
@@ -107,9 +100,7 @@ public class PiwikTrackerTest {
   public void testSendsSearchAction() {
     Piwik piwik = mock( Piwik.class );
     PiwikTracker tracker = new PiwikTracker( piwik, fakeTokenAuth );
-    ActionConfiguration config = mock( ActionConfiguration.class );
-    when( config.getId() ).thenReturn( "foo" );
-    TrackingEvent event = new TrackingEvent( EventType.SEARCH, createInfo(), config, 1 );
+    TrackingEvent event = new TrackingEvent( EventType.SEARCH, createInfo(), "foo", 1 );
 
     tracker.handleEvent( event );
 

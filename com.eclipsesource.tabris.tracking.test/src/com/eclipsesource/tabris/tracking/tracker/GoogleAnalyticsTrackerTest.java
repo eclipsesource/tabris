@@ -12,15 +12,17 @@ package com.eclipsesource.tabris.tracking.tracker;
 
 import static com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeyProvider.getRequestKey;
 import static com.eclipsesource.tabris.tracking.tracker.GoogleAnalyticsTracker.CATEGORY_ACTION;
+import static com.eclipsesource.tabris.tracking.tracker.GoogleAnalyticsTracker.CATEGORY_EVENT;
 import static com.eclipsesource.tabris.tracking.tracker.GoogleAnalyticsTracker.CATEGORY_SEARCH;
+import static com.eclipsesource.tabris.tracking.tracker.GoogleAnalyticsTracker.LABEL_EVENT;
 import static com.eclipsesource.tabris.tracking.tracker.GoogleAnalyticsTracker.LABEL_EXECUTE;
 import static com.eclipsesource.tabris.tracking.tracker.GoogleAnalyticsTracker.LABEL_SEARCH;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import java.util.Locale;
 
@@ -29,6 +31,8 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import com.eclipsesource.tabris.device.ClientDevice.Platform;
+import com.eclipsesource.tabris.tracking.Order;
+import com.eclipsesource.tabris.tracking.OrderItem;
 import com.eclipsesource.tabris.tracking.TrackingEvent;
 import com.eclipsesource.tabris.tracking.TrackingEvent.EventType;
 import com.eclipsesource.tabris.tracking.TrackingInfo;
@@ -36,8 +40,6 @@ import com.eclipsesource.tabris.tracking.internal.analytics.GoogleAnalytics;
 import com.eclipsesource.tabris.tracking.internal.analytics.model.AdvancedConfiguration;
 import com.eclipsesource.tabris.tracking.internal.analytics.model.hit.Hit;
 import com.eclipsesource.tabris.tracking.internal.analytics.request.RequestKeys;
-import com.eclipsesource.tabris.ui.ActionConfiguration;
-import com.eclipsesource.tabris.ui.PageConfiguration;
 
 
 public class GoogleAnalyticsTrackerTest {
@@ -66,9 +68,7 @@ public class GoogleAnalyticsTrackerTest {
   public void testSendsPageView() {
     GoogleAnalytics analytics = mock( GoogleAnalytics.class );
     GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker( analytics );
-    PageConfiguration config = mock( PageConfiguration.class );
-    when( config.getId() ).thenReturn( "foo" );
-    TrackingEvent event = new TrackingEvent( EventType.PAGE_VIEW, createInfo(), config, 1 );
+    TrackingEvent event = new TrackingEvent( EventType.PAGE_VIEW, createInfo(), "foo", 1 );
 
     tracker.handleEvent( event );
 
@@ -83,9 +83,7 @@ public class GoogleAnalyticsTrackerTest {
   public void testSendsAction() {
     GoogleAnalytics analytics = mock( GoogleAnalytics.class );
     GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker( analytics );
-    ActionConfiguration config = mock( ActionConfiguration.class );
-    when( config.getId() ).thenReturn( "foo" );
-    TrackingEvent event = new TrackingEvent( EventType.ACTION, createInfo(), config, 1 );
+    TrackingEvent event = new TrackingEvent( EventType.ACTION, createInfo(), "foo", 1 );
 
     tracker.handleEvent( event );
 
@@ -102,9 +100,7 @@ public class GoogleAnalyticsTrackerTest {
   public void testSendsSearchAction() {
     GoogleAnalytics analytics = mock( GoogleAnalytics.class );
     GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker( analytics );
-    ActionConfiguration config = mock( ActionConfiguration.class );
-    when( config.getId() ).thenReturn( "foo" );
-    TrackingEvent event = new TrackingEvent( EventType.SEARCH, createInfo(), config, 1 );
+    TrackingEvent event = new TrackingEvent( EventType.SEARCH, createInfo(), "foo", 1 );
 
     tracker.handleEvent( event );
 
@@ -122,9 +118,7 @@ public class GoogleAnalyticsTrackerTest {
   public void testSendsSearchActionWithConfiguredCustomDimension() {
     GoogleAnalytics analytics = mock( GoogleAnalytics.class );
     GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker( analytics );
-    ActionConfiguration config = mock( ActionConfiguration.class );
-    when( config.getId() ).thenReturn( "foo" );
-    TrackingEvent event = new TrackingEvent( EventType.SEARCH, createInfo(), config, 1 );
+    TrackingEvent event = new TrackingEvent( EventType.SEARCH, createInfo(), "foo", 1 );
 
     tracker.setSearchCustomDimension( 2 );
     tracker.handleEvent( event );
@@ -151,6 +145,76 @@ public class GoogleAnalyticsTrackerTest {
     tracker.setSearchCustomDimension( -1 );
   }
 
+  @Test
+  public void testSendsEvent() {
+    GoogleAnalytics analytics = mock( GoogleAnalytics.class );
+    GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker( analytics );
+    TrackingEvent event = new TrackingEvent( EventType.EVENT, createInfo(), "foo", 1 );
+
+    tracker.handleEvent( event );
+
+    ArgumentCaptor<Hit> hitCaptor = ArgumentCaptor.forClass( Hit.class );
+    ArgumentCaptor<AdvancedConfiguration> configCaptor = ArgumentCaptor.forClass( AdvancedConfiguration.class );
+    verify( analytics ).track( hitCaptor.capture(), eq( "clientId" ), configCaptor.capture() );
+    assertAdvancedConfiguration( configCaptor.getValue() );
+    assertEquals( "foo", hitCaptor.getValue().getParameter().get( getRequestKey( RequestKeys.EVENT_LABEL ) ) );
+    assertEquals( CATEGORY_EVENT, hitCaptor.getValue().getParameter().get( getRequestKey( RequestKeys.EVENT_CATEGORY ) ) );
+    assertEquals( LABEL_EVENT, hitCaptor.getValue().getParameter().get( getRequestKey( RequestKeys.EVENT_ACTION ) ) );
+  }
+
+  @Test
+  public void testSendsOrder() {
+    GoogleAnalytics analytics = mock( GoogleAnalytics.class );
+    GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker( analytics );
+    Order order = new Order( "foo", 1 );
+    TrackingEvent event = new TrackingEvent( EventType.ORDER, createInfo(), order, 1 );
+
+    tracker.handleEvent( event );
+
+    ArgumentCaptor<Hit> hitCaptor = ArgumentCaptor.forClass( Hit.class );
+    ArgumentCaptor<AdvancedConfiguration> configCaptor = ArgumentCaptor.forClass( AdvancedConfiguration.class );
+    verify( analytics ).track( hitCaptor.capture(), eq( "clientId" ), configCaptor.capture() );
+    assertAdvancedConfiguration( configCaptor.getValue() );
+    assertEquals( order.getOrderId(), hitCaptor.getValue().getParameter().get( getRequestKey( RequestKeys.TRANSACTION_ID ) ) );
+    assertEquals( Double.valueOf( 1 ), hitCaptor.getValue().getParameter().get( getRequestKey( RequestKeys.TRANSACTION_REVENUE ) ) );
+    assertEquals( Double.valueOf( 0 ), hitCaptor.getValue().getParameter().get( getRequestKey( RequestKeys.TRANSACTION_SHIPPING ) ) );
+    assertEquals( Double.valueOf( 0 ), hitCaptor.getValue().getParameter().get( getRequestKey( RequestKeys.TRANSACTION_TAX ) ) );
+  }
+
+  @Test
+  public void testSendsOrderWithItems() {
+    GoogleAnalytics analytics = mock( GoogleAnalytics.class );
+    GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker( analytics );
+    Order order = new Order( "foo", 1 );
+    order.addItem( new OrderItem( "bar" ).setCategory( "blub" ).setSKU( "hmpf" ) );
+    TrackingEvent event = new TrackingEvent( EventType.ORDER, createInfo(), order, 1 );
+
+    tracker.handleEvent( event );
+
+    ArgumentCaptor<Hit> hitCaptor = ArgumentCaptor.forClass( Hit.class );
+    ArgumentCaptor<AdvancedConfiguration> configCaptor = ArgumentCaptor.forClass( AdvancedConfiguration.class );
+    verify( analytics, times( 2 ) ).track( hitCaptor.capture(), eq( "clientId" ), configCaptor.capture() );
+    assertAdvancedConfiguration( configCaptor.getAllValues().get( 0 ) );
+    Hit transactionHit = hitCaptor.getAllValues().get( 0 );
+    Hit itemHit = hitCaptor.getAllValues().get( 1 );
+    verifyTransactionHit( order, transactionHit );
+    verifyItemHit( order, itemHit );
+  }
+
+  private void verifyTransactionHit( Order order, Hit transactionHit ) {
+    assertEquals( order.getOrderId(), transactionHit.getParameter().get( getRequestKey( RequestKeys.TRANSACTION_ID ) ) );
+    assertEquals( Double.valueOf( 1 ), transactionHit.getParameter().get( getRequestKey( RequestKeys.TRANSACTION_REVENUE ) ) );
+    assertEquals( Double.valueOf( 0 ), transactionHit.getParameter().get( getRequestKey( RequestKeys.TRANSACTION_SHIPPING ) ) );
+    assertEquals( Double.valueOf( 0 ), transactionHit.getParameter().get( getRequestKey( RequestKeys.TRANSACTION_TAX ) ) );
+  }
+
+  private void verifyItemHit( Order order, Hit itemHit ) {
+    assertEquals( order.getOrderId(), itemHit.getParameter().get( getRequestKey( RequestKeys.TRANSACTION_ID ) ) );
+    assertEquals( "bar", itemHit.getParameter().get( getRequestKey( RequestKeys.ITEM_NAME ) ) );
+    assertEquals( "blub", itemHit.getParameter().get( getRequestKey( RequestKeys.ITEM_CATEGORY ) ) );
+    assertEquals( "hmpf", itemHit.getParameter().get( getRequestKey( RequestKeys.ITEM_CODE ) ) );
+  }
+
   private void assertAdvancedConfiguration( AdvancedConfiguration configuration ) {
     assertEquals( "appId", configuration.getParameter().get( getRequestKey( RequestKeys.APP_ID ) ) );
     assertEquals( "appVersion", configuration.getParameter().get( getRequestKey( RequestKeys.APP_VERSION ) ) );
@@ -165,12 +229,10 @@ public class GoogleAnalyticsTrackerTest {
   public void testAndroidUserAgent() {
     GoogleAnalytics analytics = mock( GoogleAnalytics.class );
     GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker( analytics );
-    ActionConfiguration config = mock( ActionConfiguration.class );
-    when( config.getId() ).thenReturn( "foo" );
     TrackingInfo info = createInfo();
     info.setPlatform( Platform.ANDROID );
     info.setDeviceOsVersion( "4.4" );
-    TrackingEvent event = new TrackingEvent( EventType.SEARCH, info, config, 1 );
+    TrackingEvent event = new TrackingEvent( EventType.SEARCH, info, "foo", 1 );
 
     tracker.handleEvent( event );
 
@@ -184,12 +246,10 @@ public class GoogleAnalyticsTrackerTest {
   public void testIOSUserAgent() {
     GoogleAnalytics analytics = mock( GoogleAnalytics.class );
     GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker( analytics );
-    ActionConfiguration config = mock( ActionConfiguration.class );
-    when( config.getId() ).thenReturn( "foo" );
     TrackingInfo info = createInfo();
     info.setPlatform( Platform.IOS );
     info.setDeviceOsVersion( "7.1" );
-    TrackingEvent event = new TrackingEvent( EventType.SEARCH, info, config, 1 );
+    TrackingEvent event = new TrackingEvent( EventType.SEARCH, info, "foo", 1 );
 
     tracker.handleEvent( event );
 

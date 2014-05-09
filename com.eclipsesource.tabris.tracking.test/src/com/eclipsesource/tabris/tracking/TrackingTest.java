@@ -156,7 +156,7 @@ public class TrackingTest {
     verify( dispatcher ).dispatch( captor.capture() );
     assertSame( EventType.PAGE_VIEW, captor.getValue().getEvent().getType() );
     assertNotNull( captor.getValue().getEvent().getInfo() );
-    assertSame( pageConfiguration, captor.getValue().getEvent().getDetail() );
+    assertSame( "foo", captor.getValue().getEvent().getDetail() );
     assertSame( tracking.getTrackers(), captor.getValue().getTrackers() );
   }
 
@@ -166,6 +166,7 @@ public class TrackingTest {
     UI ui = mock( UI.class );
     when( ui.getDisplay() ).thenReturn( display );
     when( ui.getPageConfiguration( any( Page.class ) ) ).thenReturn( pageConfiguration );
+    when( pageConfiguration.getId() ).thenReturn( "foo" );
     captor.getValue().after( ui, mock( Page.class ), mock( Page.class ) );
   }
 
@@ -174,6 +175,7 @@ public class TrackingTest {
     EventDispatcher dispatcher = mock( EventDispatcher.class );
     Tracking tracking = new Tracking( dispatcher, new ArrayList<Tracker>() );
     ActionConfiguration actionConfiguration = mock( ActionConfiguration.class );
+    when( actionConfiguration.getId() ).thenReturn( "bar" );
     UIConfiguration configuration = mock( UIConfiguration.class );
 
     tracking.attach( configuration );
@@ -183,8 +185,74 @@ public class TrackingTest {
     verify( dispatcher ).dispatch( captor.capture() );
     assertSame( EventType.ACTION, captor.getValue().getEvent().getType() );
     assertNotNull( captor.getValue().getEvent().getInfo() );
-    assertSame( actionConfiguration, captor.getValue().getEvent().getDetail() );
+    assertSame( "bar", captor.getValue().getEvent().getDetail() );
     assertSame( tracking.getTrackers(), captor.getValue().getTrackers() );
+  }
+
+  @Test
+  public void testDispatchesEventExecution() {
+    EventDispatcher dispatcher = mock( EventDispatcher.class );
+    Tracking tracking = new Tracking( dispatcher, new ArrayList<Tracker>() );
+
+    tracking.submitEvent( display, "foo" );
+
+    ArgumentCaptor<DispatchTask> captor = ArgumentCaptor.forClass( DispatchTask.class );
+    verify( dispatcher ).dispatch( captor.capture() );
+    assertSame( EventType.EVENT, captor.getValue().getEvent().getType() );
+    assertNotNull( captor.getValue().getEvent().getInfo() );
+    assertSame( "foo", captor.getValue().getEvent().getDetail() );
+    assertSame( tracking.getTrackers(), captor.getValue().getTrackers() );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testDispatchesEventFailsWithNullDisplay() {
+    Tracking tracking = new Tracking( mock( EventDispatcher.class ), new ArrayList<Tracker>() );
+
+    tracking.submitEvent( null, "foo" );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testDispatchesEventFailsWithNullId() {
+    Tracking tracking = new Tracking( mock( EventDispatcher.class ), new ArrayList<Tracker>() );
+
+    tracking.submitEvent( display, null );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testDispatchesEventFailsWithEmptyId() {
+    Tracking tracking = new Tracking( mock( EventDispatcher.class ), new ArrayList<Tracker>() );
+
+    tracking.submitEvent( display, "" );
+  }
+
+  @Test
+  public void testDispatchesOrder() {
+    EventDispatcher dispatcher = mock( EventDispatcher.class );
+    Tracking tracking = new Tracking( dispatcher, new ArrayList<Tracker>() );
+    Order order = new Order( "foo", 1 );
+
+    tracking.submitOrder( display, order );
+
+    ArgumentCaptor<DispatchTask> captor = ArgumentCaptor.forClass( DispatchTask.class );
+    verify( dispatcher ).dispatch( captor.capture() );
+    assertSame( EventType.ORDER, captor.getValue().getEvent().getType() );
+    assertNotNull( captor.getValue().getEvent().getInfo() );
+    assertEquals( order, captor.getValue().getEvent().getDetail() );
+    assertSame( tracking.getTrackers(), captor.getValue().getTrackers() );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testSubmitOrderFailsWithNullDisplay() {
+    Tracking tracking = new Tracking( mock( EventDispatcher.class ), new ArrayList<Tracker>() );
+
+    tracking.submitOrder( null, new Order( "foo", 1 ) );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testSubmitOrderFailsWithNullOrder() {
+    Tracking tracking = new Tracking( mock( EventDispatcher.class ), new ArrayList<Tracker>() );
+
+    tracking.submitOrder( display, null );
   }
 
   private void fakeActionExecution( UIConfiguration configuration, ActionConfiguration actionConfiguration ) {
@@ -201,6 +269,7 @@ public class TrackingTest {
     EventDispatcher dispatcher = mock( EventDispatcher.class );
     Tracking tracking = new Tracking( dispatcher, new ArrayList<Tracker>() );
     ActionConfiguration actionConfiguration = mock( ActionConfiguration.class );
+    when( actionConfiguration.getId() ).thenReturn( "bar" );
     UIConfiguration configuration = mock( UIConfiguration.class );
 
     tracking.attach( configuration );
@@ -211,7 +280,7 @@ public class TrackingTest {
     assertSame( EventType.SEARCH, captor.getValue().getEvent().getType() );
     assertNotNull( captor.getValue().getEvent().getInfo() );
     assertEquals( "foo", captor.getValue().getEvent().getInfo().getSearchQuery() );
-    assertSame( actionConfiguration, captor.getValue().getEvent().getDetail() );
+    assertSame( "bar", captor.getValue().getEvent().getDetail() );
     assertSame( tracking.getTrackers(), captor.getValue().getTrackers() );
   }
 

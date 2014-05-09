@@ -23,7 +23,7 @@ import java.io.Serializable;
 public class TrackingEvent implements Serializable {
 
   public static enum EventType {
-    PAGE_VIEW, ACTION, SEARCH
+    PAGE_VIEW, ACTION, SEARCH, ORDER, EVENT
   }
 
   private final EventType type;
