@@ -117,7 +117,7 @@ public class TabrisClientProvider implements ClientProvider, Serializable {
     ProtocolMessageWriter writer = new ProtocolMessageWriter();
     writer.appendHead( "error", JsonValue.valueOf( errorMsg ) );
     try {
-      writer.createMessage().writeTo( response.getWriter() );
+      writer.createMessage().toJson().writeTo( response.getWriter() );
     } catch( IOException exception ) {
       throw new IllegalStateException( exception );
     }
