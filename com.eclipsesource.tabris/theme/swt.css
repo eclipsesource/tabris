@@ -18,15 +18,11 @@
 }
 
 Composite {
-  padding: 4px;
+  padding: 0px;
 }
 
 Shell-Titlebar {
   height: 27px;
-}
-
-ToolBar {
-  padding: 6px 0px 6px 0px;
 }
 
 Shell {
