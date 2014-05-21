@@ -10,25 +10,32 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.rap.rwt.RWT;
 
+import com.eclipsesource.tabris.VersionCheck;
 
-public class VersionCheck {
 
-  private static final Pattern VERSION_PATTERN = Pattern.compile( ".*/([0-9]*\\.[0-9]*)\\.[0-9]* \\(.*\\)" );
-  static final String TABRIS_SERVER_VERSION = "1.4";
+public class VersionChecker {
+
+  static final String TABRIS_SERVER_VERSION = "1.4.0";
+  private static final Pattern VERSION_PATTERN = Pattern.compile( ".*/([0-9]*\\.[0-9]*\\.[0-9])* \\(.*\\)" );
 
   private final String clientVersion;
+  private final VersionCheck versionCheck;
   private final String serverVersion;
 
-  public VersionCheck() {
-    this( TABRIS_SERVER_VERSION );
+  public VersionChecker( VersionCheck versionCheck ) {
+    this( versionCheck, TABRIS_SERVER_VERSION );
   }
 
-  VersionCheck( String serverVersion ) {
+  VersionChecker( VersionCheck versionCheck, String serverVersion ) {
+    whenNull( versionCheck ).throwIllegalArgument( "versionCheck must not be null" );
+    this.versionCheck = versionCheck;
     this.serverVersion = serverVersion;
     this.clientVersion = findClientVersion();
   }
@@ -42,15 +49,12 @@ public class VersionCheck {
     return "";
   }
 
-  public boolean matches() {
-    return serverVersion.equals( clientVersion );
+  public boolean accept() {
+    return versionCheck.accept( clientVersion, serverVersion );
   }
 
-  public String getServerVersion() {
-    return serverVersion;
+  public String getErrorMessage() {
+    return versionCheck.getErrorMessage( clientVersion, serverVersion );
   }
 
-  public String getClientVersion() {
-    return clientVersion;
-  }
 }

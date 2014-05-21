@@ -11,7 +11,7 @@
 package com.eclipsesource.tabris.internal;
 
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_VERSION_CHECK;
-import static com.eclipsesource.tabris.internal.VersionCheck.TABRIS_SERVER_VERSION;
+import static com.eclipsesource.tabris.internal.VersionChecker.TABRIS_SERVER_VERSION;
 import static com.eclipsesource.tabris.test.util.MessageUtil.getHead;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -55,7 +55,7 @@ public class TabrisClientProviderTest {
 
   @Before
   public void setUp() {
-    provider = new TabrisClientProvider();
+    provider = new TabrisClientProvider( new DefaultVersionCheck() );
   }
 
   @After
@@ -70,7 +70,7 @@ public class TabrisClientProviderTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithEmptyServerId() {
-    new TabrisClientProvider( "" );
+    new TabrisClientProvider( new DefaultVersionCheck(), "" );
   }
 
   @Test
@@ -153,7 +153,7 @@ public class TabrisClientProviderTest {
 
   @Test
   public void testSetsServerIdAsHeaderForAndroid() {
-    provider = new TabrisClientProvider( "foo" );
+    provider = new TabrisClientProvider( new DefaultVersionCheck(), "foo" );
     TabrisRequest request = environment.getRequest();
     request.setHeader( Constants.USER_AGENT, Constants.ID_ANDROID );
 
@@ -165,7 +165,7 @@ public class TabrisClientProviderTest {
 
   @Test
   public void testSetsServerIdAsHeaderForIOS() {
-    provider = new TabrisClientProvider( "foo" );
+    provider = new TabrisClientProvider( new DefaultVersionCheck(), "foo" );
     TabrisRequest request = environment.getRequest();
     request.setHeader( Constants.USER_AGENT, Constants.ID_IOS );
 
@@ -199,7 +199,7 @@ public class TabrisClientProviderTest {
 
   @Test
   public void testSetsNoServerIdAsHeaderForWeb() {
-    provider = new TabrisClientProvider( "foo" );
+    provider = new TabrisClientProvider( new DefaultVersionCheck(), "foo" );
     TabrisRequest request = environment.getRequest();
 
     provider.accept( request );
@@ -228,7 +228,8 @@ public class TabrisClientProviderTest {
 
     JsonObject head = getHead();
     String error = head.get( "error" ).asString();
-    assertEquals( "Incompatible Tabris Versions:\nClient 42.1 vs. Server " + TABRIS_SERVER_VERSION, error );
+    String serverVersion = TABRIS_SERVER_VERSION.substring( 0, TABRIS_SERVER_VERSION.length() - 2 );
+    assertEquals( "Incompatible Tabris Versions:\nClient 42.1 vs. Server " + serverVersion, error );
   }
 
   @Test

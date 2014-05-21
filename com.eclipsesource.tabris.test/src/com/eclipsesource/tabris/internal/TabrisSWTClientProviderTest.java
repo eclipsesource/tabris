@@ -31,6 +31,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import com.eclipsesource.tabris.internal.TabrisSWTClientProvider.NoVersionCheck;
 import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 import com.eclipsesource.tabris.test.util.TabrisRequest;
 
@@ -99,5 +100,14 @@ public class TabrisSWTClientProviderTest {
     environment.resetThemes();
     ThemeManager themeManager = applicationContext.getThemeManager();
     themeManager.registerTheme( theme );
+  }
+
+  @Test
+  public void testNoVersionCheckIsAlwaysTrue() {
+    NoVersionCheck check = new NoVersionCheck();
+
+    assertTrue( check.accept( "", "" ) );
+    assertTrue( check.accept( null, "" ) );
+    assertTrue( check.accept( "", null ) );
   }
 }

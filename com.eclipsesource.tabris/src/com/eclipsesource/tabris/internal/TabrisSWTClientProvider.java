@@ -9,8 +9,14 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.client.Client;
 import org.eclipse.rap.rwt.internal.theme.ThemeUtil;
 
+import com.eclipsesource.tabris.VersionCheck;
+
 @SuppressWarnings("restriction")
 public class TabrisSWTClientProvider extends TabrisClientProvider {
+
+  public TabrisSWTClientProvider() {
+    super( new NoVersionCheck() );
+  }
 
   public String getPlatform() {
     String userAgent = RWT.getRequest().getHeader( Constants.USER_AGENT );
@@ -33,5 +39,19 @@ public class TabrisSWTClientProvider extends TabrisClientProvider {
   @Override
   public Client getClient() {
     return new TabrisSWTClient();
+  }
+
+  static class NoVersionCheck implements VersionCheck {
+
+    @Override
+    public boolean accept( String clientVersion, String serverVersion ) {
+      return true;
+    }
+
+    @Override
+    public String getErrorMessage( String clientVersion, String serverVersion ) {
+      return null;
+    }
+
   }
 }

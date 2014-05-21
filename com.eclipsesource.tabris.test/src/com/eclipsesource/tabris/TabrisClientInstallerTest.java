@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.tabris;
 
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
@@ -25,10 +27,12 @@ import org.eclipse.rap.rwt.internal.application.ApplicationImpl;
 import org.eclipse.rap.rwt.internal.resources.ResourceRegistry;
 import org.eclipse.rap.rwt.internal.theme.ThemeManager;
 import org.eclipse.rap.rwt.service.ResourceLoader;
+import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 
 import com.eclipsesource.tabris.internal.Constants;
+import com.eclipsesource.tabris.internal.DefaultVersionCheck;
 import com.eclipsesource.tabris.internal.TabrisResourceLoader;
 import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
@@ -38,6 +42,11 @@ public class TabrisClientInstallerTest {
 
   @Rule
   public TabrisEnvironment environment = new TabrisEnvironment();
+
+  @After
+  public void tearDown() {
+    TabrisClientInstaller.VERSION_CHECK = new DefaultVersionCheck();
+  }
 
   @Test
   public void testRegistersTheme() {
@@ -102,5 +111,24 @@ public class TabrisClientInstallerTest {
     ResourceRegistry resourceRegistry = mock( ResourceRegistry.class );
     when( context.getResourceRegistry() ).thenReturn( resourceRegistry );
     return application;
+  }
+
+  @Test
+  public void testSetsVersionCheck() {
+    VersionCheck check = mock( VersionCheck.class );
+
+    TabrisClientInstaller.setVersionCheck( check );
+
+    assertSame( check, TabrisClientInstaller.VERSION_CHECK );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testFailsToSetNullVersionCheck() {
+    TabrisClientInstaller.setVersionCheck( null );
+  }
+
+  @Test
+  public void testHasDefaultVersionCheckByDefault() {
+    assertTrue( TabrisClientInstaller.VERSION_CHECK instanceof DefaultVersionCheck );
   }
 }

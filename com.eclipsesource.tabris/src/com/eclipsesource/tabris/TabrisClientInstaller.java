@@ -11,6 +11,7 @@
 package com.eclipsesource.tabris;
 
 import static com.eclipsesource.tabris.internal.Clauses.when;
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.Constants.INDEX_JSON;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_ANDROID;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_IOS;
@@ -31,6 +32,7 @@ import org.eclipse.rap.rwt.client.Client;
 import org.eclipse.rap.rwt.internal.application.ApplicationImpl;
 import org.eclipse.rap.rwt.service.ResourceLoader;
 
+import com.eclipsesource.tabris.internal.DefaultVersionCheck;
 import com.eclipsesource.tabris.internal.TabrisClientProvider;
 import com.eclipsesource.tabris.internal.TabrisResourceLoader;
 import com.eclipsesource.tabris.internal.TabrisSWTClientProvider;
@@ -48,6 +50,8 @@ import com.eclipsesource.tabris.internal.TabrisSWTClientProvider;
  */
 @SuppressWarnings("restriction")
 public class TabrisClientInstaller {
+
+  static VersionCheck VERSION_CHECK = new DefaultVersionCheck();
 
   private static class ResourceLoaderImpl implements ResourceLoader {
 
@@ -81,7 +85,7 @@ public class TabrisClientInstaller {
   public static void install( Application application, String serverId ) {
     verifyServerId( serverId );
     ApplicationImpl applicationImpl = ( ApplicationImpl )application;
-    applicationImpl.addClientProvider( new TabrisClientProvider( serverId ) );
+    applicationImpl.addClientProvider( new TabrisClientProvider( VERSION_CHECK, serverId ) );
     applicationImpl.addClientProvider( new TabrisSWTClientProvider() );
     registerCompatibilityThemes( application );
     registerResourceLoader( applicationImpl );
@@ -105,6 +109,14 @@ public class TabrisClientInstaller {
   private static void registerResourceLoader( ApplicationImpl application ) {
     TabrisResourceLoader tabrisLoader = new TabrisResourceLoader( application.getApplicationContext() );
     application.getApplicationContext().getResourceRegistry().add( INDEX_JSON, tabrisLoader );
+  }
+
+  /**
+   * @since 1.4
+   */
+  public static void setVersionCheck( VersionCheck versionCheck ) {
+    whenNull( versionCheck ).throwIllegalArgument( "versionCheck must not be null" );
+    VERSION_CHECK = versionCheck;
   }
 
   private TabrisClientInstaller() {

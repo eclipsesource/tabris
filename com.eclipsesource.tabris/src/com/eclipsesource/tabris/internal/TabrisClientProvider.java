@@ -31,19 +31,23 @@ import org.eclipse.rap.rwt.internal.client.ClientProvider;
 import org.eclipse.rap.rwt.internal.protocol.ProtocolMessageWriter;
 import org.eclipse.rap.rwt.internal.theme.ThemeUtil;
 
+import com.eclipsesource.tabris.VersionCheck;
 import com.eclipsesource.tabris.device.ClientDevice.Platform;
+
 
 @SuppressWarnings("restriction")
 public class TabrisClientProvider implements ClientProvider, Serializable {
 
   private final String serverId;
+  private final VersionCheck versionCheck;
 
-  public TabrisClientProvider() {
-    this( null );
+  public TabrisClientProvider( VersionCheck versionCheck ) {
+    this( versionCheck, null );
   }
 
-  public TabrisClientProvider( String serverId ) {
+  public TabrisClientProvider( VersionCheck versionCheck, String serverId ) {
     verifyServerId( serverId );
+    this.versionCheck = versionCheck;
     this.serverId = serverId;
   }
 
@@ -96,9 +100,9 @@ public class TabrisClientProvider implements ClientProvider, Serializable {
   }
 
   private void checkVersion() {
-    VersionCheck versionCheck = new VersionCheck();
-    if( !versionCheck.matches() ) {
-      writeInvalidVersion( versionCheck.getServerVersion(), versionCheck.getClientVersion() );
+    VersionChecker versionChecker = new VersionChecker( versionCheck );
+    if( !versionChecker.accept() ) {
+      writeInvalidVersion( versionChecker.getErrorMessage() );
     }
   }
 
@@ -110,8 +114,7 @@ public class TabrisClientProvider implements ClientProvider, Serializable {
     return true;
   }
 
-  private void writeInvalidVersion( String serverVersion, String clientVersion ) {
-    String errorMsg = "Incompatible Tabris Versions:\nClient " + clientVersion + " vs. Server " + serverVersion;
+  private void writeInvalidVersion( String errorMsg ) {
     HttpServletResponse response = RWT.getResponse();
     response.setStatus( SC_PRECONDITION_FAILED );
     ProtocolMessageWriter writer = new ProtocolMessageWriter();
