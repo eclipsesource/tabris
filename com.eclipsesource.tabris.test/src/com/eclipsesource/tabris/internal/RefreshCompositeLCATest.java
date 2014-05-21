@@ -18,7 +18,7 @@ import static com.eclipsesource.tabris.test.util.MessageUtil.OperationType.CALL;
 import static com.eclipsesource.tabris.test.util.MessageUtil.OperationType.CREATE;
 import static com.eclipsesource.tabris.test.util.MessageUtil.OperationType.LISTEN;
 import static com.eclipsesource.tabris.test.util.MessageUtil.OperationType.SET;
-import static org.eclipse.rap.rwt.lifecycle.WidgetUtil.getId;
+import static org.eclipse.rap.rwt.internal.lifecycle.WidgetUtil.getId;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -29,8 +29,8 @@ import java.io.IOException;
 
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
+import org.eclipse.rap.rwt.internal.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.internal.remote.RemoteObjectRegistry;
-import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.remote.OperationHandler;
 import org.eclipse.rap.rwt.scripting.ClientListener;
 import org.eclipse.swt.SWT;

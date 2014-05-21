@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
-import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
+import org.eclipse.rap.rwt.internal.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.remote.JsonMapping;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
@@ -40,6 +40,7 @@ import com.eclipsesource.tabris.ui.PageOperator;
 import com.eclipsesource.tabris.ui.UI;
 
 
+@SuppressWarnings("restriction")
 public class RemoteUITest {
 
   @Rule

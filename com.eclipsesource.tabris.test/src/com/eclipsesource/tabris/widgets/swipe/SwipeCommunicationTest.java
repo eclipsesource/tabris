@@ -26,7 +26,7 @@ import java.util.List;
 
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
-import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
+import org.eclipse.rap.rwt.internal.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
@@ -41,6 +41,7 @@ import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 import com.eclipsesource.tabris.widgets.swipe.SwipeTest.TestItem;
 
 
+@SuppressWarnings("restriction")
 public class SwipeCommunicationTest {
 
   @Rule

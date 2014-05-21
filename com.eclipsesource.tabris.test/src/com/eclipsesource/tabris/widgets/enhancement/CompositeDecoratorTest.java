@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import org.eclipse.rap.rwt.RWT;
-import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
+import org.eclipse.rap.rwt.internal.lifecycle.WidgetUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
@@ -38,6 +38,7 @@ import org.junit.Test;
 import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
+@SuppressWarnings("restriction")
 public class CompositeDecoratorTest {
 
   @Rule

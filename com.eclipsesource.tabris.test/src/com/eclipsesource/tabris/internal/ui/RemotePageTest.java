@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.rap.json.JsonArray;
-import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
+import org.eclipse.rap.rwt.internal.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -45,6 +45,7 @@ import com.eclipsesource.tabris.ui.PageStyle;
 import com.eclipsesource.tabris.ui.UI;
 
 
+@SuppressWarnings("restriction")
 public class RemotePageTest {
 
   @Rule

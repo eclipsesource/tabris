@@ -18,7 +18,7 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 
 import org.eclipse.rap.json.JsonObject;
-import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
+import org.eclipse.rap.rwt.internal.lifecycle.WidgetUtil;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.internal.widgets.canvaskit.CanvasLCA;

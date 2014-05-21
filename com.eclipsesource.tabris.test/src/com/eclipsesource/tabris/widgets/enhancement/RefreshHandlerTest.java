@@ -20,7 +20,7 @@ import static org.mockito.Mockito.verify;
 import java.util.List;
 
 import org.eclipse.rap.json.JsonValue;
-import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
+import org.eclipse.rap.rwt.internal.lifecycle.WidgetUtil;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Rule;
@@ -30,6 +30,7 @@ import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 import com.eclipsesource.tabris.widgets.RefreshListener;
 
 
+@SuppressWarnings("restriction")
 public class RefreshHandlerTest {
 
   @Rule
