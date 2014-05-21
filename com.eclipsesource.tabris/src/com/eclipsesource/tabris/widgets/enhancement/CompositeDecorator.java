@@ -13,7 +13,7 @@ package com.eclipsesource.tabris.widgets.enhancement;
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
 import org.eclipse.rap.rwt.RWT;
-import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
+import org.eclipse.rap.rwt.internal.lifecycle.WidgetUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Listener;
 /**
  * @since 0.10
  */
+@SuppressWarnings("restriction")
 public class CompositeDecorator extends WidgetDecorator<CompositeDecorator>  {
 
   /**

@@ -39,7 +39,7 @@ import java.util.List;
 
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.RWT;
-import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
+import org.eclipse.rap.rwt.internal.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -75,6 +75,7 @@ import com.eclipsesource.tabris.internal.ZIndexStackLayout;
  *
  * @since 0.10
  */
+@SuppressWarnings("restriction")
 public class Swipe implements Serializable {
 
   private final SwipeOperationHandler operationHandler;

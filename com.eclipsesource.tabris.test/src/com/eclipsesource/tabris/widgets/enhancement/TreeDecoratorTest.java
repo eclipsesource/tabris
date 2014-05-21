@@ -16,9 +16,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -49,7 +47,7 @@ public class TreeDecoratorTest {
   @Before
   public void setUp() {
     display = new Display();
-    tree = spy( new Tree( new Shell( display ), SWT.NONE ) );
+    tree = new Tree( new Shell( display ), SWT.NONE );
     decorator = Widgets.onTree( tree );
   }
 
@@ -57,28 +55,28 @@ public class TreeDecoratorTest {
   public void testUseTitle() {
     decorator.useTitle( "test" );
 
-    verify( tree ).setToolTipText( eq( "test" ) );
+    assertEquals( "test", tree.getToolTipText() );
   }
 
   @Test
   public void testSetAlternativeLeafSelection() {
     decorator.enableAlternativeSelection( TreePart.LEAF );
 
-    verify( tree ).setData( ALT_SELECTION.getKey(), "leaf" );
+    assertEquals( "leaf", tree.getData( ALT_SELECTION.getKey() ) );
   }
 
   @Test
   public void testSetAlternativeBranchSelection() {
     decorator.enableAlternativeSelection( TreePart.BRANCH );
 
-    verify( tree ).setData( ALT_SELECTION.getKey(), "branch" );
+    assertEquals( "branch", tree.getData( ALT_SELECTION.getKey() ) );
   }
 
   @Test
   public void testSetAlternativeSelectionForAll() {
     decorator.enableAlternativeSelection( TreePart.ALL );
 
-    verify( tree ).setData( ALT_SELECTION.getKey(), "all" );
+    assertEquals( "all", tree.getData( ALT_SELECTION.getKey() ) );
   }
 
   @Test
@@ -171,7 +169,7 @@ public class TreeDecoratorTest {
   public void testSetPreloadedItemsAsCustomData() {
     decorator.setPreloadedItems( 1 );
 
-    verify( tree ).setData( RWT.PRELOADED_ITEMS, Integer.valueOf( 1 ) );
+    assertEquals( Integer.valueOf( 1 ), tree.getData( RWT.PRELOADED_ITEMS ) );
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -192,7 +190,7 @@ public class TreeDecoratorTest {
 
     decorator.setTemplate( template );
 
-    verify( tree ).setData( RWT.ROW_TEMPLATE, template );
+    assertSame( template, tree.getData( RWT.ROW_TEMPLATE ) );
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -211,7 +209,7 @@ public class TreeDecoratorTest {
   public void testSetItemHeightInWidget() {
     decorator.setItemHeight( 23 );
 
-    verify( tree ).setData( RWT.CUSTOM_ITEM_HEIGHT, Integer.valueOf( 23 ) );
+    assertEquals( Integer.valueOf( 23 ), tree.getData( RWT.CUSTOM_ITEM_HEIGHT ) );
   }
 
   @Test( expected = IllegalArgumentException.class )

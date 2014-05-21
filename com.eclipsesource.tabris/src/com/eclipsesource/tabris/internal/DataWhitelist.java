@@ -12,9 +12,10 @@ package com.eclipsesource.tabris.internal;
 
 import java.io.Serializable;
 
-import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
+import org.eclipse.rap.rwt.internal.lifecycle.WidgetUtil;
 
 
+@SuppressWarnings("restriction")
 public class DataWhitelist implements Serializable {
 
   public enum WhiteListEntry {

@@ -20,7 +20,7 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_IMAGE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PAGE_ID;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SHELL;
 import static org.eclipse.rap.rwt.RWT.getUISession;
-import static org.eclipse.rap.rwt.lifecycle.WidgetUtil.getId;
+import static org.eclipse.rap.rwt.internal.lifecycle.WidgetUtil.getId;
 import static org.eclipse.rap.rwt.remote.JsonMapping.toJson;
 
 import java.util.List;
@@ -39,6 +39,7 @@ import com.eclipsesource.tabris.internal.ui.rendering.UIRenderer;
 import com.eclipsesource.tabris.ui.UI;
 
 
+@SuppressWarnings("restriction")
 public class RemoteUI extends AbstractOperationHandler implements UIRenderer {
 
   private final RemoteObject remoteObject;
