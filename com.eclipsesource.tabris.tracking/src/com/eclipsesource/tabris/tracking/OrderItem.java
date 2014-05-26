@@ -12,13 +12,16 @@ package com.eclipsesource.tabris.tracking;
 
 import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
+import static java.math.BigDecimal.ZERO;
+
+import java.math.BigDecimal;
 
 
 @SuppressWarnings("restriction")
 public class OrderItem {
 
   private final String name;
-  private double price;
+  private BigDecimal price;
   private int quantity;
   private String sku;
   private String category;
@@ -28,19 +31,20 @@ public class OrderItem {
     when( name.isEmpty() ).throwIllegalArgument( "Name must not be empty" );
     this.name = name;
     this.quantity = 1;
-    this.price = 0;
+    this.price = ZERO;
   }
 
   public String getName() {
     return name;
   }
 
-  public OrderItem setPrice( double price ) {
+  public OrderItem setPrice( BigDecimal price ) {
+    whenNull( price ).throwIllegalArgument( "Price must not be null" );
     this.price = price;
     return this;
   }
 
-  public double getPrice() {
+  public BigDecimal getPrice() {
     return price;
   }
 
@@ -81,9 +85,7 @@ public class OrderItem {
     int result = 1;
     result = prime * result + ( ( category == null ) ? 0 : category.hashCode() );
     result = prime * result + ( ( name == null ) ? 0 : name.hashCode() );
-    long temp;
-    temp = Double.doubleToLongBits( price );
-    result = prime * result + ( int )( temp ^ ( temp >>> 32 ) );
+    result = prime * result + ( ( price == null ) ? 0 : price.hashCode() );
     result = prime * result + quantity;
     result = prime * result + ( ( sku == null ) ? 0 : sku.hashCode() );
     return result;
@@ -115,7 +117,11 @@ public class OrderItem {
     } else if( !name.equals( other.name ) ) {
       return false;
     }
-    if( Double.doubleToLongBits( price ) != Double.doubleToLongBits( other.price ) ) {
+    if( price == null ) {
+      if( other.price != null ) {
+        return false;
+      }
+    } else if( !price.equals( other.price ) ) {
       return false;
     }
     if( quantity != other.quantity ) {

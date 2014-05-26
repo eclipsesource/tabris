@@ -14,6 +14,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import java.io.PrintStream;
+import java.math.BigDecimal;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -65,12 +66,12 @@ public class ConsoleTrackerTest {
 
   @Test
   public void testPrintsOrder() {
-    Order order = new Order( "foo", 1 );
+    Order order = new Order( "foo", BigDecimal.ONE );
     TrackingEvent event = new TrackingEvent( EventType.ORDER, createInfo(), order, 23 );
 
     tracker.handleEvent( event );
 
-    verify( out ).println( "ORDER - " + order.getOrderId() + " (1.0, 0.0, 0.0) [appId, model, vendor, osVersion]" );
+    verify( out ).println( "ORDER - " + order.getOrderId() + " (1, 0, 0) [appId, model, vendor, osVersion]" );
   }
 
   @Test

@@ -12,6 +12,8 @@ package com.eclipsesource.tabris.tracking.tracker;
 
 import static com.eclipsesource.tabris.internal.Clauses.when;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -115,9 +117,9 @@ public class GoogleAnalyticsTracker implements Tracker {
   private Hit createTransactionHit( TrackingEvent event, AdvancedConfiguration advancedConfiguration ) {
     Order order = ( Order )event.getDetail();
     TransactionHit hit = new TransactionHit( order.getOrderId() );
-    hit.setRevenue( order.getRevenue() );
-    hit.setShipping( order.getShipping() );
-    hit.setTax( order.getTax() );
+    hit.setRevenue( toDouble( order.getRevenue() ) );
+    hit.setShipping( toDouble( order.getShipping() ) );
+    hit.setTax( toDouble( order.getTax() ) );
     return hit;
   }
 
@@ -138,7 +140,7 @@ public class GoogleAnalyticsTracker implements Tracker {
     if( item.getSKU() != null ) {
       itemHit.setCode( item.getSKU() );
     }
-    itemHit.setPrice( item.getPrice() );
+    itemHit.setPrice( toDouble( item.getPrice() ) );
     itemHit.setQuantity( item.getQuantity() );
     return itemHit;
   }
@@ -164,6 +166,10 @@ public class GoogleAnalyticsTracker implements Tracker {
     configuration.setUserLanguage( info.getClientLocale().getLanguage() + "-" + info.getClientLocale().getCountry() );
     configuration.setViewportSize( screenResolution );
     return configuration;
+  }
+
+  private double toDouble( BigDecimal amount ) {
+    return amount.setScale( 2, RoundingMode.HALF_UP ).doubleValue();
   }
 
 }

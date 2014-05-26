@@ -24,6 +24,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.math.BigDecimal;
 import java.util.Locale;
 
 import org.eclipse.swt.graphics.Point;
@@ -166,7 +167,7 @@ public class GoogleAnalyticsTrackerTest {
   public void testSendsOrder() {
     GoogleAnalytics analytics = mock( GoogleAnalytics.class );
     GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker( analytics );
-    Order order = new Order( "foo", 1 );
+    Order order = new Order( "foo", BigDecimal.ONE );
     TrackingEvent event = new TrackingEvent( EventType.ORDER, createInfo(), order, 1 );
 
     tracker.handleEvent( event );
@@ -185,7 +186,7 @@ public class GoogleAnalyticsTrackerTest {
   public void testSendsOrderWithItems() {
     GoogleAnalytics analytics = mock( GoogleAnalytics.class );
     GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker( analytics );
-    Order order = new Order( "foo", 1 );
+    Order order = new Order( "foo", BigDecimal.ONE );
     order.addItem( new OrderItem( "bar" ).setCategory( "blub" ).setSKU( "hmpf" ) );
     TrackingEvent event = new TrackingEvent( EventType.ORDER, createInfo(), order, 1 );
 

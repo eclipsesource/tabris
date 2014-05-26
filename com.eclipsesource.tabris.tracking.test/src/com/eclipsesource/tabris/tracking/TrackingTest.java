@@ -19,6 +19,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -229,7 +230,7 @@ public class TrackingTest {
   public void testDispatchesOrder() {
     EventDispatcher dispatcher = mock( EventDispatcher.class );
     Tracking tracking = new Tracking( dispatcher, new ArrayList<Tracker>() );
-    Order order = new Order( "foo", 1 );
+    Order order = new Order( "foo", BigDecimal.ONE );
 
     tracking.submitOrder( display, order );
 
@@ -245,7 +246,7 @@ public class TrackingTest {
   public void testSubmitOrderFailsWithNullDisplay() {
     Tracking tracking = new Tracking( mock( EventDispatcher.class ), new ArrayList<Tracker>() );
 
-    tracking.submitOrder( null, new Order( "foo", 1 ) );
+    tracking.submitOrder( null, new Order( "foo", BigDecimal.ONE ) );
   }
 
   @Test( expected = IllegalArgumentException.class )

@@ -13,6 +13,8 @@ package com.eclipsesource.tabris.tracking;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
+import java.math.BigDecimal;
+
 import org.junit.Test;
 
 
@@ -45,21 +47,28 @@ public class OrderItemTest {
     assertEquals( "foo", name );
   }
 
+  @Test( expected = IllegalArgumentException.class )
+  public void testFailsToSetNullPrice() {
+    OrderItem item = new OrderItem( "foo" );
+
+    item.setPrice( null );
+  }
+
   @Test
   public void testSetsPrice() {
     OrderItem item = new OrderItem( "foo" );
 
-    item.setPrice( 23 );
+    item.setPrice( BigDecimal.valueOf( 23 ) );
 
-    double price = item.getPrice();
-    assertEquals( 23, price, 0 );
+    BigDecimal price = item.getPrice();
+    assertEquals( BigDecimal.valueOf( 23 ), price );
   }
 
   @Test
   public void testSetPriceReturnsItem() {
     OrderItem item = new OrderItem( "foo" );
 
-    OrderItem actualItem = item.setPrice( 23 );
+    OrderItem actualItem = item.setPrice( BigDecimal.valueOf( 23 ) );
 
     assertSame( item, actualItem );
   }

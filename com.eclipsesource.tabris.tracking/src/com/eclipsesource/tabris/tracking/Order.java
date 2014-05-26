@@ -12,7 +12,9 @@ package com.eclipsesource.tabris.tracking;
 
 import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
+import static java.math.BigDecimal.ZERO;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,41 +24,46 @@ public class Order {
 
   private final List<OrderItem> items;
   private final String orderId;
-  private final double revenue;
-  private double shipping;
-  private double tax;
+  private final BigDecimal total;
+  private BigDecimal shipping;
+  private BigDecimal tax;
 
-  public Order( String orderId, double revenue ) {
+  public Order( String orderId, BigDecimal total ) {
     whenNull( orderId ).throwIllegalArgument( "OrderId must not be null" );
     when( orderId.isEmpty() ).throwIllegalArgument( "OrderId must not be empty" );
+    whenNull( total ).throwIllegalArgument( "Total must not be null" );
     this.items = new ArrayList<OrderItem>();
     this.orderId = orderId;
-    this.revenue = revenue;
+    this.total = total;
+    this.shipping = ZERO;
+    this.tax = ZERO;
   }
 
   public String getOrderId() {
     return orderId;
   }
 
-  public double getRevenue() {
-    return revenue;
+  public BigDecimal getRevenue() {
+    return total;
   }
 
-  public Order setShipping( double shipping ) {
+  public Order setShipping( BigDecimal shipping ) {
+    whenNull( shipping ).throwIllegalArgument( "Shipping must not be null" );
     this.shipping = shipping;
     return this;
   }
 
-  public double getShipping() {
+  public BigDecimal getShipping() {
     return shipping;
   }
 
-  public Order setTax( double tax ) {
+  public Order setTax( BigDecimal tax ) {
+    whenNull( tax ).throwIllegalArgument( "Tax must not be null" );
     this.tax = tax;
     return this;
   }
 
-  public double getTax() {
+  public BigDecimal getTax() {
     return tax;
   }
 
@@ -80,13 +87,9 @@ public class Order {
     int result = 1;
     result = prime * result + ( ( items == null ) ? 0 : items.hashCode() );
     result = prime * result + ( ( orderId == null ) ? 0 : orderId.hashCode() );
-    long temp;
-    temp = Double.doubleToLongBits( revenue );
-    result = prime * result + ( int )( temp ^ ( temp >>> 32 ) );
-    temp = Double.doubleToLongBits( shipping );
-    result = prime * result + ( int )( temp ^ ( temp >>> 32 ) );
-    temp = Double.doubleToLongBits( tax );
-    result = prime * result + ( int )( temp ^ ( temp >>> 32 ) );
+    result = prime * result + ( ( shipping == null ) ? 0 : shipping.hashCode() );
+    result = prime * result + ( ( tax == null ) ? 0 : tax.hashCode() );
+    result = prime * result + ( ( total == null ) ? 0 : total.hashCode() );
     return result;
   }
 
@@ -116,13 +119,25 @@ public class Order {
     } else if( !orderId.equals( other.orderId ) ) {
       return false;
     }
-    if( Double.doubleToLongBits( revenue ) != Double.doubleToLongBits( other.revenue ) ) {
+    if( shipping == null ) {
+      if( other.shipping != null ) {
+        return false;
+      }
+    } else if( !shipping.equals( other.shipping ) ) {
       return false;
     }
-    if( Double.doubleToLongBits( shipping ) != Double.doubleToLongBits( other.shipping ) ) {
+    if( tax == null ) {
+      if( other.tax != null ) {
+        return false;
+      }
+    } else if( !tax.equals( other.tax ) ) {
       return false;
     }
-    if( Double.doubleToLongBits( tax ) != Double.doubleToLongBits( other.tax ) ) {
+    if( total == null ) {
+      if( other.total != null ) {
+        return false;
+      }
+    } else if( !total.equals( other.total ) ) {
       return false;
     }
     return true;
