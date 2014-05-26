@@ -22,7 +22,7 @@ import com.eclipsesource.tabris.camera.Camera;
 import com.eclipsesource.tabris.device.ClientDevice;
 import com.eclipsesource.tabris.geolocation.Geolocation;
 import com.eclipsesource.tabris.interaction.AppLauncher;
-import com.eclipsesource.tabris.print.Print;
+import com.eclipsesource.tabris.print.Printer;
 
 
 public class TabrisClientImpl implements TabrisClient {
@@ -54,8 +54,8 @@ public class TabrisClientImpl implements TabrisClient {
       result = ( T )getSessionInstance( CameraImpl.class );
     } else if( type == Geolocation.class ) {
       result = ( T )getSessionInstance( GeolocationImpl.class );
-    } else if( type == Print.class ) {
-      result = ( T )getSessionInstance( PrintImpl.class );
+    } else if( type == Printer.class ) {
+      result = ( T )getSessionInstance( PrinterImpl.class );
     }
     return result;
   }

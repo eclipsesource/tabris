@@ -54,11 +54,11 @@
             </message_arguments>
         </filter>
     </resource>
-    <resource path="src/com/eclipsesource/tabris/internal/PrintImpl.java" type="com.eclipsesource.tabris.internal.PrintImpl">
+    <resource path="src/com/eclipsesource/tabris/internal/PrinterImpl.java" type="com.eclipsesource.tabris.internal.PrinterImpl">
         <filter id="574668824">
             <message_arguments>
-                <message_argument value="Print"/>
-                <message_argument value="PrintImpl"/>
+                <message_argument value="Printer"/>
+                <message_argument value="PrinterImpl"/>
                 <message_argument value="ClientService"/>
             </message_arguments>
         </filter>

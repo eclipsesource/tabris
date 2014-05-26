@@ -38,19 +38,28 @@ public class ProgressBarDecoratorTest {
   }
 
   @Test
-  public void testSetsSpinningIndicator() {
+  public void testSetsSpinningIndicatorTrue() {
     ProgressBarDecorator decorator = new ProgressBarDecorator( progressBar );
 
-    decorator.useSpinningIndicator();
+    decorator.useSpinningIndicator( true );
 
     assertEquals( progressBar.getData( "spinningIndicator" ), Boolean.TRUE );
+  }
+
+  @Test
+  public void testSetsSpinningIndicatorFalse() {
+    ProgressBarDecorator decorator = new ProgressBarDecorator( progressBar );
+
+    decorator.useSpinningIndicator( false );
+
+    assertEquals( progressBar.getData( "spinningIndicator" ), Boolean.FALSE );
   }
 
   @Test
   public void testSetSpinningIndicatorReturnsDecorator() {
     ProgressBarDecorator decorator = new ProgressBarDecorator( progressBar );
 
-    ProgressBarDecorator actualDecorator = decorator.useSpinningIndicator();
+    ProgressBarDecorator actualDecorator = decorator.useSpinningIndicator( true );
 
     assertSame( decorator, actualDecorator );
   }

@@ -17,7 +17,7 @@ import static com.eclipsesource.tabris.internal.Constants.EVENT_SELECTION;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_CLOSE;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_OPEN;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_BUTTON_CANCEL;
-import static com.eclipsesource.tabris.internal.Constants.PROPERTY_BUTTON_CUSTOM;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_BUTTON_NEUTRAL;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_BUTTON_OK;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_BUTTON_TYPE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_MESSAGE;
@@ -50,11 +50,11 @@ import com.eclipsesource.tabris.internal.Constants;
 public class ClientDialog implements Serializable {
 
   public static enum ButtonType {
-    OK, CANCEL, CUSTOM
+    OK, CANCEL, NEUTRAL
   }
 
   public static enum Severity {
-    INFO, WARNING, ERROR
+    WARNING, ERROR
   }
 
   private final RemoteObject remoteObject;
@@ -122,8 +122,8 @@ public class ClientDialog implements Serializable {
         return PROPERTY_BUTTON_OK;
       case CANCEL:
         return PROPERTY_BUTTON_CANCEL;
-      case CUSTOM:
-        return PROPERTY_BUTTON_CUSTOM;
+      case NEUTRAL:
+        return PROPERTY_BUTTON_NEUTRAL;
       default:
         return null;
     }
@@ -202,8 +202,8 @@ public class ClientDialog implements Serializable {
       return ButtonType.OK;
     } else if( type.equals( PROPERTY_BUTTON_CANCEL ) ) {
       return ButtonType.CANCEL;
-    } else if( type.equals( PROPERTY_BUTTON_CUSTOM ) ) {
-      return ButtonType.CUSTOM;
+    } else if( type.equals( PROPERTY_BUTTON_NEUTRAL ) ) {
+      return ButtonType.NEUTRAL;
     }
     return null;
   }

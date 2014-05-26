@@ -29,21 +29,21 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 
-import com.eclipsesource.tabris.print.Print;
 import com.eclipsesource.tabris.print.PrintError;
 import com.eclipsesource.tabris.print.PrintListener;
 import com.eclipsesource.tabris.print.PrintOptions;
+import com.eclipsesource.tabris.print.Printer;
 import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
-public class PrintImplTest {
+public class PrinterImplTest {
 
   @Rule
   public TabrisEnvironment environment = new TabrisEnvironment();
 
   @Test
   public void testIsSerializable() {
-    assertTrue( Serializable.class.isAssignableFrom( PrintImpl.class ) );
+    assertTrue( Serializable.class.isAssignableFrom( PrinterImpl.class ) );
   }
 
   @Test
@@ -55,7 +55,7 @@ public class PrintImplTest {
   public void testSetsNoInitialPrintOptionsWithDefaultOptions() {
     RemoteObject remoteObject = environment.getServiceObject();
 
-    new PrintImpl();
+    new PrinterImpl();
 
     verify( remoteObject, never() ).set( eq( "url" ), any( JsonValue.class ) );
     verify( remoteObject, never() ).set( eq( "printer" ), any( JsonValue.class ) );
@@ -70,7 +70,7 @@ public class PrintImplTest {
   @Test
   public void testSendsPrintWithPrintCall() {
     RemoteObject remoteObject = environment.getServiceObject();
-    Print print = new PrintImpl();
+    Printer print = new PrinterImpl();
 
     print.print( "http://localhost/file.pdf", createOptions() );
 
@@ -87,42 +87,42 @@ public class PrintImplTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testPrintFailsWithNullOptions() {
-    Print print = new PrintImpl();
+    Printer print = new PrinterImpl();
 
     print.print( "foo", null );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testPrintFailsWithNullUrl() {
-    Print print = new PrintImpl();
+    Printer print = new PrinterImpl();
 
     print.print( null, new PrintOptions() );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testPrintFailsWithEmptyUrl() {
-    Print print = new PrintImpl();
+    Printer print = new PrinterImpl();
 
     print.print( "", new PrintOptions() );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testAddListenerFailsWithNullListener() {
-    Print print = new PrintImpl();
+    Printer print = new PrinterImpl();
 
     print.addPrintListener( null );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testRemoveListenerFailsWithNullListener() {
-    Print print= new PrintImpl();
+    Printer print= new PrinterImpl();
 
     print.removePrintListener( null );
   }
 
   @Test
   public void testDelegatesError() {
-    PrintImpl print = new PrintImpl();
+    PrinterImpl print = new PrinterImpl();
     PrintListener listener = mock( PrintListener.class );
     print.addPrintListener( listener );
     JsonObject properties = new JsonObject();
@@ -138,7 +138,7 @@ public class PrintImplTest {
 
   @Test
   public void testDelegatesErrorWithoutProperties() {
-    PrintImpl print = new PrintImpl();
+    PrinterImpl print = new PrinterImpl();
     PrintListener listener = mock( PrintListener.class );
     print.addPrintListener( listener );
 
@@ -150,7 +150,7 @@ public class PrintImplTest {
 
   @Test
   public void testDelegatesErrorToAllListeners() {
-    PrintImpl print = new PrintImpl();
+    PrinterImpl print = new PrinterImpl();
     PrintListener listener1 = mock( PrintListener.class );
     PrintListener listener2 = mock( PrintListener.class );
     print.addPrintListener( listener1 );
@@ -170,7 +170,7 @@ public class PrintImplTest {
 
   @Test
   public void testDelegatesCancel() {
-    PrintImpl print = new PrintImpl();
+    PrinterImpl print = new PrinterImpl();
     PrintListener listener = mock( PrintListener.class );
     print.addPrintListener( listener );
     JsonObject properties = new JsonObject();
@@ -185,7 +185,7 @@ public class PrintImplTest {
 
   @Test
   public void testDelegatesCancelWithoutProperties() {
-    PrintImpl print = new PrintImpl();
+    PrinterImpl print = new PrinterImpl();
     PrintListener listener = mock( PrintListener.class );
     print.addPrintListener( listener );
 
@@ -197,7 +197,7 @@ public class PrintImplTest {
 
   @Test
   public void testDelegatesCancelToAllListeners() {
-    PrintImpl print = new PrintImpl();
+    PrinterImpl print = new PrinterImpl();
     PrintListener listener1 = mock( PrintListener.class );
     PrintListener listener2 = mock( PrintListener.class );
     print.addPrintListener( listener1 );
@@ -216,7 +216,7 @@ public class PrintImplTest {
 
   @Test
   public void testDelegatesSuccess() {
-    PrintImpl print = new PrintImpl();
+    PrinterImpl print = new PrinterImpl();
     PrintListener listener = mock( PrintListener.class );
     print.addPrintListener( listener );
     JsonObject properties = new JsonObject();
@@ -231,7 +231,7 @@ public class PrintImplTest {
 
   @Test
   public void testDelegatesSuccessWithoutProperties() {
-    PrintImpl print = new PrintImpl();
+    PrinterImpl print = new PrinterImpl();
     PrintListener listener = mock( PrintListener.class );
     print.addPrintListener( listener );
 
@@ -243,7 +243,7 @@ public class PrintImplTest {
 
   @Test
   public void testDelegatesSuccessToAllListeners() {
-    PrintImpl print = new PrintImpl();
+    PrinterImpl print = new PrinterImpl();
     PrintListener listener1 = mock( PrintListener.class );
     PrintListener listener2 = mock( PrintListener.class );
     print.addPrintListener( listener1 );

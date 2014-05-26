@@ -38,19 +38,19 @@ import org.eclipse.rap.rwt.internal.remote.ConnectionImpl;
 import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 
-import com.eclipsesource.tabris.print.Print;
+import com.eclipsesource.tabris.print.Printer;
 import com.eclipsesource.tabris.print.PrintError;
 import com.eclipsesource.tabris.print.PrintListener;
 import com.eclipsesource.tabris.print.PrintOptions;
 
 
 @SuppressWarnings("restriction")
-public class PrintImpl extends AbstractOperationHandler implements Print {
+public class PrinterImpl extends AbstractOperationHandler implements Printer {
 
   private final RemoteObject remoteObject;
   private final List<PrintListener> printListeners;
 
-  public PrintImpl() {
+  public PrinterImpl() {
     remoteObject = ( ( ConnectionImpl )RWT.getUISession().getConnection() ).createServiceObject( TYPE_PRINT );
     remoteObject.setHandler( this );
     printListeners = new ArrayList<PrintListener>();

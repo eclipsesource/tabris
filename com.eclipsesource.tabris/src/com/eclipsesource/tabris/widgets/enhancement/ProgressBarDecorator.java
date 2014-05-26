@@ -28,8 +28,8 @@ public class ProgressBarDecorator extends WidgetDecorator<ProgressBarDecorator> 
     this.progressBar = progressBar;
   }
 
-  public ProgressBarDecorator useSpinningIndicator() {
-    setData( progressBar, SPINNING_INDICATOR, Boolean.TRUE );
+  public ProgressBarDecorator useSpinningIndicator( boolean useSpinningIndicator ) {
+    setData( progressBar, SPINNING_INDICATOR, Boolean.valueOf( useSpinningIndicator ) );
     return this;
   }
 }

@@ -17,7 +17,7 @@ import org.eclipse.rap.rwt.client.service.ClientService;
  *
  * @noimplement This interface is not intended to be implemented by clients.
  */
-public interface Print extends ClientService {
+public interface Printer extends ClientService {
 
   void print( String url, PrintOptions options );
 

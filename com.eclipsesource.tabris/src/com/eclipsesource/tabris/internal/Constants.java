@@ -184,7 +184,7 @@ public class Constants {
   public static final String PROPERTY_TARGET = "target";
 
   // Print Constants
-  public static final String TYPE_PRINT = "tabris.Print";
+  public static final String TYPE_PRINT = "tabris.Printer";
   public static final String METHOD_PRINT = "print";
   public static final String PROPERTY_FILE = "file";
   public static final String PROPERTY_JOB_NAME = "jobName";
@@ -210,7 +210,7 @@ public class Constants {
   public static final String PROPERTY_SEVERITY = "severity";
   public static final String PROPERTY_BUTTON_OK = "buttonOk";
   public static final String PROPERTY_BUTTON_CANCEL = "buttonCancel";
-  public static final String PROPERTY_BUTTON_CUSTOM = "buttonCustom";
+  public static final String PROPERTY_BUTTON_NEUTRAL = "buttonNeutral";
   public static final String PROPERTY_BUTTON_TYPE = "buttonType";
   public static final String PROPERTY_WIDGET = "widget";
 
