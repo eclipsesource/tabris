@@ -15,6 +15,10 @@ import org.eclipse.rap.json.JsonValue;
 import org.eclipse.rap.rwt.remote.OperationHandler;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 
+
+/**
+ * <b>Please Note:</b> This class is preliminary API and may change in future version
+ */
 public class TestRemoteObject implements RemoteObject {
 
   private final String id;

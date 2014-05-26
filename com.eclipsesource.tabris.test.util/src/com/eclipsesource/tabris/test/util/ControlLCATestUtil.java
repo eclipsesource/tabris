@@ -25,6 +25,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Listener;
 
 
+/**
+ * <b>Please Note:</b> This class is preliminary API and may change in future version
+ */
 @SuppressWarnings("restriction")
 public class ControlLCATestUtil {
 

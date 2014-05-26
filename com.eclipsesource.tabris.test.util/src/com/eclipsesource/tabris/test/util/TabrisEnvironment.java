@@ -34,6 +34,9 @@ import com.eclipsesource.tabris.TabrisClient;
 import com.eclipsesource.tabris.test.util.internal.RemoteObjectHelper;
 
 
+/**
+ * <b>Please Note:</b> This class is preliminary API and may change in future version
+ */
 @SuppressWarnings( { "restriction", "deprecation" } )
 public class TabrisEnvironment implements TestRule {
 

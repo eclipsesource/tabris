@@ -36,6 +36,9 @@ import javax.servlet.http.Part;
 import org.eclipse.rap.rwt.testfixture.TestRequest;
 
 
+/**
+ * <b>Please Note:</b> This class is preliminary API and may change in future version
+ */
 public class TabrisRequest implements HttpServletRequest {
 
   private final TestRequest delegate;

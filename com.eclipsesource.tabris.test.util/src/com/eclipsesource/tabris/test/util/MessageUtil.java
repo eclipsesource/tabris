@@ -20,6 +20,9 @@ import org.eclipse.rap.rwt.testfixture.Fixture;
 import org.eclipse.rap.rwt.testfixture.TestMessage;
 
 
+/**
+ * <b>Please Note:</b> This class is preliminary API and may change in future version
+ */
 @SuppressWarnings("restriction")
 public class MessageUtil {
 
