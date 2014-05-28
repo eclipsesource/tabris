@@ -43,6 +43,13 @@ public interface Query {
   Query and( Condition condition );
 
   /**
+   * @see Query#then(Instruction, Instruction...)
+   *
+   * @since 0.10
+   */
+  Rule then( Instruction intstruction );
+
+  /**
    * <p>
    * Produces a {@link Rule} out of the add {@link Condition} and the defined {@link Instruction}s. A {@link Rule}
    * needs one instruction minimum but can hold as many {@link Instruction}s you want.

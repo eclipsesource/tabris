@@ -32,6 +32,11 @@ public class QueryImpl implements Query {
   }
 
   @Override
+  public Rule then( Instruction instruction ) {
+    return then( instruction, new Instruction[] {} );
+  }
+
+  @Override
   public Rule then( Instruction instruction, Instruction... additionalInstructions ) {
     whenNull( instruction ).throwIllegalArgument( "Instruction must not be null" );
     List<Instruction> actualInstructions = new ArrayList<Instruction>();
