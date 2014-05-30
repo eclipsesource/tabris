@@ -37,6 +37,13 @@ public class RequestKeys {
   public static final String ACTION_GOAL_ID = "ACTION_GOAL_ID";
   public static final String ACTION_GOAL_REVENUE = "ACTION_GOAL_REVENUE";
   public static final String ACTION_GENERATION_TIME = "ACTION_GENERATION_TIME";
+  public static final String ECOMMERCE_ORDER_ID = "ECOMMERCE_ORDER_ID";
+  public static final String ECOMMERCE_ORDER_TOTAL = "ECOMMERCE_ORDER_TOTAL";
+  public static final String ECOMMERCE_ORDER_SUBTOTAL = "ECOMMERCE_ORDER_SUBTOTAL";
+  public static final String ECOMMERCE_ORDER_TAX = "ECOMMERCE_ORDER_TAX";
+  public static final String ECOMMERCE_ORDER_SHIPPING = "ECOMMERCE_ORDER_SHIPPING";
+  public static final String ECOMMERCE_ORDER_DISCOUNT = "ECOMMERCE_ORDER_DISCOUNT";
+  public static final String ECOMMERCE_ORDER_ITEMS = "ECOMMERCE_ORDER_ITEMS";
   public static final String TOKEN_AUTH = "TOKEN_AUTH";
   public static final String VISITOR_IP_OVERRIDE = "VISITOR_IP_OVERRIDE";
   public static final String VISITOR_DATETIME_OVERRIDE = "VISITOR_DATETIME_OVERRIDE";

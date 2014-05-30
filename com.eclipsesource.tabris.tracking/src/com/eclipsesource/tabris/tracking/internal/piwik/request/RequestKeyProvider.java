@@ -45,6 +45,13 @@ public class RequestKeyProvider {
     mapping.put( RequestKeys.ACTION_GOAL_ID, "idgoal" );
     mapping.put( RequestKeys.ACTION_GOAL_REVENUE, "revenue" );
     mapping.put( RequestKeys.ACTION_GENERATION_TIME, "gt_ms" );
+    mapping.put( RequestKeys.ECOMMERCE_ORDER_ID, "ec_id" );
+    mapping.put( RequestKeys.ECOMMERCE_ORDER_TOTAL, "revenue" );
+    mapping.put( RequestKeys.ECOMMERCE_ORDER_SUBTOTAL, "ec_st" );
+    mapping.put( RequestKeys.ECOMMERCE_ORDER_TAX, "ec_tx" );
+    mapping.put( RequestKeys.ECOMMERCE_ORDER_SHIPPING, "ec_sh" );
+    mapping.put( RequestKeys.ECOMMERCE_ORDER_DISCOUNT, "ec_dt" );
+    mapping.put( RequestKeys.ECOMMERCE_ORDER_ITEMS, "ec_items" );
     mapping.put( RequestKeys.TOKEN_AUTH, "token_auth" );
     mapping.put( RequestKeys.VISITOR_IP_OVERRIDE, "cip" );
     mapping.put( RequestKeys.VISITOR_DATETIME_OVERRIDE, "cdt" );
@@ -64,6 +71,6 @@ public class RequestKeyProvider {
   }
 
   private RequestKeyProvider() {
-    //prevent instantiation
+    // prevent instantiation
   }
 }

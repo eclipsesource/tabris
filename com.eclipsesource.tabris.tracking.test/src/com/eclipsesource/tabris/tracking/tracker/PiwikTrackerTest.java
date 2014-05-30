@@ -12,6 +12,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import java.math.BigDecimal;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -21,6 +22,7 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import com.eclipsesource.tabris.device.ClientDevice.Platform;
+import com.eclipsesource.tabris.tracking.Order;
 import com.eclipsesource.tabris.tracking.TrackingEvent;
 import com.eclipsesource.tabris.tracking.TrackingEvent.EventType;
 import com.eclipsesource.tabris.tracking.TrackingInfo;
@@ -113,6 +115,31 @@ public class PiwikTrackerTest {
     assertEquals( "http://appId/action/search/foo",
                   actionCaptor.getValue().getParameter().get( getRequestKey( RequestKeys.ACTION_URL ) ) );
     assertEquals( "query", actionCaptor.getValue().getParameter().get( getRequestKey( RequestKeys.ACTION_SEARCH ) ) );
+  }
+
+  @Test
+  public void testSendsEcommerceAction() {
+    Piwik piwik = mock( Piwik.class );
+    PiwikTracker tracker = new PiwikTracker( piwik, fakeTokenAuth );
+    TrackingEvent event = new TrackingEvent( EventType.ORDER,
+                                             createInfo(),
+                                             new Order( "orderId", new BigDecimal( 20 ) ),
+                                             1 );
+
+    tracker.handleEvent( event );
+
+    ArgumentCaptor<Action> actionCaptor = ArgumentCaptor.forClass( Action.class );
+    ArgumentCaptor<AdvancedConfiguration> configCaptor = ArgumentCaptor.forClass( AdvancedConfiguration.class );
+    ArgumentCaptor<VisitorInformation> visitorCaptor = ArgumentCaptor.forClass( VisitorInformation.class );
+    verify( piwik ).track( actionCaptor.capture(), visitorCaptor.capture(), configCaptor.capture() );
+    assertAdvancedConfiguration( configCaptor.getValue() );
+    assertVisitorInformation( visitorCaptor.getValue() );
+    assertEquals( Integer.valueOf( 0 ),
+                  actionCaptor.getValue().getParameter().get( getRequestKey( RequestKeys.ACTION_GOAL_ID ) ) );
+    assertEquals( "orderId",
+                  actionCaptor.getValue().getParameter().get( getRequestKey( RequestKeys.ECOMMERCE_ORDER_ID ) ) );
+    assertEquals( new BigDecimal( 20 ),
+                  actionCaptor.getValue().getParameter().get( getRequestKey( RequestKeys.ECOMMERCE_ORDER_TOTAL ) ) );
   }
 
   private void assertVisitorInformation( VisitorInformation visitorInformation ) {

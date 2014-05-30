@@ -1,20 +1,17 @@
 /*******************************************************************************
- * Copyright (c) 2014 EclipseSource and others. All rights reserved. This program and the
- * accompanying materials are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html Contributors: EclipseSource - initial API and
- * implementation
+ * Copyright (c) 2014 EclipseSource and others. All rights reserved. This
+ * program and the accompanying materials are made available under the terms of
+ * the Eclipse Public License v1.0 which accompanies this distribution, and is
+ * available at http://www.eclipse.org/legal/epl-v10.html Contributors:
+ * EclipseSource - initial API and implementation
  ******************************************************************************/
 package com.eclipsesource.tabris.tracking.internal.piwik.request;
 
 import static com.eclipsesource.tabris.tracking.internal.piwik.request.RequestKeyProvider.requestKeys;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Modifier;
 
 import org.junit.Test;
+
 
 public class RequestKeyProviderTest {
 
@@ -160,6 +157,41 @@ public class RequestKeyProviderTest {
   }
 
   @Test
+  public void testStoresEcommerceOrderId() {
+    assertEquals( "ec_id", requestKeys.get( "ECOMMERCE_ORDER_ID" ) );
+  }
+
+  @Test
+  public void testStoresEcommerceRevenue() {
+    assertEquals( "revenue", requestKeys.get( "ECOMMERCE_ORDER_TOTAL" ) );
+  }
+
+  @Test
+  public void testStoresEcommerceSubtotal() {
+    assertEquals( "ec_st", requestKeys.get( "ECOMMERCE_ORDER_SUBTOTAL" ) );
+  }
+
+  @Test
+  public void testStoresEcommerceTaxAmount() {
+    assertEquals( "ec_tx", requestKeys.get( "ECOMMERCE_ORDER_TAX" ) );
+  }
+
+  @Test
+  public void testStoresEcommerceShippingCost() {
+    assertEquals( "ec_sh", requestKeys.get( "ECOMMERCE_ORDER_SHIPPING" ) );
+  }
+
+  @Test
+  public void testStoresEcommerceDiscount() {
+    assertEquals( "ec_dt", requestKeys.get( "ECOMMERCE_ORDER_DISCOUNT" ) );
+  }
+
+  @Test
+  public void testStoresEcommerceItems() {
+    assertEquals( "ec_items", requestKeys.get( "ECOMMERCE_ORDER_ITEMS" ) );
+  }
+
+  @Test
   public void testStoresTokenAuth() {
     assertEquals( "token_auth", requestKeys.get( "TOKEN_AUTH" ) );
   }
@@ -212,12 +244,5 @@ public class RequestKeyProviderTest {
   @Test
   public void testStoresBots() {
     assertEquals( "is_bot", requestKeys.get( "IS_BOT" ) );
-  }
-
-  @Test
-  public void testCannotBeInstantiated() throws NoSuchMethodException, SecurityException {
-    Constructor<?> constructor = RequestKeyProvider.class.getDeclaredConstructor();
-
-    assertTrue( Modifier.isPrivate( constructor.getModifiers() ) );
   }
 }

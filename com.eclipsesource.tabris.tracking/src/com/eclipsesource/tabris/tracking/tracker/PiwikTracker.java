@@ -10,6 +10,11 @@ package com.eclipsesource.tabris.tracking.tracker;
 import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.eclipsesource.tabris.tracking.Order;
+import com.eclipsesource.tabris.tracking.OrderItem;
 import com.eclipsesource.tabris.tracking.Tracker;
 import com.eclipsesource.tabris.tracking.TrackingEvent;
 import com.eclipsesource.tabris.tracking.TrackingEvent.EventType;
@@ -20,7 +25,10 @@ import com.eclipsesource.tabris.tracking.internal.piwik.model.CustomVariablesBui
 import com.eclipsesource.tabris.tracking.internal.piwik.model.PiwikConfiguration;
 import com.eclipsesource.tabris.tracking.internal.piwik.model.VisitorInformation;
 import com.eclipsesource.tabris.tracking.internal.piwik.model.action.Action;
+import com.eclipsesource.tabris.tracking.internal.piwik.model.action.EcommerceAction;
 import com.eclipsesource.tabris.tracking.internal.piwik.model.action.SearchAction;
+import com.eclipsesource.tabris.tracking.internal.piwik.model.ecommerce.EcommerceItem;
+import com.eclipsesource.tabris.tracking.internal.piwik.model.ecommerce.EcommerceItemsBuilder;
 import com.eclipsesource.tabris.tracking.internal.util.UserAgentUtil;
 
 
@@ -87,6 +95,8 @@ public class PiwikTracker implements Tracker {
       action = createActionHitAction( event );
     } else if( event.getType() == EventType.SEARCH ) {
       action = createSearchAction( event );
+    } else if( event.getType() == EventType.ORDER ) {
+      action = createEcommerceAction( event );
     }
     return action;
   }
@@ -103,8 +113,48 @@ public class PiwikTracker implements Tracker {
 
   private Action createSearchAction( TrackingEvent event ) {
     String actionId = ( String )event.getDetail();
-    return new SearchAction( createHost( event ) + "/action/search/" + actionId,
-                             event.getInfo().getSearchQuery() );
+    return new SearchAction( createHost( event ) + "/action/search/" + actionId, event.getInfo().getSearchQuery() );
+  }
+
+  private Action createEcommerceAction( TrackingEvent event ) {
+    Order order = ( Order )event.getDetail();
+    EcommerceAction action = new EcommerceAction( createHost( event ) + "/action/ecommerce/" + order.getOrderId(),
+                                                  order.getOrderId(),
+                                                  order.getTotal() );
+    action.setTax( order.getTax() );
+    action.setShipping( order.getShipping() );
+    if( !order.getItems().isEmpty() ) {
+      action.setItems( getOrderItems( order.getItems() ) );
+    }
+    return action;
+  }
+
+  private String getOrderItems( List<OrderItem> list ) {
+    List<EcommerceItem> items = createEcommerceItems( list );
+    return new EcommerceItemsBuilder( items ).buildJson();
+  }
+
+  private List<EcommerceItem> createEcommerceItems( List<OrderItem> list ) {
+    List<EcommerceItem> ecommerceItems = new ArrayList<EcommerceItem>();
+    for( OrderItem item : list ) {
+      ecommerceItems.add( createEcommerceItem( item ) );
+    }
+    return ecommerceItems;
+  }
+
+  private EcommerceItem createEcommerceItem( OrderItem item ) {
+    EcommerceItem ecommerceItem = new EcommerceItem( item.getName() );
+    if( item.getCategory() != null ) {
+      ecommerceItem.setCategory( item.getCategory() );
+    }
+    if( item.getPrice() != null ) {
+      ecommerceItem.setPrice( item.getPrice() );
+    }
+    ecommerceItem.setQuantity( item.getQuantity() );
+    if( item.getSKU() != null ) {
+      ecommerceItem.setSku( item.getSKU() );
+    }
+    return ecommerceItem;
   }
 
   private String createHost( TrackingEvent event ) {
