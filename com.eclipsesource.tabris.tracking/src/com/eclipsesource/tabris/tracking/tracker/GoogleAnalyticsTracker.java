@@ -32,9 +32,32 @@ import com.eclipsesource.tabris.tracking.internal.analytics.model.hit.ItemHit;
 import com.eclipsesource.tabris.tracking.internal.analytics.model.hit.ScreenViewHit;
 import com.eclipsesource.tabris.tracking.internal.analytics.model.hit.TransactionHit;
 import com.eclipsesource.tabris.tracking.internal.util.UserAgentUtil;
+import com.eclipsesource.tabris.ui.Page;
 
 
 /**
+ * <p>
+ * The {@link GoogleAnalyticsTracker} submits all {@link TrackingEvent}s to
+ * <a href="http://www.google.com/analytics/">Google Analytics</a>. It can be used to track UI events, searches,
+ * custom events and ecommerce events.
+ * </p>
+ * <p>
+ * To make use of Google Analytics its features different events will have a different category and label mappings.
+ * These are:
+ *   <ul>
+ *   <li><b>Page Views:</b> Will be mapped to "Screens". The {@link Page} id will be used as "Screen Name".</li>
+ *   <li><b>Actions:</b> Will be mapped to "Events". The category for an action is "tabris.ui.action" and its label
+ *                       is "execute".</li>
+ *   <li><b>Search:</b> Will be mapped to "Events". The category for an action is "tabris.ui.action.search" and its
+ *                      label is "search". The search query will be transfered using a custom dimension with the default
+ *                      index 1. You can configure the index with
+ *                      {@link GoogleAnalyticsTracker#setSearchCustomDimension(int)}</li>
+  *   <li><b>Custom Events:</b> Will be mapped to "Events". The category for an action is "tabris.event" and its label
+ *                       is "custom".</li>
+ *   <li><b>Orders:</b> Will be mapped to "Conversions".</li>
+ *   </ul>
+ * </p>
+ *
  * @since 1.4
  */
 @SuppressWarnings("restriction")
@@ -50,6 +73,15 @@ public class GoogleAnalyticsTracker implements Tracker {
   private final GoogleAnalytics analytics;
   private int searchIndex;
 
+  /**
+   * <p>
+   * Create a new {@link GoogleAnalyticsTracker} with the trackingId to use. The trackingId needs to be a valid Google
+   * Analytics trackingId associated with a mobile application.
+   * </p>
+   *
+   * @param trackingId the Google Analytics tracking id. Must not be <code>null</code> or empty.
+   * @param appName the application name to display. Must not be <code>null</code> or empty.
+   */
   public GoogleAnalyticsTracker( String trackingId, String appName ) {
     this( new GoogleAnalytics( appName, new AnalyticsConfiguration( "1", trackingId ) ) );
   }
@@ -59,8 +91,15 @@ public class GoogleAnalyticsTracker implements Tracker {
     this.searchIndex = 1;
   }
 
+  /**
+   * <p>
+   * Sets the custom dimension index for search queries.
+   * </p>
+   *
+   * @param index the index to use. Must be > 0.
+   */
   public void setSearchCustomDimension( int index ) {
-    when( index <= 0 ).throwIllegalArgument( "Index must be > 1 but was " + index );
+    when( index <= 0 ).throwIllegalArgument( "Index must be > 0 but was " + index );
     this.searchIndex = index;
   }
 
@@ -117,7 +156,7 @@ public class GoogleAnalyticsTracker implements Tracker {
   private Hit createTransactionHit( TrackingEvent event, AdvancedConfiguration advancedConfiguration ) {
     Order order = ( Order )event.getDetail();
     TransactionHit hit = new TransactionHit( order.getOrderId() );
-    hit.setRevenue( toDouble( order.getRevenue() ) );
+    hit.setRevenue( toDouble( order.getTotal() ) );
     hit.setShipping( toDouble( order.getShipping() ) );
     hit.setTax( toDouble( order.getTax() ) );
     return hit;

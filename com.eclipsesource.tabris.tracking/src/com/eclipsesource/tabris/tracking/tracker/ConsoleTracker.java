@@ -18,6 +18,10 @@ import com.eclipsesource.tabris.tracking.TrackingInfo;
 
 
 /**
+ * <p>
+ * The {@link ConsoleTracker} is a simple example implementation of a {@link Tracker}. It prints every event tracked
+ * to the console. You may use the {@link ConsoleTracker} as a template to implement your own {@link Tracker}.
+ * </p>
  * @since 1.4
  */
 public class ConsoleTracker implements Tracker {
@@ -70,7 +74,7 @@ public class ConsoleTracker implements Tracker {
     Order info = ( Order )event.getDetail();
     builder.append( info.getOrderId() );
     builder.append( " (" );
-    builder.append( info.getRevenue() + ", " + info.getShipping() + ", " + info.getTax() );
+    builder.append( info.getTotal() + ", " + info.getShipping() + ", " + info.getTax() );
     builder.append( ")" );
   }
 

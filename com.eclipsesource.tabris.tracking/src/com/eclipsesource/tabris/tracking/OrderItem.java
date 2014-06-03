@@ -17,6 +17,16 @@ import static java.math.BigDecimal.ZERO;
 import java.math.BigDecimal;
 
 
+/**
+ * <p>
+ * An {@link Order} may consist of several {@link OrderItem}s. An {@link OrderItem} should define the sku,
+ * quantity, name, price, etc. within the order.
+ * </p>
+ *
+ * @see Order#addItem(OrderItem)
+ *
+ * @since 1.4
+ */
 @SuppressWarnings("restriction")
 public class OrderItem {
 

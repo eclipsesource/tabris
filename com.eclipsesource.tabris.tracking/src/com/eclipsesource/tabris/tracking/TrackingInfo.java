@@ -19,6 +19,12 @@ import com.eclipsesource.tabris.device.ClientDevice.Platform;
 
 
 /**
+ * <p>
+ * A {@link TrackingInfo} is used within a {@link TrackingEvent} to encapsulate the user/app information.
+ * </p>
+ *
+ * @see TrackingEvent
+ *
  * @since 1.4
  */
 public class TrackingInfo implements Serializable {

@@ -58,7 +58,7 @@ public class OrderTest {
   public void testHasTotal() {
     Order order = new Order( "foo", BigDecimal.ONE );
 
-    BigDecimal total = order.getRevenue();
+    BigDecimal total = order.getTotal();
 
     assertEquals( BigDecimal.ONE, total );
   }
