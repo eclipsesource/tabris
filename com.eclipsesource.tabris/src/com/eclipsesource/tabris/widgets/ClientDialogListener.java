@@ -14,12 +14,32 @@ import java.io.Serializable;
 
 
 /**
+ * <p>
+ * A {@link ClientDialogListener} can be added to a {@link ClientDialog} to get notification regarding the life cycle of
+ * a dialog.
+ * </p>
+ *  * <p>
+ * <b>Please note:</p> You can also use the {@link ClientDialogAdapter} as a base implementation of your listener.
+ * </p>
+ *
+ * @see ClientDialog
+ *
  * @since 1.4
  */
 public interface ClientDialogListener extends Serializable {
 
+  /**
+   * <p>
+   * Will be called when a {@link ClientDialog} was opened.
+   * </p>
+   */
   void open();
 
+  /**
+   * <p>
+   * Will be called when a {@link ClientDialog} was closed.
+   * </p>
+   */
   void close();
 
 }

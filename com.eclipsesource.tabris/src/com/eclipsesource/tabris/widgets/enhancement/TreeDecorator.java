@@ -188,6 +188,15 @@ public class TreeDecorator extends WidgetDecorator<TreeDecorator> {
   }
 
   /**
+   * <p>
+   * Sets a {@link RefreshHandler} to a {@link Tree}. This instructs a client to add native refresh capabilities to
+   * the {@link Tree}.
+   * </p>
+   *
+   * @see RefreshHandler
+   *
+   * @param handler the {@link RefreshHandler} to add. Must not be <code>null</code>.
+   *
    * @since 1.4
    */
   public TreeDecorator setRefreshHandler( RefreshHandler handler ) {

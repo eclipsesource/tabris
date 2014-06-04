@@ -112,6 +112,12 @@ public class TabrisClientInstaller {
   }
 
   /**
+   * <p>
+   * Sets the {@link VersionCheck} for the {@link Application} to install.
+   * </p>
+   *
+   * @param versionCheck the {@link VersionCheck} to use. Must not be <code>null</code>.
+   *
    * @since 1.4
    */
   public static void setVersionCheck( VersionCheck versionCheck ) {

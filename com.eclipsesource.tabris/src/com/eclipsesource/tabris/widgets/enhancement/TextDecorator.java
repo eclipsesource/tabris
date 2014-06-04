@@ -50,6 +50,10 @@ public class TextDecorator extends WidgetDecorator<TextDecorator> {
   }
 
   /**
+   * <p>
+   * Instructs a client to enable/disable auto capitalization on a {@link Text} widget.
+   * </p>
+   *
    * @since 1.4
    */
   public TextDecorator setAutoCapitalizationEnabled( boolean enabled ) {
@@ -58,6 +62,10 @@ public class TextDecorator extends WidgetDecorator<TextDecorator> {
   }
 
   /**
+   * <p>
+   * Instructs a client to enable/disable auto correction on a {@link Text} widget.
+   * </p>
+   *
    * @since 1.4
    */
   public TextDecorator setAutoCorrectionEnabled( boolean enabled ) {

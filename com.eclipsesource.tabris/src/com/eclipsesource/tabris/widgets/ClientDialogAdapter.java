@@ -12,6 +12,12 @@ package com.eclipsesource.tabris.widgets;
 
 
 /**
+ * <p>
+ * This adapter provides an empty default implementation of {@link ClientDialogListener}.
+ * </p>
+ *
+ * @see ClientDialogListener
+ *
  * @since 1.4
  */
 public class ClientDialogAdapter implements ClientDialogListener {

@@ -18,14 +18,31 @@ import java.io.Serializable;
 
 
 /**
+ * <p>
+ * {@link PrintOptions} are used when submitting print jobs to the {@link Printer} service. The options will be
+ * transfered to the client and are used to configure the print job.
+ * </p>
+ *
+ * @see Printer
+ *
  * @since 1.4
  */
 public class PrintOptions implements Serializable {
 
+  /**
+   * <p>
+   * The output type to send to the printer.
+   * </p>
+   */
   public static enum OutputType {
     COLOR, PHOTO, GRAYSCALE;
   }
 
+  /**
+   * <p>
+   * The quality to send to the printer.
+   *  </p>
+   */
   public static enum Quality {
     LOW, NORMAL, HIGH;
   }

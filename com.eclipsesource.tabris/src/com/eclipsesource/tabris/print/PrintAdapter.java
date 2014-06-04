@@ -11,7 +11,14 @@
 package com.eclipsesource.tabris.print;
 
 
+
 /**
+ * <p>
+ * This adapter provides an empty default implementation of {@link PrintListener}.
+ * </p>
+ *
+ * @see PrintListener
+ *
  * @since 1.4
  */
 public class PrintAdapter implements PrintListener {

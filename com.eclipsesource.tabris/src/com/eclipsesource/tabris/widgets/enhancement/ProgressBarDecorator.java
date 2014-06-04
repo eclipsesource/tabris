@@ -13,6 +13,7 @@ package com.eclipsesource.tabris.widgets.enhancement;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.SPINNING_INDICATOR;
 import static com.eclipsesource.tabris.internal.WidgetsUtil.setData;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.ProgressBar;
 
 
@@ -28,6 +29,12 @@ public class ProgressBarDecorator extends WidgetDecorator<ProgressBarDecorator> 
     this.progressBar = progressBar;
   }
 
+  /**
+   * <p>
+   * Instructs a client to use a spinning indicator as progress indicator. Does only work when the {@link ProgressBar}
+   * has the style: {@link SWT#INDETERMINATE}.
+   * </p>
+   */
   public ProgressBarDecorator useSpinningIndicator( boolean useSpinningIndicator ) {
     setData( progressBar, SPINNING_INDICATOR, Boolean.valueOf( useSpinningIndicator ) );
     return this;

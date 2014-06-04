@@ -15,7 +15,7 @@ import java.io.Serializable;
 
 /**
  * <p>
- * An {@link ActionListener} can be used to get notified when the user executes an {@link Action} in the ui.
+ * An {@link ActionListener} can be used to get notified when the user executes an {@link Action} in the UI.
  * {@link ActionListener} object are usually added to a {@link UIConfiguration}.
  * method.
  * </p>

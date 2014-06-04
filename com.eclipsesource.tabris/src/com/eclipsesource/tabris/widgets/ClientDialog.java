@@ -44,15 +44,50 @@ import com.eclipsesource.tabris.internal.Constants;
 
 
 /**
+ * <p>
+ * A {@link ClientDialog} is a client side dialog. A client uses native dialogs to visualize the {@link ClientDialog}.
+ * For this reason dialogs may vary form client to client.
+ * </p>
+ *
  * @since 1.4
  */
 @SuppressWarnings("restriction")
 public class ClientDialog implements Serializable {
 
+  /**
+   * <p>
+   * A client dialog can have three buttons. An OK, CANCEL and a neutral button.
+   * </p>
+   */
   public static enum ButtonType {
-    OK, CANCEL, NEUTRAL
+
+    /**
+     * <p>
+     * An OK button will be shown where native clients show ok or positive buttons.
+     * </p>
+     */
+    OK,
+
+    /**
+     * <p>
+     * A CANCEL button will be shown where native clients show cancel or negative buttons.
+     * </p>
+     */
+    CANCEL,
+
+    /**
+     * <p>
+     * A NEUTRAL button will be shown where native clients show additional or neutral buttons.
+     * </p>
+     */
+    NEUTRAL
   }
 
+  /**
+   * <p>
+   * A {@link ClientDialog} can have a severity. Some clients interpret the severity by showing a severity icon.
+   * </p>
+   */
   public static enum Severity {
     WARNING, ERROR
   }
@@ -71,6 +106,13 @@ public class ClientDialog implements Serializable {
     this.dialogListeners = new ArrayList<ClientDialogListener>();
   }
 
+  /**
+   * <p>
+   * Sets the title of a {@link ClientDialog}. The title may be displayed more emphasized as normal text.
+   * </p>
+   *
+   * @param title the title to show. Must not be <code>null</code>.
+   */
   public void setTitle( String title ) {
     whenNull( title ).throwIllegalArgument( "title must not be null" );
     this.remoteObject.set( PROPERTY_TITLE, title );
@@ -81,6 +123,13 @@ public class ClientDialog implements Serializable {
     return title;
   }
 
+  /**
+   * <p>
+   * Sets the message of a {@link ClientDialog}. Usually the message will be displayed as a body of the native dialog.
+   * </p>
+   *
+   * @param message the message to display. Must not be <code>null</code>.
+   */
   public ClientDialog setMessage( String message ) {
     whenNull( message ).throwIllegalArgument( "message must not be null" );
     this.message = message;
@@ -92,6 +141,13 @@ public class ClientDialog implements Serializable {
     return message;
   }
 
+  /**
+   * <p>
+   * Sets the {@link Severity} of a {@link ClientDialog}.
+   * </p>
+   *
+   * @param severity the {@link Severity} to use. Must not be <code>null</code>.
+   */
   public ClientDialog setSeverity( Severity severity ) {
     whenNull( severity ).throwIllegalArgument( "severity must not be null" );
     this.severity = severity;
@@ -103,10 +159,29 @@ public class ClientDialog implements Serializable {
     return severity;
   }
 
+  /**
+   * <p>
+   * Sets a {@link ClientDialog} button with the specified {@link ButtonType}. The client is responsible to position
+   * the button on its right place.
+   * </p>
+   *
+   * @param type the {@link ButtonType} of the button. Must not be <code>null</code>.
+   * @param text the text of the button. Must not be <code>null</code> or empty.
+   */
   public ClientDialog setButton( ButtonType type, String text ) {
     return setButton( type, text, null );
   }
 
+  /**
+   * <p>
+   * Sets a {@link ClientDialog} button with the specified {@link ButtonType}. The client is responsible to position
+   * the button on its right place. When the button was pressed the {@link Listener} will be notified.
+   * </p>
+   *
+   * @param type the {@link ButtonType} of the button. Must not be <code>null</code>.
+   * @param text the text of the button. Must not be <code>null</code> or empty.
+   * @param listener the listener to notify when the button was pressed. May be <code>null</code>.
+   */
   public ClientDialog setButton( ButtonType type, String text, Listener listener ) {
     whenNull( type ).throwIllegalArgument( "type must not be null" );
     whenNull( text ).throwIllegalArgument( "text must not be null" );
@@ -138,6 +213,11 @@ public class ClientDialog implements Serializable {
     }
   }
 
+  /**
+   * <p>
+   * Instructs a client to open the {@link ClientDialog}.
+   * </p>
+   */
   public void open() {
     remoteObject.call( METHOD_OPEN, null );
     notifyOpenListeners();
@@ -156,10 +236,22 @@ public class ClientDialog implements Serializable {
     } );
   }
 
+  /**
+   * <p>
+   * Instructs a client to close a {@link ClientDialog}.
+   * </p>
+   */
   public void close() {
     remoteObject.call( METHOD_CLOSE, null );
   }
 
+  /**
+   * <p>
+   * Adds a {@link ClientDialogListener} that will be notified when a dialog was opened or closed.
+   * </p>
+   *
+   * @param listener the listener to add. Must not be <code>null</code>.
+   */
   public void addClientDialogListener( ClientDialogListener listener ) {
     whenNull( listener ).throwIllegalArgument( "listener must not be null" );
     if( dialogListeners.isEmpty() ) {
@@ -168,6 +260,13 @@ public class ClientDialog implements Serializable {
     dialogListeners.add( listener );
   }
 
+  /**
+   * <p>
+   * Removes a {@link ClientDialogListener}.
+   * </p>
+   *
+   * @param listener the listener to add. Must not be <code>null</code>.
+   */
   public void removeClientDialogListener( ClientDialogListener listener ) {
     whenNull( listener ).throwIllegalArgument( "listener must not be null" );
     dialogListeners.remove( listener );
