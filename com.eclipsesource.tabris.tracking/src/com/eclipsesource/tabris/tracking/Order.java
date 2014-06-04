@@ -19,6 +19,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * <p>
+ * An {@link Order} can be used to track ecommerce events. An order contains the total amount of the order, the
+ * shipping costs, the tax and the single order items. An {@link Order} will be usually passed to
+ * {@link Tracking#submitOrder(org.eclipse.swt.widgets.Display, Order)}.
+ * </p>
+ *
+ * @since 1.4
+ */
 @SuppressWarnings("restriction")
 public class Order {
 
@@ -43,7 +52,7 @@ public class Order {
     return orderId;
   }
 
-  public BigDecimal getRevenue() {
+  public BigDecimal getTotal() {
     return total;
   }
 

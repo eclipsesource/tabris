@@ -24,12 +24,41 @@ import com.eclipsesource.tabris.tracking.internal.piwik.model.action.SearchActio
 import com.eclipsesource.tabris.tracking.internal.util.UserAgentUtil;
 
 
+/**
+ * <p>
+ * The {@link PiwikTracker} submits all {@link TrackingEvent}s to <a href="http://piwik.org/">Piwik</a>. It can be
+ * used to track UI events, searches, custom events and ecommerce events.
+ * </p>
+ * <p>
+ * To make use of Piwik its features different events will have a different mappings.
+ * These are:
+ *   <ul>
+ *   <li><b>Page Views:</b> Will be mapped to an "Action" with the path prefix "/page".</li>
+ *   <li><b>Actions:</b> Will be mapped to an "Action" with the path prefix "/action".</li>
+ *   <li><b>Search:</b> Will be mapped to a "Search Action" with the path prefix "/action/search" and the query as
+ *                      value.</li>
+  *   <li><b>Custom Events:</b>  Will be mapped to an "Action" with the path prefix "/action/custom".</li>
+ *   <li><b>Orders:</b> Will be mapped to Piwik's ecommerce tracking.</li>
+ *   </ul>
+ * </p>
+ *
+ * @since 1.4
+ */
 @SuppressWarnings("restriction")
 public class PiwikTracker implements Tracker {
 
   private final Piwik piwik;
   private final String tokenAuth;
 
+  /**
+   * <p>
+   * Creates a new {@link PiwikTracker}.
+   * </p>
+   *
+   * @param piwikUrl the url of the Piwik installation. Must not be <code>null</code> or empty.
+   * @param tokenAuth the token to validate a request. Must not be <code>null</code> or empty.
+   * @param siteId the id of the Piwik site configuration to use. Must be > 0.
+   */
   public PiwikTracker( String piwikUrl, String tokenAuth, int siteId ) {
     this( new Piwik( piwikUrl, new PiwikConfiguration( "1", siteId ) ), tokenAuth );
   }
