@@ -8,6 +8,8 @@
 package com.eclipsesource.tabris.tracking.tracker;
 
 import static com.eclipsesource.tabris.tracking.internal.piwik.request.RequestKeyProvider.getRequestKey;
+import static com.eclipsesource.tabris.tracking.tracker.PiwikTracker.ACTION_EVENT;
+import static com.eclipsesource.tabris.tracking.tracker.PiwikTracker.CATEGORY_EVENT;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -140,6 +142,30 @@ public class PiwikTrackerTest {
                   actionCaptor.getValue().getParameter().get( getRequestKey( RequestKeys.ECOMMERCE_ORDER_ID ) ) );
     assertEquals( new BigDecimal( 20 ),
                   actionCaptor.getValue().getParameter().get( getRequestKey( RequestKeys.ECOMMERCE_ORDER_TOTAL ) ) );
+  }
+
+  @Test
+  public void testSendsEventAction() {
+    Piwik piwik = mock( Piwik.class );
+    PiwikTracker tracker = new PiwikTracker( piwik, fakeTokenAuth );
+    TrackingEvent event = new TrackingEvent( EventType.EVENT, createInfo(), "foo", 1 );
+
+    tracker.handleEvent( event );
+
+    ArgumentCaptor<Action> actionCaptor = ArgumentCaptor.forClass( Action.class );
+    ArgumentCaptor<AdvancedConfiguration> configCaptor = ArgumentCaptor.forClass( AdvancedConfiguration.class );
+    ArgumentCaptor<VisitorInformation> visitorCaptor = ArgumentCaptor.forClass( VisitorInformation.class );
+    verify( piwik ).track( actionCaptor.capture(), visitorCaptor.capture(), configCaptor.capture() );
+    assertAdvancedConfiguration( configCaptor.getValue() );
+    assertVisitorInformation( visitorCaptor.getValue() );
+    assertEquals( "http://appId/action/event/foo",
+                  actionCaptor.getValue().getParameter().get( getRequestKey( RequestKeys.ACTION_URL ) ) );
+    assertEquals( CATEGORY_EVENT,
+                  actionCaptor.getValue().getParameter().get( getRequestKey( RequestKeys.EVENT_CATEGORY ) ) );
+    assertEquals( ACTION_EVENT,
+                  actionCaptor.getValue().getParameter().get( getRequestKey( RequestKeys.EVENT_ACTION ) ) );
+    assertEquals( "foo",
+                  actionCaptor.getValue().getParameter().get( getRequestKey( RequestKeys.EVENT_NAME ) ) );
   }
 
   private void assertVisitorInformation( VisitorInformation visitorInformation ) {

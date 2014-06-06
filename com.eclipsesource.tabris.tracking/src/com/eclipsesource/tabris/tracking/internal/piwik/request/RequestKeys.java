@@ -44,6 +44,9 @@ public class RequestKeys {
   public static final String ECOMMERCE_ORDER_SHIPPING = "ECOMMERCE_ORDER_SHIPPING";
   public static final String ECOMMERCE_ORDER_DISCOUNT = "ECOMMERCE_ORDER_DISCOUNT";
   public static final String ECOMMERCE_ORDER_ITEMS = "ECOMMERCE_ORDER_ITEMS";
+  public static final String EVENT_CATEGORY = "EVENT_CATEGORY";
+  public static final String EVENT_ACTION = "EVENT_ACTION";
+  public static final String EVENT_NAME = "EVENT_NAME";
   public static final String TOKEN_AUTH = "TOKEN_AUTH";
   public static final String VISITOR_IP_OVERRIDE = "VISITOR_IP_OVERRIDE";
   public static final String VISITOR_DATETIME_OVERRIDE = "VISITOR_DATETIME_OVERRIDE";

@@ -26,6 +26,7 @@ import com.eclipsesource.tabris.tracking.internal.piwik.model.PiwikConfiguration
 import com.eclipsesource.tabris.tracking.internal.piwik.model.VisitorInformation;
 import com.eclipsesource.tabris.tracking.internal.piwik.model.action.Action;
 import com.eclipsesource.tabris.tracking.internal.piwik.model.action.EcommerceAction;
+import com.eclipsesource.tabris.tracking.internal.piwik.model.action.EventAction;
 import com.eclipsesource.tabris.tracking.internal.piwik.model.action.SearchAction;
 import com.eclipsesource.tabris.tracking.internal.piwik.model.ecommerce.EcommerceItem;
 import com.eclipsesource.tabris.tracking.internal.piwik.model.ecommerce.EcommerceItemsBuilder;
@@ -54,6 +55,9 @@ import com.eclipsesource.tabris.tracking.internal.util.UserAgentUtil;
  */
 @SuppressWarnings("restriction")
 public class PiwikTracker implements Tracker {
+
+  static final String ACTION_EVENT = "custom";
+  static final String CATEGORY_EVENT = "tabris.event";
 
   private final Piwik piwik;
   private final String tokenAuth;
@@ -97,6 +101,8 @@ public class PiwikTracker implements Tracker {
       action = createSearchAction( event );
     } else if( event.getType() == EventType.ORDER ) {
       action = createEcommerceAction( event );
+    } else if( event.getType() == EventType.EVENT ) {
+      action = createEventAction( event );
     }
     return action;
   }
@@ -155,6 +161,15 @@ public class PiwikTracker implements Tracker {
       ecommerceItem.setSku( item.getSKU() );
     }
     return ecommerceItem;
+  }
+
+  private Action createEventAction( TrackingEvent event ) {
+    String eventId = ( String )event.getDetail();
+    EventAction eventAction = new EventAction( createHost( event ) + "/action/event/" + eventId );
+    eventAction.setCategory( CATEGORY_EVENT );
+    eventAction.setAction( ACTION_EVENT );
+    eventAction.setEventName( eventId );
+    return eventAction;
   }
 
   private String createHost( TrackingEvent event ) {

@@ -13,6 +13,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 
+
 public class RequestKeyProviderTest {
 
   @Test
@@ -189,6 +190,21 @@ public class RequestKeyProviderTest {
   @Test
   public void testStoresEcommerceItems() {
     assertEquals( "ec_items", requestKeys.get( "ECOMMERCE_ORDER_ITEMS" ) );
+  }
+
+  @Test
+  public void testStoresEventCategory() {
+    assertEquals( "e_c", requestKeys.get( "EVENT_CATEGORY" ) );
+  }
+
+  @Test
+  public void testStoresEventAction() {
+    assertEquals( "e_a", requestKeys.get( "EVENT_ACTION" ) );
+  }
+
+  @Test
+  public void testStoresEventName() {
+    assertEquals( "e_n", requestKeys.get( "EVENT_NAME" ) );
   }
 
   @Test

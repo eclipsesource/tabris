@@ -52,6 +52,9 @@ public class RequestKeyProvider {
     mapping.put( RequestKeys.ECOMMERCE_ORDER_SHIPPING, "ec_sh" );
     mapping.put( RequestKeys.ECOMMERCE_ORDER_DISCOUNT, "ec_dt" );
     mapping.put( RequestKeys.ECOMMERCE_ORDER_ITEMS, "ec_items" );
+    mapping.put( RequestKeys.EVENT_CATEGORY, "e_c" );
+    mapping.put( RequestKeys.EVENT_ACTION, "e_a" );
+    mapping.put( RequestKeys.EVENT_NAME, "e_n" );
     mapping.put( RequestKeys.TOKEN_AUTH, "token_auth" );
     mapping.put( RequestKeys.VISITOR_IP_OVERRIDE, "cip" );
     mapping.put( RequestKeys.VISITOR_DATETIME_OVERRIDE, "cdt" );
