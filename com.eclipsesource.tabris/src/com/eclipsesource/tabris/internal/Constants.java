@@ -184,7 +184,7 @@ public class Constants {
   public static final String PROPERTY_TARGET = "target";
 
   // Print Constants
-  public static final String TYPE_PRINT = "tabris.Printer";
+  public static final String TYPE_PRINTER = "tabris.Printer";
   public static final String METHOD_PRINT = "print";
   public static final String PROPERTY_FILE = "file";
   public static final String PROPERTY_JOB_NAME = "jobName";

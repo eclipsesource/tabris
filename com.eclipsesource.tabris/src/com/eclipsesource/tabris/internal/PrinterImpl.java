@@ -25,7 +25,7 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_QUALITY;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SHOW_NUMBER_OF_COPIES;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SHOW_PAGE_RANGE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_URL;
-import static com.eclipsesource.tabris.internal.Constants.TYPE_PRINT;
+import static com.eclipsesource.tabris.internal.Constants.TYPE_PRINTER;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +51,7 @@ public class PrinterImpl extends AbstractOperationHandler implements Printer {
   private final List<PrintListener> printListeners;
 
   public PrinterImpl() {
-    remoteObject = ( ( ConnectionImpl )RWT.getUISession().getConnection() ).createServiceObject( TYPE_PRINT );
+    remoteObject = ( ( ConnectionImpl )RWT.getUISession().getConnection() ).createServiceObject( TYPE_PRINTER );
     remoteObject.setHandler( this );
     printListeners = new ArrayList<PrintListener>();
   }
