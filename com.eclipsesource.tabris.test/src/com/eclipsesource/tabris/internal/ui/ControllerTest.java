@@ -16,6 +16,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
@@ -112,8 +113,8 @@ public class ControllerTest {
     assertSame( controller, attribute );
   }
 
-  @Test( expected = IllegalStateException.class )
-  public void testCreatesRootPagesFailsWithoutRootPages() {
+  @Test
+  public void testCreatesRootPagesFailsNotWithoutRootPages() {
     PageDescriptor descriptor = mock( PageDescriptor.class );
     doReturn( TestPage.class ).when( descriptor ).getPageType();
     doReturn( Boolean.FALSE ).when( descriptor ).isTopLevel();
@@ -122,7 +123,11 @@ public class ControllerTest {
     when( remoteUI.getPageParent() ).thenReturn( shell );
     Controller controller = new Controller( remoteUI, uiDescriptor );
 
-    controller.createRootPages( ui );
+    try {
+      controller.createRootPages( ui );
+    } catch( Exception shouldNotHappen ) {
+      fail();
+    }
   }
 
   @Test

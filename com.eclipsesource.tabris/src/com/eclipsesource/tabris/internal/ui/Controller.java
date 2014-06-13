@@ -10,7 +10,6 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
-import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
 import java.io.Serializable;
@@ -151,9 +150,10 @@ public class Controller implements UIUpdater, Serializable {
 
   public void createRootPages( UIImpl ui ) {
     List<PageDescriptor> pageDescriptors = uiDescriptor.getRootPages();
-    when( pageDescriptors.isEmpty() ).throwIllegalState( "No TopLevel Pages found." );
-    createTopLevelPageRenderer( ui, pageDescriptors );
-    showRoot( ui, pageDescriptors.get( 0 ), new PageData() );
+    if( !pageDescriptors.isEmpty() ) {
+      createTopLevelPageRenderer( ui, pageDescriptors );
+      showRoot( ui, pageDescriptors.get( 0 ), new PageData() );
+    }
   }
 
   private void createTopLevelPageRenderer( UIImpl ui, List<PageDescriptor> pages ) {
