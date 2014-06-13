@@ -14,15 +14,20 @@ import static com.eclipsesource.tabris.test.util.MessageUtil.OperationType.CALL;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
 
 import java.io.IOException;
 
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.internal.lifecycle.WidgetUtil;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.internal.widgets.canvaskit.CanvasLCA;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
 import org.junit.Rule;
@@ -228,6 +233,17 @@ public class PagingIndicatorTest {
   @Test
   public void testUpdateDrawsIndicator() {
     indicator.update();
+
+    verifyDraw( indicator );
+  }
+
+  @Test
+  public void testAddsPaintListenerThatRedrawsIndicator() {
+    Listener listener = indicator.getCanvas().getListeners( SWT.Paint )[ 0 ];
+    Event event = mock( Event.class );
+    event.gc = new GC( indicator.getCanvas() );
+
+    listener.handleEvent( event );
 
     verifyDraw( indicator );
   }
