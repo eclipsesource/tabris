@@ -14,6 +14,8 @@ import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.layout.GridData;
@@ -91,6 +93,18 @@ public class PagingIndicator extends Composite {
   private void createCanvas() {
     indicatorCanvas = new Canvas( this, SWT.NONE );
     indicatorCanvas.setLayoutData( new GridData( SWT.CENTER, SWT.CENTER, true, true ) );
+    addPaintListener();
+  }
+
+  private void addPaintListener() {
+    indicatorCanvas.addPaintListener( new PaintListener() {
+
+      @Override
+      public void paintControl( PaintEvent event ) {
+        drawIndicators( event.gc );
+        getParent().layout( true, true );
+      }
+    } );
   }
 
   /**
@@ -240,7 +254,10 @@ public class PagingIndicator extends Composite {
   }
 
   private void drawIndicators() {
-    GC gc = new GC( indicatorCanvas );
+    drawIndicators( new GC( indicatorCanvas ) );
+  }
+
+  private void drawIndicators( GC gc ) {
     for( int i = 0; i < getCount(); i++ ) {
       if( i == getActive() ) {
         gc.setBackground( getActiveColor() );
