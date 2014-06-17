@@ -18,6 +18,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.inOrder;
@@ -34,6 +35,8 @@ import java.util.Map;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.remote.RemoteObject;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -1114,6 +1117,38 @@ public class ControllerTest {
     PageConfiguration actualConfiguration = controller.getPageConfiguration( mock( Page.class ) );
 
     assertNull( actualConfiguration );
+  }
+
+  @Test
+  public void testUpdateSetsBackground() {
+    RemoteUI remoteUI = mock( RemoteUI.class );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    when( remoteUI.getActionsParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
+    controller.setUI( ui );
+    UIConfiguration configuration = mock( UIConfiguration.class );
+    when( configuration.getBackground() ).thenReturn( new RGB( 100, 100, 100 ) );
+    when( configuration.getAdapter( UIDescriptor.class ) ).thenReturn( uiDescriptor );
+
+    controller.update( configuration );
+
+    verify( remoteUI ).setBackground( eq( new Color( ui.getDisplay(), 100, 100, 100 ) ) );
+  }
+
+  @Test
+  public void testUpdateSetsForeground() {
+    RemoteUI remoteUI = mock( RemoteUI.class );
+    when( remoteUI.getPageParent() ).thenReturn( shell );
+    when( remoteUI.getActionsParent() ).thenReturn( shell );
+    Controller controller = new Controller( remoteUI, uiDescriptor );
+    controller.setUI( ui );
+    UIConfiguration configuration = mock( UIConfiguration.class );
+    when( configuration.getForeground() ).thenReturn( new RGB( 100, 100, 100 ) );
+    when( configuration.getAdapter( UIDescriptor.class ) ).thenReturn( uiDescriptor );
+
+    controller.update( configuration );
+
+    verify( remoteUI ).setForeground( eq( new Color( ui.getDisplay(), 100, 100, 100 ) ) );
   }
 
 }

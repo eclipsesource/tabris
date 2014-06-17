@@ -209,6 +209,7 @@ public class UIConfiguration implements Adaptable, Serializable {
   public UIConfiguration setForeground( RGB foreground ) {
     whenNull( foreground ).throwIllegalArgument( "Foreground must not be null" );
     this.foreground = foreground;
+    UpdateUtil.fireUiUpdate( this );
     return this;
   }
 
@@ -237,6 +238,7 @@ public class UIConfiguration implements Adaptable, Serializable {
   public UIConfiguration setBackground( RGB background ) {
     whenNull( background ).throwIllegalArgument( "Background must not be null" );
     this.background = background;
+    UpdateUtil.fireUiUpdate( this );
     return this;
   }
 

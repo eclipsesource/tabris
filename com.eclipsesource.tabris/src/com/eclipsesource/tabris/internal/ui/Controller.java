@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -66,6 +68,7 @@ public class Controller implements UIUpdater, Serializable {
     UIDescriptor descriptor = uiConfiguration.getAdapter( UIDescriptor.class );
     updateGlobalActions( descriptor );
     updateRootPages( descriptor );
+    updateColors( uiConfiguration );
     actionsParent.getShell().layout( true, true );
   }
 
@@ -101,6 +104,17 @@ public class Controller implements UIUpdater, Serializable {
   private void updateRootPages( UIDescriptor descriptor ) {
     List<PageDescriptor> rootPages = descriptor.getRootPages();
     createTopLevelPageRenderer( ui, rootPages );
+  }
+
+  private void updateColors( UIConfiguration uiConfiguration ) {
+    RGB background = uiConfiguration.getBackground();
+    if( background != null ) {
+      uiRenderer.setBackground( new Color( ui.getDisplay(), background ) );
+    }
+    RGB foreground = uiConfiguration.getForeground();
+    if( foreground != null ) {
+      uiRenderer.setForeground( new Color( ui.getDisplay(), foreground ) );
+    }
   }
 
   private boolean actionExist( ActionDescriptor actionDescriptor ) {

@@ -464,6 +464,28 @@ public class UIConfigurationTest {
   }
 
   @Test
+  public void testSetForegroundTriggersUIUpdate() {
+    UIUpdater updater = mock( UIUpdater.class );
+    UpdateUtil.registerUpdater( updater );
+    UIConfiguration configuration = new UIConfiguration();
+
+    configuration.setForeground( 100, 100, 100 );
+
+    verify( updater, times( 1 ) ).update( configuration );
+  }
+
+  @Test
+  public void testSetForegroundWithRGBTriggersUIUpdate() {
+    UIUpdater updater = mock( UIUpdater.class );
+    UpdateUtil.registerUpdater( updater );
+    UIConfiguration configuration = new UIConfiguration();
+
+    configuration.setForeground( new RGB( 100, 100, 100 ) );
+
+    verify( updater, times( 1 ) ).update( configuration );
+  }
+
+  @Test
   public void testSetsForegroundWithRGB() {
     UIConfiguration configuration = new UIConfiguration();
 
@@ -489,6 +511,28 @@ public class UIConfigurationTest {
 
     RGB actualBackground = configuration.getBackground();
     assertEquals( background, actualBackground );
+  }
+
+  @Test
+  public void testSetBackgroundTriggersUIUpdate() {
+    UIUpdater updater = mock( UIUpdater.class );
+    UpdateUtil.registerUpdater( updater );
+    UIConfiguration configuration = new UIConfiguration();
+
+    configuration.setBackground( 100, 100, 100 );
+
+    verify( updater, times( 1 ) ).update( configuration );
+  }
+
+  @Test
+  public void testSetBackgroundWithRGBTriggersUIUpdate() {
+    UIUpdater updater = mock( UIUpdater.class );
+    UpdateUtil.registerUpdater( updater );
+    UIConfiguration configuration = new UIConfiguration();
+
+    configuration.setBackground( new RGB( 100, 100, 100 ) );
+
+    verify( updater, times( 1 ) ).update( configuration );
   }
 
   @Test
