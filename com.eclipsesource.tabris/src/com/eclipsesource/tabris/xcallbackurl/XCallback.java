@@ -19,7 +19,6 @@ import static com.eclipsesource.tabris.internal.Constants.METHOD_CALL;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ACTION_PARAMETERS;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ERROR_CODE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ERROR_MESSAGE;
-import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PARAMETERS;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TARGET_ACTION;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TARGET_SCHEME;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_XSOURCE;
@@ -97,11 +96,10 @@ public class XCallback implements Serializable, Adaptable {
 
   private Map<String, String> getParameter( JsonObject properties ) {
     Map<String, String> parameter = new HashMap<String, String>();
-    if( properties != null && properties.get( PROPERTY_PARAMETERS ) != null ) {
-      JsonObject object = properties.get( PROPERTY_PARAMETERS ).asObject();
-      List<String> names = object.names();
+    if( properties != null && !properties.isEmpty() ) {
+      List<String> names = properties.names();
       for( String name : names ) {
-        parameter.put( name, object.get( name ).asString() );
+        parameter.put( name, properties.get( name ).asString() );
       }
     }
     return parameter;

@@ -93,12 +93,10 @@ public class XCallbackTest {
     XCallback xCallback = new XCallback( mock( XCallbackConfiguration.class ) );
     XCallbackListener listener = mock( XCallbackListener.class );
     xCallback.addXCallbackListener( listener );
-    JsonObject properties = new JsonObject();
     JsonObject parameters = new JsonObject();
     parameters.add( "foo", "bar" );
-    properties.add( "parameters", parameters );
 
-    environment.dispatchNotify( "Success", properties );
+    environment.dispatchNotify( "Success", parameters );
 
     ArgumentCaptor<Map> captor = ArgumentCaptor.forClass( Map.class );
     verify( listener ).onSuccess( captor.capture() );
