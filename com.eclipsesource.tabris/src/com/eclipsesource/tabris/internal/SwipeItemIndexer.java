@@ -35,7 +35,7 @@ public class SwipeItemIndexer implements Serializable {
   }
 
   public void setRange( int range ) {
-    when( range <= 0 ).throwIllegalArgument( "Range must be 0 or positive but was " + range );
+    when( range <= 0 ).throwIllegalArgument( "Range must be > 0 but was " + range );
     this.range = range;
   }
 

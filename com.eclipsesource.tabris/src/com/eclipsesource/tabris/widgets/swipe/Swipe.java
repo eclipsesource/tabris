@@ -125,7 +125,7 @@ public class Swipe implements Serializable {
    * </p>
    *
    * @param size The amount of item to pre loading each direction.
-   * @throws IllegalArgumentException when cache size is < 0
+   * @throws IllegalArgumentException when cache size is <= 0
    */
   public void setCacheSize( int size ) throws IllegalArgumentException {
     verifyIsNotDisposed();
