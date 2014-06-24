@@ -157,6 +157,24 @@ public class SwipeCommunicationTest {
   }
 
   @Test
+  public void testSendsItemCountBeforeCallingAdd() {
+    SwipeItemProvider itemProvider = mockProvider( 1 );
+    mockSwipeItem( itemProvider, 0, true );
+    Swipe swipe = new Swipe( shell, itemProvider );
+    swipe.show( 0 );
+
+    doReturn( Integer.valueOf( 2 ) ).when( itemProvider ).getItemCount();
+    mockSwipeItem( itemProvider, 1, true );
+    swipe.show( 1 );
+
+    InOrder order = inOrder( remoteObject );
+    order.verify( remoteObject ).set( "itemCount", 1 );
+    order.verify( remoteObject ).call( eq( "add" ), any( JsonObject.class ) );
+    order.verify( remoteObject ).set( "itemCount", 2 );
+    order.verify( remoteObject ).call( eq( "add" ), any( JsonObject.class ) );
+  }
+
+  @Test
   public void testSendsMethodsOnInitialization() {
     SwipeItemProvider itemProvider = mockProvider( 2 );
     TestItem firstItem = mockSwipeItem( itemProvider, 0, true );

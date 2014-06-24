@@ -342,6 +342,7 @@ public class Swipe implements Serializable {
       Control content = item.load( container );
       container.layout( true );
       manager.getItemHolder().setContentForItem( index, content );
+      updateItemCount();
       remoteObject.call( METHOD_ADD, createLoadProperties( index, content ) );
       notifyItemLoaded( listeners, item, index );
     }
