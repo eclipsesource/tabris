@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="Tabris Target" sequenceNumber="53">
+<?pde version="3.8"?><target name="Tabris Target" sequenceNumber="54">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="com.eclipsesource.osgi.additionals.feature.group" version="1.24.0.201404161640"/>
@@ -9,7 +9,7 @@
 <unit id="org.eclipse.rap.equinox.target.feature.feature.group" version="2.3.0.20140608-1653"/>
 <unit id="org.eclipse.rap.feature.feature.group" version="2.3.0.20140610-0925"/>
 <unit id="org.eclipse.rap.sdk.feature.feature.group" version="2.3.0.20140610-0925"/>
-<repository location="http://download.eclipse.org/rt/rap/2.3/RC4-20140610-0925/"/>
+<repository location="http://download.eclipse.org/rt/rap/2.3/R-20140610-0925/"/>
 </location>
 </locations>
 </target>
