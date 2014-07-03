@@ -23,6 +23,7 @@ import com.eclipsesource.tabris.device.ClientDevice;
 import com.eclipsesource.tabris.geolocation.Geolocation;
 import com.eclipsesource.tabris.interaction.AppLauncher;
 import com.eclipsesource.tabris.print.Printer;
+import com.eclipsesource.tabris.push.CloudPush;
 
 
 public class TabrisClientImpl implements TabrisClient {
@@ -35,6 +36,7 @@ public class TabrisClientImpl implements TabrisClient {
     getService( ClientDevice.class );
     getService( App.class );
     getService( ClientStore.class );
+    getService( CloudPush.class );
     DataWhitelist.register();
   }
 
@@ -50,6 +52,8 @@ public class TabrisClientImpl implements TabrisClient {
       result = ( T )getSessionInstance( ClientStoreImpl.class );
     } else if( type == ClientDevice.class || type == ClientInfo.class ) {
       result = ( T )getSessionInstance( ClientDeviceImpl.class );
+    } else if( type == CloudPush.class ) {
+      result = ( T )getSessionInstance( CloudPushImpl.class );
     } else if( type == Camera.class ) {
       result = ( T )getSessionInstance( CameraImpl.class );
     } else if( type == Geolocation.class ) {

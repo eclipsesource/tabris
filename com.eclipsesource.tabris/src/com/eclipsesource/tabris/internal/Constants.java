@@ -36,6 +36,7 @@ public class Constants {
   public static final String METHOD_OPEN = "open";
   public static final String METHOD_REMOVE = "remove";
   public static final String METHOD_ADD = "add";
+  public static final String METHOD_ACTIVATE = "activate";
   public static final String PROPERTY_PARENT = "parent";
   public static final String PROPERTY_DATA = "data";
   public static final String PROPERTY_IMAGE = "image";
@@ -59,7 +60,6 @@ public class Constants {
   public static final String EVENT_MODIFY = "Modify";
   public static final String EVENT_SEARCH = "Search";
   public static final String METHOD_DEACTIVATE = "deactivate";
-  public static final String METHOD_ACTIVATE = "activate";
   public static final String PROPERTY_ACTIVE_PAGE = "activePage";
   public static final String PROPERTY_PAGE_ID = "pageId";
   public static final String PROPERTY_TITLE = "title";
@@ -216,6 +216,14 @@ public class Constants {
 
   // Text Replacement
   public static final String TYPE_TEXT_REPLACEMENT = "tabris.TextReplacement";
+
+  // CloudPush
+  public static final String TYPE_CLOUD_PUSH = "tabris.CloudPush";
+  public static final String EVENT_NOTIFICATION = "Notification";
+  public static final String EVENT_REGISTERED = "Registered";
+  public static final String EVENT_MESSAGE_RECEIVED = "MessageReceived";
+  public static final String EVENT_ERROR_RECEIVED = "ErrorReceived";
+  public static final String PROPERTY_TOKEN = "token";
 
   private Constants() {
     // prevent instantiation
