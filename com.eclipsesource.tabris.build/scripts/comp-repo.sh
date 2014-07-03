@@ -2,7 +2,7 @@
 #
 # Tool to maintain composite repositories
 
-RUNTIME_DIR=/home/build/rap-mobile/runtimes/eclipse-3.6.1
+RUNTIME_DIR=/data/jenkins/build-tools/eclipse-luna-linux-64
 
 mode=
 repoDir=

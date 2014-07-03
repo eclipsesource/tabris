@@ -33,7 +33,7 @@ echo "Using build qualifier $BUILD_QUALIFIER"
 # Move the generated p2 repository to a location on download.eclipse.org
 # where they can be consumed.    
 
-DOWNLOAD_FOLDER=/var/www/download.eclipsesource.com/technology/tabris/downloads/staging
+DOWNLOAD_FOLDER=/data/download.eclipsesource.com/technology/tabris/downloads/staging
 if [ ! -d "$DOWNLOAD_FOLDER" ]; then
 #we are not on the eclipsesource build machine. for testing, let's
 #deploy the build inside the builds folder of com.eclipsesource.tabris.build
