@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.client.service.JavaScriptExecutor;
+import org.eclipse.rap.rwt.internal.util.EncodingUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -31,6 +32,7 @@ import com.eclipsesource.tabris.ui.PageData;
 import com.eclipsesource.tabris.ui.UI;
 
 
+@SuppressWarnings("restriction")
 public class WebPage implements PageRenderer {
 
   private final UI ui;
@@ -173,7 +175,7 @@ public class WebPage implements PageRenderer {
 
   private void setBrowserTitle() {
     JavaScriptExecutor executor = RWT.getClient().getService( JavaScriptExecutor.class );
-    executor.execute( "document.title = \"" + title + "\";" );
+    executor.execute( "document.title = \"" + EncodingUtil.encodeHTMLEntities( title ) + "\";" );
   }
 
 }

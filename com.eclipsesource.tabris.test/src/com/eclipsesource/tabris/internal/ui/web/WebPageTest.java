@@ -134,6 +134,18 @@ public class WebPageTest {
   }
 
   @Test
+  public void testSetTitleEscapesTitle() {
+    WebClient webClient = mock( WebClient.class );
+    JavaScriptExecutor javaScriptExecutor = mock( JavaScriptExecutor.class );
+    when( webClient.getService( JavaScriptExecutor.class ) ).thenReturn( javaScriptExecutor );
+    environment.setClient( webClient );
+
+    webPage.setTitle( "foo \"" );
+
+    verify( javaScriptExecutor ).execute( eq( "document.title = \"foo &quot;\";" ) );
+  }
+
+  @Test
   public void testSetTitleUpdatesUi() {
     WebClient webClient = mock( WebClient.class );
     JavaScriptExecutor javaScriptExecutor = mock( JavaScriptExecutor.class );
