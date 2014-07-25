@@ -52,4 +52,8 @@ public class SwipeOperationHandler extends AbstractOperationHandler {
   public int getActiveClientItem() {
     return activeClientItem;
   }
+
+  public void setActiveClientItem( int index ) {
+    activeClientItem = index;
+  }
 }

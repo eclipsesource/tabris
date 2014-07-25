@@ -522,6 +522,20 @@ public class SwipeTest {
   }
 
   @Test
+  public void testShowUpdatesActiveClientItem() {
+    SwipeItemProvider itemProvider = mockProvider( 2 );
+    mockSwipeItem( itemProvider, 0, true );
+    mockSwipeItem( itemProvider, 1, true );
+    Swipe swipe = new Swipe( shell, itemProvider );
+
+    swipe.show( 0 );
+    swipe.show( 1 );
+
+    int activeClientItem = swipe.getHandler().getActiveClientItem();
+    assertEquals( 1, activeClientItem );
+  }
+
+  @Test
   public void testShowSetsTopControlOnStack() {
     SwipeItemProvider itemProvider = mockProvider( 1 );
     TestItem item = mockSwipeItem( itemProvider, 0, true );

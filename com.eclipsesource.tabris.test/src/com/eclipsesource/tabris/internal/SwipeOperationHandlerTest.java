@@ -75,4 +75,14 @@ public class SwipeOperationHandlerTest {
 
     handler.handleNotify( "Swipe", null );
   }
+
+  @Test
+  public void testCanSetActiveClientItem() {
+    SwipeOperationHandler handler = new SwipeOperationHandler( mock( Swipe.class ) );
+
+    handler.setActiveClientItem( 23 );
+
+    int activeClientItem = handler.getActiveClientItem();
+    assertEquals( 23, activeClientItem );
+  }
 }

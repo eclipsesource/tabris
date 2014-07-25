@@ -201,6 +201,7 @@ public class Swipe implements Serializable {
     handlePreviousItem();
     if( needsToShow ) {
       showCurrentItem();
+      operationHandler.setActiveClientItem( index );
     }
     initializeNextItem();
     updateItemCount();
@@ -465,6 +466,10 @@ public class Swipe implements Serializable {
 
   Composite getContainer() {
     return container;
+  }
+
+  SwipeOperationHandler getHandler() {
+    return operationHandler;
   }
 
 }
