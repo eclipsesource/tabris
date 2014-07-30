@@ -9,10 +9,10 @@
    <feature url="features/org.eclipse.rap.sdk.feature_2.3.0.qualifier.jar" id="org.eclipse.rap.sdk.feature" version="2.3.0.qualifier">
       <category name="com.eclipsesource.tabris"/>
    </feature>
-   <feature url="features/com.eclipsesource.tabris.feature_1.4.0.qualifier.jar" id="com.eclipsesource.tabris.feature" version="1.4.0.qualifier">
+   <feature url="features/com.eclipsesource.tabris.feature_1.4.1.qualifier.jar" id="com.eclipsesource.tabris.feature" version="1.4.1.qualifier">
       <category name="com.eclipsesource.tabris"/>
    </feature>
-   <feature url="features/com.eclipsesource.tabris.feature.source_1.4.0.qualifier.jar" id="com.eclipsesource.tabris.feature.source" version="1.4.0.qualifier">
+   <feature url="features/com.eclipsesource.tabris.feature.source_1.4.1.qualifier.jar" id="com.eclipsesource.tabris.feature.source" version="1.4.1.qualifier">
       <category name="com.eclipsesource.tabris.sdk"/>
    </feature>
    <feature url="features/com.eclipsesource.tabris.passepartout.feature_0.10.0.qualifier.jar" id="com.eclipsesource.tabris.passepartout.feature" version="0.10.0.qualifier">
