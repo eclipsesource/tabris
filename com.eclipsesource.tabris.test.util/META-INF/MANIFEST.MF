@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Tabris Test Util
 Bundle-SymbolicName: com.eclipsesource.tabris.test.util
-Bundle-Version: 1.4.1.qualifier
+Bundle-Version: 1.4.2.qualifier
 Bundle-Vendor: EclipseSource
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.rap.rwt.testfixture;bundle-version="[2.3.0,3.0.0)",
