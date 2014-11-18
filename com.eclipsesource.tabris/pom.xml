@@ -18,7 +18,7 @@
 
 	<groupId>com.eclipsesource</groupId>
 	<artifactId>com.eclipsesource.tabris</artifactId>
-	<version>1.4.2-SNAPSHOT</version>
+	<version>1.4.3-SNAPSHOT</version>
 	<packaging>eclipse-plugin</packaging>
 
 	<build>
