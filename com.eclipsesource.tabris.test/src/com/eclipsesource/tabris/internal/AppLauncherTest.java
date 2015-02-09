@@ -88,6 +88,18 @@ public class AppLauncherTest {
     assertEquals( JsonValue.valueOf( "http://foo.bar" ), captor.getValue().get( "url" ) );
   }
 
+  @Test
+  public void testOpenUrlCreatesCallOperationWithCustomScheme() {
+    RemoteObject remoteObject = environment.getRemoteObject();
+    AppLauncher launcher = new AppLauncherImpl();
+
+    launcher.openUrl( "tabris://foo.bar" );
+
+    ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
+    verify( remoteObject ).call( eq( "openUrl" ), captor.capture() );
+    assertEquals( JsonValue.valueOf( "tabris://foo.bar" ), captor.getValue().get( "url" ) );
+  }
+
   @Test( expected = IllegalArgumentException.class )
   public void testOpenUrlFailsWithNull() {
     AppLauncher launcher = new AppLauncherImpl();
@@ -96,9 +108,9 @@ public class AppLauncherTest {
   }
 
   @Test( expected = IllegalArgumentException.class )
-  public void testOpenUrlFailsWithInvalidUrl() {
+  public void testOpenUrlFailsWithEmptyUrl() {
     AppLauncher launcher = new AppLauncherImpl();
 
-    launcher.openUrl( "fooBar" );
+    launcher.openUrl( "" );
   }
 }

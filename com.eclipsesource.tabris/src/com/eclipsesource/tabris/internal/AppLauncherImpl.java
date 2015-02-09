@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
+import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_OPEN;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_OPEN_URL;
@@ -18,8 +19,6 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_URL;
 import static com.eclipsesource.tabris.internal.Constants.TYPE_APP_LAUNCHER;
 
 import java.io.Serializable;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -65,16 +64,8 @@ public class AppLauncherImpl implements AppLauncher, Serializable {
   @Override
   public void openUrl( String url ) {
     whenNull( url ).throwIllegalArgument( "URL must not be null" );
-    validateUrl( url );
+    when( url.isEmpty() ).throwIllegalArgument( "URL must not be empty" );
     createOpenUrlCall( url );
-  }
-
-  private void validateUrl( String url ) {
-    try {
-      new URL( url );
-    } catch( MalformedURLException mue ) {
-      throw new IllegalArgumentException( url + " is not a valid url", mue );
-    }
   }
 
   private void createOpenUrlCall( String url ) {
