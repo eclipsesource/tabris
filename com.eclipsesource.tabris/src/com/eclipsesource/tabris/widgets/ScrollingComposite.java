@@ -95,6 +95,17 @@ public class ScrollingComposite extends Composite {
     } );
   }
 
+  /**
+   * <p>
+   * Returns the inner {@link ScrolledComposite}.
+   * </p>
+   *
+   * @since 1.4
+   */
+  public ScrolledComposite getScrolledComposite() {
+    return scrolledComposite;
+  }
+
   @Override
   public void layout( boolean changed, boolean all ) {
     super.layout( changed, all );

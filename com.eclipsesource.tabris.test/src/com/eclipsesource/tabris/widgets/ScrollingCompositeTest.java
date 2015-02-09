@@ -266,4 +266,13 @@ public class ScrollingCompositeTest {
 
     assertSame( gridData, layoutData );
   }
+
+  @Test
+  public void testHasScrolledComposite() {
+    ScrollingComposite composite = new ScrollingComposite( shell, SWT.NONE );
+
+    ScrolledComposite scrolledComposite = composite.getScrolledComposite();
+
+    assertNotNull( scrolledComposite );
+  }
 }
