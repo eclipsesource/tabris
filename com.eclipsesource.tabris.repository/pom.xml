@@ -17,7 +17,7 @@
   
   <groupId>com.eclipsesource</groupId>
   <artifactId>com.eclipsesource.tabris.repository</artifactId>
-  <version>1.4.3</version>
+  <version>1.4.4</version>
   <packaging>eclipse-repository</packaging>
   
 </project>
