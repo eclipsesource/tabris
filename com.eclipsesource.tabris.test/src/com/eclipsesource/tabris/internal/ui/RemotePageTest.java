@@ -35,6 +35,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 
 import com.eclipsesource.tabris.internal.ui.rendering.ActionRenderer;
 import com.eclipsesource.tabris.internal.ui.rendering.UIRenderer;
@@ -100,6 +101,7 @@ public class RemotePageTest {
 
     verify( remoteObject ).set( "parent", "foo1" );
     verify( remoteObject ).set( "title", "bar" );
+    verify( remoteObject, never() ).set( eq( "backCaption" ), Mockito.anyString() );
     verify( remoteObject ).set( "control", WidgetUtil.getId( remotePage.getControl() ) );
     verify( remoteObject ).set( "style", new JsonArray().add( "DEFAULT" ) );
     verify( remoteObject ).set( "topLevel", true );
@@ -194,6 +196,15 @@ public class RemotePageTest {
     page.setTitle( "foo" );
 
     verify( remoteObject ).set( "title", "bar" );
+  }
+
+  @Test
+  public void testSetBackCaption() {
+    when( descriptor.getBackCaption() ).thenReturn( "Eject" );
+
+    new RemotePage( ui, uiRenderer, descriptor, mock( PageData.class ) );
+
+    verify( remoteObject ).set( "backCaption", "Eject" );
   }
 
   @Test

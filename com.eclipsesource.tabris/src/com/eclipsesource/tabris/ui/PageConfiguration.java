@@ -51,6 +51,7 @@ public class PageConfiguration implements Adaptable, Serializable {
   private final Class<? extends Page> pageType;
   private final List<ActionConfiguration> actions;
   private String title;
+  private String backCaption;
   private PageStyle[] style;
   private boolean topLevel;
   private byte[] image;
@@ -74,6 +75,7 @@ public class PageConfiguration implements Adaptable, Serializable {
     this.id = pageId;
     this.pageType = pageType;
     this.title = "";
+    this.backCaption = null;
     this.topLevel = false;
     this.style = new PageStyle[] {};
     this.actions = new ArrayList<ActionConfiguration>();
@@ -126,13 +128,37 @@ public class PageConfiguration implements Adaptable, Serializable {
 
   /**
    * <p>
-   * Returns the page title."
+   * Returns the page title.
    * </p>
    *
    * @since 1.4
    */
   public String getTitle() {
     return title;
+  }
+
+  /**
+   * <p>
+   * Defines the text for the back button.
+   * </p>
+   *
+   * @param backCaption the text for the back button. If {@code null} or empty, the default text is used.
+   * @since 1.4.5
+   */
+  public PageConfiguration setBackCaption( String backCaption ) {
+    this.backCaption = backCaption;
+    return this;
+  }
+
+/**
+ * <p>
+ * Returns the text for the back button. Default value: {@code null}.
+ * </p>
+ *
+ * @since 1.4.5
+ */
+  public String getBackCaption() {
+    return backCaption;
   }
 
   /**
@@ -253,6 +279,7 @@ public class PageConfiguration implements Adaptable, Serializable {
   private PageDescriptor createDescriptor() {
     PageDescriptor pageDescriptor = new PageDescriptor( id, pageType )
                                       .setTitle( title )
+                                      .setBackCaption( backCaption )
                                       .setImage( image )
                                       .setTopLevel( topLevel )
                                       .setPageStyle( style );

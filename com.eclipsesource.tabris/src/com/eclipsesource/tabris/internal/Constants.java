@@ -63,6 +63,7 @@ public class Constants {
   public static final String PROPERTY_ACTIVE_PAGE = "activePage";
   public static final String PROPERTY_PAGE_ID = "pageId";
   public static final String PROPERTY_TITLE = "title";
+  public static final String PROPERTY_BACK_CAPTION = "backCaption";
   public static final String PROPERTY_STYLE = "style";
   public static final String PROPERTY_TOP_LEVEL = "topLevel";
   public static final String PROPERTY_VISIBILITY = "visibility";

@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal.ui;
 
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_BACK_CAPTION;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_CONTROL;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_IMAGE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PARENT;
@@ -65,6 +66,7 @@ public class RemotePage implements Serializable, PageRenderer {
     this.page = InstanceCreator.createInstance( descriptor.getPageType() );
     this.remoteActions = new ArrayList<ActionRenderer>();
     setTitle( descriptor.getTitle() );
+    setBackCaption( descriptor.getBackCaption() );
     setAttributes();
   }
 
@@ -89,6 +91,12 @@ public class RemotePage implements Serializable, PageRenderer {
     String[] result = new String[ parameters.size() ];
     parameters.toArray( result );
     return createJsonArray( result );
+  }
+
+  private void setBackCaption( String backCaption ) {
+      if ( backCaption != null && backCaption.trim().length() > 0 ) {
+          remoteObject.set( PROPERTY_BACK_CAPTION, backCaption );
+      }
   }
 
   private void setImage() {

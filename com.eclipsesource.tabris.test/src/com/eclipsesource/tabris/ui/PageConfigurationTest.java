@@ -91,6 +91,7 @@ public class PageConfigurationTest {
     assertSame( TestPage.class, descriptor.getPageType() );
     assertFalse( descriptor.isTopLevel() );
     assertEquals( "", descriptor.getTitle() );
+    assertNull( descriptor.getBackCaption() );
     assertNull( descriptor.getImage() );
     assertEquals( 0, descriptor.getPageStyle().length );
   }
@@ -129,6 +130,34 @@ public class PageConfigurationTest {
     String title = config.getTitle();
 
     assertEquals( "bar", title );
+  }
+
+  @Test
+  public void testSetsBackCaption() {
+    PageConfiguration config = new PageConfiguration( "foo", TestPage.class ).setBackCaption( "Leave" );
+
+    PageDescriptor descriptor = config.getAdapter( PageDescriptor.class );
+
+    assertEquals( "Leave", config.getBackCaption() );
+    assertEquals( "Leave", descriptor.getBackCaption() );
+  }
+
+  @Test
+  public void testSetsBackCaptionReturnsPageConfig() {
+    PageConfiguration config = new PageConfiguration( "foo", TestPage.class ).setTitle( "bar" );
+
+    PageConfiguration actualConfig = config.setBackCaption( "backCaption" );
+
+    assertSame( config, actualConfig );
+  }
+
+  @Test
+  public void testBackCaptionIsNullByDefault() {
+    PageConfiguration config = new PageConfiguration( "foo", TestPage.class ).setTitle( "bar" );
+
+    String backCaption = config.getBackCaption();
+
+    assertNull( backCaption );
   }
 
   @Test( expected = IllegalArgumentException.class )

@@ -61,10 +61,26 @@ public class PageDescriptorTest {
   }
 
   @Test
-  public void testSetTitleReturnsDescritor() {
+  public void testSetTitleReturnsDescriptor() {
     PageDescriptor descriptor = new PageDescriptor( "foo", TestPage.class );
 
     PageDescriptor actualDescriptor = descriptor.setTitle( "bar" );
+
+    assertSame( descriptor, actualDescriptor );
+  }
+
+  @Test
+  public void testGetBackCaption() {
+    PageDescriptor descriptor = new PageDescriptor( "foo", TestPage.class );
+    descriptor.setBackCaption( "Leave" );
+
+    assertEquals( "Leave", descriptor.getBackCaption() );
+  }
+
+  @Test
+  public void testSetBackCaptionReturnsDescriptor() {
+    PageDescriptor descriptor = new PageDescriptor( "foo", TestPage.class );
+    PageDescriptor actualDescriptor = descriptor.setBackCaption( "Leave" );
 
     assertSame( descriptor, actualDescriptor );
   }
