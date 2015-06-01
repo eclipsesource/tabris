@@ -50,6 +50,7 @@ public class Constants {
   public static final String PROPERTY_ERROR_MESSAGE = "errorMessage";
   public static final String PROPERTY_ERROR_CODE = "errorCode";
   public static final String PROPERTY_ORIENTATION = "orientation";
+  public static final String PROPERTY_SOURCETYPE = "sourceType";
   public static final String EVENT_SUCCESS = "Success";
   public static final String EVENT_ERROR = "Error";
 

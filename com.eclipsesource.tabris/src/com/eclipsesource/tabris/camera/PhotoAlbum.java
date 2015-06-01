@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 EclipseSource and others.
+ * Copyright (c) 2015 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,47 +16,47 @@ import org.eclipse.rap.rwt.client.service.ClientService;
 
 /**
  * <p>
- * The <code>Camera</code> component can be used to take and receive pictures from a mobile client's camera.
- * The taken picture will be sent to the server side and a callback will be called. See
- * <code>CameraListener</code>. An instance of {@link Camera} can be accessed using
- * RWT.getClient().getService( Camera.class ).
+ * The <code>PhotoAlbum</code> component can be used to receive pictures from a mobile client's photo
+ * album. The picture will be sent to the server side and a callback will be called. See
+ * <code>PhotoAlbumListener</code>. An instance of {@link PhotoAlbum} can be accessed using
+ * <code>RWT.getClient().getService( PhotoAlbum.class )</code>.
  * </p>
  *
- * @see CameraListener
- * @see CameraOptions
+ * @see PhotoAlbumListener
+ * @see PhotoAlbumOptions
  * @see Client
  *
  * @noimplement This interface is not intended to be implemented by clients.
  *
- * @since 0.8
+ * @since 1.4
  */
-public interface Camera extends ClientService {
+public interface PhotoAlbum extends ClientService {
 
   /**
    * <p>
-   * Instructs the client to open the camera. The added {@link CameraListener}s will be called when the
-   * user has taken a picture..
+   * Instructs the client to open the photo album. The added {@link PhotoAlbumListener}s will be called when the
+   * user has selected a picture.
    * </p>
    *
    * @param options The options that should be used as the configuration for taking a picture. Must not
    *                be <code>null</code>.
    *
-   * @see CameraListener
+   * @see PhotoAlbumListener
    */
-  void takePicture( CameraOptions options );
+  void open( PhotoAlbumOptions options );
 
   /**
    * <p>
-   * Adds a {@link CameraListener} to get notified about image events.
+   * Adds a {@link PhotoAlbumListener} to get notified about image events.
    * </p>
    */
-  void addCameraListener( CameraListener listener );
+  void addPhotoAlbumListener( PhotoAlbumListener listener );
 
   /**
    * <p>
-   * Removes a {@link CameraListener}.
+   * Removes a {@link PhotoAlbumListener}.
    * </p>
    */
-  void removeCameraListener( CameraListener listener );
+  void removePhotoAlbumListener( PhotoAlbumListener listener );
 
 }

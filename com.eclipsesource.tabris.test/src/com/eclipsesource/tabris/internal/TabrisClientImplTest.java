@@ -21,6 +21,7 @@ import com.eclipsesource.tabris.ClientStore;
 import com.eclipsesource.tabris.TabrisClient;
 import com.eclipsesource.tabris.app.App;
 import com.eclipsesource.tabris.camera.Camera;
+import com.eclipsesource.tabris.camera.PhotoAlbum;
 import com.eclipsesource.tabris.device.ClientDevice;
 import com.eclipsesource.tabris.geolocation.Geolocation;
 import com.eclipsesource.tabris.interaction.AppLauncher;
@@ -86,6 +87,15 @@ public class TabrisClientImplTest {
     Camera camera = client.getService( Camera.class );
 
     assertNotNull( camera );
+  }
+
+  @Test
+  public void testHasPhotoAlbumService() {
+    TabrisClient client = new TabrisClientImpl();
+
+    PhotoAlbum album = client.getService( PhotoAlbum.class );
+
+    assertNotNull( album );
   }
 
   @Test
@@ -168,6 +178,16 @@ public class TabrisClientImplTest {
     Camera camera2 = client.getService( Camera.class );
 
     assertSame( camera, camera2 );
+  }
+
+  @Test
+  public void testPhotoAlbumIsSingleton() {
+    TabrisClient client = new TabrisClientImpl();
+
+    PhotoAlbum album = client.getService( PhotoAlbum.class );
+    PhotoAlbum album2 = client.getService( PhotoAlbum.class );
+
+    assertSame( album, album2 );
   }
 
   @Test

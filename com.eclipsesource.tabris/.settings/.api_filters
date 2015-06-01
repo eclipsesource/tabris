@@ -63,6 +63,15 @@
             </message_arguments>
         </filter>
     </resource>
+    <resource path="src/com/eclipsesource/tabris/internal/PhotoAlbumImpl.java" type="com.eclipsesource.tabris.internal.PhotoAlbumImpl">
+        <filter id="574668824">
+            <message_arguments>
+                <message_argument value="PhotoAlbum"/>
+                <message_argument value="PhotoAlbumImpl"/>
+                <message_argument value="ClientService"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="src/com/eclipsesource/tabris/internal/PrinterImpl.java" type="com.eclipsesource.tabris.internal.PrinterImpl">
         <filter id="574668824">
             <message_arguments>
