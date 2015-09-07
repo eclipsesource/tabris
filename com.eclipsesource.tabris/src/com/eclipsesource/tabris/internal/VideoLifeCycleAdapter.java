@@ -12,6 +12,7 @@ package com.eclipsesource.tabris.internal;
 
 import static com.eclipsesource.tabris.internal.Constants.EVENT_PLAYBACK;
 import static com.eclipsesource.tabris.internal.Constants.EVENT_PRESENTATION;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_CACHE_SIZE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PARENT;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PLAYBACK;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PRESENTATION;
@@ -76,6 +77,11 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA implements Serializ
     }
     renderListener( video, EVENT_PLAYBACK, adapter.hasPlaybackListener(), false );
     renderListener( video, EVENT_PRESENTATION, adapter.hasPresentationListener(), false );
+    if( adapter.isClearCacheRequested() ) {
+      adapter.resetClearCache();
+      RemoteObject remoteObject = RemoteObjectFactory.getRemoteObject( video );
+      remoteObject.call( "clearCache", null );
+    }
   }
 
   @Override
@@ -84,6 +90,7 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA implements Serializ
     RemoteObject remoteObject = RemoteObjectFactory.createRemoteObject( video, TYPE_VIDEO );
     remoteObject.setHandler( new VideoOperationHandler( video ) );
     remoteObject.set( PROPERTY_PARENT, WidgetUtil.getId( video.getParent() ) );
+    remoteObject.set( PROPERTY_CACHE_SIZE, video.getCacheSize() );
     remoteObject.set( PROPERTY_URL, video.getURL().toString() );
   }
 

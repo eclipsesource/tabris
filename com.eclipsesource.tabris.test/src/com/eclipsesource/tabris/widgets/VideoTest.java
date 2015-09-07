@@ -55,7 +55,7 @@ public class VideoTest {
   public void setUp() {
     Display display = new Display();
     parent = new Shell( display );
-    video = new Video( "http://test.com", parent );
+    video = new Video( "http://localhost/video.mp4", parent );
     playbackListener = mock( PlaybackListener.class );
     video.addPlaybackListener( playbackListener );
     presentationListener = mock( PresentationListener.class );
@@ -79,7 +79,7 @@ public class VideoTest {
 
   @Test
   public void testGetUrl() throws MalformedURLException {
-    assertEquals( new URL( "http://test.com" ).toString(), video.getURL().toString() );
+    assertEquals( new URL( "http://localhost/video.mp4" ).toString(), video.getURL().toString() );
   }
 
   @Test
@@ -96,7 +96,7 @@ public class VideoTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testNullParent() {
-    new Video( "http://test.com", null );
+    new Video( "http://localhost/video.mp4", null );
   }
 
   @Test
@@ -408,7 +408,7 @@ public class VideoTest {
 
   @Test
   public void testHasntPlaybackListenerDefault() {
-    video = new Video( "http://test.com", parent );
+    video = new Video( "http://localhost/video.mp4", parent );
     PlaybackAdapter adapter = video.getAdapter( PlaybackAdapter.class );
 
     assertFalse( adapter.hasPlaybackListener() );
@@ -416,7 +416,7 @@ public class VideoTest {
 
   @Test
   public void testHasntPresentationListenerDefault() {
-    video = new Video( "http://test.com", parent );
+    video = new Video( "http://localhost/video.mp4", parent );
     PlaybackAdapter adapter = video.getAdapter( PlaybackAdapter.class );
 
     assertFalse( adapter.hasPresentationListener() );
@@ -424,7 +424,7 @@ public class VideoTest {
 
   @Test
   public void testHasPlaybackListener() {
-    video = new Video( "http://test.com", parent );
+    video = new Video( "http://localhost/video.mp4", parent );
     video.addPlaybackListener( mock( PlaybackListener.class ) );
     PlaybackAdapter adapter = video.getAdapter( PlaybackAdapter.class );
 
@@ -433,7 +433,7 @@ public class VideoTest {
 
   @Test
   public void testHasPresentationListener() {
-    video = new Video( "http://test.com", parent );
+    video = new Video( "http://localhost/video.mp4", parent );
     video.addPresentationListener( mock( PresentationListener.class ) );
     PlaybackAdapter adapter = video.getAdapter( PlaybackAdapter.class );
 
@@ -442,7 +442,7 @@ public class VideoTest {
 
   @Test
   public void testHasPlaybackListenerWithAddAndRemove() {
-    video = new Video( "http://test.com", parent );
+    video = new Video( "http://localhost/video.mp4", parent );
     PlaybackListener listener = mock( PlaybackListener.class );
     PlaybackAdapter adapter = video.getAdapter( PlaybackAdapter.class );
 
@@ -454,7 +454,7 @@ public class VideoTest {
 
   @Test
   public void testHasPresentationListenerWithAddAndRemove() {
-    video = new Video( "http://test.com", parent );
+    video = new Video( "http://localhost/video.mp4", parent );
     PresentationListener listener = mock( PresentationListener.class );
     PlaybackAdapter adapter = video.getAdapter( PlaybackAdapter.class );
 
@@ -462,6 +462,37 @@ public class VideoTest {
     video.removePresentationListener( listener );
 
     assertFalse( adapter.hasPresentationListener() );
+  }
+
+  @Test
+  public void testCacheSizeDefaultsToZero() {
+    video = new Video( "http://localhost/video.mp4", parent );
+
+    assertEquals( 0, video.getCacheSize() );
+  }
+
+  @Test
+  public void testGetCacheSize() {
+    video = new Video( "http://localhost/video.mp4", 100, parent );
+
+    assertEquals( 100, video.getCacheSize() );
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testSetCacheSize_IllegalValue() {
+    video = new Video( "http://localhost/video.mp4", -1, parent );
+  }
+
+  @Test
+  public void testClearCache() {
+    video = new Video( "http://localhost/video.mp4", parent );
+    PlaybackAdapter adapter = video.getAdapter( PlaybackAdapter.class );
+
+    assertFalse( adapter.isClearCacheRequested() );
+
+    video.clearCache();
+
+    assertTrue( adapter.isClearCacheRequested() );
   }
 
 }

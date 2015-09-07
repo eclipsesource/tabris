@@ -141,21 +141,43 @@ public class Video extends Composite {
   private static final float PLAY_SPEED = 1;
   private static final float HALT_SPEED = 0;
 
-  private URL videoUrl;
   private final List<PlaybackListener> playbackListeners = new ArrayList<PlaybackListener>();
   private final List<PresentationListener> presentationListeners = new ArrayList<PresentationListener>();
   private final Map<PlaybackOptions, Object> playbackOptions = new HashMap<PlaybackOptions, Object>();
+
+  private URL videoUrl;
+  private int cacheSizeMb;
+  private boolean wantsToClearCache;
+
+  /**
+   * Creates a new Video object.
+   *
+   * @param videoUrl a String with the url of the video to play; never null
+   * @param parent the parent Composite; never null
+   * @throws IllegalArgumentException when the passed URL string is not a valid
+   *           url.
+   */
+  public Video( String videoUrl, Composite parent ) throws IllegalArgumentException {
+    this(videoUrl, 0, parent);
+  }
 
   /**
    * <p>
    * Creates a new Video object.
    * </p>
    *
-   * @throws IllegalArgumentException when the passed URl string is not a valid url.
+   * @param videoUrl a String with the url of the video to play; never null
+   * @param cacheSizeMb the maximum allowed size of the client-side video cache
+   *          in megabytes (0 or greater).
+   * @param parent the parent Composite; never null
+   * @throws IllegalArgumentException when the passed URl string is not a valid
+   *           url.
+   * @since 1.4.8
    */
-  public Video( String videoUrl, Composite parent ) throws IllegalArgumentException {
+  public Video( String videoUrl, int cacheSizeMb, Composite parent ) throws IllegalArgumentException {
     super( parent, SWT.NONE );
     initiateDefaultValues();
+    setCacheSize( cacheSizeMb );
     assignUrl( videoUrl );
   }
 
@@ -165,6 +187,13 @@ public class Video extends Composite {
     playbackOptions.put( PlaybackOptions.SPEED, Float.valueOf( HALT_SPEED ) );
     playbackOptions.put( PlaybackOptions.CONTROLS_VISIBLE, Boolean.valueOf( true ) );
     playbackOptions.put( PlaybackOptions.REPEAT, Boolean.valueOf( false ) );
+  }
+
+  private void setCacheSize( int cacheSizeMb ) {
+    if (cacheSizeMb < 0) {
+      throw new IllegalArgumentException( String.valueOf( cacheSizeMb ) );
+    }
+    this.cacheSizeMb = cacheSizeMb;
   }
 
   private void assignUrl( String videoUrl ) {
@@ -385,6 +414,27 @@ public class Video extends Composite {
     presentationListeners.remove( listener );
   }
 
+  /**
+   * Returns the maximum allowed video cache size in megabytes. The default is 0.
+   *
+   * @return cache size in megabytes (0 or greater).
+   * @since 1.4.8
+   */
+  public int getCacheSize() {
+    return cacheSizeMb;
+  }
+
+  /**
+   * Instructs the device to remove all cached content from the video cache.
+   * <p>
+   * The call is asynchronous, the files are <b>not</b> removed immediately upon returning.
+   *
+   * @since 1.4.8
+   */
+  public void clearCache() {
+    wantsToClearCache = true;
+  }
+
   private void firePlayback( Playback oldMode, Playback newMode ) {
     if( oldMode != newMode ) {
       List<PlaybackListener> listeners = new ArrayList<PlaybackListener>( playbackListeners );
@@ -443,6 +493,12 @@ public class Video extends Composite {
       return !presentationListeners.isEmpty();
     }
 
-  }
+    public boolean isClearCacheRequested() {
+      return wantsToClearCache;
+    }
 
+    public void resetClearCache() {
+      wantsToClearCache = false;
+    }
+  }
 }

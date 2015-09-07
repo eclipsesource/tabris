@@ -102,8 +102,10 @@ public class Constants {
   public static final String TYPE_VIDEO = "tabris.widgets.Video";
   public static final String EVENT_PRESENTATION = "Presentation";
   public static final String EVENT_PLAYBACK = "Playback";
+  public static final String METHOD_CLEAR_CACHE = "clearCache";
   public static final String PROPERTY_PLAYBACK = "playback";
   public static final String PROPERTY_PRESENTATION = "presentation";
+  public static final String PROPERTY_CACHE_SIZE = "cacheSize";
 
   // Swipe Constants
   public static final String TYPE_SWIPE = "tabris.Swipe";
