@@ -2,7 +2,7 @@
 <feature
       id="com.eclipsesource.tabris.feature"
       label="Tabris Runtime"
-      version="1.4.5.qualifier"
+      version="1.4.6.qualifier"
       provider-name="EclipseSource">
 
    <description url="http://developer.eclipsesource.com/tabris">

@@ -15,7 +15,7 @@
   
   <groupId>com.eclipsesource</groupId>
   <artifactId>com.eclipsesource.tabris.tracking.test</artifactId>
-  <version>1.4.5-SNAPSHOT</version>
+  <version>1.4.6-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
   
   <build>
