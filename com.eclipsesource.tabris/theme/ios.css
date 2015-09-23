@@ -7,13 +7,13 @@ Shell[TITLE], Shell[BORDER] {
 }
 
 Shell-Titlebar {
-  font: 19px HelveticaNeue-Medium, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 19px ".SFUIText-Medium", HelveticaNeue-Medium, Helvetica Neue, Helvetica, Arial, sans-serif;
   background-color: #0080c0;
   background-gradient-color: #0080c0;
   color: #ffffff;
-  background-image: gradient( 
-    linear, left top, left bottom, 
-    from( #416693 ), to( #5882b5 ) 
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #416693 ), to( #5882b5 )
   );
   padding: 0 0px 0 10px;
   margin: 0px;
@@ -24,7 +24,7 @@ Shell-Titlebar {
 }
 
 Label {
-  font: 14px HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 14px ".SFUIText-Light", HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
 Shell {
@@ -50,7 +50,7 @@ Tree-Cell {
 }
 
 List {
-  font: 18px HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 18px ".SFUIText-Light", HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
   background-color: #ffffff;
   border: none;
   color: #4a4a4a;
@@ -61,7 +61,7 @@ List[BORDER] {
 }
 
 List-Item {
-  font: 18px HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 18px ".SFUIText-Light", HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
   padding: 9px 10px 9px 10px;
   background-color: #ffffff;
   color: #4a4a4a;
@@ -71,25 +71,25 @@ List-Item {
 
 
 Button[PUSH],Button[TOGGLE] {
-  font: 16px HelveticaNeue-Medium, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 16px ".SFUIText-Medium", HelveticaNeue-Medium, Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
 Button[RADIO],Button[CHECK] {
-  font: 16px HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 16px ".SFUIText-Light", HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
   padding: 1px 1px 1px 1px;
   spacing: 9px;
 }
 
 Button[FLAT] {
-  font: 16px HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 16px ".SFUIText-Light", HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
 Button,
 Button[PUSH],
 Button[TOGGLE],
-Button[PUSH][BORDER], 
+Button[PUSH][BORDER],
 Button[FLAT][BORDER],
-Button[PUSH][TOGGLE] { 
+Button[PUSH][TOGGLE] {
   padding: 8px 8px 8px 8px;
   spacing: 8px;
 }
@@ -99,23 +99,23 @@ Button[FLAT] {
   spacing: 9px;
 }
 
-Button[PUSH][BORDER], 
+Button[PUSH][BORDER],
 Button[FLAT][BORDER],
 Button[FLAT][TOGGLE] {
   border: 0px;
 }
 
 Text {
-  font: 14px HelveticaNeue-UltraLight ,Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 14px ".SFUIText-Light", HelveticaNeue-UltraLight ,Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
 Link,Link-Hyperlink {
-  font: 12px HelveticaNeue-UltraLight ,Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 12px ".SFUIText-Light", HelveticaNeue-UltraLight ,Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
 Combo,
 Combo[BORDER] {
-  font: 14px HelveticaNeue-UltraLight ,Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 14px ".SFUIText-Light", HelveticaNeue-UltraLight ,Helvetica Neue, Helvetica, Arial, sans-serif;
   border: none;
   border-radius: 0 0 0 0;
   box-shadow: inset 0 0 0 #bdbdbd;
@@ -153,7 +153,7 @@ Combo-FocusIndicator {
 /* DateTime default theme */
 
 DateTime {
-  font: 14px HelveticaNeue-UltraLight ,Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 14px ".SFUIText-Light", HelveticaNeue-UltraLight ,Helvetica Neue, Helvetica, Arial, sans-serif;
   border: none;
   border-radius: 0 0 0 0;
 }
@@ -205,14 +205,14 @@ TabFolder-ContentContainer {
 }
 
 TabFolder {
- font: 12px HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+ font: 12px ".SFUIText-Light", HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
 TabItem {
   padding: 17px 0px 14px 0px;
 }
 
-TabItem:selected { 
+TabItem:selected {
   padding: 17px 0px 14px 0px;
 }
 
@@ -270,7 +270,7 @@ Button-RadioIcon:selected:hover {
 }
 
 Group {
-  font: 12px HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 12px ".SFUIText-Light", HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
   color: #4a4a4a;
   background-color: #ffffff;
   border: none;
