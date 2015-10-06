@@ -201,7 +201,7 @@ public class ScrollingComposite extends Composite {
     checkRevealState( control );
     Point origin = scrolledComposite.getOrigin();
     Rectangle clientArea = scrolledComposite.getClientArea();
-    Rectangle controlBounds = control.getBounds();
+    Rectangle controlBounds = getDisplay().map( control.getParent(), this, control.getBounds() );
     return ScrollingCompositeUtil.isRevealed( origin, clientArea, controlBounds );
   }
 

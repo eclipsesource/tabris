@@ -21,6 +21,7 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -174,6 +175,29 @@ public class ScrollingCompositeTest {
     composite.reveal( child );
 
     assertTrue( composite.isRevealed( child ) );
+  }
+
+  @Test
+  public void testRevealsNestedItem() {
+    shell.setSize( 100, 100 );
+    shell.setLayout( new FillLayout() );
+    ScrollingComposite composite = new ScrollingComposite( shell, SWT.V_SCROLL );
+    composite.setLayout( new GridLayout() );
+    Composite[] children = new Composite[ 80 ];
+    for( int i = 0; i < children.length; i++ ) {
+      children[ i ] = new Composite( composite, SWT.NONE );
+      children[ i ].setLayout( new GridLayout() );
+      Label label = new Label( children[ i ], SWT.NONE );
+      label.setText("#" + i);
+    }
+    Label nestedLabel60 = ( Label )children[ 60 ].getChildren()[ 0 ];
+    shell.layout( true, true );
+
+    assertFalse( composite.isRevealed( nestedLabel60 ) );
+
+    composite.reveal( nestedLabel60 );
+
+    assertTrue( composite.isRevealed( nestedLabel60 ) );
   }
 
   @Test
