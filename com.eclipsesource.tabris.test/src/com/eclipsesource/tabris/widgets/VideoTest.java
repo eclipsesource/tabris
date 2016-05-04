@@ -12,9 +12,7 @@ package com.eclipsesource.tabris.widgets;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -22,7 +20,6 @@ import static org.mockito.Mockito.verify;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Map;
 
 import org.eclipse.rap.rwt.internal.lifecycle.WidgetLifeCycleAdapter;
 import org.eclipse.swt.widgets.Display;
@@ -30,14 +27,11 @@ import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.InOrder;
 
 import com.eclipsesource.tabris.internal.VideoLifeCycleAdapter;
-import com.eclipsesource.tabris.internal.VideoLifeCycleAdapter.PlaybackOptions;
 import com.eclipsesource.tabris.test.util.TabrisEnvironment;
-import com.eclipsesource.tabris.widgets.Video.Playback;
-import com.eclipsesource.tabris.widgets.Video.PlaybackAdapter;
-import com.eclipsesource.tabris.widgets.Video.Presentation;
+import com.eclipsesource.tabris.widgets.Video.PlayerState;
+import com.eclipsesource.tabris.widgets.Video.VideoStateAdapter;
 
 
 @SuppressWarnings("restriction")
@@ -46,20 +40,17 @@ public class VideoTest {
   @Rule
   public TabrisEnvironment environment = new TabrisEnvironment();
 
-  private Video video;
+  private static final float DISABLED = Float.NEGATIVE_INFINITY;
   private Shell parent;
-  private PlaybackListener playbackListener;
-  private PresentationListener presentationListener;
+  private Video video;
+  private VideoStateAdapter adapter;
 
   @Before
   public void setUp() {
     Display display = new Display();
     parent = new Shell( display );
-    video = new Video( "http://localhost/video.mp4", parent );
-    playbackListener = mock( PlaybackListener.class );
-    video.addPlaybackListener( playbackListener );
-    presentationListener = mock( PresentationListener.class );
-    video.addPresentationListener( presentationListener );
+    video = new Video( parent, "http://localhost/video.mp4" );
+    adapter = video.getAdapter( VideoStateAdapter.class );
   }
 
   @Test
@@ -70,11 +61,6 @@ public class VideoTest {
   @Test
   public void testPlaybackListenerIsSerializable() {
     assertTrue( Serializable.class.isAssignableFrom( PlaybackListener.class ) );
-  }
-
-  @Test
-  public void testPresentationListenerIsSerializable() {
-    assertTrue( Serializable.class.isAssignableFrom( PresentationListener.class ) );
   }
 
   @Test
@@ -91,138 +77,40 @@ public class VideoTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testMallformedUrl() {
-    new Video( "foo.bar", parent );
+    new Video( parent, "foo.bar" );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testNullParent() {
-    new Video( "http://localhost/video.mp4", null );
-  }
-
-  @Test
-  public void testDefaultPlaybackMode() {
-    assertEquals( Playback.PAUSE, video.getPlayback() );
-  }
-
-  @Test
-  public void testPlay() {
-    video.play();
-
-    assertEquals( Playback.PLAY, video.getPlayback() );
-  }
-
-  @Test
-  public void testPause() {
-    video.pause();
-
-    assertEquals( Playback.PAUSE, video.getPlayback() );
-  }
-
-  @Test
-  public void testStop() {
-    video.stop();
-
-    assertEquals( Playback.STOP, video.getPlayback() );
+    new Video( null, "http://localhost/video.mp4" );
   }
 
   @Test
   public void testDefaultSpeed() {
-    assertEquals( 0, video.getSpeed(), 0 );
+    assertEquals( 0.0f, video.getSpeed(), 0.0f );
   }
 
   @Test
-  public void testDefaultPlaySpeed() {
-    video.play();
+  public void testSetSpeed() {
+    video.setSpeed( Video.PLAY_SPEED );
 
-    assertEquals( 1, video.getSpeed(), 0 );
-  }
-
-  @Test
-  public void testDefaultStopSpeed() {
-    video.play();
-    video.stop();
-
-    assertEquals( 0, video.getSpeed(), 0 );
-  }
-
-  @Test
-  public void testDefaultPauseSpeed() {
-    video.play();
-    video.pause();
-
-    assertEquals( 0, video.getSpeed(), 0 );
-  }
-
-  @Test
-  public void testFastForward() {
-    video.fastForward( 2.5F );
-
-    assertEquals( 2.5, video.getSpeed(), 0 );
-    assertEquals( Playback.FAST_FORWARD, video.getPlayback() );
-  }
-
-  @Test( expected = IllegalArgumentException.class )
-  public void testFastForwardWithToSmallValue() {
-    video.fastForward( 0.4F );
-  }
-
-  @Test( expected = IllegalArgumentException.class )
-  public void testFastForwardWithNegativeValue() {
-    video.fastForward( -0.4F );
-  }
-
-  @Test
-  public void testFastBackward() {
-    video.fastBackward( -2.5F );
-
-    assertEquals( -2.5, video.getSpeed(), 0 );
-    assertEquals( Playback.FAST_BACKWARD, video.getPlayback() );
-  }
-
-  @Test( expected = IllegalArgumentException.class )
-  public void testFastBackwardWithToSmallValue() {
-    video.fastBackward( -0.4F );
-  }
-
-  @Test( expected = IllegalArgumentException.class )
-  public void testFastBackwardWithNegativeValue() {
-    video.fastBackward( 0.4F );
-  }
-
-  @Test
-  public void testDefaultPresentationMode() {
-    assertEquals( Presentation.EMBEDDED, video.getPresentation() );
-  }
-
-  @Test
-  public void testFullScreenPresentationMode() {
-    video.setFullscreen( true );
-
-    assertEquals( Presentation.FULL_SCREEN, video.getPresentation() );
-  }
-
-  @Test
-  public void testEmbeddedPresentationMode() {
-    video.setFullscreen( true );
-    video.setFullscreen( false );
-
-    assertEquals( Presentation.EMBEDDED, video.getPresentation() );
+    assertEquals( Video.PLAY_SPEED, video.getSpeed(), 0.0f );
   }
 
   @Test
   public void testSetPlayerControlsVisisbleDefault() {
-    assertTrue( video.hasPlayerControlsVisible() );
-  }
-
-  @Test
-  public void testSetPlayerControlsVisisble() {
-    video.setPlayerControlsVisible( false );
-
     assertFalse( video.hasPlayerControlsVisible() );
   }
 
   @Test
-  public void testSetPlayerControlsVisisbleAfterInvisible() {
+  public void testSetPlayerControlsVisisble() {
+    video.setPlayerControlsVisible( true );
+
+    assertTrue( video.hasPlayerControlsVisible() );
+  }
+
+  @Test
+  public void testSetPlayerControlsVisibleAfterInvisible() {
     video.setPlayerControlsVisible( false );
     video.setPlayerControlsVisible( true );
 
@@ -230,37 +118,45 @@ public class VideoTest {
   }
 
   @Test
-  public void testDefaultRepeat() {
-    assertFalse( video.hasRepeat() );
+  public void testStepToTime() {
+    video.stepToTime( 20.0f );
+
+    assertEquals( 20.0f, adapter.getStepToTime(), 0.0f );
   }
 
   @Test
-  public void testRepeat() {
-    video.setRepeat( true );
+  public void testStepToTimeWithNegativeValue() {
+    video.stepToTime( -1.0f );
 
-    assertTrue( video.hasRepeat() );
+    assertEquals( 0.0f, adapter.getStepToTime(), 0.0f );
   }
 
   @Test
-  public void testRepeatAfterUnrepeat() {
-    video.setRepeat( true );
-    video.setRepeat( false );
-
-    assertFalse( video.hasRepeat() );
+  public void testStepToTimeDefault() {
+    assertEquals( DISABLED, adapter.getStepToTime(), 0.0f );
   }
 
   @Test
-  public void testStepTo() {
-    video.stepToTime( 20 );
+  public void testStepToTimeAfterSkipFromCurrent() {
+    video.skipFromCurrent( 10.0f );
+    video.stepToTime( 5.0f );
 
-    Map<PlaybackOptions, Object> options = video.getAdapter( PlaybackAdapter.class ).getOptions();
-    assertEquals( Integer.valueOf( 20 ), options.get( VideoLifeCycleAdapter.PlaybackOptions.HEAD_POSITION ) );
+    assertEquals( 5.0f, adapter.getStepToTime(), 0.0f );
+    assertEquals( DISABLED, adapter.getSkipFromCurrent(), 0.0f );
   }
 
   @Test
-  public void testStepToDefault() {
-    Map<PlaybackOptions, Object> options = video.getAdapter( PlaybackAdapter.class ).getOptions();
-    assertNull( options.get( VideoLifeCycleAdapter.PlaybackOptions.HEAD_POSITION ) );
+  public void testSkipFromCurrentDefault() {
+    assertEquals( DISABLED, adapter.getStepToTime(), 0.0f );
+  }
+
+  @Test
+  public void testSkipFromCurrentAfterStepToTime() {
+    video.stepToTime( 25.0f );
+    video.skipFromCurrent( -10.0f );
+
+    assertEquals( DISABLED, adapter.getStepToTime(), 0.0f );
+    assertEquals( -10.0f, adapter.getSkipFromCurrent(), 0.0f );
   }
 
   @Test
@@ -270,10 +166,10 @@ public class VideoTest {
     video.addPlaybackListener( listener );
     video.addPlaybackListener( listener2 );
 
-    video.play();
+    adapter.notifyPlaybackListeners( PlayerState.READY );
 
-    verify( listener ).playbackChanged( Playback.PLAY );
-    verify( listener2 ).playbackChanged( Playback.PLAY );
+    verify( listener ).playbackChanged( PlayerState.READY );
+    verify( listener2 ).playbackChanged( PlayerState.READY );
   }
 
   @Test
@@ -284,210 +180,57 @@ public class VideoTest {
     video.addPlaybackListener( listener2 );
     video.removePlaybackListener( listener );
 
-    video.play();
+    adapter.notifyPlaybackListeners( PlayerState.READY );
 
-    verify( listener, never() ).playbackChanged( Playback.PLAY );
-    verify( listener2 ).playbackChanged( Playback.PLAY );
-  }
-
-  @Test
-  public void testAddPresentationListener() {
-    PresentationListener listener = mock( PresentationListener.class );
-    PresentationListener listener2 = mock( PresentationListener.class );
-    video.addPresentationListener( listener );
-    video.addPresentationListener( listener2 );
-
-    video.setFullscreen( true );
-
-    verify( listener ).presentationChanged( Presentation.FULL_SCREEN );
-    verify( listener2 ).presentationChanged( Presentation.FULL_SCREEN );
-  }
-
-  @Test
-  public void testRemovePresentationListener() {
-    PresentationListener listener = mock( PresentationListener.class );
-    PresentationListener listener2 = mock( PresentationListener.class );
-    video.addPresentationListener( listener );
-    video.addPresentationListener( listener2 );
-    video.removePresentationListener( listener );
-
-    video.setFullscreen( true );
-
-    verify( listener, never() ).presentationChanged( Presentation.FULL_SCREEN );
-    verify( listener2 ).presentationChanged( Presentation.FULL_SCREEN );
-  }
-
-  @Test
-  public void testPlaysThrowsEvent() {
-    video.play();
-
-    verify( playbackListener ).playbackChanged( Playback.PLAY );
-  }
-
-  @Test
-  public void testPauseThrowsEvent() {
-    video.stop();
-    video.pause();
-
-    InOrder order = inOrder( playbackListener );
-    order.verify( playbackListener ).playbackChanged( Playback.STOP );
-    order.verify( playbackListener ).playbackChanged( Playback.PAUSE );
-  }
-
-  @Test
-  public void testStopThrowsEvent() {
-    video.stop();
-
-    verify( playbackListener ).playbackChanged( Playback.STOP );
-  }
-
-  @Test
-  public void testFastForwardThrowsEvent() {
-    video.fastForward( 2 );
-
-    verify( playbackListener ).playbackChanged( Playback.FAST_FORWARD );
-  }
-
-  @Test
-  public void testFastBackwardThrowsEvent() {
-    video.fastBackward( -2 );
-
-    verify( playbackListener ).playbackChanged( Playback.FAST_BACKWARD );
-  }
-
-  @Test
-  public void testSetFullscreenThrowsEvent() {
-    video.setFullscreen( true );
-
-    verify( presentationListener ).presentationChanged( Presentation.FULL_SCREEN );
-  }
-
-  @Test
-  public void testSetFullscreenWithEmbeddedThrowsEvent() {
-    video.setFullscreen( true );
-    video.setFullscreen( false );
-
-    InOrder order = inOrder( presentationListener );
-    order.verify( presentationListener ).presentationChanged( Presentation.FULL_SCREEN );
-    order.verify( presentationListener ).presentationChanged( Presentation.EMBEDDED );
-  }
-
-  @Test
-  public void testFiresPresentationEventOnlyOnce() {
-    video.setFullscreen( true );
-    video.setFullscreen( true );
-
-    verify( presentationListener ).presentationChanged( Presentation.FULL_SCREEN );
-  }
-
-  @Test
-  public void testFiresPlaybackEventOnlyOnce() {
-    video.play();
-    video.play();
-
-    verify( playbackListener ).playbackChanged( Playback.PLAY );
-  }
-
-  @Test
-  public void testPlaybackAdapterPlaybackModeChange() {
-    PlaybackAdapter adapter = video.getAdapter( PlaybackAdapter.class );
-
-    adapter.firePlaybackChange( Playback.ERROR );
-
-    verify( playbackListener ).playbackChanged( Playback.ERROR );
-  }
-
-  @Test
-  public void testPlaybackAdapterPresentationModeChange() {
-    PlaybackAdapter adapter = video.getAdapter( PlaybackAdapter.class );
-
-    adapter.firePresentationChange( Presentation.EMBEDDED );
-
-    verify( presentationListener ).presentationChanged( Presentation.EMBEDDED );
+    verify( listener, never() ).playbackChanged( PlayerState.READY );
+    verify( listener2 ).playbackChanged( PlayerState.READY );
   }
 
   @Test
   public void testHasntPlaybackListenerDefault() {
-    video = new Video( "http://localhost/video.mp4", parent );
-    PlaybackAdapter adapter = video.getAdapter( PlaybackAdapter.class );
-
     assertFalse( adapter.hasPlaybackListener() );
   }
 
   @Test
-  public void testHasntPresentationListenerDefault() {
-    video = new Video( "http://localhost/video.mp4", parent );
-    PlaybackAdapter adapter = video.getAdapter( PlaybackAdapter.class );
-
-    assertFalse( adapter.hasPresentationListener() );
-  }
-
-  @Test
   public void testHasPlaybackListener() {
-    video = new Video( "http://localhost/video.mp4", parent );
     video.addPlaybackListener( mock( PlaybackListener.class ) );
-    PlaybackAdapter adapter = video.getAdapter( PlaybackAdapter.class );
 
     assertTrue( adapter.hasPlaybackListener() );
   }
 
   @Test
-  public void testHasPresentationListener() {
-    video = new Video( "http://localhost/video.mp4", parent );
-    video.addPresentationListener( mock( PresentationListener.class ) );
-    PlaybackAdapter adapter = video.getAdapter( PlaybackAdapter.class );
-
-    assertTrue( adapter.hasPresentationListener() );
-  }
-
-  @Test
   public void testHasPlaybackListenerWithAddAndRemove() {
-    video = new Video( "http://localhost/video.mp4", parent );
-    PlaybackListener listener = mock( PlaybackListener.class );
-    PlaybackAdapter adapter = video.getAdapter( PlaybackAdapter.class );
+    video = new Video( parent, "http://localhost/video.mp4" );
 
+    PlaybackListener listener = mock( PlaybackListener.class );
     video.addPlaybackListener( listener );
     video.removePlaybackListener( listener );
 
+    VideoStateAdapter adapter = video.getAdapter( VideoStateAdapter.class );
     assertFalse( adapter.hasPlaybackListener() );
   }
 
   @Test
-  public void testHasPresentationListenerWithAddAndRemove() {
-    video = new Video( "http://localhost/video.mp4", parent );
-    PresentationListener listener = mock( PresentationListener.class );
-    PlaybackAdapter adapter = video.getAdapter( PlaybackAdapter.class );
-
-    video.addPresentationListener( listener );
-    video.removePresentationListener( listener );
-
-    assertFalse( adapter.hasPresentationListener() );
-  }
-
-  @Test
   public void testCacheSizeDefaultsToZero() {
-    video = new Video( "http://localhost/video.mp4", parent );
+    video = new Video( parent, "http://localhost/video.mp4" );
 
     assertEquals( 0, video.getCacheSize() );
   }
 
   @Test
   public void testGetCacheSize() {
-    video = new Video( "http://localhost/video.mp4", 100, parent );
+    video = new Video( parent, "http://localhost/video.mp4", 100 );
 
     assertEquals( 100, video.getCacheSize() );
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testSetCacheSize_IllegalValue() {
-    video = new Video( "http://localhost/video.mp4", -1, parent );
+    video = new Video( parent, "http://localhost/video.mp4", -1 );
   }
 
   @Test
   public void testClearCache() {
-    video = new Video( "http://localhost/video.mp4", parent );
-    PlaybackAdapter adapter = video.getAdapter( PlaybackAdapter.class );
-
     assertFalse( adapter.isClearCacheRequested() );
 
     video.clearCache();
@@ -495,4 +238,54 @@ public class VideoTest {
     assertTrue( adapter.isClearCacheRequested() );
   }
 
+  @Test
+  public void testResetClearCache() {
+    video.clearCache();
+
+    assertTrue( adapter.isClearCacheRequested() );
+
+    adapter.resetClearCache();
+
+    assertFalse( adapter.isClearCacheRequested() );
+  }
+
+  @Test
+  public void testStepToTimeRequested() {
+    assertFalse( adapter.isStepToTimeRequested() );
+
+    video.stepToTime( 60.0f );
+
+    assertTrue( adapter.isStepToTimeRequested() );
+  }
+
+  @Test
+  public void testResetStepToTime() {
+    video.stepToTime( 60.0f );
+
+    assertTrue( adapter.isStepToTimeRequested() );
+
+    adapter.resetStepToTime();
+
+    assertFalse( adapter.isStepToTimeRequested() );
+  }
+
+  @Test
+  public void testSkipFromCurrentRequested() {
+    assertFalse( adapter.isSkipFromCurrentRequested() );
+
+    video.skipFromCurrent( -5.0f );
+
+    assertTrue( adapter.isSkipFromCurrentRequested() );
+  }
+
+  @Test
+  public void testResetSkipFromCurrent() {
+    video.skipFromCurrent( 10.0f );
+
+    assertTrue( adapter.isSkipFromCurrentRequested() );
+
+    adapter.resetSkipFromCurrent();
+
+    assertFalse( adapter.isSkipFromCurrentRequested() );
+  }
 }

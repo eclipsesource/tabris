@@ -10,11 +10,9 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
-import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PLAYBACK;
-import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PRESENTATION;
-import static com.eclipsesource.tabris.internal.VideoLifeCycleAdapter.keyForEnum;
 import static com.eclipsesource.tabris.test.util.MessageUtil.hasOperation;
 import static com.eclipsesource.tabris.test.util.MessageUtil.isParentOfCreate;
+import static com.eclipsesource.tabris.test.util.MessageUtil.OperationType.CALL;
 import static com.eclipsesource.tabris.test.util.MessageUtil.OperationType.CREATE;
 import static com.eclipsesource.tabris.test.util.MessageUtil.OperationType.LISTEN;
 import static com.eclipsesource.tabris.test.util.MessageUtil.OperationType.SET;
@@ -40,16 +38,13 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.eclipsesource.tabris.internal.VideoLifeCycleAdapter.PlaybackOptions;
 import com.eclipsesource.tabris.internal.VideoLifeCycleAdapter.VideoOperationHandler;
 import com.eclipsesource.tabris.test.util.ControlLCATestUtil;
 import com.eclipsesource.tabris.test.util.MessageUtil;
 import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 import com.eclipsesource.tabris.widgets.PlaybackListener;
-import com.eclipsesource.tabris.widgets.PresentationListener;
 import com.eclipsesource.tabris.widgets.Video;
-import com.eclipsesource.tabris.widgets.Video.Playback;
-import com.eclipsesource.tabris.widgets.Video.Presentation;
+import com.eclipsesource.tabris.widgets.Video.PlayerState;
 
 
 @SuppressWarnings("restriction")
@@ -61,16 +56,14 @@ public class VideoLifeCycleAdapterTest {
   private Video video;
   private Shell parent;
   private PlaybackListener playbackListener;
-  private PresentationListener presentationListener;
   private AbstractWidgetLCA lifeCycleAdapter;
 
   @Before
   public void setUp() {
     Display display = new Display();
     parent = new Shell( display );
-    video = new Video( "http://test.com", parent );
+    video = new Video( parent, "http://test.com" );
     playbackListener = mock( PlaybackListener.class );
-    presentationListener = mock( PresentationListener.class );
     new Button( parent, SWT.PUSH );
     lifeCycleAdapter = ( AbstractWidgetLCA )video.getAdapter( WidgetLifeCycleAdapter.class );
     environment.newRequest();
@@ -109,159 +102,89 @@ public class VideoLifeCycleAdapterTest {
   }
 
   @Test
-  public void testFiresPlaybackChange() {
+  public void testFiresPlayerState() {
     environment.getRemoteObject().setHandler( new VideoOperationHandler( video ) );
     video.addPlaybackListener( playbackListener );
-    JsonObject parameters = new JsonObject();
-    parameters.add( PROPERTY_PLAYBACK, Playback.ERROR.name() );
 
+    JsonObject parameters = new JsonObject();
+    parameters.add( Constants.PROPERTY_STATE, PlayerState.READY.name() );
     environment.dispatchNotify( Constants.EVENT_PLAYBACK, parameters );
 
-    verify( playbackListener ).playbackChanged( Playback.ERROR );
-  }
-
-  @Test
-  public void testRendersPlaybackReadyOnce() {
-    environment.getRemoteObject().setHandler( new VideoOperationHandler( video ) );
-    video.addPlaybackListener( playbackListener );
-    environment.newRequest();
-    JsonObject parameters = new JsonObject();
-    parameters.add( PROPERTY_PLAYBACK, Playback.READY.name() );
-
-    environment.dispatchNotify( Constants.EVENT_PLAYBACK, parameters );
-
-    verify( playbackListener ).playbackChanged( Playback.READY );
+    verify( playbackListener ).playbackChanged( PlayerState.READY );
     assertFalse( hasOperation( WidgetUtil.getId( video ), SET, null ) );
   }
 
   @Test
-  public void testRendersPlaybackPlayOnce() {
+  public void testFiresSetSpeed() {
     environment.getRemoteObject().setHandler( new VideoOperationHandler( video ) );
-    video.addPlaybackListener( playbackListener );
-    environment.newRequest();
+    assertEquals( 0.0f, video.getSpeed(), 0.0f );
+
     JsonObject parameters = new JsonObject();
-    parameters.add( PROPERTY_PLAYBACK, Playback.PLAY.name() );
+    parameters.add( Constants.PROPERTY_PLAYBACK_SPEED, 2.0f );
+    environment.dispatchSet( parameters );
 
-    environment.dispatchNotify( Constants.EVENT_PLAYBACK, parameters );
-
-    verify( playbackListener ).playbackChanged( Playback.PLAY );
-    assertFalse( hasOperation( WidgetUtil.getId( video ), SET, null ) );
+    assertEquals( 2.0f, video.getSpeed(), 0.0f );
   }
 
   @Test
-  public void testFiresPresentationChange() {
-    environment.getRemoteObject().setHandler( new VideoOperationHandler( video ) );
-    video.addPresentationListener( presentationListener );
-    JsonObject parameters = new JsonObject();
-    parameters.add( PROPERTY_PRESENTATION, Presentation.FULL_SCREEN.name() );
-
-    environment.dispatchNotify( Constants.EVENT_PRESENTATION, parameters );
-
-    verify( presentationListener ).presentationChanged( Presentation.FULL_SCREEN );
-  }
-
-  @Test
-  public void testFiresPresentationChangeToFullScreen() {
-    environment.getRemoteObject().setHandler( new VideoOperationHandler( video ) );
-    video.addPresentationListener( presentationListener );
-    JsonObject parameters = new JsonObject();
-    parameters.add( PROPERTY_PRESENTATION, Presentation.FULL_SCREEN.name() );
-
-    environment.dispatchNotify( Constants.EVENT_PRESENTATION, parameters );
-
-    verify( presentationListener ).presentationChanged( Presentation.FULL_SCREEN );
-  }
-
-  @Test
-  public void testFiresPresentationChangeToFullScreenOnce() {
-    environment.getRemoteObject().setHandler( new VideoOperationHandler( video ) );
-    video.addPresentationListener( presentationListener );
-    environment.newRequest();
-    JsonObject parameters = new JsonObject();
-    parameters.add( PROPERTY_PRESENTATION, Presentation.FULL_SCREEN.name() );
-
-    environment.dispatchNotify( Constants.EVENT_PRESENTATION, parameters );
-
-    verify( presentationListener ).presentationChanged( Presentation.FULL_SCREEN );
-    assertFalse( hasOperation( WidgetUtil.getId( video ), SET, null ) );
-  }
-
-  @Test
-  public void testRendersPlaybackMode() throws IOException {
+  public void testRendersSetSpeed() throws IOException {
     lifeCycleAdapter.preserveValues( video );
 
-    video.play();
+    video.setSpeed( Video.PLAY_SPEED );
     lifeCycleAdapter.renderChanges( video );
 
     JsonObject properties = MessageUtil.getOperationProperties( WidgetUtil.getId( video ), SET, null );
-    assertEquals( keyForEnum( Playback.PLAY ), properties.get( keyForEnum( PlaybackOptions.PLAYBACK ) ).asString() );
-  }
-
-  @Test
-  public void testRendersPresentationMode() throws IOException {
-    lifeCycleAdapter.preserveValues( video );
-
-    video.setFullscreen( true );
-    lifeCycleAdapter.renderChanges( video );
-
-    JsonObject properties = MessageUtil.getOperationProperties( WidgetUtil.getId( video ), SET, null );
-    assertEquals( keyForEnum( Presentation.FULL_SCREEN ),
-                  properties.get( keyForEnum( PlaybackOptions.PRESENTATION ) ).asString() );
-  }
-
-  @Test
-  public void testRendersSpeedForward() throws IOException {
-    lifeCycleAdapter.preserveValues( video );
-
-    video.fastForward( 2 );
-    lifeCycleAdapter.renderChanges( video );
-
-    JsonObject properties = MessageUtil.getOperationProperties( WidgetUtil.getId( video ), SET, null );
-    assertEquals( 2, properties.get( keyForEnum( PlaybackOptions.SPEED ) ).asDouble(), 0 );
-  }
-
-  @Test
-  public void testRendersSpeedBackward() throws IOException {
-    lifeCycleAdapter.preserveValues( video );
-
-    video.fastBackward( -2 );
-    lifeCycleAdapter.renderChanges( video );
-
-    JsonObject properties = MessageUtil.getOperationProperties( WidgetUtil.getId( video ), SET, null );
-    assertEquals( -2, properties.get( keyForEnum( PlaybackOptions.SPEED ) ).asDouble(), 0 );
-  }
-
-  @Test
-  public void testRendersRepeat() throws IOException {
-    lifeCycleAdapter.preserveValues( video );
-
-    video.setRepeat( true );
-    lifeCycleAdapter.renderChanges( video );
-
-    JsonObject properties = MessageUtil.getOperationProperties( WidgetUtil.getId( video ), SET, null );
-    assertTrue( properties.get( keyForEnum( PlaybackOptions.REPEAT ) ).asBoolean() );
+    assertEquals( Video.PLAY_SPEED,
+                  properties.get( Constants.PROPERTY_PLAYBACK_SPEED ).asFloat(),
+                  0 );
   }
 
   @Test
   public void testRendersControlsVisible() throws IOException {
     lifeCycleAdapter.preserveValues( video );
 
-    video.setPlayerControlsVisible( false );
+    video.setPlayerControlsVisible( true );
     lifeCycleAdapter.renderChanges( video );
 
     JsonObject properties = MessageUtil.getOperationProperties( WidgetUtil.getId( video ), SET, null );
-    assertFalse( properties.get( keyForEnum( PlaybackOptions.CONTROLS_VISIBLE ) ).asBoolean() );
+    assertTrue( properties.get( Constants.PROPERTY_PLAYER_CONTROLS_VISIBLE ).asBoolean() );
   }
 
   @Test
-  public void testRendersHeadPointer() throws IOException {
+  public void testRendersStepToTime() throws IOException {
     lifeCycleAdapter.preserveValues( video );
 
-    video.stepToTime( 23 );
+    video.stepToTime( 23.0f );
     lifeCycleAdapter.renderChanges( video );
 
-    JsonObject properties = MessageUtil.getOperationProperties( WidgetUtil.getId( video ), SET, null );
-    assertEquals( 23, properties.get( keyForEnum( PlaybackOptions.HEAD_POSITION ) ).asInt() );
+    assertTrue( MessageUtil.hasOperation( WidgetUtil.getId( video ),
+                                          CALL,
+                                          Constants.METHOD_STEP_TO_TIME ) );
+  }
+  
+  @Test
+  public void testRendersSkipFromCurrent() throws IOException {
+    lifeCycleAdapter.preserveValues( video );
+
+    video.skipFromCurrent( 10.0f );
+    lifeCycleAdapter.renderChanges( video );
+
+    JsonObject properties = MessageUtil
+      .getOperationProperties( WidgetUtil.getId( video ),
+                               CALL,
+                               Constants.METHOD_SKIP_FROM_CURRENT );
+    assertEquals( 10.0f, properties.get( Constants.PROPERTY_TIME ).asFloat(), 0.0f );
+  }
+
+  @Test
+  public void testRendersClearCache() throws IOException {
+    lifeCycleAdapter.preserveValues( video );
+    video.clearCache();
+    lifeCycleAdapter.renderChanges( video );
+
+    JsonObject properties = MessageUtil
+      .getOperationProperties( WidgetUtil.getId( video ), CALL, Constants.METHOD_CLEAR_CACHE );
+    assertTrue( properties.isEmpty() );
   }
 
   @Test
@@ -273,17 +196,6 @@ public class VideoLifeCycleAdapterTest {
 
     JsonObject properties = MessageUtil.getOperationProperties( WidgetUtil.getId( video ), LISTEN, null );
     assertNotNull( properties.get( Constants.EVENT_PLAYBACK ) );
-  }
-
-  @Test
-  public void testRendersPresentationListener() throws IOException {
-    lifeCycleAdapter.preserveValues( video );
-
-    video.addPresentationListener( presentationListener );
-    lifeCycleAdapter.renderChanges( video );
-
-    JsonObject properties = MessageUtil.getOperationProperties( WidgetUtil.getId( video ), LISTEN, null );
-    assertNotNull( properties.get( Constants.EVENT_PRESENTATION ) );
   }
 
 }

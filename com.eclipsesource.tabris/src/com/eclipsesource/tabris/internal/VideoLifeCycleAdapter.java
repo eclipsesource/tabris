@@ -11,11 +11,15 @@
 package com.eclipsesource.tabris.internal;
 
 import static com.eclipsesource.tabris.internal.Constants.EVENT_PLAYBACK;
-import static com.eclipsesource.tabris.internal.Constants.EVENT_PRESENTATION;
+import static com.eclipsesource.tabris.internal.Constants.METHOD_CLEAR_CACHE;
+import static com.eclipsesource.tabris.internal.Constants.METHOD_SKIP_FROM_CURRENT;
+import static com.eclipsesource.tabris.internal.Constants.METHOD_STEP_TO_TIME;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_CACHE_SIZE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PARENT;
-import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PLAYBACK;
-import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PRESENTATION;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PLAYBACK_SPEED;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PLAYER_CONTROLS_VISIBLE;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_STATE;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TIME;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_URL;
 import static com.eclipsesource.tabris.internal.Constants.TYPE_VIDEO;
 import static org.eclipse.rap.rwt.internal.lifecycle.WidgetLCAUtil.preserveListener;
@@ -25,10 +29,9 @@ import static org.eclipse.rap.rwt.internal.lifecycle.WidgetLCAUtil.renderPropert
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.eclipse.rap.json.JsonObject;
+import org.eclipse.rap.json.JsonValue;
 import org.eclipse.rap.rwt.internal.lifecycle.AbstractWidgetLCA;
 import org.eclipse.rap.rwt.internal.lifecycle.ControlLCAUtil;
 import org.eclipse.rap.rwt.internal.lifecycle.ProcessActionRunner;
@@ -41,47 +44,55 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
 
 import com.eclipsesource.tabris.widgets.Video;
-import com.eclipsesource.tabris.widgets.Video.Playback;
-import com.eclipsesource.tabris.widgets.Video.PlaybackAdapter;
-import com.eclipsesource.tabris.widgets.Video.Presentation;
-
+import com.eclipsesource.tabris.widgets.Video.PlayerState;
+import com.eclipsesource.tabris.widgets.Video.VideoStateAdapter;
 
 @SuppressWarnings("restriction")
 public class VideoLifeCycleAdapter extends AbstractWidgetLCA implements Serializable {
 
-  public static enum PlaybackOptions {
-    SPEED, REPEAT, CONTROLS_VISIBLE, PLAYBACK, PRESENTATION, HEAD_POSITION
-  }
-
   @Override
   public void preserveValues( Widget widget ) {
     ControlLCAUtil.preserveValues( ( Control )widget );
-    Video video = ( Video ) widget;
-    PlaybackAdapter adapter = video.getAdapter( PlaybackAdapter.class );
-    Map<PlaybackOptions, Object> options = adapter.getOptions();
-    for( Entry<PlaybackOptions, Object> entry : options.entrySet() ) {
-      preserveProperty( video, keyForEnum( entry.getKey() ), jsonizeValue( entry ) );
-    }
+    Video video = ( Video )widget;
+    preserveProperty( video, PROPERTY_PLAYBACK_SPEED, String.valueOf( video.getSpeed() ) );
+    preserveProperty( video, PROPERTY_PLAYER_CONTROLS_VISIBLE, video.hasPlayerControlsVisible() );
+    VideoStateAdapter adapter = video.getAdapter( VideoStateAdapter.class );
     preserveListener( video, EVENT_PLAYBACK, adapter.hasPlaybackListener() );
-    preserveListener( video, EVENT_PRESENTATION, adapter.hasPresentationListener() );
   }
 
   @Override
   public void renderChanges( Widget widget ) throws IOException {
     ControlLCAUtil.renderChanges( ( Control )widget );
-    Video video = ( Video ) widget;
-    PlaybackAdapter adapter = video.getAdapter( PlaybackAdapter.class );
-    Map<PlaybackOptions, Object> options = adapter.getOptions();
-    for( Entry<PlaybackOptions, Object> entry : options.entrySet() ) {
-      renderProperty( widget, keyForEnum( entry.getKey() ), jsonizeValue( entry ), null );
-    }
+    Video video = ( Video )widget;
+    VideoStateAdapter adapter = video.getAdapter( VideoStateAdapter.class );
     renderListener( video, EVENT_PLAYBACK, adapter.hasPlaybackListener(), false );
-    renderListener( video, EVENT_PRESENTATION, adapter.hasPresentationListener(), false );
-    if( adapter.isClearCacheRequested() ) {
-      adapter.resetClearCache();
+    if( adapter.isSkipFromCurrentRequested() ) {
+      JsonObject parameters = new JsonObject();
+      parameters.add( PROPERTY_TIME, adapter.getSkipFromCurrent() );
       RemoteObject remoteObject = RemoteObjectFactory.getRemoteObject( video );
-      remoteObject.call( "clearCache", null );
+      remoteObject.call( METHOD_SKIP_FROM_CURRENT, parameters );
+      adapter.resetSkipFromCurrent();
     }
+    if( adapter.isStepToTimeRequested() ) {
+      JsonObject parameters = new JsonObject();
+      parameters.add( PROPERTY_TIME, adapter.getStepToTime() );
+      RemoteObject remoteObject = RemoteObjectFactory.getRemoteObject( video );
+      remoteObject.call( METHOD_STEP_TO_TIME, parameters );
+      adapter.resetStepToTime();
+    }
+    if( adapter.isClearCacheRequested() ) {
+      RemoteObject remoteObject = RemoteObjectFactory.getRemoteObject( video );
+      remoteObject.call( METHOD_CLEAR_CACHE, null );
+      adapter.resetClearCache();
+    }
+    renderProperty( video,
+                    PROPERTY_PLAYER_CONTROLS_VISIBLE,
+                    video.hasPlayerControlsVisible(),
+                    false );
+    renderProperty( video,
+                    PROPERTY_PLAYBACK_SPEED,
+                    Double.valueOf( video.getSpeed() ),
+                    Double.valueOf( Video.PAUSE_SPEED ) );
   }
 
   @Override
@@ -101,60 +112,29 @@ public class VideoLifeCycleAdapter extends AbstractWidgetLCA implements Serializ
     }
 
     @Override
-    public void handleNotify( Composite control, String eventName, JsonObject properties ) {
+    public void handleNotify( final Composite control, String eventName, JsonObject properties ) {
       if( eventName.equals( EVENT_PLAYBACK ) ) {
-        handlePlaybackMode( control, properties );
-      } else if( eventName.equals( EVENT_PRESENTATION ) ) {
-        handlePresentationMode( control, properties );
+        String state = properties.get( PROPERTY_STATE ).asString().toUpperCase();
+        final PlayerState playerState = PlayerState.valueOf( state );
+        ProcessActionRunner.add( new Runnable() {
+          @Override
+          public void run() {
+            control.getAdapter( VideoStateAdapter.class ).notifyPlaybackListeners( playerState );
+          }
+        } );
       } else {
         super.handleNotify( control, eventName, properties );
       }
     }
 
-    private void handlePlaybackMode( Widget widget, JsonObject properties ) {
-      String playbackMode = properties.get( PROPERTY_PLAYBACK ).asString();
-      Playback newMode = Playback.valueOf( playbackMode.toUpperCase() );
-      Video video = ( Video )widget;
-      video.getAdapter( PlaybackAdapter.class ).setPlaybackMode( newMode );
-      notifyListenersAboutPlaybackModeChange( newMode, video );
-    }
-
-    private void notifyListenersAboutPlaybackModeChange( final Playback newMode, final Video video ) {
-      ProcessActionRunner.add( new Runnable() {
-        @Override
-        public void run() {
-          video.getAdapter( PlaybackAdapter.class ).firePlaybackChange( newMode );
-        }
-      } );
-    }
-
-    private void handlePresentationMode( Widget widget, JsonObject properties ) {
-      String presentationMode = properties.get( PROPERTY_PRESENTATION ).asString();
-      Presentation newMode = Presentation.valueOf( presentationMode.toUpperCase() );
-      Video video = ( Video )widget;
-      video.getAdapter( PlaybackAdapter.class ).getOptions().put( PlaybackOptions.PRESENTATION, newMode );
-      notifyListenersAboutPresentationModeChange( newMode, video );
-    }
-
-    private void notifyListenersAboutPresentationModeChange( final Presentation newMode, final Video video ) {
-      ProcessActionRunner.add( new Runnable() {
-        @Override
-        public void run() {
-          video.getAdapter( PlaybackAdapter.class ).firePresentationChange( newMode );
-        }
-      } );
+    @Override
+    public void handleSet( Composite control, JsonObject properties ) {
+      JsonValue value = properties.get( PROPERTY_PLAYBACK_SPEED );
+      if( value != null ) {
+        ((Video) control).setSpeed( value.asFloat() );
+      }
+      super.handleSet( control, properties );
     }
   }
 
-  private static Object jsonizeValue( Entry<PlaybackOptions, Object> entry ) {
-    Object value = entry.getValue();
-    if( value instanceof Playback || value instanceof Presentation ) {
-      value = keyForEnum( ( ( Enum )value ) );
-    }
-    return value;
-  }
-
-  static String keyForEnum( Enum<?> type ) {
-    return type.name().toLowerCase();
-  }
 }

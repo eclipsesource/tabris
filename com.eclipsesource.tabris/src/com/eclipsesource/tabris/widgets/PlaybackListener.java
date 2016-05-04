@@ -12,12 +12,11 @@ package com.eclipsesource.tabris.widgets;
 
 import java.io.Serializable;
 
-import com.eclipsesource.tabris.widgets.Video.Playback;
-
+import com.eclipsesource.tabris.widgets.Video.PlayerState;
 
 /**
  * <p>
- * A {@link PlaybackListener} can be added to a {@link Video} object to receive video events like a play or stop.
+ * A {@link PlaybackListener} can be added to a {@link Video} object to receive video events.
  * </p>
  *
  * @see Video
@@ -28,11 +27,12 @@ public interface PlaybackListener extends Serializable {
 
   /**
    * <p>
-   * Gets called when the {@link Playback} has changed, e.g. from PLAY to PAUSE.
+   * Gets called when the {@link PlayerState} has changed.
    * </p>
    *
-   * @see Playback
+   * @see PlayerState
+   * @since 1.4.9
    */
-  void playbackChanged( Playback newPlayback );
+  void playbackChanged( PlayerState state );
 
 }

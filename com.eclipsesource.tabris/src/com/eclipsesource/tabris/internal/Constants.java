@@ -100,12 +100,15 @@ public class Constants {
 
   // Video Constants
   public static final String TYPE_VIDEO = "tabris.widgets.Video";
-  public static final String EVENT_PRESENTATION = "Presentation";
   public static final String EVENT_PLAYBACK = "Playback";
   public static final String METHOD_CLEAR_CACHE = "clearCache";
-  public static final String PROPERTY_PLAYBACK = "playback";
-  public static final String PROPERTY_PRESENTATION = "presentation";
+  public static final String METHOD_SKIP_FROM_CURRENT = "skip";
+  public static final String METHOD_STEP_TO_TIME = "stepToTime";
+  public static final String PROPERTY_PLAYBACK_SPEED = "speed";
+  public static final String PROPERTY_PLAYER_CONTROLS_VISIBLE = "controlsVisible";
   public static final String PROPERTY_CACHE_SIZE = "cacheSize";
+  public static final String PROPERTY_STATE = "state";
+  public static final String PROPERTY_TIME = "time";
 
   // Swipe Constants
   public static final String TYPE_SWIPE = "tabris.Swipe";
