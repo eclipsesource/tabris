@@ -1,9 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2012 EclipseSource and others. All rights reserved. This
- * program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0 which accompanies this distribution, and is
- * available at http://www.eclipse.org/legal/epl-v10.html Contributors:
- * EclipseSource - initial API and implementation
+ * Copyright (c) 2012, 2016 EclipseSource and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    EclipseSource - initial API and implementation
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.enhancement;
 
@@ -20,38 +23,17 @@ import org.eclipse.rap.rwt.template.Template;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.internal.widgets.IDisplayAdapter;
-import org.eclipse.swt.internal.widgets.WidgetTreeVisitor;
-import org.eclipse.swt.internal.widgets.WidgetTreeVisitor.AllWidgetTreeVisitor;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
-import org.eclipse.swt.widgets.Widget;
 
 /**
  * @since 0.8
  */
 @SuppressWarnings("restriction")
 public class TreeDecorator extends WidgetDecorator<TreeDecorator> {
-
-  private class BackButtonDataTreeVisistor extends AllWidgetTreeVisitor {
-
-    @Override
-    public boolean doVisit( Widget widget ) {
-      if( widget instanceof Tree && widget != tree ) {
-        return removeBackFocusData( widget );
-      }
-      return true;
-    }
-
-    private boolean removeBackFocusData( Widget widget ) {
-      Object data = widget.getData( BACK_FOCUS.getKey() );
-      if( data != null && data.equals( Boolean.TRUE ) ) {
-        setData( widget, BACK_FOCUS, null );
-        return false;
-      }
-      return true;
-    }
-  }
 
   public enum TreePart {
     LEAF, BRANCH, ALL
@@ -131,9 +113,26 @@ public class TreeDecorator extends WidgetDecorator<TreeDecorator> {
 
   private void setDataToNullOnOtherTrees() {
     IDisplayAdapter displayAdapter = tree.getDisplay().getAdapter( IDisplayAdapter.class );
-    Composite[] shells = displayAdapter.getShells();
-    for( int i = 0; i < shells.length; i++ ) {
-      WidgetTreeVisitor.accept( shells[ i ], new BackButtonDataTreeVisistor() );
+    for( Shell shell : displayAdapter.getShells() ) {
+      visitAllTrees( shell );
+    }
+  }
+
+  private void visitAllTrees( Composite root ) {
+    Control[] children = root.getChildren();
+    for( Control control : children ) {
+      if( control instanceof Tree && control != tree ) {
+        removeBackFocusData( control );
+      } else if( control instanceof Composite ) {
+        visitAllTrees( ( Composite )control );
+      }
+    }
+  }
+
+  private void removeBackFocusData( Control control ) {
+    Object data = control.getData( BACK_FOCUS.getKey() );
+    if( data != null && data.equals( Boolean.TRUE ) ) {
+      setData( control, BACK_FOCUS, null );
     }
   }
 

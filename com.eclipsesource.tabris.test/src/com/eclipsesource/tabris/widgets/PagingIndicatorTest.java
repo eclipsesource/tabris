@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 EclipseSource and others.
+ * Copyright (c) 2014, 2016 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,21 +10,15 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets;
 
-import static com.eclipsesource.tabris.test.util.MessageUtil.OperationType.CALL;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
+import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-
-import org.eclipse.rap.json.JsonObject;
-import org.eclipse.rap.rwt.internal.lifecycle.WidgetUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.internal.widgets.canvaskit.CanvasLCA;
+import org.eclipse.swt.internal.graphics.GCAdapter;
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -33,7 +27,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.eclipsesource.tabris.test.util.MessageUtil;
 import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
@@ -51,7 +44,6 @@ public class PagingIndicatorTest {
   public void setUp() {
     parent = new Shell( new Display() );
     indicator = new PagingIndicator( parent );
-    renderInitialization( indicator );
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -61,17 +53,14 @@ public class PagingIndicatorTest {
 
   @Test
   public void testHasDefaultForCount() {
-    int count = indicator.getCount();
-
-    assertEquals( 1, count );
+    assertEquals( 1, indicator.getCount() );
   }
 
   @Test
   public void testSavesSettedCount() {
     indicator.setCount( 10 );
 
-    int count = indicator.getCount();
-    assertEquals( 10, count );
+    assertEquals( 10, indicator.getCount() );
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -81,9 +70,7 @@ public class PagingIndicatorTest {
 
   @Test
   public void testHasDefaultForActive() {
-    int active = indicator.getActive();
-
-    assertEquals( 0, active );
+    assertEquals( 0, indicator.getActive() );
   }
 
   @Test
@@ -92,8 +79,7 @@ public class PagingIndicatorTest {
 
     indicator.setActive( 1 );
 
-    int active = indicator.getActive();
-    assertEquals( 1, active );
+    assertEquals( 1, indicator.getActive() );
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -108,17 +94,14 @@ public class PagingIndicatorTest {
 
   @Test
   public void testHasDefaultForSpacing() {
-    int spacing = indicator.getSpacing();
-
-    assertEquals( 9, spacing );
+    assertEquals( 9, indicator.getSpacing() );
   }
 
   @Test
   public void testSavesSettedSpacing() {
     indicator.setSpacing( 5 );
 
-    int spacing = indicator.getSpacing();
-    assertEquals( 5, spacing );
+    assertEquals( 5, indicator.getSpacing() );
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -128,17 +111,14 @@ public class PagingIndicatorTest {
 
   @Test
   public void testHasDefaultForDiameter() {
-    int diameter = indicator.getDiameter();
-
-    assertEquals( 7, diameter );
+    assertEquals( 7, indicator.getDiameter() );
   }
 
   @Test
   public void testSavesSettedDiameter() {
     indicator.setDiameter( 5 );
 
-    int diameter = indicator.getDiameter();
-    assertEquals( 5, diameter );
+    assertEquals( 5, indicator.getDiameter() );
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -148,17 +128,14 @@ public class PagingIndicatorTest {
 
   @Test
   public void testHasDefaultForActiveColor() {
-    Color activeColor = indicator.getActiveColor();
-
-    assertEquals( activeColor.getRGB(), new RGB( 0, 122, 255 ) );
+    assertEquals( indicator.getActiveColor().getRGB(), new RGB( 0, 122, 255 ) );
   }
 
   @Test
   public void testSavesSettedActiveColor() {
     indicator.setActiveColor( new Color( parent.getDisplay(), 0, 0, 0 ) );
 
-    Color activeColor = indicator.getActiveColor();
-    assertEquals( activeColor.getRGB(), new RGB( 0, 0, 0 ) );
+    assertEquals( indicator.getActiveColor().getRGB(), new RGB( 0, 0, 0 ) );
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -168,17 +145,14 @@ public class PagingIndicatorTest {
 
   @Test
   public void testHasDefaultForInactiveColor() {
-    Color inactiveColor = indicator.getInactiveColor();
-
-    assertEquals( inactiveColor.getRGB(), new RGB( 192, 192, 192 ) );
+    assertEquals( indicator.getInactiveColor().getRGB(), new RGB( 192, 192, 192 ) );
   }
 
   @Test
   public void testSavesSettedInactiveColor() {
     indicator.setInactiveColor( new Color( parent.getDisplay(), 255, 0, 0 ) );
 
-    Color inactiveColor = indicator.getInactiveColor();
-    assertEquals( inactiveColor.getRGB(), new RGB( 255, 0, 0 ) );
+    assertEquals( indicator.getInactiveColor().getRGB(), new RGB( 255, 0, 0 ) );
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -239,9 +213,12 @@ public class PagingIndicatorTest {
 
   @Test
   public void testAddsPaintListenerThatRedrawsIndicator() {
-    Listener listener = indicator.getCanvas().getListeners( SWT.Paint )[ 0 ];
-    Event event = mock( Event.class );
-    event.gc = new GC( indicator.getCanvas() );
+    Canvas canvas = indicator.getCanvas();
+    Listener listener = canvas.getListeners( SWT.Paint )[ 0 ];
+    Event event = new Event();
+    event.type = SWT.Paint;
+    event.widget = canvas;
+    event.gc = new GC( canvas );
 
     listener.handleEvent( event );
 
@@ -249,29 +226,9 @@ public class PagingIndicatorTest {
   }
 
   private void verifyDraw( PagingIndicator indicator ) {
-    renderChanges( indicator );
-    String gcId = WidgetUtil.getId( indicator.getCanvas() ) + ".gc";
-    JsonObject properties = MessageUtil.getOperationProperties( gcId, CALL, "init" );
-    assertNotNull( properties );
+    GCAdapter gcAdapter = indicator.getCanvas().getAdapter( GCAdapter.class );
+
+    assertTrue( gcAdapter.getGCOperations().length > 0 );
   }
 
-  @SuppressWarnings("deprecation")
-  private void renderChanges( PagingIndicator indicator ) {
-    CanvasLCA adapter = ( CanvasLCA )indicator.getCanvas().getAdapter( org.eclipse.rap.rwt.lifecycle.WidgetLifeCycleAdapter.class );
-    try {
-      adapter.renderChanges( indicator.getCanvas() );
-    } catch( IOException shouldNotHappen ) {
-      fail( shouldNotHappen.getMessage() );
-    }
-  }
-
-  @SuppressWarnings("deprecation")
-  private void renderInitialization( PagingIndicator indicator ) {
-    CanvasLCA adapter = ( CanvasLCA )indicator.getCanvas().getAdapter( org.eclipse.rap.rwt.lifecycle.WidgetLifeCycleAdapter.class );
-    try {
-      adapter.renderInitialization( indicator.getCanvas() );
-    } catch( IOException shouldNotHappen ) {
-      fail( shouldNotHappen.getMessage() );
-    }
-  }
 }

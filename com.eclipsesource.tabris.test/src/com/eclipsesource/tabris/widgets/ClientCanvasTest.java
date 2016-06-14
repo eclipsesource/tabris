@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 EclipseSource and others.
+ * Copyright (c) 2012, 2016 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,8 @@
 package com.eclipsesource.tabris.widgets;
 
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.CLIENT_CANVAS;
+import static org.eclipse.rap.rwt.internal.lifecycle.DisplayUtil.getLCA;
+import static org.eclipse.rap.rwt.widgets.WidgetUtil.getId;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -24,7 +26,9 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.eclipse.rap.json.JsonObject;
-import org.eclipse.rap.rwt.internal.lifecycle.WidgetLifeCycleAdapter;
+import org.eclipse.rap.rwt.internal.remote.RemoteObjectImpl;
+import org.eclipse.rap.rwt.internal.remote.RemoteObjectRegistry;
+import org.eclipse.rap.rwt.remote.OperationHandler;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -36,7 +40,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.eclipsesource.tabris.internal.ClientCanvasLCA;
 import com.eclipsesource.tabris.internal.ClientCanvasOperator;
 import com.eclipsesource.tabris.internal.ClientCanvasTestUtil;
 import com.eclipsesource.tabris.internal.DrawingsCache;
@@ -49,20 +52,14 @@ public class ClientCanvasTest {
   @Rule
   public TabrisEnvironment environment = new TabrisEnvironment();
 
+  private Display display;
   private ClientCanvas clientCanvas;
 
   @Before
   public void setUp() {
-    Display display = new Display();
+    display = new Display();
     Shell shell = new Shell( display );
     clientCanvas = new ClientCanvas( shell, SWT.NONE );
-  }
-
-  @Test
-  public void testHasClientCanvasLCA() {
-    WidgetLifeCycleAdapter adapter = clientCanvas.getAdapter( WidgetLifeCycleAdapter.class );
-
-    assertTrue( adapter instanceof ClientCanvasLCA );
   }
 
   @Test
@@ -295,6 +292,15 @@ public class ClientCanvasTest {
     fakeDrawEvent();
 
     verify( listener, never() ).receivedDrawing();
+  }
+
+  @Test
+  public void testOperationHandlerIsExchanged() throws Exception {
+    getLCA( display ).render( display );
+
+    RemoteObjectImpl remoteObject = RemoteObjectRegistry.getInstance().get( getId( clientCanvas ) );
+    OperationHandler handler = remoteObject.getHandler();
+    assertTrue( handler instanceof ClientCanvasOperator );
   }
 
   private void fakeDrawEvent() {

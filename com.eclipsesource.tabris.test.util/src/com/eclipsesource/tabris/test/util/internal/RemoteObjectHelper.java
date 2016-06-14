@@ -1,6 +1,5 @@
-package com.eclipsesource.tabris.test.util.internal;
 /*******************************************************************************
- * Copyright (c) 2012 EclipseSource and others.
+ * Copyright (c) 2012, 2016 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,6 +8,7 @@ package com.eclipsesource.tabris.test.util.internal;
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
+package com.eclipsesource.tabris.test.util.internal;
 
 
 import static org.mockito.Matchers.anyString;
@@ -21,7 +21,7 @@ import java.util.Random;
 import org.eclipse.rap.rwt.internal.remote.ConnectionImpl;
 import org.eclipse.rap.rwt.remote.OperationHandler;
 import org.eclipse.rap.rwt.remote.RemoteObject;
-import org.eclipse.rap.rwt.testfixture.Fixture;
+import org.eclipse.rap.rwt.testfixture.internal.Fixture;
 
 import com.eclipsesource.tabris.test.util.TestRemoteObject;
 

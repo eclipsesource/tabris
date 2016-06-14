@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 EclipseSource and others.
+ * Copyright (c) 2014, 2016 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,14 +31,16 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpUpgradeHandler;
 import javax.servlet.http.Part;
 
-import org.eclipse.rap.rwt.testfixture.TestRequest;
+import org.eclipse.rap.rwt.testfixture.internal.TestRequest;
 
 
 /**
  * <b>Please Note:</b> This class is preliminary API and may change in future version
  */
+@SuppressWarnings("restriction")
 public class TabrisRequest implements HttpServletRequest {
 
   private final TestRequest delegate;
@@ -440,4 +442,22 @@ public class TabrisRequest implements HttpServletRequest {
   public Part getPart( String name ) throws IOException, ServletException {
     return delegate.getPart( name );
   }
+
+  @Override
+  public long getContentLengthLong() {
+    return delegate.getContentLengthLong();
+  }
+
+  @Override
+  public String changeSessionId() {
+    return delegate.changeSessionId();
+  }
+
+  @Override
+  public <T extends HttpUpgradeHandler> T upgrade( Class<T> handlerClass )
+    throws IOException, ServletException
+  {
+    return delegate.upgrade( handlerClass );
+  }
+
 }

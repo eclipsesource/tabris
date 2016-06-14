@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/org.eclipse.rap.equinox.target.feature_2.3.2.qualifier.jar" id="org.eclipse.rap.equinox.target.feature" version="2.3.2.qualifier">
+   <feature url="features/org.eclipse.rap.equinox.target.feature_3.1.0.qualifier.jar" id="org.eclipse.rap.equinox.target.feature" version="3.1.0.qualifier">
       <category name="com.eclipsesource.tabris"/>
    </feature>
-   <feature url="features/org.eclipse.rap.feature_2.3.2.qualifier.jar" id="org.eclipse.rap.feature" version="2.3.2.qualifier">
+   <feature url="features/org.eclipse.rap.feature_3.1.0.qualifier.jar" id="org.eclipse.rap.feature" version="3.1.0.qualifier">
       <category name="com.eclipsesource.tabris"/>
    </feature>
-   <feature url="features/org.eclipse.rap.sdk.feature_2.3.2.qualifier.jar" id="org.eclipse.rap.sdk.feature" version="2.3.2.qualifier">
+   <feature url="features/org.eclipse.rap.sdk.feature_3.1.0.qualifier.jar" id="org.eclipse.rap.sdk.feature" version="3.1.0.qualifier">
       <category name="com.eclipsesource.tabris"/>
    </feature>
-   <feature url="features/com.eclipsesource.tabris.feature_1.5.0.qualifier.jar" id="com.eclipsesource.tabris.feature" version="1.5.0.qualifier">
+   <feature url="features/com.eclipsesource.tabris.feature_2.0.0.qualifier.jar" id="com.eclipsesource.tabris.feature" version="2.0.0.qualifier">
       <category name="com.eclipsesource.tabris"/>
    </feature>
-   <feature url="features/com.eclipsesource.tabris.feature.source_1.5.0.qualifier.jar" id="com.eclipsesource.tabris.feature.source" version="1.5.0.qualifier">
+   <feature url="features/com.eclipsesource.tabris.feature.source_2.0.0.qualifier.jar" id="com.eclipsesource.tabris.feature.source" version="2.0.0.qualifier">
       <category name="com.eclipsesource.tabris.sdk"/>
    </feature>
    <feature url="features/com.eclipsesource.tabris.passepartout.feature_0.10.0.qualifier.jar" id="com.eclipsesource.tabris.passepartout.feature" version="0.10.0.qualifier">

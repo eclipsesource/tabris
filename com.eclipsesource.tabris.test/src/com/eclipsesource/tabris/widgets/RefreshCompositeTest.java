@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 EclipseSource and others.
+ * Copyright (c) 2014, 2016 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,17 +10,25 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets;
 
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.REFRESH_COMPOSITE;
+import static org.eclipse.rap.rwt.widgets.WidgetUtil.getId;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.List;
 
-import org.eclipse.rap.rwt.internal.lifecycle.WidgetLifeCycleAdapter;
+import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.internal.service.UISessionImpl;
+import org.eclipse.rap.rwt.remote.Connection;
+import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -28,8 +36,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.eclipsesource.tabris.internal.RefreshCompositeLCA;
-import com.eclipsesource.tabris.internal.RefreshCompositeLCA.RefreshAdapter;
+import com.eclipsesource.tabris.internal.RefreshCompositeOperationHandler;
 import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
@@ -40,10 +47,18 @@ public class RefreshCompositeTest {
   public TabrisEnvironment environment = new TabrisEnvironment();
 
   private Shell shell;
+  private RefreshComposite composite;
+  private Connection connection;
+  private RemoteObject remoteObject;
 
   @Before
   public void setUp() {
     shell = new Shell( new Display() );
+    remoteObject = mock( RemoteObject.class );
+    connection = mock( Connection.class );
+    when( connection.createRemoteObject( anyString() ) ).thenReturn( remoteObject );
+    replaceConnection( connection );
+    composite = new RefreshComposite( shell, SWT.NONE );
   }
 
   @Test( expected = IllegalArgumentException.class )
@@ -52,75 +67,54 @@ public class RefreshCompositeTest {
   }
 
   @Test
-  public void testHasRefreshCompositeLCA() {
-    RefreshComposite composite = new RefreshComposite( shell, SWT.NONE );
-
-    WidgetLifeCycleAdapter adapter = composite.getAdapter( WidgetLifeCycleAdapter.class );
-
-    assertTrue( adapter instanceof RefreshCompositeLCA );
+  public void testContructor_createsRemoteObjectWithCorrectType() {
+    verify( connection ).createRemoteObject( eq( "tabris.widgets.RefreshComposite" ) );
   }
 
   @Test
-  public void testHasRefreshAdapter() {
-    RefreshComposite composite = new RefreshComposite( shell, SWT.NONE );
-
-    RefreshAdapter adapter = composite.getAdapter( RefreshAdapter.class );
-
-    assertNotNull( adapter );
+  public void testContructor_setsParent() {
+    verify( remoteObject ).set( "parent", getId( composite ) );
   }
 
   @Test
-  public void testHasOneRefreshAdapter() {
-    RefreshComposite composite = new RefreshComposite( shell, SWT.NONE );
+  public void testContructor_setsOperationHandler() {
+    verify( remoteObject ).setHandler( any( RefreshCompositeOperationHandler.class ) );
+  }
 
-    RefreshAdapter adapter = composite.getAdapter( RefreshAdapter.class );
-    RefreshAdapter adapter2 = composite.getAdapter( RefreshAdapter.class );
+  @Test
+  public void testContructor_setsRefreshCompositeData() {
+    Object data = composite.getData( REFRESH_COMPOSITE.getKey() );
 
-    assertSame( adapter, adapter2 );
+    assertEquals( Boolean.TRUE, data );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithNullMessage() {
-    RefreshComposite composite = new RefreshComposite( shell, SWT.NONE );
-
     composite.setMessage( null );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsToAddNullListener() {
-    RefreshComposite composite = new RefreshComposite( shell, SWT.NONE );
-
     composite.addRefreshListener( null );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testFailsToRemoveNullListener() {
-    RefreshComposite composite = new RefreshComposite( shell, SWT.NONE );
-
     composite.removeRefreshListener( null );
   }
 
   @Test
   public void testMessageIsNullByDefault() {
-    RefreshComposite composite = new RefreshComposite( shell, SWT.NONE );
-
-    String message = composite.getMessage();
-
-    assertNull( message );
+    assertNull( composite.getMessage() );
   }
 
   @Test
   public void testListenersAreEmptyByDefault() {
-    RefreshComposite composite = new RefreshComposite( shell, SWT.NONE );
-
-    List<RefreshListener> listeners = composite.getRefreshListeners();
-
-    assertTrue( listeners.isEmpty() );
+    assertTrue( composite.getRefreshListeners().isEmpty() );
   }
 
   @Test
   public void testCanAddListeners() {
-    RefreshComposite composite = new RefreshComposite( shell, SWT.NONE );
     RefreshListener listener = mock( RefreshListener.class );
 
     composite.addRefreshListener( listener );
@@ -131,7 +125,6 @@ public class RefreshCompositeTest {
 
   @Test
   public void testCanRemoveListeners() {
-    RefreshComposite composite = new RefreshComposite( shell, SWT.NONE );
     RefreshListener listener = mock( RefreshListener.class );
 
     composite.addRefreshListener( listener );
@@ -143,8 +136,6 @@ public class RefreshCompositeTest {
 
   @Test
   public void testListenersAreSafeCopy() {
-    RefreshComposite composite = new RefreshComposite( shell, SWT.NONE );
-
     List<RefreshListener> listeners = composite.getRefreshListeners();
     List<RefreshListener> listeners2 = composite.getRefreshListeners();
 
@@ -153,22 +144,14 @@ public class RefreshCompositeTest {
 
   @Test
   public void testCanSetMessage() {
-    RefreshComposite composite = new RefreshComposite( shell, SWT.NONE );
-
     composite.setMessage( "foo" );
 
-    String message = composite.getMessage();
-    assertEquals( "foo", message );
+    assertEquals( "foo", composite.getMessage() );
   }
 
-  @Test
-    public void testDoneChangesResetAdapter() {
-    RefreshComposite composite = new RefreshComposite( shell, SWT.NONE );
-
-    composite.done();
-
-    RefreshAdapter adapter = composite.getAdapter( RefreshAdapter.class );
-    assertTrue( adapter.isDone() );
+  private void replaceConnection( Connection connection ) {
+    UISessionImpl uiSession = ( UISessionImpl )RWT.getUISession();
+    uiSession.setConnection( connection );
   }
 
 }

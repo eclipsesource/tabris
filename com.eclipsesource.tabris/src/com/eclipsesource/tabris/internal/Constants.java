@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 EclipseSource and others.
+ * Copyright (c) 2012, 2016 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,6 +41,7 @@ public class Constants {
   public static final String METHOD_ADD = "add";
   public static final String METHOD_ACTIVATE = "activate";
   public static final String PROPERTY_PARENT = "parent";
+  public static final String PROPERTY_BOUNDS = "bounds";
   public static final String PROPERTY_DATA = "data";
   public static final String PROPERTY_IMAGE = "image";
   public static final String PROPERTY_FOREGROUND = "foreground";

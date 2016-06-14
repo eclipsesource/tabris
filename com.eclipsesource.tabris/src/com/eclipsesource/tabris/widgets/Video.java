@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 EclipseSource and others.
+ * Copyright (c) 2012, 2016 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,16 +10,27 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets;
 
+import static com.eclipsesource.tabris.internal.Clauses.whenNull;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_CACHE_SIZE;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PARENT;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_URL;
+import static com.eclipsesource.tabris.internal.Constants.TYPE_VIDEO;
+import static org.eclipse.rap.rwt.widgets.WidgetUtil.getId;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.rap.rwt.internal.lifecycle.WidgetLifeCycleAdapter;
+import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.remote.Connection;
+import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 
-import com.eclipsesource.tabris.internal.VideoLifeCycleAdapter;
+import com.eclipsesource.tabris.internal.VideoOperationHandler;
+import com.eclipsesource.tabris.internal.VideoRemoteAdapter;
 
 /**
  * <p>
@@ -31,7 +42,6 @@ import com.eclipsesource.tabris.internal.VideoLifeCycleAdapter;
  * @see PlaybackListener
  * @since 0.7
  */
-@SuppressWarnings("restriction")
 public class Video extends Composite {
 
   /**
@@ -80,17 +90,15 @@ public class Video extends Composite {
    * @since 1.4.9
    */
   public static final float PAUSE_SPEED = 0.0f;
-  private static final float DISABLED = Float.NEGATIVE_INFINITY;
 
   private final List<PlaybackListener> playbackListeners = new ArrayList<PlaybackListener>();
 
   private int cacheSizeMb;
   private URL videoUrl;
-  private float speed;
-  private boolean clearCache;
+  private float speed = PAUSE_SPEED;
   private boolean controlsVisible;
-  private float stepToTime;
-  private float skipFromCurrent;
+  private final RemoteObject remoteObject;
+  private final VideoRemoteAdapter remoteAdapter;
 
   /**
    * Creates a new Video object.
@@ -120,17 +128,15 @@ public class Video extends Composite {
     throws IllegalArgumentException
   {
     super( parent, SWT.NONE );
-    initiateDefaultValues();
     setCacheSize( cacheSizeMb );
     setVideoUrl( videoUrl );
-  }
-
-  private void initiateDefaultValues() {
-    this.speed = PAUSE_SPEED;
-    this.clearCache = false;
-    this.controlsVisible = false;
-    this.stepToTime = DISABLED;
-    this.skipFromCurrent = DISABLED;
+    Connection connection = RWT.getUISession().getConnection();
+    remoteObject = connection.createRemoteObject( TYPE_VIDEO );
+    remoteObject.setHandler( new VideoOperationHandler( this ) );
+    remoteObject.set( PROPERTY_PARENT, getId( this ) );
+    remoteObject.set( PROPERTY_CACHE_SIZE, getCacheSize() );
+    remoteObject.set( PROPERTY_URL, getURL().toString() );
+    remoteAdapter = new VideoRemoteAdapter( this, remoteObject );
   }
 
   private void setCacheSize( int cacheSizeMb ) {
@@ -157,7 +163,7 @@ public class Video extends Composite {
    * @since 1.4.9
    */
   public void clearCache() {
-    clearCache = true;
+    remoteAdapter.setClearCache( true );
   }
 
   /**
@@ -198,7 +204,10 @@ public class Video extends Composite {
    * @since 1.4.9
    */
   public void setSpeed( float speed ) {
-    this.speed = speed;
+    if( this.speed != speed ) {
+      remoteAdapter.preservePlaybackSpeed( this.speed );
+      this.speed = speed;
+    }
   }
 
   /**
@@ -212,7 +221,10 @@ public class Video extends Composite {
    * Controls if video controls should be visible on the client or not.
    */
   public void setPlayerControlsVisible( boolean controlsVisible ) {
-    this.controlsVisible = controlsVisible;
+    if( this.controlsVisible != controlsVisible ) {
+      remoteAdapter.preserveControlsVisible( this.controlsVisible );
+      this.controlsVisible = controlsVisible;
+    }
   }
 
   /**
@@ -222,6 +234,8 @@ public class Video extends Composite {
    * @since 1.0
    */
    public void addPlaybackListener( PlaybackListener listener ) {
+     whenNull( listener ).throwIllegalArgument( "PlaybackListener must not be null" );
+     remoteAdapter.preservePlaybackListener( hasPlaybackListener() );
      playbackListeners.add( listener );
    }
 
@@ -231,7 +245,20 @@ public class Video extends Composite {
    * @since 1.0
    */
    public void removePlaybackListener( PlaybackListener listener ) {
+     whenNull( listener ).throwIllegalArgument( "PlaybackListener must not be null" );
+     remoteAdapter.preservePlaybackListener( hasPlaybackListener() );
      playbackListeners.remove( listener );
+   }
+
+   /**
+    * <p>
+    * Returns the added {@link PlaybackListener}s
+    * </p>
+    *
+    * @since 1.4.9
+    */
+   public List<PlaybackListener> getPlaybackListeners() {
+     return new ArrayList<PlaybackListener>( playbackListeners );
    }
 
   /**
@@ -244,8 +271,7 @@ public class Video extends Composite {
    * @since 1.4.9
    */
   public void stepToTime( float seconds ) {
-    this.stepToTime = Math.max( 0, seconds );
-    this.skipFromCurrent = DISABLED;
+    remoteAdapter.setStepToTime( seconds );
   }
 
   /**
@@ -260,70 +286,17 @@ public class Video extends Composite {
    * @since 1.4.9
    */
   public void skipFromCurrent( float seconds ) {
-    this.stepToTime = DISABLED;
-    this.skipFromCurrent = seconds;
+    remoteAdapter.setSkipFromCurrent( seconds );
   }
 
   @Override
-  @SuppressWarnings({ "unchecked", "deprecation" })
-  public <T> T getAdapter( Class<T> adapter ) {
-    T result;
-    if( adapter == WidgetLifeCycleAdapter.class
-        || adapter == org.eclipse.rap.rwt.lifecycle.WidgetLifeCycleAdapter.class )
-    {
-      result = ( T )new VideoLifeCycleAdapter();
-    } else if( adapter == VideoStateAdapter.class ) {
-      result = ( T )new VideoStateAdapter();
-    } else {
-      result = super.getAdapter( adapter );
-    }
-    return result;
+  public void setBounds( Rectangle bounds ) {
+    remoteAdapter.preserveBounds( getBounds() );
+    super.setBounds( bounds );
   }
 
-  /**  Internal API. */
-  public class VideoStateAdapter {
-
-    public boolean hasPlaybackListener() {
-      return !playbackListeners.isEmpty();
-    }
-
-    public void notifyPlaybackListeners( PlayerState state ) {
-      List<PlaybackListener> listeners = new ArrayList<PlaybackListener>( playbackListeners );
-      for( PlaybackListener listener : listeners ) {
-        listener.playbackChanged( state );
-      }
-    }
-
-    public boolean isClearCacheRequested() {
-      return clearCache;
-    }
-
-    public void resetClearCache() {
-      clearCache = false;
-    }
-
-    public boolean isSkipFromCurrentRequested() {
-      return skipFromCurrent != DISABLED;
-    }
-
-    public float getSkipFromCurrent() {
-      return skipFromCurrent;
-    }
-
-    public void resetSkipFromCurrent() {
-      skipFromCurrent = DISABLED;
-    }
-
-    public boolean isStepToTimeRequested() {
-      return stepToTime != DISABLED;
-    }
-
-    public float getStepToTime() {
-      return stepToTime;
-    }
-
-    public void resetStepToTime() {
-      stepToTime = DISABLED;
-    }
+  private boolean hasPlaybackListener() {
+    return !playbackListeners.isEmpty();
   }
+
 }

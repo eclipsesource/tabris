@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 EclipseSource and others.
+ * Copyright (c) 2012, 2016 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,15 +19,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.rap.json.JsonValue;
-import org.eclipse.rap.rwt.internal.lifecycle.WidgetLifeCycleAdapter;
+import org.eclipse.rap.rwt.internal.lifecycle.RemoteAdapter;
 import org.eclipse.rap.rwt.internal.lifecycle.WidgetUtil;
+import org.eclipse.rap.rwt.internal.protocol.RemoteObjectFactory;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.internal.widgets.WidgetRemoteAdapter;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
-import com.eclipsesource.tabris.internal.ClientCanvasLCA;
+import com.eclipsesource.tabris.internal.ClientCanvasOperator;
 import com.eclipsesource.tabris.internal.DrawingsCache;
 import com.eclipsesource.tabris.internal.GCOperationDispatcher;
 
@@ -47,8 +49,6 @@ import com.eclipsesource.tabris.internal.GCOperationDispatcher;
 @SuppressWarnings("restriction")
 public class ClientCanvas extends Canvas {
 
-  private static final WidgetLifeCycleAdapter CLIENT_CANVAS_LCA = new ClientCanvasLCA();
-
   private final List<ClientDrawListener> drawListeners;
   private final DrawingsCache cache;
   private PaintListener paintListener;
@@ -59,6 +59,7 @@ public class ClientCanvas extends Canvas {
     cache = new DrawingsCache();
     addDispatchPaintListener();
     setData( CLIENT_CANVAS.getKey(), Boolean.TRUE );
+    exchangesOperationHandler( this );
   }
 
   private void addDispatchPaintListener() {
@@ -195,18 +196,27 @@ public class ClientCanvas extends Canvas {
     }
   }
 
-  @SuppressWarnings({ "unchecked", "deprecation" })
+  @SuppressWarnings({ "unchecked" })
   @Override
   public <T> T getAdapter( Class<T> adapter ) {
     T result = super.getAdapter( adapter );
     if( adapter == DrawingsCache.class ) {
       result = ( T )cache;
-    } else if( adapter == WidgetLifeCycleAdapter.class || adapter == org.eclipse.rap.rwt.lifecycle.WidgetLifeCycleAdapter.class ) {
-      return ( T )CLIENT_CANVAS_LCA;
     } else if( adapter == List.class ) {
       return ( T )drawListeners;
     }
     return result;
+  }
+
+  private void exchangesOperationHandler( final ClientCanvas widget ) {
+    WidgetRemoteAdapter adapter = ( WidgetRemoteAdapter )getAdapter( RemoteAdapter.class );
+    adapter.addRenderRunnable( new Runnable() {
+      @Override
+      public void run() {
+        ClientCanvasOperator handler = new ClientCanvasOperator( widget );
+        RemoteObjectFactory.getRemoteObject( widget ).setHandler( handler );
+      }
+    } );
   }
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 EclipseSource and others.
+ * Copyright (c) 2013, 2016 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,7 @@ import java.util.List;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.client.service.JavaScriptExecutor;
-import org.eclipse.rap.rwt.internal.util.EncodingUtil;
+import org.eclipse.rap.rwt.internal.util.Entities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -175,7 +175,7 @@ public class WebPage implements PageRenderer {
 
   private void setBrowserTitle() {
     JavaScriptExecutor executor = RWT.getClient().getService( JavaScriptExecutor.class );
-    executor.execute( "document.title = \"" + EncodingUtil.encodeHTMLEntities( title ) + "\";" );
+    executor.execute( "document.title = \"" + Entities.HTML40.escape( title ) + "\";" );
   }
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 EclipseSource and others.
+ * Copyright (c) 2013, 2016 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,12 +16,10 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import java.io.IOException;
 import java.io.Serializable;
 
-import org.eclipse.rap.rwt.internal.application.ApplicationContextImpl;
-import org.eclipse.rap.rwt.internal.lifecycle.LifeCycle;
 import org.eclipse.rap.rwt.internal.lifecycle.LifeCycleFactory;
+import org.eclipse.rap.rwt.internal.lifecycle.SimpleLifeCycle;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
 import org.junit.Rule;
@@ -39,7 +37,7 @@ public class TabrisUIEntryPointTest {
   @Before
   public void setUp() {
     LifeCycleFactory lifeCycleFactory = getApplicationContext().getLifeCycleFactory();
-    lifeCycleFactory.configure( TestLifeCycle.class );
+    lifeCycleFactory.configure( SimpleLifeCycle.class );
     lifeCycleFactory.activate();
   }
 
@@ -58,25 +56,4 @@ public class TabrisUIEntryPointTest {
     verify( tabrisUI ).create( any( Shell.class ) );
   }
 
-  @SuppressWarnings("deprecation")
-  static class TestLifeCycle extends LifeCycle {
-    public TestLifeCycle( ApplicationContextImpl applicationContext ) {
-      super( applicationContext );
-    }
-    @Override
-    public void execute() throws IOException {
-    }
-    @Override
-    public void requestThreadExec( Runnable runnable ) {
-    }
-    @Override
-    public void addPhaseListener( org.eclipse.rap.rwt.lifecycle.PhaseListener phaseListener ) {
-    }
-    @Override
-    public void removePhaseListener( org.eclipse.rap.rwt.lifecycle.PhaseListener phaseListener ) {
-    }
-    @Override
-    public void sleep() {
-    }
-  }
 }

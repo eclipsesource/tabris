@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 EclipseSource and others.
+ * Copyright (c) 2014, 2016 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,16 +11,22 @@
 package com.eclipsesource.tabris.widgets;
 
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PARENT;
+import static com.eclipsesource.tabris.internal.Constants.TYPE_REFRESH_COMPOSITE;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.REFRESH_COMPOSITE;
+import static org.eclipse.rap.rwt.widgets.WidgetUtil.getId;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.rap.rwt.internal.lifecycle.WidgetLifeCycleAdapter;
+import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.remote.Connection;
+import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
 
-import com.eclipsesource.tabris.internal.RefreshCompositeLCA;
-import com.eclipsesource.tabris.internal.RefreshCompositeLCA.RefreshAdapter;
+import com.eclipsesource.tabris.internal.RefreshCompositeOperationHandler;
+import com.eclipsesource.tabris.internal.RefreshCompositeRemoteAdapter;
 import com.eclipsesource.tabris.widgets.enhancement.RefreshHandler;
 
 
@@ -44,17 +50,22 @@ import com.eclipsesource.tabris.widgets.enhancement.RefreshHandler;
  *
  * @since 1.4
  */
-@SuppressWarnings("restriction")
 public class RefreshComposite extends Composite {
 
   private final List<RefreshListener> listeners;
-  private final RefreshAdapter resetAdapter;
   private String message;
+  private final RemoteObject remoteObject;
+  private final RefreshCompositeRemoteAdapter remoteAdapter;
 
   public RefreshComposite( Composite parent, int style ) {
     super( parent, style );
     this.listeners = new ArrayList<RefreshListener>();
-    this.resetAdapter = new RefreshAdapter();
+    Connection connection = RWT.getUISession().getConnection();
+    remoteObject = connection.createRemoteObject( TYPE_REFRESH_COMPOSITE );
+    remoteObject.setHandler( new RefreshCompositeOperationHandler( this ) );
+    remoteObject.set( PROPERTY_PARENT, getId( this ) );
+    remoteAdapter = new RefreshCompositeRemoteAdapter( this, remoteObject );
+    setData( REFRESH_COMPOSITE.getKey(), Boolean.TRUE );
   }
 
   /**
@@ -66,7 +77,10 @@ public class RefreshComposite extends Composite {
    */
   public void setMessage( String message ) {
     whenNull( message ).throwIllegalArgument( "Message must not be null" );
-    this.message = message;
+    if( !message.equals( this.message ) ) {
+      remoteAdapter.preserveMessage( this.message );
+      this.message = message;
+    }
   }
 
   public String getMessage() {
@@ -83,6 +97,7 @@ public class RefreshComposite extends Composite {
    */
   public void addRefreshListener( RefreshListener listener ) {
     whenNull( listener ).throwIllegalArgument( "RefreshListener must not be null" );
+    remoteAdapter.preserveRefreshListener( hasRefreshListener() );
     listeners.add( listener );
   }
 
@@ -95,6 +110,7 @@ public class RefreshComposite extends Composite {
    */
   public void removeRefreshListener( RefreshListener listener ) {
     whenNull( listener ).throwIllegalArgument( "RefreshListener must not be null" );
+    remoteAdapter.preserveRefreshListener( hasRefreshListener() );
     listeners.remove( listener );
   }
 
@@ -114,21 +130,19 @@ public class RefreshComposite extends Composite {
    * </p>
    */
   public void done() {
-    resetAdapter.setDone( true );
+    remoteAdapter.setDone( true );
+  }
+
+  private boolean hasRefreshListener() {
+    return !listeners.isEmpty();
   }
 
   @Override
-  @SuppressWarnings({ "unchecked", "deprecation" })
-  public <T> T getAdapter( Class<T> adapter ) {
-    T result;
-    if( adapter == WidgetLifeCycleAdapter.class || adapter == org.eclipse.rap.rwt.lifecycle.WidgetLifeCycleAdapter.class ) {
-      result = ( T )new RefreshCompositeLCA();
-    } else if( adapter == RefreshAdapter.class ) {
-      result = ( T )resetAdapter;
-    } else {
-      result = super.getAdapter( adapter );
+  public void dispose() {
+    if( !isDisposed() ) {
+      remoteObject.destroy();
     }
-    return result;
+    super.dispose();
   }
 
 }
