@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 EclipseSource and others.
+ * Copyright (c) 2013, 2016 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -71,6 +71,17 @@ public class ClientDeviceImplTest {
     Platform platform = device.getPlatform();
 
     assertSame( Platform.IOS, platform );
+  }
+
+  @Test
+  public void testGetPlatformIsWindows() {
+    TabrisRequest request = environment.getRequest();
+    request.setHeader( Constants.USER_AGENT, "com.eclipsesource.tabris.windows" );
+    ClientDevice device = new ClientDeviceImpl();
+
+    Platform platform = device.getPlatform();
+
+    assertSame( Platform.WINDOWS, platform );
   }
 
   @Test

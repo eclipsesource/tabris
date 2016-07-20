@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 EclipseSource and others.
+ * Copyright (c) 2012, 2016 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -90,6 +90,14 @@ public class TabrisClientProviderTest {
   }
 
   @Test
+  public void testAcceptForWindows() {
+    TabrisRequest request = environment.getRequest();
+    request.setHeader( Constants.USER_AGENT, Constants.ID_WINDOWS );
+
+    assertTrue( provider.accept( request ) );
+  }
+
+  @Test
   public void testDoesNotAcceptForWeb() {
     assertFalse( provider.accept( RWT.getRequest() ) );
   }
@@ -133,6 +141,18 @@ public class TabrisClientProviderTest {
 
     String currentTheme = ( String )RWT.getUISession().getAttribute( CURRENT_THEME_ID );
     assertEquals( Constants.THEME_ID_ANDROID, currentTheme );
+  }
+
+  @Test
+  public void testUsesWindowsTheme() throws IOException {
+    registerTheme( Constants.THEME_ID_WINDOWS );
+    TabrisRequest request = environment.getRequest();
+    request.setHeader( Constants.USER_AGENT, Constants.ID_WINDOWS );
+
+    provider.accept( request );
+
+    String currentTheme = ( String )RWT.getUISession().getAttribute( CURRENT_THEME_ID );
+    assertEquals( Constants.THEME_ID_WINDOWS, currentTheme );
   }
 
   private void registerTheme( String themeId ) throws IOException {

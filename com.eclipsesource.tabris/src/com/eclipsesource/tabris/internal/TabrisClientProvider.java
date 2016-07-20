@@ -1,20 +1,25 @@
 /*******************************************************************************
- * Copyright (c) 2012 EclipseSource and others. All rights reserved. This
- * program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0 which accompanies this distribution, and is
- * available at http://www.eclipse.org/legal/epl-v10.html Contributors:
- * EclipseSource - initial API and implementation
+ * Copyright (c) 2012, 2016 EclipseSource and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    EclipseSource - initial API and implementation
  ******************************************************************************/
 package com.eclipsesource.tabris.internal;
 
 import static com.eclipsesource.tabris.device.ClientDevice.Platform.ANDROID;
 import static com.eclipsesource.tabris.device.ClientDevice.Platform.IOS;
+import static com.eclipsesource.tabris.device.ClientDevice.Platform.WINDOWS;
 import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Constants.HEADER_SERVER_ID;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_VERSION_CHECK;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_ANDROID;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_IOS;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_IOS6;
+import static com.eclipsesource.tabris.internal.Constants.THEME_ID_WINDOWS;
 import static com.eclipsesource.tabris.internal.Constants.USER_AGENT;
 import static javax.servlet.http.HttpServletResponse.SC_PRECONDITION_FAILED;
 
@@ -60,7 +65,7 @@ public class TabrisClientProvider implements ClientProvider, Serializable {
   @Override
   public boolean accept( HttpServletRequest request ) {
     Platform platform = DeviceUtil.getPlatform();
-    boolean result = platform == ANDROID || platform == IOS;
+    boolean result = platform == ANDROID || platform == IOS || platform == WINDOWS;
     if( result ) {
       setPlatformTheme( platform );
       setServerId();
@@ -74,6 +79,8 @@ public class TabrisClientProvider implements ClientProvider, Serializable {
       setThemeForIOS();
     } else if( platform == ANDROID ) {
       ThemeUtil.setCurrentThemeId( RWT.getUISession(), THEME_ID_ANDROID );
+    } else if( platform == WINDOWS ) {
+      ThemeUtil.setCurrentThemeId( RWT.getUISession(), THEME_ID_WINDOWS );
     }
   }
 

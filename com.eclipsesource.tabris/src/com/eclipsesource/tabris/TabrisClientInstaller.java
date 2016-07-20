@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012,2013 EclipseSource and others.
+ * Copyright (c) 2012, 2016 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,11 +17,13 @@ import static com.eclipsesource.tabris.internal.Constants.THEME_ID_ANDROID;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_IOS;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_IOS6;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_SWT;
+import static com.eclipsesource.tabris.internal.Constants.THEME_ID_WINDOWS;
 import static com.eclipsesource.tabris.internal.Constants.THEME_PATH_ANDROID;
 import static com.eclipsesource.tabris.internal.Constants.THEME_PATH_IOS;
 import static com.eclipsesource.tabris.internal.Constants.THEME_PATH_IOS6;
 import static com.eclipsesource.tabris.internal.Constants.THEME_PATH_SWT;
 import static com.eclipsesource.tabris.internal.Constants.THEME_PATH_WEB;
+import static com.eclipsesource.tabris.internal.Constants.THEME_PATH_WINDOWS;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -103,6 +105,7 @@ public class TabrisClientInstaller {
     application.addStyleSheet( THEME_ID_SWT, THEME_PATH_SWT, resourceLoader );
     application.addStyleSheet( THEME_ID_IOS6, THEME_PATH_IOS6, resourceLoader );
     application.addStyleSheet( THEME_ID_IOS, THEME_PATH_IOS, resourceLoader );
+    application.addStyleSheet( THEME_ID_WINDOWS, THEME_PATH_WINDOWS, resourceLoader );
     application.addStyleSheet( RWT.DEFAULT_THEME_ID, THEME_PATH_WEB, resourceLoader );
   }
 
