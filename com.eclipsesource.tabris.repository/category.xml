@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/org.eclipse.rap.equinox.target.feature_2.3.1.qualifier.jar" id="org.eclipse.rap.equinox.target.feature" version="2.3.1.qualifier">
+   <feature url="features/org.eclipse.rap.equinox.target.feature_2.3.2.qualifier.jar" id="org.eclipse.rap.equinox.target.feature" version="2.3.2.qualifier">
       <category name="com.eclipsesource.tabris"/>
    </feature>
-   <feature url="features/org.eclipse.rap.feature_2.3.1.qualifier.jar" id="org.eclipse.rap.feature" version="2.3.1.qualifier">
+   <feature url="features/org.eclipse.rap.feature_2.3.2.qualifier.jar" id="org.eclipse.rap.feature" version="2.3.2.qualifier">
       <category name="com.eclipsesource.tabris"/>
    </feature>
-   <feature url="features/org.eclipse.rap.sdk.feature_2.3.1.qualifier.jar" id="org.eclipse.rap.sdk.feature" version="2.3.1.qualifier">
+   <feature url="features/org.eclipse.rap.sdk.feature_2.3.2.qualifier.jar" id="org.eclipse.rap.sdk.feature" version="2.3.2.qualifier">
       <category name="com.eclipsesource.tabris"/>
    </feature>
    <feature url="features/com.eclipsesource.tabris.feature_1.4.8.qualifier.jar" id="com.eclipsesource.tabris.feature" version="1.4.8.qualifier">
