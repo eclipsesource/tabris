@@ -241,7 +241,7 @@ Combo-List {
 }
 
 Combo-Field {
-  padding: 10px 4px 10px 4px;
+  padding: 12px 4px 12px 4px;
 }
 
 Combo-FocusIndicator {
@@ -845,7 +845,7 @@ Text {
   font: 16px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
   border: none;
   border-radius: 0;
-  padding: 7px 12px 8px 12px;
+  padding: 12px;
   color: #4a4a4a;
   background-color: #ffffff;
   background-image: none;
@@ -883,7 +883,7 @@ Text-Message {
 
 ToolBar {
   font: 14px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
-  color: #4a4a4a;  
+  color: #4a4a4a;
   spacing: 0;
   background-color: #fff;
   background-image: none;
