@@ -1,4 +1,4 @@
 language: java
 jdk:
-  - openjdk6
+  - openjdk8
 script: "mvn -f com.eclipsesource.tabris.build/pom.xml clean verify"
