@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 EclipseSource and others.
+ * Copyright (c) 2013, 2016 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -99,7 +99,7 @@ public class PageDescriptor implements Serializable {
     int result = 1;
     result = prime * result + ( ( actions == null ) ? 0 : actions.hashCode() );
     result = prime * result + ( ( id == null ) ? 0 : id.hashCode() );
-    result = prime * result + ( ( image == null ) ? 0 : image.hashCode() );
+    result = prime * result + Arrays.hashCode( image );
     result = prime * result + ( topLevel ? 1231 : 1237 );
     result = prime * result + ( ( pageType == null ) ? 0 : pageType.hashCode() );
     result = prime * result + Arrays.hashCode( style );
@@ -126,10 +126,7 @@ public class PageDescriptor implements Serializable {
         return false;
     } else if( !id.equals( other.id ) )
       return false;
-    if( image == null ) {
-      if( other.image != null )
-        return false;
-    } else if( !image.equals( other.image ) )
+    if( !Arrays.equals( image, other.image ) )
       return false;
     if( topLevel != other.topLevel )
       return false;
