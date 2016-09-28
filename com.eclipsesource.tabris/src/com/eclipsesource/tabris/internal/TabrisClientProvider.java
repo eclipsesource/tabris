@@ -23,7 +23,6 @@ import static com.eclipsesource.tabris.internal.Constants.THEME_ID_WINDOWS;
 import static com.eclipsesource.tabris.internal.Constants.USER_AGENT;
 import static javax.servlet.http.HttpServletResponse.SC_PRECONDITION_FAILED;
 
-import java.io.IOException;
 import java.io.Serializable;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +33,7 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.client.Client;
 import org.eclipse.rap.rwt.internal.client.ClientProvider;
 import org.eclipse.rap.rwt.internal.protocol.ProtocolMessageWriter;
+import org.eclipse.rap.rwt.internal.service.ContextProvider;
 import org.eclipse.rap.rwt.internal.theme.ThemeUtil;
 
 import com.eclipsesource.tabris.VersionCheck;
@@ -124,13 +124,8 @@ public class TabrisClientProvider implements ClientProvider, Serializable {
   private void writeInvalidVersion( String errorMsg ) {
     HttpServletResponse response = RWT.getResponse();
     response.setStatus( SC_PRECONDITION_FAILED );
-    ProtocolMessageWriter writer = new ProtocolMessageWriter();
+    ProtocolMessageWriter writer = ContextProvider.getProtocolWriter();
     writer.appendHead( "error", JsonValue.valueOf( errorMsg ) );
-    try {
-      writer.createMessage().toJson().writeTo( response.getWriter() );
-    } catch( IOException exception ) {
-      throw new IllegalStateException( exception );
-    }
   }
 
   @Override
