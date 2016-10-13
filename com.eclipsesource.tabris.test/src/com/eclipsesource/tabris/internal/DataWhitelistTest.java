@@ -135,6 +135,16 @@ public class DataWhitelistTest {
     assertContains( "localClipboard" );
   }
 
+  @Test
+  public void testHasDisableLookupAction() {
+    assertContains( "disableLookupAction" );
+  }
+
+  @Test
+  public void testHasDisableShareAction() {
+    assertContains( "disableShareAction" );
+  }
+
   private void assertContains( String actualKey ) {
     WhiteListEntry[] keys = DataWhitelist.WhiteListEntry.values();
     boolean foundKey = false;
