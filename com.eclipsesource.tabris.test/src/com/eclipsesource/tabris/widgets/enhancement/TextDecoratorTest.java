@@ -13,6 +13,7 @@ package com.eclipsesource.tabris.widgets.enhancement;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.AUTO_CAPITALIZE;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.AUTO_CORRECT;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.KEYBOARD;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.LOCAL_CLIPBOARD;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.TEXT_REPLACEMENT;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -51,28 +52,35 @@ public class TextDecoratorTest {
   public void testSetAutoCorrectEnabled() {
     decorator.setAutoCorrectionEnabled( true );
 
-    verify( text ).setData( AUTO_CORRECT.getKey(), Boolean.valueOf( true ) );
+    verify( text ).setData( AUTO_CORRECT.getKey(), Boolean.TRUE );
   }
 
   @Test
   public void testSetAutoCorrectDisabled() {
     decorator.setAutoCorrectionEnabled( false );
 
-    verify( text ).setData( AUTO_CORRECT.getKey(), Boolean.valueOf( false ) );
+    verify( text ).setData( AUTO_CORRECT.getKey(), Boolean.FALSE );
   }
 
   @Test
   public void testSetAutoCapitalizeEnabled() {
     decorator.setAutoCapitalizationEnabled( true );
 
-    verify( text ).setData( AUTO_CAPITALIZE.getKey(), Boolean.valueOf( true ) );
+    verify( text ).setData( AUTO_CAPITALIZE.getKey(), Boolean.TRUE );
   }
 
   @Test
   public void testSetAutoCapitalizeDisabled() {
     decorator.setAutoCapitalizationEnabled( false );
 
-    verify( text ).setData( AUTO_CAPITALIZE.getKey(), Boolean.valueOf( false ) );
+    verify( text ).setData( AUTO_CAPITALIZE.getKey(), Boolean.FALSE );
+  }
+
+  @Test
+  public void testUseLocalClipboard() {
+    decorator.useLocalClipboard();
+
+    verify( text ).setData( LOCAL_CLIPBOARD.getKey(), Boolean.TRUE );
   }
 
   @Test

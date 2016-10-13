@@ -36,7 +36,8 @@ public class DataWhitelist implements Serializable {
     TEXT_REPLACEMENT( "textReplacement" ),
     AUTO_CAPITALIZE( "autoCapitalize" ),
     AUTO_CORRECT( "autoCorrect" ),
-    REFRESH_HANDLER( "refreshHandler" );
+    REFRESH_HANDLER( "refreshHandler" ),
+    LOCAL_CLIPBOARD( "localClipboard" );
 
     private final String key;
 

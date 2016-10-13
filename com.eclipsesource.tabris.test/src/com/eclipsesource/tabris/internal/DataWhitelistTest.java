@@ -51,11 +51,6 @@ public class DataWhitelistTest {
   }
 
   @Test
-  public void testHasKeyShowTouch() {
-    assertContains( "showTouch" );
-  }
-
-  @Test
   public void testHasKeyTitle() {
     assertContains( "title" );
   }
@@ -66,18 +61,8 @@ public class DataWhitelistTest {
   }
 
   @Test
-  public void testHasKeySwipe() {
-    assertContains( "swipe" );
-  }
-
-  @Test
-  public void testHasSpinningIndicator() {
-    assertContains( "spinningIndicator" );
-  }
-
-  @Test
-  public void testHasKeyClientCanvas() {
-    assertContains( "clientCanvas" );
+  public void testHasPaging() {
+    assertContains( "paging" );
   }
 
   @Test
@@ -96,8 +81,28 @@ public class DataWhitelistTest {
   }
 
   @Test
-  public void testHasPaging() {
-    assertContains( "paging" );
+  public void testHasKeyClientCanvas() {
+    assertContains( "clientCanvas" );
+  }
+
+  @Test
+  public void testHasKeySwipe() {
+    assertContains( "swipe" );
+  }
+
+  @Test
+  public void testHasSpinningIndicator() {
+    assertContains( "spinningIndicator" );
+  }
+
+  @Test
+  public void testHasKeyShowTouch() {
+    assertContains( "showTouch" );
+  }
+
+  @Test
+  public void testHasBadgeValue() {
+    assertContains( "badgeValue" );
   }
 
   @Test
@@ -123,6 +128,11 @@ public class DataWhitelistTest {
   @Test
   public void testHasRefreshHandler() {
     assertContains( "refreshHandler" );
+  }
+
+  @Test
+  public void testHasLocalClipboard() {
+    assertContains( "localClipboard" );
   }
 
   private void assertContains( String actualKey ) {

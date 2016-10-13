@@ -15,6 +15,7 @@ import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.AUTO_CAPITALIZE;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.AUTO_CORRECT;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.KEYBOARD;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.LOCAL_CLIPBOARD;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.TEXT_REPLACEMENT;
 import static com.eclipsesource.tabris.internal.WidgetsUtil.setData;
 
@@ -70,6 +71,18 @@ public class TextDecorator extends WidgetDecorator<TextDecorator> {
    */
   public TextDecorator setAutoCorrectionEnabled( boolean enabled ) {
     setData( text, AUTO_CORRECT, Boolean.valueOf( enabled ) );
+    return this;
+  }
+
+  /**
+   * <p>
+   * Instructs the {@link Text} to keep cut / copied text on client
+   * (i.e. disable 'clipboard sharing' on iOs devices).
+   * </p>
+   * @since 1.6
+   */
+  public TextDecorator useLocalClipboard() {
+    setData( text, LOCAL_CLIPBOARD, Boolean.TRUE );
     return this;
   }
 
