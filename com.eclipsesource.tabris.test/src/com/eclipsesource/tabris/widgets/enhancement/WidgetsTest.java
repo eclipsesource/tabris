@@ -18,6 +18,7 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
@@ -183,6 +184,25 @@ public class WidgetsTest {
     assertNotSame( decorator1, decorator2 );
   }
 
+  @Test
+  public void testOnMenuItem() {
+    assertNotNull( Widgets.onMenuItem( mock( MenuItem.class ) ) );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testOnMenuItemWithNull() {
+    Widgets.onMenuItem( null );
+  }
+
+  @Test
+  public void testOnMenuItemDoesNotCache() {
+    MenuItem widget = mock( MenuItem.class );
+
+    MenuItemDecorator decorator1 = Widgets.onMenuItem( widget );
+    MenuItemDecorator decorator2 = Widgets.onMenuItem( widget );
+
+    assertNotSame( decorator1, decorator2 );
+  }
 
   @Test
   public void testOnToolItem() {

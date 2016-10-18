@@ -16,6 +16,7 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
@@ -103,6 +104,14 @@ public class Widgets {
   public static TabItemDecorator onTabItem( TabItem tabItem ) {
     checkComponent( tabItem );
     return new TabItemDecorator( tabItem );
+  }
+
+  /**
+   * @since 1.6
+   */
+  public static MenuItemDecorator onMenuItem( MenuItem menuItem ) {
+    checkComponent( menuItem );
+    return new MenuItemDecorator( menuItem );
   }
 
   /**

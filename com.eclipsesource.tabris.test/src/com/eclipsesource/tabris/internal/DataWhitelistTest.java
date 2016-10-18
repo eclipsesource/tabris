@@ -145,6 +145,11 @@ public class DataWhitelistTest {
     assertContains( "disableShareAction" );
   }
 
+  @Test
+  public void testHasActionStyle() {
+    assertContains( "actionStyle" );
+  }
+
   private void assertContains( String actualKey ) {
     WhiteListEntry[] keys = DataWhitelist.WhiteListEntry.values();
     boolean foundKey = false;
