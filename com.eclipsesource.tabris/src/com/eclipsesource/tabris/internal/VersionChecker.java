@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2016 EclipseSource and others.
+ * Copyright (c) 2014, 2017 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,7 @@ import com.eclipsesource.tabris.VersionCheck;
 
 public class VersionChecker {
 
-  static final String TABRIS_SERVER_VERSION = "2.0.0";
+  static final String TABRIS_SERVER_VERSION = "2.0.1";
   private static final Pattern VERSION_PATTERN = Pattern.compile( ".*/([0-9]*\\.[0-9]*\\.[0-9])* \\(.*\\)" );
 
   private final String clientVersion;
