@@ -408,3 +408,8 @@ ScrollBar-DownButton {
   border: none;
   border-radius: 0;
 }
+
+Tree-Cell, Table-Cell {
+  spacing: 10px;
+  padding: 15px;
+}

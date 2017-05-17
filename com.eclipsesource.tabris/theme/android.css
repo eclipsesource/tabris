@@ -818,8 +818,8 @@ TableColumn-SortIndicator {
 }
 
 Table-Cell {
-  spacing: 3px;
-  padding: 6px 3px 6px 3px;
+  spacing: 10px;
+  padding: 15px;
 }
 
 Table-GridLine {
@@ -1065,8 +1065,8 @@ TreeColumn-SortIndicator {
 }
 
 Tree-Cell {
-  spacing: 0;
-  padding: 8px;
+  spacing: 10px;
+  padding: 15px;
 }
 
 Tree-GridLine {
