@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 EclipseSource and others.
+ * Copyright (c) 2015, 2017 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
 package com.eclipsesource.tabris.internal;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -19,8 +20,6 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 
@@ -28,6 +27,7 @@ import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.json.JsonValue;
 import org.eclipse.rap.rwt.client.Client;
+import org.eclipse.rap.rwt.internal.serverpush.ServerPushManager;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
@@ -40,15 +40,18 @@ import com.eclipsesource.tabris.TabrisClient;
 import com.eclipsesource.tabris.camera.Camera;
 import com.eclipsesource.tabris.camera.PhotoAlbumListener;
 import com.eclipsesource.tabris.camera.PhotoAlbumOptions;
+import com.eclipsesource.tabris.internal.CameraImpl.ImageUploadReceiver;
 import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
+@SuppressWarnings("restriction")
 public class PhotoAlbumImplTest {
 
   @Rule
   public TabrisEnvironment environment = new TabrisEnvironment();
 
   private CameraImpl camera;
+  private Display display;
 
   @Before
   public void setUp() {
@@ -56,7 +59,7 @@ public class PhotoAlbumImplTest {
     camera = new CameraImpl();
     when( client.getService( Camera.class ) ).thenReturn( camera );
     environment.setClient( client );
-    new Display();
+    display = new Display();
   }
 
   @Test
@@ -120,6 +123,52 @@ public class PhotoAlbumImplTest {
   }
 
   @Test
+  public void testDelegatesImage_activatesServerPush() {
+    PhotoAlbumImpl album = new PhotoAlbumImpl();
+    PhotoAlbumListener listener = mock( PhotoAlbumListener.class );
+    album.addPhotoAlbumListener( listener );
+
+    album.open( createOptions() );
+    environment.dispatchNotifyOnServiceObject( "ImageSelection", new JsonObject() );
+
+    assertTrue( ServerPushManager.getInstance().isServerPushActive() );
+  }
+
+  @Test
+  public void testDelegatesImage_withFailedUpload() {
+    PhotoAlbumImpl album = new PhotoAlbumImpl();
+    PhotoAlbumListener listener = mock( PhotoAlbumListener.class );
+    album.addPhotoAlbumListener( listener );
+    album.open( createOptions() );
+    ImageUploadReceiver receiver = mock( ImageUploadReceiver.class );
+
+    camera.handleUploadFailed( display, receiver );
+    display.readAndDispatch();
+
+    verify( listener ).receivedImage( null );
+    verify( receiver ).reset();
+    assertFalse( ServerPushManager.getInstance().isServerPushActive() );
+  }
+
+  @Test
+  public void testDelegatesImage_withSuccessfulUpload() {
+    Image image = getImage();
+    PhotoAlbumImpl album = new PhotoAlbumImpl();
+    PhotoAlbumListener listener = mock( PhotoAlbumListener.class );
+    album.addPhotoAlbumListener( listener );
+    album.open( createOptions() );
+    ImageUploadReceiver receiver = mock( ImageUploadReceiver.class );
+    when( receiver.getImage() ).thenReturn( image );
+
+    camera.handleUploadFinished( display, receiver );
+    display.readAndDispatch();
+
+    verify( listener ).receivedImage( image );
+    verify( receiver ).reset();
+    assertFalse( ServerPushManager.getInstance().isServerPushActive() );
+  }
+
+  @Test
   public void testDelegatesError() {
     PhotoAlbumImpl album = new PhotoAlbumImpl();
     PhotoAlbumListener listener = mock( PhotoAlbumListener.class );
@@ -174,60 +223,16 @@ public class PhotoAlbumImplTest {
     verify( listener2 ).receivedImage( null );
   }
 
-  @Test
-  public void testDelegatesImage() throws IOException {
-    String encodedImage = getEncodedImage();
-    PhotoAlbumImpl album = new PhotoAlbumImpl();
-    PhotoAlbumListener listener = mock( PhotoAlbumListener.class );
-    album.addPhotoAlbumListener( listener );
-
-    album.open( createOptions() );
-    JsonObject properties = new JsonObject();
-    properties.add( "image", encodedImage );
-    environment.dispatchNotifyOnServiceObject( "ImageSelection", properties );
-
-    verify( listener ).receivedImage( any( Image.class ) );
-  }
-
-  @Test
-  public void testDelegatesImageToAllListeners() throws IOException {
-    String encodedImage = getEncodedImage();
-    PhotoAlbumImpl album = new PhotoAlbumImpl();
-    PhotoAlbumListener listener1 = mock( PhotoAlbumListener.class );
-    PhotoAlbumListener listener2 = mock( PhotoAlbumListener.class );
-    album.addPhotoAlbumListener( listener1 );
-    album.addPhotoAlbumListener( listener2 );
-
-    album.open( createOptions() );
-    JsonObject properties = new JsonObject();
-    properties.add( "image", encodedImage );
-    environment.dispatchNotifyOnServiceObject( "ImageSelection", properties );
-
-    verify( listener1 ).receivedImage( any( Image.class ) );
-    verify( listener2 ).receivedImage( any( Image.class ) );
-  }
-
-  private String getEncodedImage() throws IOException {
-    InputStream resourceStream = getClass().getResourceAsStream( "tabris.png" );
-    return Base64.encodeBytes( getBytes( resourceStream ) );
-  }
-
-  private byte[] getBytes( InputStream is ) throws IOException {
-    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-    int nRead;
-    byte[] data = new byte[ 16384 ];
-    while( ( nRead = is.read( data, 0, data.length ) ) != -1 ) {
-      buffer.write( data, 0, nRead );
-    }
-    buffer.flush();
-    return buffer.toByteArray();
-  }
-
   private PhotoAlbumOptions createOptions() {
     PhotoAlbumOptions options = new PhotoAlbumOptions();
     options.setResolution( 100, 100 );
     options.setCompressionQuality( 0.5F );
     return options;
+  }
+
+  private Image getImage() {
+    InputStream resourceStream = getClass().getResourceAsStream( "tabris.png" );
+    return new Image( display, resourceStream );
   }
 
 }

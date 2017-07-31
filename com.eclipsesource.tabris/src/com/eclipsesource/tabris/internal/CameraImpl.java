@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2012, 2017 EclipseSource and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    EclipseSource - initial API and implementation
+ ******************************************************************************/
+
 package com.eclipsesource.tabris.internal;
 
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
@@ -6,21 +17,32 @@ import static com.eclipsesource.tabris.internal.Constants.EVENT_IMAGE_SELECTION_
 import static com.eclipsesource.tabris.internal.Constants.EVENT_IMAGE_SELECTION_ERROR;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_OPEN;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_COMPRESSON_QUALITY;
-import static com.eclipsesource.tabris.internal.Constants.PROPERTY_IMAGE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_RESOLUTION;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SAVE_TO_ALBUM;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_UPLOAD_PATH;
 import static com.eclipsesource.tabris.internal.Constants.TYPE_CAMERA;
 
-import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.rap.fileupload.FileDetails;
+import org.eclipse.rap.fileupload.FileUploadEvent;
+import org.eclipse.rap.fileupload.FileUploadHandler;
+import org.eclipse.rap.fileupload.FileUploadListener;
+import org.eclipse.rap.fileupload.FileUploadReceiver;
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.internal.lifecycle.LifeCycleUtil;
 import org.eclipse.rap.rwt.internal.remote.ConnectionImpl;
 import org.eclipse.rap.rwt.remote.AbstractOperationHandler;
 import org.eclipse.rap.rwt.remote.RemoteObject;
+import org.eclipse.rap.rwt.service.ServerPushSession;
+import org.eclipse.rap.rwt.service.UISession;
+import org.eclipse.rap.rwt.service.UISessionEvent;
+import org.eclipse.rap.rwt.service.UISessionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
@@ -35,17 +57,17 @@ public class CameraImpl extends AbstractOperationHandler implements Camera {
 
   private final RemoteObject remoteObject;
   private final List<CameraListener> cameraListeners;
+  private final UISession uiSession;
+  private final ServerPushSession serverPush;
 
   public CameraImpl() {
-    cameraListeners = new ArrayList<CameraListener>();
-    remoteObject = ( ( ConnectionImpl )RWT.getUISession().getConnection() ).createServiceObject( TYPE_CAMERA );
+    uiSession = RWT.getUISession();
+    remoteObject = ( ( ConnectionImpl )uiSession.getConnection() ).createServiceObject( TYPE_CAMERA );
     remoteObject.setHandler( this );
-  }
-
-  private Image decodeImage( String encodedImage ) {
-    byte[] bytes = Base64.decode( encodedImage );
-    ByteArrayInputStream stream = new ByteArrayInputStream( bytes );
-    return new Image( Display.getCurrent(), stream );
+    cameraListeners = new ArrayList<CameraListener>();
+    serverPush = new ServerPushSession();
+    String uploadPath = registerFileUploadServiceHandler();
+    remoteObject.set( PROPERTY_UPLOAD_PATH, uploadPath );
   }
 
   @Override
@@ -98,10 +120,65 @@ public class CameraImpl extends AbstractOperationHandler implements Camera {
   @Override
   public void handleNotify( String event, JsonObject properties ) {
     if( EVENT_IMAGE_SELECTION.equals( event ) ) {
-      Image image = decodeImage( properties.get( PROPERTY_IMAGE ).asString() );
-      notifyListenersWithImage( image );
+      serverPush.start();
     } else if( EVENT_IMAGE_SELECTION_ERROR.equals( event ) || EVENT_IMAGE_SELECTION_CANCEL.equals( event ) ) {
       notifyListenersWithoutPicture();
+    }
+  }
+
+  RemoteObject getRemoteObject() {
+    return remoteObject;
+  }
+
+  private String registerFileUploadServiceHandler() {
+    final Display display = LifeCycleUtil.getSessionDisplay( uiSession );
+    final ImageUploadReceiver receiver = new ImageUploadReceiver( display );
+    final FileUploadHandler uploadHandler = new FileUploadHandler( receiver );
+    uploadHandler.addUploadListener( new FileUploadListener() {
+      @Override
+      public void uploadProgress( FileUploadEvent event ) {
+      }
+      @Override
+      public void uploadFailed( FileUploadEvent event ) {
+        handleUploadFailed( display, receiver );
+      }
+      @Override
+      public void uploadFinished( FileUploadEvent event ) {
+        handleUploadFinished( display, receiver );
+      }
+    } );
+    uiSession.addUISessionListener( new UISessionListener() {
+      @Override
+      public void beforeDestroy( UISessionEvent event ) {
+        uploadHandler.dispose();
+      }
+    } );
+    return uploadHandler.getUploadUrl();
+  }
+
+  void handleUploadFailed( Display display, final ImageUploadReceiver receiver ) {
+    if( display != null && !display.isDisposed() ) {
+      display.asyncExec( new Runnable() {
+        @Override
+        public void run() {
+          notifyListenersWithoutPicture();
+          receiver.reset();
+          serverPush.stop();
+        }
+      } );
+    }
+  }
+
+  void handleUploadFinished( Display display, final ImageUploadReceiver receiver ) {
+    if( display != null && !display.isDisposed() ) {
+      display.asyncExec( new Runnable() {
+        @Override
+        public void run() {
+          notifyListenersWithImage( receiver.getImage() );
+          receiver.reset();
+          serverPush.stop();
+        }
+      } );
     }
   }
 
@@ -119,8 +196,28 @@ public class CameraImpl extends AbstractOperationHandler implements Camera {
     }
   }
 
-  RemoteObject getRemoteObject() {
-    return remoteObject;
+  public class ImageUploadReceiver extends FileUploadReceiver {
+
+    private final Display display;
+    private Image image;
+
+    public ImageUploadReceiver( Display display ) {
+      this.display = display;
+    }
+
+    @Override
+    public void receive( InputStream stream, FileDetails details ) throws IOException {
+      image = new Image( display, stream );
+    }
+
+    public Image getImage() {
+      return image;
+    }
+
+    public void reset() {
+      image = null;
+    }
+
   }
 
 }
