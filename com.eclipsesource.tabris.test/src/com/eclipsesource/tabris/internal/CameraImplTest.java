@@ -216,6 +216,34 @@ public class CameraImplTest {
     verify( listener2 ).receivedPicture( null );
   }
 
+  @Test
+  public void testStripContextPath_withLeadingSlash() throws Exception {
+    String serviceHandlerUrl = "/entry?servicehandler=handler";
+
+    assertEquals( "entry?servicehandler=handler", CameraImpl.stripContextPath( serviceHandlerUrl ) );
+  }
+
+  @Test
+  public void testStripContextPath_withContextPath() throws Exception {
+    String serviceHandlerUrl = "foo/bar/entry?servicehandler=handler";
+
+    assertEquals( "entry?servicehandler=handler", CameraImpl.stripContextPath( serviceHandlerUrl ) );
+  }
+
+  @Test
+  public void testStripContextPath_withoutContextPath() throws Exception {
+    String serviceHandlerUrl = "entry?servicehandler=handler";
+
+    assertEquals( "entry?servicehandler=handler", CameraImpl.stripContextPath( serviceHandlerUrl ) );
+  }
+
+  @Test
+  public void testStripContextPath_notServiceHandleUrl() throws Exception {
+    String serviceHandlerUrl = "foo.bar";
+
+    assertEquals( "foo.bar", CameraImpl.stripContextPath( serviceHandlerUrl ) );
+  }
+
   private CameraOptions createOptions() {
     CameraOptions options = new CameraOptions();
     options.setResolution( 100, 100 );

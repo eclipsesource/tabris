@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.rap.fileupload.FileDetails;
 import org.eclipse.rap.fileupload.FileUploadEvent;
@@ -55,6 +57,8 @@ import com.eclipsesource.tabris.camera.CameraOptions;
 @SuppressWarnings("restriction")
 public class CameraImpl extends AbstractOperationHandler implements Camera {
 
+  private static final Pattern SERVICE_URL_PATTERN = Pattern.compile(".*/([^/.]*\\?.*)"); //$NON-NLS-1$
+
   private final RemoteObject remoteObject;
   private final List<CameraListener> cameraListeners;
   private final UISession uiSession;
@@ -67,7 +71,7 @@ public class CameraImpl extends AbstractOperationHandler implements Camera {
     cameraListeners = new ArrayList<CameraListener>();
     serverPush = new ServerPushSession();
     String uploadPath = registerFileUploadServiceHandler();
-    remoteObject.set( PROPERTY_UPLOAD_PATH, uploadPath );
+    remoteObject.set( PROPERTY_UPLOAD_PATH, stripContextPath( uploadPath ) );
   }
 
   @Override
@@ -154,6 +158,14 @@ public class CameraImpl extends AbstractOperationHandler implements Camera {
       }
     } );
     return uploadHandler.getUploadUrl();
+  }
+
+  static String stripContextPath( String serviceHandlerUrl ) {
+    Matcher matcher = SERVICE_URL_PATTERN.matcher( serviceHandlerUrl );
+    if( matcher.matches() ) {
+      return matcher.group( 1 );
+    }
+    return serviceHandlerUrl;
   }
 
   void handleUploadFailed( Display display, final ImageUploadReceiver receiver ) {
