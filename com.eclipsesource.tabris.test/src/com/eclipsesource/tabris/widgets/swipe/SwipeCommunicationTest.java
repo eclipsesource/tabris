@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 EclipseSource and others.
+ * Copyright (c) 2013, 2017 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,6 @@ import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.internal.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.remote.RemoteObject;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
@@ -102,38 +101,6 @@ public class SwipeCommunicationTest {
     doReturn( Integer.valueOf( 3 ) ).when( itemProvider ).getItemCount();
 
     swipe.show( 1 );
-
-    InOrder order = inOrder( remoteObject );
-    order.verify( remoteObject ).set( "itemCount", 2 );
-    order.verify( remoteObject ).set( "itemCount", 3 );
-  }
-
-  @Test
-  public void testLockSetsChangedItemCount() {
-    SwipeItemProvider itemProvider = mockProvider( 2 );
-    mockSwipeItem( itemProvider, 0, false );
-    mockSwipeItem( itemProvider, 1, false );
-    mockSwipeItem( itemProvider, 2, false );
-    Swipe swipe = new Swipe( shell, itemProvider );
-    doReturn( Integer.valueOf( 3 ) ).when( itemProvider ).getItemCount();
-
-    swipe.lock( SWT.RIGHT );
-
-    InOrder order = inOrder( remoteObject );
-    order.verify( remoteObject ).set( "itemCount", 2 );
-    order.verify( remoteObject ).set( "itemCount", 3 );
-  }
-
-  @Test
-  public void testUnlockSetsChangedItemCount() {
-    SwipeItemProvider itemProvider = mockProvider( 2 );
-    mockSwipeItem( itemProvider, 0, false );
-    mockSwipeItem( itemProvider, 1, false );
-    mockSwipeItem( itemProvider, 2, false );
-    Swipe swipe = new Swipe( shell, itemProvider );
-    doReturn( Integer.valueOf( 3 ) ).when( itemProvider ).getItemCount();
-
-    swipe.unlock( SWT.RIGHT );
 
     InOrder order = inOrder( remoteObject );
     order.verify( remoteObject ).set( "itemCount", 2 );
@@ -228,71 +195,6 @@ public class SwipeCommunicationTest {
     verify( remoteObject ).call( eq( "remove" ), captor.capture() );
     JsonArray items = captor.getValue().get( "items" ).asArray();
     assertEquals( new JsonArray().add( 0 ), items );
-  }
-
-  @Test
-  public void testSendsLockLeft() {
-    SwipeItemProvider itemProvider = mockProvider( 1 );
-    mockSwipeItem( itemProvider, 0, true );
-    Swipe swipe = new Swipe( shell, itemProvider );
-
-    swipe.lock( SWT.LEFT );
-
-    ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
-    verify( remoteObject ).call( eq( "lockLeft" ), captor.capture() );
-    assertEquals( 0, captor.getValue().get( "index" ).asInt() );
-  }
-
-  @Test
-  public void testSendsLockRight() {
-    SwipeItemProvider itemProvider = mockProvider( 1 );
-    mockSwipeItem( itemProvider, 0, true );
-    Swipe swipe = new Swipe( shell, itemProvider );
-
-    swipe.lock( SWT.RIGHT );
-
-    ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass( JsonObject.class );
-    verify( remoteObject ).call( eq( "lockRight" ), captor.capture() );
-    assertEquals( 0, captor.getValue().get( "index" ).asInt() );
-  }
-
-  @Test
-  public void testSendsUnlockLeft() {
-    SwipeItemProvider itemProvider = mockProvider( 1 );
-    mockSwipeItem( itemProvider, 0, true );
-    Swipe swipe = new Swipe( shell, itemProvider );
-
-    swipe.unlock( SWT.LEFT );
-
-    verify( remoteObject ).call( "unlockLeft", null );
-  }
-
-  @Test
-  public void testSendsUnlockRight() {
-    SwipeItemProvider itemProvider = mockProvider( 1 );
-    mockSwipeItem( itemProvider, 0, true );
-    Swipe swipe = new Swipe( shell, itemProvider );
-
-    swipe.unlock( SWT.RIGHT );
-
-    verify( remoteObject ).call( "unlockRight", null );
-  }
-
-  @Test
-  public void testSendsUnlockRightWhenItemRemoved() {
-    SwipeItemProvider itemProvider = mockProvider( 3 );
-    mockSwipeItem( itemProvider, 0, true );
-    mockSwipeItem( itemProvider, 1, true );
-    mockSwipeItem( itemProvider, 2, true );
-    Swipe swipe = new Swipe( shell, itemProvider );
-
-    swipe.show( 2 );
-    swipe.lock( SWT.RIGHT );
-    swipe.show( 1 );
-    mockProviderSize( itemProvider, 2 );
-    swipe.refresh();
-
-    verify( remoteObject ).call( "unlockRight", null );
   }
 
   @Test

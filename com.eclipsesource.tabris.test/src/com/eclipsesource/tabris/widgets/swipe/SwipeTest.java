@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 EclipseSource and others.
+ * Copyright (c) 2013, 2017 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -818,109 +818,6 @@ public class SwipeTest {
     swipe.show( 3 );
 
     verify( listener, times( 1 ) ).itemDeactivated( any( SwipeItem.class ), anyInt(), any( SwipeContext.class ) );
-  }
-
-  @Test( expected = IllegalStateException.class )
-  public void testShowRightLockedFails() {
-    SwipeItemProvider itemProvider = mockProvider( 2 );
-    mockSwipeItem( itemProvider, 0, true );
-    mockSwipeItem( itemProvider, 1, true );
-    Swipe swipe = new Swipe( shell, itemProvider );
-    swipe.show( 0 );
-
-    swipe.lock( SWT.RIGHT );
-
-    swipe.show( 1 );
-  }
-
-  @Test
-  public void testShowRightUnlockedFailsNot() {
-    SwipeItemProvider itemProvider = mockProvider( 2 );
-    mockSwipeItem( itemProvider, 0, true );
-    mockSwipeItem( itemProvider, 1, true );
-    Swipe swipe = new Swipe( shell, itemProvider );
-    swipe.show( 0 );
-
-    swipe.lock( SWT.RIGHT );
-    swipe.unlock( SWT.RIGHT );
-
-    swipe.show( 1 );
-  }
-
-  @Test( expected = IllegalStateException.class )
-  public void testShowLeftLockedFails() {
-    SwipeItemProvider itemProvider = mockProvider( 2 );
-    mockSwipeItem( itemProvider, 0, true );
-    mockSwipeItem( itemProvider, 1, true );
-    Swipe swipe = new Swipe( shell, itemProvider );
-    swipe.show( 1 );
-
-    swipe.lock( SWT.LEFT );
-
-    swipe.show( 0 );
-  }
-
-  @Test( expected = IllegalStateException.class )
-  public void testShowLeftLockedFailsWithJump() {
-    SwipeItemProvider itemProvider = mockProvider( 4 );
-    mockSwipeItem( itemProvider, 0, true );
-    mockSwipeItem( itemProvider, 1, true );
-    mockSwipeItem( itemProvider, 2, true );
-    mockSwipeItem( itemProvider, 3, true );
-    Swipe swipe = new Swipe( shell, itemProvider );
-    swipe.show( 2 );
-
-    swipe.lock( SWT.LEFT );
-    swipe.show( 3 );
-
-    swipe.show( 0 );
-  }
-
-  @Test
-  public void testShowLeftLockedFailsNotWhenJumpToLockedItem() {
-    SwipeItemProvider itemProvider = mockProvider( 4 );
-    mockSwipeItem( itemProvider, 0, true );
-    mockSwipeItem( itemProvider, 1, true );
-    mockSwipeItem( itemProvider, 2, true );
-    mockSwipeItem( itemProvider, 3, true );
-    Swipe swipe = new Swipe( shell, itemProvider );
-
-    swipe.show( 1 );
-    swipe.lock( SWT.LEFT );
-    swipe.show( 2 );
-    swipe.show( 3 );
-    swipe.lock( SWT.RIGHT );
-    swipe.show( 1 );
-  }
-
-  @Test
-  public void testShowLeftUnlockedFailsNot() {
-    SwipeItemProvider itemProvider = mockProvider( 2 );
-    mockSwipeItem( itemProvider, 0, true );
-    mockSwipeItem( itemProvider, 1, true );
-    Swipe swipe = new Swipe( shell, itemProvider );
-    swipe.show( 1 );
-
-    swipe.lock( SWT.LEFT );
-    swipe.unlock( SWT.LEFT );
-
-    swipe.show( 0 );
-  }
-
-  @Test( expected = IllegalArgumentException.class )
-  public void testLockFailsWIthInvalidDirection() {
-    SwipeItemProvider itemProvider = mockProvider( 0 );
-    Swipe swipe = new Swipe( shell, itemProvider );
-
-    swipe.lock( SWT.ABORT );
-  }
-
-  @Test( expected = IllegalArgumentException.class )
-  public void testUnLockFailsWIthInvalidDirection() {
-    SwipeItemProvider itemProvider = mockProvider( 0 );
-    Swipe swipe = new Swipe( shell, itemProvider );
-
-    swipe.unlock( SWT.ABORT );
   }
 
   @Test( expected = IllegalStateException.class )

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 EclipseSource and others.
+ * Copyright (c) 2013, 2017 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,11 +14,7 @@ import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Clauses.whenNot;
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_ADD;
-import static com.eclipsesource.tabris.internal.Constants.METHOD_LOCK_LEFT;
-import static com.eclipsesource.tabris.internal.Constants.METHOD_LOCK_RIGHT;
 import static com.eclipsesource.tabris.internal.Constants.METHOD_REMOVE;
-import static com.eclipsesource.tabris.internal.Constants.METHOD_UNLOCK_LEFT;
-import static com.eclipsesource.tabris.internal.Constants.METHOD_UNLOCK_RIGHT;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ACTIVE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_CONTROL;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_INDEX;
@@ -173,21 +169,9 @@ public class Swipe implements Serializable {
     whenNot( manager.isMoveAllowed( manager.getIndexer().getCurrent(), index ) )
       .throwIllegalState( "Move not allowed. Item " + index + " is locked." );
     if( isValidIndex( index ) ) {
-      verifyLocks();
       showItemAtIndex( index, needsToShow );
     } else {
       throw new IllegalArgumentException( "Item at index " + index + " does not exist." );
-    }
-  }
-
-  private void verifyLocks() {
-    removeLockIfOutOfBounds( manager.getLeftLock(), SWT.LEFT );
-    removeLockIfOutOfBounds( manager.getRightLock(), SWT.RIGHT );
-  }
-
-  private void removeLockIfOutOfBounds( int lock, int direction ) {
-    if( lock != -1 && !isValidIndex( lock ) ) {
-      unlock( direction );
     }
   }
 
@@ -393,45 +377,6 @@ public class Swipe implements Serializable {
    */
   public SwipeContext getContext() {
     return manager.getContext();
-  }
-
-  /**
-   * <p>
-   * Locks the current item in the given direction. Allowed directions are SWT.LEFT and SWT.RIGHT.
-   * <p>
-   *
-   * @throws IllegalArgumentException when not SWT.LEFT or SWT.RIGHT
-   */
-  public void lock( int direction ) throws IllegalArgumentException {
-    when( direction != SWT.LEFT && direction != SWT.RIGHT )
-      .throwIllegalArgument( "Invalid lock direction. Only SWT.LEFT and SWT.RIGHT are supported." );
-    int indexToLock = manager.getIndexer().getCurrent();
-    manager.lock( direction, indexToLock, true );
-    String method = direction == SWT.LEFT ? METHOD_LOCK_LEFT : METHOD_LOCK_RIGHT;
-    remoteObject.call( method, createLockProperties( direction, indexToLock ) );
-    updateItemCount();
-  }
-
-  /**
-   * <p>
-   * Unlocks the current item in the given direction. Allowed directions are SWT.LEFT and SWT.RIGHT.
-   * <p>
-   *
-   * @throws IllegalArgumentException when not SWT.LEFT or SWT.RIGHT
-   */
-  public void unlock( int direction ) throws IllegalArgumentException {
-    when( direction != SWT.LEFT && direction != SWT.RIGHT )
-      .throwIllegalArgument( "Invalid lock direction. Only SWT.LEFT and SWT.RIGHT are supported." );
-    manager.unlock( direction );
-    String method = direction == SWT.LEFT ? METHOD_UNLOCK_LEFT : METHOD_UNLOCK_RIGHT;
-    remoteObject.call( method, null );
-    updateItemCount();
-  }
-
-  private JsonObject createLockProperties( int direction, int index ) {
-    JsonObject properties = new JsonObject();
-    properties.add( PROPERTY_INDEX, index );
-    return properties;
   }
 
   private void verifyIsNotDisposed() {
