@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 EclipseSource and others.
+ * Copyright (c) 2014, 2017 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,6 @@
 package com.eclipsesource.tabris.widgets;
 
 import static com.eclipsesource.tabris.internal.Constants.EVENT_SELECTION;
-import static com.eclipsesource.tabris.widgets.ClientDialog.Severity.ERROR;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -35,7 +34,6 @@ import org.mockito.ArgumentCaptor;
 import com.eclipsesource.tabris.internal.Constants;
 import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 import com.eclipsesource.tabris.widgets.ClientDialog.ButtonType;
-import com.eclipsesource.tabris.widgets.ClientDialog.Severity;
 
 
 public class ClientDialogTest {
@@ -113,44 +111,6 @@ public class ClientDialogTest {
     ClientDialog dialog = new ClientDialog();
 
     ClientDialog actualDialog = dialog.setMessage( "bar" );
-
-    assertSame( dialog, actualDialog );
-  }
-
-  @Test
-  public void testFailsToSetNullSeverity() {
-    thrown.expect( IllegalArgumentException.class );
-    thrown.expectMessage( "severity must not be null" );
-
-    ClientDialog dialog = new ClientDialog();
-    dialog.setSeverity( null );
-  }
-
-  @Test
-  public void testSetsSeverity() {
-    ClientDialog dialog = new ClientDialog();
-
-    dialog.setSeverity( ERROR );
-
-    Severity severity = dialog.getSeverity();
-    assertSame( ERROR, severity );
-  }
-
-  @Test
-  public void testSetsSeverityOnRemoteObject() {
-    RemoteObject remoteObject = environment.getRemoteObject();
-    ClientDialog dialog = new ClientDialog();
-
-    dialog.setSeverity( ERROR );
-
-    verify( remoteObject ).set( "severity", ERROR.toString() );
-  }
-
-  @Test
-  public void testSetSeverityReturnsDialog() {
-    ClientDialog dialog = new ClientDialog();
-
-    ClientDialog actualDialog = dialog.setSeverity( ERROR );
 
     assertSame( dialog, actualDialog );
   }

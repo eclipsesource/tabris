@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 EclipseSource and others.
+ * Copyright (c) 2014, 2017 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,6 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_BUTTON_NEUTRA
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_BUTTON_OK;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_BUTTON_TYPE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_MESSAGE;
-import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SEVERITY;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TITLE;
 import static com.eclipsesource.tabris.internal.Constants.TYPE_CLIENT_DIALOG;
 
@@ -83,21 +82,11 @@ public class ClientDialog implements Serializable {
     NEUTRAL
   }
 
-  /**
-   * <p>
-   * A {@link ClientDialog} can have a severity. Some clients interpret the severity by showing a severity icon.
-   * </p>
-   */
-  public static enum Severity {
-    WARNING, ERROR
-  }
-
   private final RemoteObject remoteObject;
   private final Map<ButtonType, Listener> buttons;
   private final List<ClientDialogListener> dialogListeners;
   private String title;
   private String message;
-  private Severity severity;
 
   public ClientDialog() {
     this.remoteObject = RWT.getUISession().getConnection().createRemoteObject( TYPE_CLIENT_DIALOG );
@@ -139,24 +128,6 @@ public class ClientDialog implements Serializable {
 
   public String getMessage() {
     return message;
-  }
-
-  /**
-   * <p>
-   * Sets the {@link Severity} of a {@link ClientDialog}.
-   * </p>
-   *
-   * @param severity the {@link Severity} to use. Must not be <code>null</code>.
-   */
-  public ClientDialog setSeverity( Severity severity ) {
-    whenNull( severity ).throwIllegalArgument( "severity must not be null" );
-    this.severity = severity;
-    remoteObject.set( PROPERTY_SEVERITY, severity.toString() );
-    return this;
-  }
-
-  public Severity getSeverity() {
-    return severity;
   }
 
   /**
