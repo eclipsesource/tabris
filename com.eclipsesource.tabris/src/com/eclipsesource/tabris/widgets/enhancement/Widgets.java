@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 EclipseSource and others.
+ * Copyright (c) 2012, 2017 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@ package com.eclipsesource.tabris.widgets.enhancement;
 
 import static com.eclipsesource.tabris.internal.WidgetsUtil.checkComponent;
 
-import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
@@ -24,8 +23,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.Widget;
-
-import com.eclipsesource.tabris.widgets.ScrollingComposite;
 
 
 /**
@@ -64,19 +61,6 @@ public class Widgets {
   public static TreeDecorator onTree( Tree tree ) {
     checkComponent( tree );
     return new TreeDecorator( tree );
-  }
-
-  public static ScrolledCompositeDecorator onScrolledComposite( ScrolledComposite composite ) {
-    checkComponent( composite );
-    return new ScrolledCompositeDecorator( composite );
-  }
-
-  /**
-   * @since 1.0
-   */
-  public static ScrollingCompositeDecorator onScrollingComposite( ScrollingComposite composite ) {
-    checkComponent( composite );
-    return new ScrollingCompositeDecorator( composite );
   }
 
   public static LabelDecorator onLabel( Label label ) {

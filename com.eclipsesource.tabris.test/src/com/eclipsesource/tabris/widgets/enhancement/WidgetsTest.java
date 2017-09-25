@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 EclipseSource and others.
+ * Copyright (c) 2012, 2017 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.mockito.Mockito.mock;
 
-import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
@@ -27,8 +26,6 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.Widget;
 import org.junit.Test;
-
-import com.eclipsesource.tabris.widgets.ScrollingComposite;
 
 
 public class WidgetsTest {
@@ -109,36 +106,6 @@ public class WidgetsTest {
 
     WidgetDecorator<LabelDecorator> decorator1 = Widgets.onLabel( widget );
     WidgetDecorator<LabelDecorator> decorator2 = Widgets.onLabel( widget );
-
-    assertNotSame( decorator1, decorator2 );
-  }
-
-  @Test
-  public void testOnScrolledComposite() {
-    assertNotNull( Widgets.onScrolledComposite( mock( ScrolledComposite.class ) ) );
-  }
-
-  @Test( expected = IllegalArgumentException.class )
-  public void testOnScrolledCompositeWithNull() {
-    Widgets.onScrolledComposite( null );
-  }
-
-  @Test
-  public void testOnScrollingComposite() {
-    assertNotNull( Widgets.onScrollingComposite( mock( ScrollingComposite.class ) ) );
-  }
-
-  @Test( expected = IllegalArgumentException.class )
-  public void testOnScrollingCompositeWithNull() {
-    Widgets.onScrollingComposite( null );
-  }
-
-  @Test
-  public void testOnScrolledCompositeDoesNotCache() {
-    ScrolledComposite widget = mock( ScrolledComposite.class );
-
-    WidgetDecorator<ScrolledCompositeDecorator> decorator1 = Widgets.onScrolledComposite( widget );
-    WidgetDecorator<ScrolledCompositeDecorator> decorator2 = Widgets.onScrolledComposite( widget );
 
     assertNotSame( decorator1, decorator2 );
   }
