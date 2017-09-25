@@ -22,7 +22,7 @@ import com.eclipsesource.tabris.VersionCheck;
 
 public class VersionChecker {
 
-  static final String TABRIS_SERVER_VERSION = "3.2.0";
+  static final String TABRIS_SERVER_VERSION = "3.3.0";
   private static final Pattern VERSION_PATTERN = Pattern.compile( ".*/([0-9]*\\.[0-9]*\\.[0-9])* \\(.*\\)" );
 
   private final String clientVersion;
