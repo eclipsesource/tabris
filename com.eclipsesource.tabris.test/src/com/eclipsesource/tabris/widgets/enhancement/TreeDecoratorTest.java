@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 EclipseSource and others.
+ * Copyright (c) 2012, 2017 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,6 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.enhancement;
 
-import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.ALT_SELECTION;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.BACK_FOCUS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -32,7 +31,6 @@ import org.junit.Test;
 
 import com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry;
 import com.eclipsesource.tabris.test.util.TabrisEnvironment;
-import com.eclipsesource.tabris.widgets.enhancement.TreeDecorator.TreePart;
 
 
 public class TreeDecoratorTest {
@@ -49,34 +47,6 @@ public class TreeDecoratorTest {
     display = new Display();
     tree = new Tree( new Shell( display ), SWT.NONE );
     decorator = Widgets.onTree( tree );
-  }
-
-  @Test
-  public void testUseTitle() {
-    decorator.useTitle( "test" );
-
-    assertEquals( "test", tree.getToolTipText() );
-  }
-
-  @Test
-  public void testSetAlternativeLeafSelection() {
-    decorator.enableAlternativeSelection( TreePart.LEAF );
-
-    assertEquals( "leaf", tree.getData( ALT_SELECTION.getKey() ) );
-  }
-
-  @Test
-  public void testSetAlternativeBranchSelection() {
-    decorator.enableAlternativeSelection( TreePart.BRANCH );
-
-    assertEquals( "branch", tree.getData( ALT_SELECTION.getKey() ) );
-  }
-
-  @Test
-  public void testSetAlternativeSelectionForAll() {
-    decorator.enableAlternativeSelection( TreePart.ALL );
-
-    assertEquals( "all", tree.getData( ALT_SELECTION.getKey() ) );
   }
 
   @Test

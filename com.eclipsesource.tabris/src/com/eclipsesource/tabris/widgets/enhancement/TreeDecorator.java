@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2016 EclipseSource and others.
+ * Copyright (c) 2012, 2017 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@ package com.eclipsesource.tabris.widgets.enhancement;
 
 import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
-import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.ALT_SELECTION;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.BACK_FOCUS;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.REFRESH_HANDLER;
 import static com.eclipsesource.tabris.internal.WidgetsUtil.setData;
@@ -20,8 +19,6 @@ import static com.eclipsesource.tabris.internal.WidgetsUtil.setData;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.template.Cell;
 import org.eclipse.rap.rwt.template.Template;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.internal.widgets.IDisplayAdapter;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -44,41 +41,6 @@ public class TreeDecorator extends WidgetDecorator<TreeDecorator> {
   TreeDecorator( Tree tree ) {
     super( tree );
     this.tree = tree;
-  }
-
-  /**
-   * <p>
-   * Defines a title for a tree. This is comparable with a header for a tree.
-   * </p>
-   *
-   * @since 0.9
-   */
-  public TreeDecorator useTitle( String title ) {
-    tree.setToolTipText( title );
-    return this;
-  }
-
-  /**
-   * <p>
-   * This enables alternative selection on tree items. When the alternative action will be selected the
-   * {@link SelectionEvent#stateMask} contains the {@link SWT#ALT} key.
-   * </p>
-   *
-   * @since 0.9
-   */
-  public TreeDecorator enableAlternativeSelection( TreePart part ) {
-    switch( part ) {
-      case LEAF:
-        setData( tree, ALT_SELECTION, "leaf" );
-      break;
-      case BRANCH:
-        setData( tree, ALT_SELECTION, "branch" );
-      break;
-      case ALL:
-        setData( tree, ALT_SELECTION, "all" );
-      break;
-    }
-    return this;
   }
 
   /**
