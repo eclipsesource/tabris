@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 EclipseSource and others.
+ * Copyright (c) 2012, 2017 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,6 @@ import com.eclipsesource.tabris.camera.PhotoAlbum;
 import com.eclipsesource.tabris.device.ClientDevice;
 import com.eclipsesource.tabris.geolocation.Geolocation;
 import com.eclipsesource.tabris.interaction.AppLauncher;
-import com.eclipsesource.tabris.print.Printer;
 import com.eclipsesource.tabris.push.CloudPush;
 import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
@@ -198,25 +197,6 @@ public class TabrisClientImplTest {
     Geolocation geolocation2 = client.getService( Geolocation.class );
 
     assertSame( geolocation, geolocation2 );
-  }
-
-  @Test
-  public void testHasPrintService() {
-    TabrisClient client = new TabrisClientImpl();
-
-    Printer print = client.getService( Printer.class );
-
-    assertNotNull( print );
-  }
-
-  @Test
-  public void testPrintServiceIsSingleton() {
-    TabrisClient client = new TabrisClientImpl();
-
-    Printer print1 = client.getService( Printer.class );
-    Printer print2 = client.getService( Printer.class );
-
-    assertSame( print1, print2 );
   }
 
 }
