@@ -16,7 +16,6 @@ import static org.mockito.Mockito.mock;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
@@ -167,26 +166,6 @@ public class WidgetsTest {
 
     ToolItemDecorator decorator1 = Widgets.onToolItem( widget );
     ToolItemDecorator decorator2 = Widgets.onToolItem( widget );
-
-    assertNotSame( decorator1, decorator2 );
-  }
-
-  @Test
-  public void testOnList() {
-    assertNotNull( Widgets.onList( mock( List.class ) ) );
-  }
-
-  @Test( expected = IllegalArgumentException.class )
-  public void testOnListWithNull() {
-    Widgets.onList( null );
-  }
-
-  @Test
-  public void testOnListDoesNotCache() {
-    List widget = mock( List.class );
-
-    ListDecorator decorator1 = Widgets.onList( widget );
-    ListDecorator decorator2 = Widgets.onList( widget );
 
     assertNotSame( decorator1, decorator2 );
   }

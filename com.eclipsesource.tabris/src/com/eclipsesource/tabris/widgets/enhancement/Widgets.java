@@ -14,7 +14,6 @@ import static com.eclipsesource.tabris.internal.WidgetsUtil.checkComponent;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
@@ -66,11 +65,6 @@ public class Widgets {
   public static LabelDecorator onLabel( Label label ) {
     checkComponent( label );
     return new LabelDecorator( label );
-  }
-
-  public static ListDecorator onList( List list ) {
-    checkComponent( list );
-    return new ListDecorator( list );
   }
 
   /**
