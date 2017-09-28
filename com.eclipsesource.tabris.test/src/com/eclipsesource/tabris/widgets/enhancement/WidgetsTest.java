@@ -15,7 +15,6 @@ import static org.junit.Assert.assertNotSame;
 import static org.mockito.Mockito.mock;
 
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
@@ -85,26 +84,6 @@ public class WidgetsTest {
 
     WidgetDecorator<TreeDecorator> decorator1 = Widgets.onTree( widget );
     WidgetDecorator<TreeDecorator> decorator2 = Widgets.onTree( widget );
-
-    assertNotSame( decorator1, decorator2 );
-  }
-
-  @Test
-  public void testOnLabel() {
-    assertNotNull( Widgets.onLabel( mock( Label.class ) ) );
-  }
-
-  @Test( expected = IllegalArgumentException.class )
-  public void testOnLabelWithNull() {
-    Widgets.onLabel( null );
-  }
-
-  @Test
-  public void testOnLabelDoesNotCache() {
-    Label widget = mock( Label.class );
-
-    WidgetDecorator<LabelDecorator> decorator1 = Widgets.onLabel( widget );
-    WidgetDecorator<LabelDecorator> decorator2 = Widgets.onLabel( widget );
 
     assertNotSame( decorator1, decorator2 );
   }

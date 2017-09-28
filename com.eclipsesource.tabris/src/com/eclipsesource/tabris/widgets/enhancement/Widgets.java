@@ -13,7 +13,6 @@ package com.eclipsesource.tabris.widgets.enhancement;
 import static com.eclipsesource.tabris.internal.WidgetsUtil.checkComponent;
 
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
@@ -60,11 +59,6 @@ public class Widgets {
   public static TreeDecorator onTree( Tree tree ) {
     checkComponent( tree );
     return new TreeDecorator( tree );
-  }
-
-  public static LabelDecorator onLabel( Label label ) {
-    checkComponent( label );
-    return new LabelDecorator( label );
   }
 
   /**
