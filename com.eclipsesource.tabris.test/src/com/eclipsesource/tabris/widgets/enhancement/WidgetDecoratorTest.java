@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 EclipseSource and others.
+ * Copyright (c) 2012, 2017 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,6 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.enhancement;
 
-import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.ANIMATED;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.SHOW_TOUCH;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
@@ -41,13 +40,6 @@ public class WidgetDecoratorTest {
   @Test
   public void testIsSerializable() {
     assertTrue( Serializable.class.isAssignableFrom( WidgetDecorator.class ) );
-  }
-
-  @Test
-  public void testUseAnimation() {
-    decorator.useAnimation();
-
-    verify( widget ).setData( ANIMATED.getKey(), Boolean.TRUE );
   }
 
   @Test

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 EclipseSource and others.
+ * Copyright (c) 2012, 2017 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,6 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.widgets.enhancement;
 
-import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.ANIMATED;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.SHOW_TOUCH;
 import static com.eclipsesource.tabris.internal.WidgetsUtil.setData;
 
@@ -29,33 +28,6 @@ public class WidgetDecorator<T extends WidgetDecorator> implements Serializable 
 
   WidgetDecorator( Widget widget ) {
     this.widget = widget;
-  }
-
-  /**
-   * <p>
-   * Instructs a widget to be animated when it's bounds change.
-   * </p>
-   *
-   * @since 0.8
-   */
-  @SuppressWarnings("unchecked")
-  public T useAnimation() {
-    setData( widget, ANIMATED, Boolean.TRUE );
-    return ( T )this;
-  }
-
-  /**
-   * <p>
-   * Instructs a {@link Widget} to show immediate visual feedback on a user interaction.
-   * </p>
-   *
-   * @deprecated use {@link WidgetDecorator#showLocalTouch(boolean)} instead.
-   *
-   * @since 0.10
-   */
-  @Deprecated
-  public T showLocalTouch() {
-    return showLocalTouch( true );
   }
 
   /**
