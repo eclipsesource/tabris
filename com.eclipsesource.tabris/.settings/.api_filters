@@ -45,15 +45,6 @@
             </message_arguments>
         </filter>
     </resource>
-    <resource path="src/com/eclipsesource/tabris/internal/CloudPushImpl.java" type="com.eclipsesource.tabris.internal.CloudPushImpl">
-        <filter id="574668824">
-            <message_arguments>
-                <message_argument value="CloudPush"/>
-                <message_argument value="CloudPushImpl"/>
-                <message_argument value="ClientService"/>
-            </message_arguments>
-        </filter>
-    </resource>
     <resource path="src/com/eclipsesource/tabris/internal/GeolocationImpl.java" type="com.eclipsesource.tabris.internal.GeolocationImpl">
         <filter id="574668824">
             <message_arguments>

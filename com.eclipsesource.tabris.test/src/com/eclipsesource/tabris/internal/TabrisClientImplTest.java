@@ -25,7 +25,6 @@ import com.eclipsesource.tabris.camera.PhotoAlbum;
 import com.eclipsesource.tabris.device.ClientDevice;
 import com.eclipsesource.tabris.geolocation.Geolocation;
 import com.eclipsesource.tabris.interaction.AppLauncher;
-import com.eclipsesource.tabris.push.CloudPush;
 import com.eclipsesource.tabris.test.util.TabrisEnvironment;
 
 
@@ -98,15 +97,6 @@ public class TabrisClientImplTest {
   }
 
   @Test
-  public void testHasCloudPushService() {
-    TabrisClient client = new TabrisClientImpl();
-
-    CloudPush cloudPush = client.getService( CloudPush.class );
-
-    assertNotNull( cloudPush );
-  }
-
-  @Test
   public void testHasGeolocationService() {
     TabrisClient client = new TabrisClientImpl();
 
@@ -140,15 +130,6 @@ public class TabrisClientImplTest {
     ClientDevice device = client.getService( ClientDevice.class );
 
     assertSame( device, client.getService( ClientDevice.class ) );
-  }
-
-  @Test
-  public void testCloudPushIsSingleton() {
-    TabrisClient client = new TabrisClientImpl();
-
-    CloudPush cloudPush = client.getService( CloudPush.class );
-
-    assertSame( cloudPush, client.getService( CloudPush.class ) );
   }
 
   @Test

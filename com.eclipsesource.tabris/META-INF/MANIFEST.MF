@@ -17,13 +17,11 @@ Export-Package: com.eclipsesource.tabris;version="3.3.0",
  com.eclipsesource.tabris.internal.ui;version="3.3.0";x-internal:=true,
  com.eclipsesource.tabris.internal.ui.rendering;version="3.3.0";x-internal:=true,
  com.eclipsesource.tabris.internal.ui.web;version="3.3.0";x-internal:=true,
- com.eclipsesource.tabris.push;version="3.3.0",
  com.eclipsesource.tabris.ui;version="3.3.0",
  com.eclipsesource.tabris.ui.action;version="3.3.0",
  com.eclipsesource.tabris.widgets;version="3.3.0",
  com.eclipsesource.tabris.widgets.enhancement;version="3.3.0",
- com.eclipsesource.tabris.widgets.swipe;version="3.3.0",
- com.eclipsesource.tabris.xcallbackurl;version="3.3.0"
+ com.eclipsesource.tabris.widgets.swipe;version="3.3.0"
 Import-Package: javax.servlet;version="[2.3.0,4.0.0)",
  javax.servlet.http;version="[2.3.0,4.0.0)"
 Bundle-Localization: plugin
