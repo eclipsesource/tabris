@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2016 EclipseSource and others.
+ * Copyright (c) 2012, 2017 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,9 +18,7 @@ import static com.eclipsesource.tabris.internal.Constants.HEADER_SERVER_ID;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_VERSION_CHECK;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_ANDROID;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_IOS;
-import static com.eclipsesource.tabris.internal.Constants.THEME_ID_IOS6;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_WINDOWS;
-import static com.eclipsesource.tabris.internal.Constants.USER_AGENT;
 import static javax.servlet.http.HttpServletResponse.SC_PRECONDITION_FAILED;
 
 import java.io.Serializable;
@@ -76,20 +74,11 @@ public class TabrisClientProvider implements ClientProvider, Serializable {
 
   private void setPlatformTheme( Platform platform ) {
     if( platform == IOS ) {
-      setThemeForIOS();
+      ThemeUtil.setCurrentThemeId( RWT.getUISession(), THEME_ID_IOS );
     } else if( platform == ANDROID ) {
       ThemeUtil.setCurrentThemeId( RWT.getUISession(), THEME_ID_ANDROID );
     } else if( platform == WINDOWS ) {
       ThemeUtil.setCurrentThemeId( RWT.getUISession(), THEME_ID_WINDOWS );
-    }
-  }
-
-  private void setThemeForIOS() {
-    String userAgent = RWT.getRequest().getHeader( USER_AGENT );
-    if( userAgent.contains( "OS 6.1" ) ) {
-      ThemeUtil.setCurrentThemeId( RWT.getUISession(), THEME_ID_IOS6 );
-    } else {
-      ThemeUtil.setCurrentThemeId( RWT.getUISession(), THEME_ID_IOS );
     }
   }
 

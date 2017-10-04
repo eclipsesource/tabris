@@ -23,11 +23,9 @@ public class Constants {
   public static final String THEME_ID_ANDROID = "com.eclipsesource.rap.mobile.theme.android";
   public static final String THEME_ID_SWT = "com.eclipsesource.rap.mobile.theme.swt";
   public static final String THEME_ID_IOS = "com.eclipsesource.rap.mobile.theme.ios";
-  public static final String THEME_ID_IOS6 = "com.eclipsesource.rap.mobile.theme.ios6";
   public static final String THEME_ID_WINDOWS = "com.eclipsesource.rap.mobile.theme.windows";
   public static final String THEME_PATH_ANDROID = "theme/android.css";
   public static final String THEME_PATH_IOS = "theme/ios.css";
-  public static final String THEME_PATH_IOS6 = "theme/ios6.css";
   public static final String THEME_PATH_WEB = "theme/web.css";
   public static final String THEME_PATH_SWT = "theme/swt.css";
   public static final String THEME_PATH_WINDOWS = "theme/windows.css";

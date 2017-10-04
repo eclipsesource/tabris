@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2016 EclipseSource and others.
+ * Copyright (c) 2012, 2017 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -117,18 +117,6 @@ public class TabrisClientProviderTest {
 
     String currentTheme = ( String )RWT.getUISession().getAttribute( CURRENT_THEME_ID );
     assertEquals( Constants.THEME_ID_IOS, currentTheme );
-  }
-
-  @Test
-  public void testUsesIOS6Theme() throws IOException {
-    registerTheme( Constants.THEME_ID_IOS6 );
-    TabrisRequest request = environment.getRequest();
-    request.setHeader( Constants.USER_AGENT, Constants.ID_IOS + " OS 6.1.2" );
-
-    provider.accept( request );
-
-    String currentTheme = ( String )RWT.getUISession().getAttribute( CURRENT_THEME_ID );
-    assertEquals( Constants.THEME_ID_IOS6, currentTheme );
   }
 
   @Test

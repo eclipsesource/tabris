@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2016 EclipseSource and others.
+ * Copyright (c) 2012, 2017 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -55,7 +55,6 @@ public class TabrisClientInstallerTest {
     TabrisClientInstaller.install( application );
 
     verify( application ).addStyleSheet( eq( Constants.THEME_ID_ANDROID ), anyString(), any( ResourceLoader.class ) );
-    verify( application ).addStyleSheet( eq( Constants.THEME_ID_IOS6 ), anyString(), any( ResourceLoader.class ) );
     verify( application ).addStyleSheet( eq( Constants.THEME_ID_IOS ), anyString(), any( ResourceLoader.class ) );
     verify( application ).addStyleSheet( eq( Constants.THEME_ID_WINDOWS ), anyString(), any( ResourceLoader.class ) );
     verify( application ).addStyleSheet( eq( Constants.THEME_ID_SWT ), anyString(), any( ResourceLoader.class ) );
@@ -79,7 +78,6 @@ public class TabrisClientInstallerTest {
     TabrisClientInstaller.install( application, "foo" );
 
     verify( application ).addStyleSheet( eq( Constants.THEME_ID_ANDROID ), anyString(), any( ResourceLoader.class ) );
-    verify( application ).addStyleSheet( eq( Constants.THEME_ID_IOS6 ), anyString(), any( ResourceLoader.class ) );
     verify( application ).addStyleSheet( eq( Constants.THEME_ID_IOS ), anyString(), any( ResourceLoader.class ) );
     verify( application ).addStyleSheet( eq( Constants.THEME_ID_WINDOWS ), anyString(), any( ResourceLoader.class ) );
     verify( application ).addStyleSheet( eq( Constants.THEME_ID_SWT ), anyString(), any( ResourceLoader.class ) );
