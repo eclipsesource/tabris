@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 EclipseSource and others.
+ * Copyright (c) 2012, 2017 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,13 +9,16 @@
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
 
-/* Default theme for all widgets */
-
 * {
   color: #4a4a4a;
   background-color: #fff;
-  background-image: none;
-  font: 16px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  font: 15px 'Segoe UI', Arial, Verdana, "Lucida Sans", sans-serif;
+  border: none;
+  padding: 0px;
+}
+
+*[BORDER] {
+  border: 1px solid #a4a4a4;
 }
 
 *:disabled {
@@ -31,385 +34,234 @@ Display {
   rwt-selectionmarker-color: #fec83c;
   rwt-infobackground-color: #ffffff;
 
-  rwt-fontlist: 14px 'Segoe UI', Corbel, Calibri, Tahoma, 'Lucida Sans Unicode';
+  rwt-fontlist: 15px 'Segoe UI', Corbel, Calibri, Tahoma, 'Lucida Sans Unicode';
 
-  font: 14px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  font: 15px 'Segoe UI', Arial, Verdana, "Lucida Sans", sans-serif;
 }
 
-/* Default theme for all controls */
-
-* {
-  border: none;
-  padding: 0px;
-}
-
-*[BORDER] {
-  border: 1px solid #a4a4a4;
-}
-
-/* Default theme for all composites */
+/* Composite theme */
 
 Composite {
-  padding: 0;
   background-color: #ffffff;
-  background-image: none;
   border: none;
+  padding: 0px;
 }
 
 Composite[BORDER] {
   border: 1px solid #bdbdbd;
-  border-radius: 2px;
 }
 
-/* Button default theme */
-
-Button {
-  font: 16px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
-  background-image: none;
-  border: none;
-  border-radius: 2px;
-  padding: 5px 15px 5px 15px;
-  spacing: 2px;
-  color: #4a4a4a;
-  background-color: #ffffff;
-}
-
-Button[PUSH],
-Button[TOGGLE],
-Button[PUSH][BORDER],
-Button[TOGGLE][BORDER],
-Button[PUSH][FLAT],
-Button[TOGGLE][FLAT] {
-  border: 1px solid #bdbdbd;
-  border-radius: 2px;
-  padding: 5px 12px 5px 12px;
-  background-image: gradient(
-    linear, left top, left bottom,
-    from( #f9f9f9 ),
-    to( #e4e4e4 )
-  );
-}
-
-Button[PUSH]:default,
-Button[TOGGLE]:default {
-  background-color: #416693;
-  background-image: gradient(
-    linear, left top, left bottom,
-    from( #e2eefc ),
-    to( #d4d4d4 )
-  );
-  border: 1px solid #a0b3ca;
-}
-
-Button[PUSH]:disabled,
-Button[TOGGLE]:disabled {
-  color: #d2d2d2;
-  background-image: none;
-  background-color: #fafafa;
-  border: 1px solid #d2d2d2;
-}
-
-Button[PUSH]:hover,
-Button[TOGGLE]:hover {
-  background-image: gradient(
-    linear, left top, left bottom,
-    from( #eaeaea ),
-    to( #d5d5d5 )
-  );
-}
-
-Button[PUSH]:pressed,
-Button[TOGGLE]:pressed {
-  background-image: gradient(
-    linear, left top, left bottom,
-    from( #d5d5d5 ),
-    to( #eaeaea )
-  );
-}
-
-Button[TOGGLE]:selected {
-  background-image: gradient(
-    linear, left top, left bottom,
-    from( #d5d5d5 ),
-    to( #eaeaea )
-  );
-}
-
-Button[TOGGLE]:selected:hover {
-  background-image: gradient(
-    linear, left top, left bottom,
-    from( #d5d5d5 ),
-    to( #eaeaea )
-  );
-}
-
-Button[CHECK],
-Button[RADIO] {
-  padding: 0px;
-  spacing: 7px;
-}
-
-Button[CHECK][BORDER],
-Button[RADIO][BORDER] {
-  background-image: none;
-  border: 1px solid #bdbdbd;
-  border-radius: 2px;
-}
-
-Button-FocusIndicator[PUSH], Button-FocusIndicator[TOGGLE] {
-  background-color: transparent;
-  border: 1px dotted #b8b8b8;
-  margin: 2px;
-  padding: 0px;
-}
-
-Button-FocusIndicator[CHECK], Button-FocusIndicator[RADIO] {
-  background-color: transparent;
-  border: 1px dotted #b8b8b8;
-  padding: 2px 2px 2px 1px;
-  margin: 0px;
-}
-
-/* Combo default theme */
-
-Combo,
-Combo[BORDER] {
-  font: 16px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
-  color: #4a4a4a;
-  background-color: #ffffff;
-  border: 0px;
-  border-radius: 0 2px 2px 0;
-}
-
-Combo:focused,
-Combo[BORDER]:focused {
-  border: 1px solid #4f7cb1;
-}
-
-Combo-Button {
-  background-color: #efefef;
-  border: none;
-  border-left: 1px solid #bdbdbd;
-  border-radius: 0px 2px 2px 0px;
-  background-image: gradient(
-    linear, left top, left bottom,
-    from( #f9f9f9 ),
-    to( #e4e4e4 )
-  );
-  width: 30px;
-}
-
-Combo-List {
-  border: 1px solid #4f7cb1;
-  border-radius: 2px;
-}
-
-Combo-Field {
-  padding: 5px 4px 5px 4px;
-}
-
-Combo-FocusIndicator {
-  background-color: transparent;
-  border: none;
-  margin: 0;
-}
-
-/* Label default theme */
+/* Label theme */
 
 Label {
-  font: 16px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+  font: 15px 'Segoe UI', Arial, Verdana, "Lucida Sans", sans-serif;
   color: #4a4a4a;
   background-color: transparent;
-  background-image: none;
   border: none;
-  border-radius: 2px;
-  text-decoration: none;
-}
-
-Label[BORDER] {
-  border: 0px;
-  border-radius: 0px;
+  padding: 0px;
 }
 
 Label-SeparatorLine {
-  background-image: none;
   background-color: transparent;
-  border: 1px solid #a4a4a4;
-  border-radius: 0px;
   width: 2px;
 }
 
-Label-SeparatorLine[SHADOW_IN] {
-  border: 1px inset;
-}
-
-Label-SeparatorLine[SHADOW_OUT] {
-  border: 1px outset;
-}
-
-/* ProgressBar default theme */
-
-ProgressBar {
-  background-color: #ffffff;
-  background-image: none;
-  border: 1px solid #aaaaaa;
-  border-radius: 0;
-  width: 16px;
-}
-
-/* Shell default theme */
-
-Shell {
-  border: none;
-  border-radius: 2px;
-  background-color: #ffffff;
-  background-image: none;
-  padding: 0;
-}
-
-Shell[APPLICATION_MODAL] {
-  padding: 15px 31px 31px 15px;
-}
-
-Shell[TITLE], Shell[BORDER] {
-  background-color: #ffffff;
-  border: 0px solid #6e6e6e;
-  border-radius: 0px;
-  padding: 17px 31px 31px 15px;
-}
-
-Shell[BORDER]:inactive, Shell[TITLE]:inactive {
-  border: 1px solid #bdbdbd;
-}
-
-Shell:maximized, Shell:maximized:inactive {
-  border: none;
-  border-radius: 0px;
-}
-
-Shell-DisplayOverlay {
-  background-image: none;
-  background-color: #808080;
-}
-
-/* Shell titlebar */
-
-Shell-Titlebar {
-  font: 14px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
-  background-color: #0080c0;
-  background-gradient-color: #0080c0;
-  color: #ffffff;
-  background-image: gradient(
-    linear, left top, left bottom,
-    from( #416693 ), to( #5882b5 )
-  );
-  padding: 0 10px 0 10px;
-  margin: 0px;
-  height: 64px;
-  border: none;
-  border-radius: 0;
-}
-
-Shell-Titlebar:inactive {
-  background-color: #7996a5;
-  background-gradient-color: #7996a5;
-  background-image: gradient(
-    linear, left top, left bottom,
-    from( #818181 ), to( #b5b5b5 )
-  );
-}
-
-/* Shell buttons */
-
-/* Minimize button */
-
-Shell-MinButton {
-  margin: 0 -2px 0 0;
-}
-
-Shell-MinButton:inactive {
-  margin: 0 -2px 0 0;
-}
-
-/* Maximize button */
-
-Shell-MaxButton {
-  margin: 0 -2px 0 0;
-}
-
-Shell-MaxButton:inactive {
-  margin: 0 -2px 0 0;
-}
-
-/* Text default theme */
+/* Text theme */
 
 Text {
-  font: 16px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+  font: 15px 'Segoe UI', Arial, Verdana, "Lucida Sans", sans-serif;
   border: none;
-  border-radius: 0;
-  padding: 5px 12px 5px 12px;
+  padding: 5px 10px;
   color: #4a4a4a;
-  background-color: #ffffff;
-}
-
-Text[MULTI] {
-/*
- * padding currently has no effect because of bug 253644
- * [TODO] remove comment if bug fixed
- */
-  padding: 5px 10px 5px 10px;
 }
 
 Text[BORDER],
 Text[MULTI][BORDER] {
   border: 1px solid #aaaaaa;
-  border-radius: 0;
 }
 
-Text[BORDER]:focused,
-Text[MULTI][BORDER]:focused {
-  border: 1px solid #4f7cb1;
+/* Push/Toggle button theme */
+
+Button[PUSH], Button[TOGGLE] {
+  font: 15px 'Segoe UI', Arial, Verdana, "Lucida Sans", sans-serif;
+  border: none;
+  padding: 8px 12px;
+  spacing: 2px;
+  color: #4a4a4a;
+  background-color: #ffffff;
 }
 
-Text-Message {
+/* Radio/Check button theme */
+
+Button[RADIO], Button[CHECK] {
+  font: 15px 'Segoe UI', Arial, Verdana, "Lucida Sans", sans-serif;
+  border: none;
+  padding: 8px;
+  spacing: 2px;
+  color: #4a4a4a;
+  background-color: #ffffff;
+}
+
+/* Combo theme */
+
+Combo {
+  font: 15px 'Segoe UI', Arial, Verdana, "Lucida Sans", sans-serif;
+  color: #4a4a4a;
+  background-color: #ffffff;
+}
+
+Combo-Field {
+  padding: 5px 10px;
+}
+
+Combo-Button {
+  width: 35px;
+}
+
+/* Group theme */
+
+Group {
+  font: 10px 'Segoe UI', Arial, Verdana, "Lucida Sans", sans-serif;
+  color: #4a4a4a;
+  background-color: #ffffff;
+  border: none;
+}
+
+Group-Frame {
+  margin: 40px 8px 8px 8px;
+  padding: 12px 8px;
+}
+
+Group-Label {
+  padding: 8px 16px 0px 16px;
+  background-color: #f0f0f0;
+  color: #4a4a4a;
+  margin: 0px;
+}
+
+/* List theme */
+
+List {
+  font: 15px 'Segoe UI', Arial, Verdana, "Lucida Sans", sans-serif;
+  background-color: #ffffff;
+  border: none;
   color: #4a4a4a;
 }
 
-/* Browser default theme */
-
-Browser {
-  border: none;
-}
-
-Browser[BORDER] {
-  border: 1px solid #a4a4a4;
-}
-
-/* ScrollBar default theme */
-
-ScrollBar {
-  background-color: #f0f0f0;
-  background-image: none;
-  border: none;
-  border-radius: 0;
-  width: 0px;
-}
-
-ScrollBar-Thumb {
-  background-color: #f0f0f0;
+List[BORDER] {
   border: 1px solid #bdbdbd;
-  border-radius: 15px;
-  min-height: 20px;
 }
 
-ScrollBar-UpButton,
-ScrollBar-DownButton {
-  background-color: transparent;
+List-Item {
+  padding: 15px 8px 15px 8px;
+  font: 18px 'Segoe UI', Arial, Verdana, "Lucida Sans", sans-serif;
+  background-color: #ffffff;
+  color: #4a4a4a;
+}
+
+/* Tree theme */
+
+Tree {
+  font: 15px 'Segoe UI', Arial, Verdana, "Lucida Sans", sans-serif;
+  background-color: #ffffff;
   border: none;
-  border-radius: 0;
+  color: #4a4a4a;
+  padding: 0px;
 }
 
-Tree-Cell, Table-Cell {
+Tree[BORDER] {
+  border: 0px;
+}
+
+TreeItem {
+  background-color: transparent;
+  color: #4a4a4a;
+}
+
+Tree-Cell {
   spacing: 10px;
-  padding: 15px;
+  padding: 15px 8px 15px 8px;
+}
+
+Tree-Indent {
+  width: 0px;
+  background-image: none;
+}
+
+/* Table theme */
+
+Table {
+  font: 15px 'Segoe UI', Arial, Verdana, "Lucida Sans", sans-serif;
+  background-color: #ffffff;
+  border: none;
+  color: #4a4a4a;
+  padding: 0px;
+}
+
+Table[BORDER] {
+  border: 0px;
+}
+
+TableItem {
+  background-color: transparent;
+  color: #4a4a4a;
+}
+
+Table-Cell {
+  spacing: 10px;
+  padding: 15px 8px 15px 8px;
+}
+
+/* Shell theme */
+
+Shell {
+  border: none;
+  background-color: #ffffff;
+  padding: 0px;
+  box-shadow: none;
+}
+
+Shell-Titlebar {
+  height: 48px;
+}
+
+/* TabFolder theme */
+
+TabFolder {
+  font: 15px 'Segoe UI', Arial, Verdana, "Lucida Sans", sans-serif;
+  border: none;
+}
+
+TabFolder[BORDER] {
+  border: 0px;
+}
+
+TabFolder-ContentContainer {
+  border: 0px;
+}
+
+TabItem {
+  padding: 0px;
+}
+
+/* ToolBar theme */
+
+ToolBar {
+  font: 15px 'Segoe UI', Arial, Verdana, "Lucida Sans", sans-serif;
+  color: #4a4a4a;
+  spacing: 0;
+  background-color: #fff;
+  padding: 0px;
+}
+
+ToolItem {
+  color: #4a4a4a;
+  background-color: #fff;
+  background-image: none;
+  padding: 8px 12px;
+  spacing: 2px;
+}
+
+ToolItem-Separator {
+  width: 4px;
 }

@@ -1,293 +1,268 @@
-Shell[TITLE], Shell[BORDER] {
-  background-color: #ffffff;
-  border: 1px solid #6e6e6e;
-  border-radius: 2px;
-  padding: 8px;
-  box-shadow: 0 0 4px #ababab;
+/*******************************************************************************
+ * Copyright (c) 2012, 2017 EclipseSource and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    EclipseSource - initial API and implementation
+ ******************************************************************************/
+
+* {
+  color: #4a4a4a;
+  background-color: #fff;
+  font: 15px ".SFUIText-Light", HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+  border: none;
+  padding: 0px;
 }
 
-Shell-Titlebar {
-  font: 19px ".SFUIText-Medium", HelveticaNeue-Medium, Helvetica Neue, Helvetica, Arial, sans-serif;
-  background-color: #0080c0;
-  background-gradient-color: #0080c0;
-  color: #ffffff;
-  background-image: gradient(
-    linear, left top, left bottom,
-    from( #416693 ), to( #5882b5 )
-  );
-  padding: 0 0px 0 10px;
-  margin: 0px;
-  height: 32px;
-  border: none;
-  border-radius: 0;
-  text-shadow: none;
+*[BORDER] {
+  border: 1px solid #a4a4a4;
 }
+
+*:disabled {
+  color: #CFCFCF;
+}
+
+Display {
+  rwt-shadow-color: #a7a6aa;
+  rwt-highlight-color: #ffffff;
+  rwt-darkshadow-color: #85878c;
+  rwt-lightshadow-color: #dcdfe4;
+  rwt-thinborder-color: #aca899;
+  rwt-selectionmarker-color: #fec83c;
+  rwt-infobackground-color: #ffffff;
+
+  rwt-fontlist: 15px ".SFUIText-Light", HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+
+  font: 15px ".SFUIText-Light", HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+
+/* Composite theme */
+
+Composite {
+  background-color: #ffffff;
+  border: none;
+  padding: 0px;
+}
+
+Composite[BORDER] {
+  border: 1px solid #bdbdbd;
+}
+
+/* Label theme */
 
 Label {
-  font: 14px ".SFUIText-Light", HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
-}
-
-Shell {
-  border: none;
-}
-
-/* Tree default theme */
-
-Tree {
-  background-color: #ffffff;
-  border: none;
+  font: 15px ".SFUIText-Light", HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
   color: #4a4a4a;
-  padding: 60px 0px 0px 0px;
-}
-
-Tree[BORDER] {
-  border: 0px;
-}
-
-Tree-Cell, Table-Cell {
-  spacing: 10px;
-  padding: 15px;
-}
-
-List {
-  font: 18px ".SFUIText-Light", HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
-  background-color: #ffffff;
+  background-color: transparent;
   border: none;
-  color: #4a4a4a;
+  padding: 0px;
 }
 
-List[BORDER] {
-  border: 0px;
+Label-SeparatorLine {
+  background-color: transparent;
+  width: 2px;
 }
 
-List-Item {
-  font: 18px ".SFUIText-Light", HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
-  padding: 9px 10px 9px 10px;
-  background-color: #ffffff;
-  color: #4a4a4a;
-  background-image: none;
-  text-shadow: none;
-}
-
-
-Button[PUSH],Button[TOGGLE] {
-  font: 16px ".SFUIText-Medium", HelveticaNeue-Medium, Helvetica Neue, Helvetica, Arial, sans-serif;
-}
-
-Button[RADIO],Button[CHECK] {
-  font: 16px ".SFUIText-Light", HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
-  padding: 1px 1px 1px 1px;
-  spacing: 9px;
-}
-
-Button[FLAT] {
-  font: 16px ".SFUIText-Light", HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
-}
-
-Button,
-Button[PUSH],
-Button[TOGGLE],
-Button[PUSH][BORDER],
-Button[FLAT][BORDER],
-Button[PUSH][TOGGLE] {
-  padding: 8px 8px 8px 8px;
-  spacing: 8px;
-}
-
-Button[FLAT] {
-  padding: 1px 1px 1px 1px;
-  spacing: 9px;
-}
-
-Button[PUSH][BORDER],
-Button[FLAT][BORDER],
-Button[FLAT][TOGGLE] {
-  border: 0px;
-}
+/* Text theme */
 
 Text {
-  font: 14px ".SFUIText-Light", HelveticaNeue-UltraLight ,Helvetica Neue, Helvetica, Arial, sans-serif;
-}
-
-Link,Link-Hyperlink {
-  font: 12px ".SFUIText-Light", HelveticaNeue-UltraLight ,Helvetica Neue, Helvetica, Arial, sans-serif;
-}
-
-Combo,
-Combo[BORDER] {
-  font: 14px ".SFUIText-Light", HelveticaNeue-UltraLight ,Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 15px ".SFUIText-Light", HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
   border: none;
-  border-radius: 0 0 0 0;
-  box-shadow: inset 0 0 0 #bdbdbd;
+  padding: 5px;
+  color: #4a4a4a;
 }
 
-Combo:focused,
-Combo[BORDER]:focused {
-  border: none;
+Text[BORDER],
+Text[MULTI][BORDER] {
+  border: 1px solid #aaaaaa;
 }
 
-Combo-Button {
+/* Push/Toggle button theme */
+
+Button[PUSH], Button[TOGGLE] {
+  font: 17px ".SFUIText-Medium", HelveticaNeue-Medium, Helvetica Neue, Helvetica, Arial, sans-serif;
   border: none;
-  border-left: 0px solid #bdbdbd;
-  border-radius: 5px 5px 5px 5px;
-  width: 35px;
+  padding: 12px;
+  spacing: 2px;
+  color: #4a4a4a;
+  background-color: #ffffff;
 }
 
-Combo-List {
+/* Radio/Check button theme */
+
+Button[RADIO], Button[CHECK] {
+  font: 16px ".SFUIText-Medium", HelveticaNeue-Medium, Helvetica Neue, Helvetica, Arial, sans-serif;
   border: none;
-  box-shadow: 0 0 0px #4f7cb1;
-  border-radius: 0px;
+  padding: 12px;
+  spacing: 2px;
+  color: #4a4a4a;
+  background-color: #ffffff;
+}
+
+/* Combo theme */
+
+Combo {
+  font: 16px ".SFUIText-Light", HelveticaNeue-UltraLight ,Helvetica Neue, Helvetica, Arial, sans-serif;
+  color: #4a4a4a;
+  background-color: #ffffff;
 }
 
 Combo-Field {
-  padding: 6px 6px 6px 6px;
+  padding: 6px;
 }
 
-Combo-FocusIndicator {
-  background-color: transparent;
-  border: none;
-  margin: 0;
-  opacity: 0;
-}
-
-/* DateTime default theme */
-
-DateTime {
-  font: 14px ".SFUIText-Light", HelveticaNeue-UltraLight ,Helvetica Neue, Helvetica, Arial, sans-serif;
-  border: none;
-  border-radius: 0 0 0 0;
-}
-
-DateTime[BORDER]:focused {
-  border: none;
-}
-
-DateTime-Field {
-  padding: 6px 6px 6px 6px;
-}
-
-DateTime[BORDER] {
-  border: 0px solid #bdbdbd;
-  border-radius: 0 0 0 0;
-}
-
-DateTime-UpButton {
-  width: 35px;
-  border: none;
-  border-left: 0px solid #bdbdbd;
-  border-radius: 5px 5px 5px 5px;
-}
-
-DateTime-DownButton {
-  width: 35px;
-  border: none;
-  border-left: 0px solid #bdbdbd;
-  border-radius: 0px 0px 0px 0px;
-}
-
-DateTime-DropDownButton {
-  border: none;
-  border-left: 0px solid #bdbdbd;
-  border-radius: 0px 0px 0px 0px;
+Combo-Button {
   width: 35px;
 }
 
-DateTime-DropDownCalendar {
-  border: none;
-}
-
-ScrollBar {
-  width: 0px;
-}
-
-TabFolder-ContentContainer {
-  border: none;
-}
-
-TabFolder {
- font: 12px ".SFUIText-Light", HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
-}
-
-TabItem {
-  padding: 17px 0px 14px 0px;
-}
-
-TabItem:selected {
-  padding: 17px 0px 14px 0px;
-}
-
-ToolItem {
-  border: none;
-  border-radius: 0px;
-  padding: 15px 6px;
-  spacing: 4px;
-  opacity: 1;
-}
-
-ToolItem[FLAT] {
-  border: none;
-  padding: 15px 6px;
-}
-
-Button-CheckIcon {
-  background-image: url( theme/ios/checkbox_unchecked.png );
-}
-
-Button-CheckIcon:hover {
-  background-image: url( theme/ios/checkbox_unchecked.png );
-}
-
-Button-CheckIcon:selected {
-  background-image: url( theme/ios/checkbox_checked.png );
-}
-
-Button-CheckIcon:selected:hover {
-  background-image: url( theme/ios/checkbox_checked.png );
-}
-
-Button-CheckIcon:selected:grayed {
-  background-image: url( theme/ios/checkbox_checked.png );
-}
-
-Button-CheckIcon:selected:grayed:hover {
-  background-image: url( theme/ios/checkbox_checked.png );
-}
-
-Button-RadioIcon {
-  background-image: url( theme/ios/radio_unchecked.png );
-}
-
-Button-RadioIcon:hover {
-  background-image: url( theme/ios/radio_unchecked.png );
-}
-
-Button-RadioIcon:selected {
-  background-image: url( theme/ios/radio_checked.png );
-}
-
-Button-RadioIcon:selected:hover {
-  background-image: url( theme/ios/radio_checked.png );
-}
+/* Group theme */
 
 Group {
-  font: 12px ".SFUIText-Light", HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 15px ".SFUIText-Light", HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
   color: #4a4a4a;
   background-color: #ffffff;
   border: none;
 }
 
 Group-Frame {
-  margin: 1px 10px 0px 10px;
-  border: none;
-  border-radius: 2px;
+  margin: 40px 8px 8px 8px;
+  padding: 12px 8px;
 }
 
 Group-Label {
-  margin: 0;
-  background-color: transparent;
-  border: none;
-  border-radius: 0;
+  padding: 8px 16px 0px 16px;
+  background-color: #f0f0f0;
   color: #4a4a4a;
-  padding: 25px 25px 0px 25px;
-  text-shadow: none;
+  margin: 0px;
 }
+
+/* List theme */
+
+List {
+  font: 15px ".SFUIText-Light", HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+  background-color: #ffffff;
+  border: none;
+  color: #4a4a4a;
+}
+
+List[BORDER] {
+  border: 1px solid #bdbdbd;
+}
+
+List-Item {
+  padding: 15px 8px 15px 8px;
+  font: 18px ".SFUIText-Light", HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+  background-color: #ffffff;
+  color: #4a4a4a;
+}
+
+/* Tree theme */
+
+Tree {
+  font: 15px ".SFUIText-Light", HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+  background-color: #ffffff;
+  border: none;
+  color: #4a4a4a;
+  padding: 0px;
+}
+
+Tree[BORDER] {
+  border: 0px;
+}
+
+TreeItem {
+  background-color: transparent;
+  color: #4a4a4a;
+}
+
+Tree-Cell {
+  spacing: 10px;
+  padding: 15px 8px 15px 8px;
+}
+
+Tree-Indent {
+  width: 0px;
+  background-image: none;
+}
+
+/* Table theme */
+
+Table {
+  font: 15px ".SFUIText-Light", HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+  background-color: #ffffff;
+  border: none;
+  color: #4a4a4a;
+  padding: 0px;
+}
+
+Table[BORDER] {
+  border: 0px;
+}
+
+TableItem {
+  background-color: transparent;
+  color: #4a4a4a;
+}
+
+Table-Cell {
+  spacing: 10px;
+  padding: 15px 8px 15px 8px;
+}
+
+/* Shell theme */
+
+Shell {
+  border: none;
+  background-color: #ffffff;
+  padding: 0px;
+  box-shadow: none;
+}
+
+Shell-Titlebar {
+  height: 48px;
+}
+
+/* TabFolder theme */
+
+TabFolder {
+  font: 15px ".SFUIText-Light", HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+  border: none;
+}
+
+TabFolder[BORDER] {
+  border: 0px;
+}
+
+TabFolder-ContentContainer {
+  border: 0px;
+}
+
+TabItem {
+  padding: 0px;
+}
+
+/* ToolBar theme */
+
+ToolBar {
+  font: 17px ".SFUIText-Medium", HelveticaNeue-Medium, Helvetica Neue, Helvetica, Arial, sans-serif;
+  color: #4a4a4a;
+  spacing: 0;
+  background-color: #fff;
+  padding: 0px;
+}
+
+ToolItem {
+  color: #4a4a4a;
+  background-color: #fff;
+  background-image: none;
+  padding: 12px;
+  spacing: 2px;
+}
+
+ToolItem-Separator {
+  width: 4px;
+}
+
