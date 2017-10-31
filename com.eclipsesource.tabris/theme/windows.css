@@ -265,3 +265,21 @@ ToolItem {
 ToolItem-Separator {
   width: 4px;
 }
+
+/* DateTime theme */
+
+DateTime {
+  font: 15px 'Segoe UI', Arial, Verdana, "Lucida Sans", sans-serif;
+  border: none;
+  color: #4a4a4a;
+}
+
+DateTime-Field {
+  color: inherit;
+  background-color: transparent;
+  padding: 5px 10px;
+}
+
+DateTime-UpButton, DateTime-DownButton {
+  width: 30px;
+}

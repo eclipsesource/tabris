@@ -266,3 +266,20 @@ ToolItem-Separator {
   width: 4px;
 }
 
+/* DateTime theme */
+
+DateTime {
+  font: 15px ".SFUIText-Light", HelveticaNeue-UltraLight, Helvetica Neue, Helvetica, Arial, sans-serif;
+  border: none;
+  color: #4a4a4a;
+}
+
+DateTime-Field {
+  color: inherit;
+  background-color: transparent;
+  padding: 5px;
+}
+
+DateTime-UpButton, DateTime-DownButton {
+  width: 30px;
+}

@@ -71,7 +71,7 @@ Label-SeparatorLine {
 Text {
   font: 16px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
   border: none;
-  padding: 10px;
+  padding: 12px 2px;
   color: #4a4a4a;
 }
 
@@ -264,4 +264,22 @@ ToolItem {
 
 ToolItem-Separator {
   width: 4px;
+}
+
+/* DateTime theme */
+
+DateTime {
+  font: 14px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+  border: none;
+  color: #4a4a4a;
+}
+
+DateTime-Field {
+  color: inherit;
+  background-color: transparent;
+  padding: 12px 2px;
+}
+
+DateTime-UpButton, DateTime-DownButton {
+  width: 30px;
 }
