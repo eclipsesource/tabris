@@ -71,4 +71,13 @@
             </message_arguments>
         </filter>
     </resource>
+    <resource path="src/com/eclipsesource/tabris/widgets/ImageView.java" type="com.eclipsesource.tabris.widgets.ImageView">
+        <filter id="643842064">
+            <message_arguments>
+                <message_argument value="WidgetRemoteAdapter"/>
+                <message_argument value="ImageView"/>
+                <message_argument value="getRemoteAdapter(Composite)"/>
+            </message_arguments>
+        </filter>
+    </resource>
 </component>

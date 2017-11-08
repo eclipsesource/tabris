@@ -234,6 +234,15 @@ public class Constants {
   public static final String EVENT_ERROR_RECEIVED = "ErrorReceived";
   public static final String PROPERTY_TOKEN = "token";
 
+  // ImageView Constants
+  public static final String TYPE_IMAGE_VIEW = "tabris.widgets.ImageView";
+  public static final String PROPERTY_SRC = "src";
+  public static final String PROPERTY_WIDTH = "width";
+  public static final String PROPERTY_HEIGHT = "height";
+  public static final String PROPERTY_SCALE = "scale";
+  public static final String PROPERTY_SCALE_MODE = "scaleMode";
+  public static final String PROPERTY_TINT_COLOR = "tintColor";
+
   private Constants() {
     // prevent instantiation
   }
