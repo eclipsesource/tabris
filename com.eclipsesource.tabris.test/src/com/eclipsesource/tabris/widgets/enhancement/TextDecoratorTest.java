@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 EclipseSource and others.
+ * Copyright (c) 2012, 2017 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -62,17 +62,31 @@ public class TextDecoratorTest {
   }
 
   @Test
-  public void testSetAutoCapitalizeEnabled() {
-    decorator.setAutoCapitalizationEnabled( true );
+  public void testSetAutoCapitalize_ALL() {
+    decorator.setAutoCapitalization( TextDecorator.AutoCapitalization.ALL );
 
-    verify( text ).setData( AUTO_CAPITALIZE.getKey(), Boolean.valueOf( true ) );
+    verify( text ).setData( AUTO_CAPITALIZE.getKey(), "ALL" );
   }
 
   @Test
-  public void testSetAutoCapitalizeDisabled() {
-    decorator.setAutoCapitalizationEnabled( false );
+  public void testSetAutoCapitalize_NONE() {
+    decorator.setAutoCapitalization( TextDecorator.AutoCapitalization.NONE );
 
-    verify( text ).setData( AUTO_CAPITALIZE.getKey(), Boolean.valueOf( false ) );
+    verify( text ).setData( AUTO_CAPITALIZE.getKey(), "NONE" );
+  }
+
+  @Test
+  public void testSetAutoCapitalize_SENTENCE() {
+    decorator.setAutoCapitalization( TextDecorator.AutoCapitalization.SENTENCE );
+
+    verify( text ).setData( AUTO_CAPITALIZE.getKey(), "SENTENCE" );
+  }
+
+  @Test
+  public void testSetAutoCapitalize_WORD() {
+    decorator.setAutoCapitalization( TextDecorator.AutoCapitalization.WORD );
+
+    verify( text ).setData( AUTO_CAPITALIZE.getKey(), "WORD" );
   }
 
   @Test

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012,2014 EclipseSource and others.
+ * Copyright (c) 2012, 2017 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,30 @@ import com.eclipsesource.tabris.TabrisClient;
  */
 public class TextDecorator extends WidgetDecorator<TextDecorator> {
 
+  /**
+   * Controls how text input is capitalized.
+   *
+   * @since 3.4
+   */
+  public enum AutoCapitalization {
+    /**
+     * Do not change any text input.
+     */
+    NONE,
+    /**
+     * Capitalize the first word of a sentence.
+     */
+    SENTENCE,
+    /**
+     * Capitalize every word.
+     */
+    WORD,
+    /**
+     * Capitalize every letter.
+     */
+    ALL
+  }
+
   private final Text text;
 
   TextDecorator( Text text ) {
@@ -54,10 +78,10 @@ public class TextDecorator extends WidgetDecorator<TextDecorator> {
    * Instructs a client to enable/disable auto capitalization on a {@link Text} widget.
    * </p>
    *
-   * @since 1.4
+   * @since 3.4
    */
-  public TextDecorator setAutoCapitalizationEnabled( boolean enabled ) {
-    setData( text, AUTO_CAPITALIZE, Boolean.valueOf( enabled ) );
+  public TextDecorator setAutoCapitalization( AutoCapitalization capitalization ) {
+    setData( text, AUTO_CAPITALIZE, capitalization.toString() );
     return this;
   }
 
