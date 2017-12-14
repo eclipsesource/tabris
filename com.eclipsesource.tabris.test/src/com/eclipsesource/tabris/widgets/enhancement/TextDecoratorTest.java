@@ -13,6 +13,7 @@ package com.eclipsesource.tabris.widgets.enhancement;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.AUTO_CAPITALIZE;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.AUTO_CORRECT;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.KEYBOARD;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.LOCAL_CLIPBOARD;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.TEXT_REPLACEMENT;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -143,6 +144,13 @@ public class TextDecoratorTest {
     decorator.useDecimalKeyboard();
 
     verify( text ).setData( KEYBOARD.getKey(), "decimal" );
+  }
+
+  @Test
+  public void testUseLocalClipboard() {
+    decorator.useLocalClipboard();
+
+    verify( text ).setData( LOCAL_CLIPBOARD.getKey(), Boolean.TRUE );
   }
 
   @Test
