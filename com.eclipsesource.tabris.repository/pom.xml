@@ -20,7 +20,7 @@
 
   <groupId>com.eclipsesource</groupId>
   <artifactId>com.eclipsesource.tabris.repository</artifactId>
-  <version>3.3.0</version>
+  <version>3.4.0</version>
   <packaging>eclipse-repository</packaging>
 
 </project>

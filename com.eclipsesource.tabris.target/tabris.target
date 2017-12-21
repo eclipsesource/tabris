@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="Tabris Target" sequenceNumber="63">
-<locations>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="com.eclipsesource.osgi.additionals.feature.group" version="1.24.0.201404161640"/>
-<repository location="http://hstaudacher.github.io/osgi-additionals"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.rap.equinox.target.feature.feature.group" version="3.3.0.20170913-1712"/>
-<unit id="org.eclipse.rap.feature.feature.group" version="3.3.0.20170913-0934"/>
-<unit id="org.eclipse.rap.sdk.feature.feature.group" version="3.3.0.20170913-0934"/>
-<repository location="http://download.eclipse.org/rt/rap/3.3"/>
-</location>
-</locations>
+<?pde version="3.8"?><target name="Tabris Target" sequenceNumber="64">
+    <locations>
+        <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+            <unit id="com.eclipsesource.osgi.additionals.feature.group" version="1.24.0.201404161640"/>
+            <repository location="http://hstaudacher.github.io/osgi-additionals"/>
+        </location>
+        <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+            <unit id="org.eclipse.rap.equinox.target.feature.feature.group" version="3.4.0.20171204-1005"/>
+            <unit id="org.eclipse.rap.feature.feature.group" version="3.4.0.20171130-0837"/>
+            <unit id="org.eclipse.rap.sdk.feature.feature.group" version="3.4.0.20171130-0837"/>
+            <repository location="http://download.eclipse.org/rt/rap/3.4"/>
+        </location>
+    </locations>
 </target>
