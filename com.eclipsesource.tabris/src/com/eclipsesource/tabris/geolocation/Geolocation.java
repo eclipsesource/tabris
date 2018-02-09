@@ -13,6 +13,9 @@ import org.eclipse.rap.rwt.client.service.ClientService;
  * <b>Please note:</b> Position determination is an asynchronous operation. You need to register a
  * {@link GeolocationListener} to get the determined positions.
  * </p>
+ * <p>
+ * <b>Geolocation is currently not supported on Android.</b>
+ * </p>
  *
  * @see GeolocationListener
  * @see GeolocationOptions
