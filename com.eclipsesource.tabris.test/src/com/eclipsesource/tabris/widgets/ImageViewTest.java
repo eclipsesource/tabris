@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 EclipseSource and others.
+ * Copyright (c) 2017, 2018 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,15 +12,21 @@ package com.eclipsesource.tabris.widgets;
 
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_HEIGHT;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_IMAGE;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_MAX;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_MIN;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_PARENT;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SCALE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_SCALE_MODE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_TINT_COLOR;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_VALUE;
 import static com.eclipsesource.tabris.internal.Constants.PROPERTY_WIDTH;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ZOOM_ENABLED;
+import static com.eclipsesource.tabris.internal.Constants.PROPERTY_ZOOM_LEVEL;
 import static org.eclipse.rap.rwt.internal.lifecycle.DisplayUtil.getLCA;
 import static org.eclipse.rap.rwt.widgets.WidgetUtil.getId;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -199,6 +205,136 @@ public class ImageViewTest {
 
     JsonArray expected = new JsonArray().add( 255 ).add( 0 ).add( 0 ).add( 255 );
     verify( remoteObject ).set( PROPERTY_TINT_COLOR, expected );
+  }
+
+  @Test
+  public void testSetZoomEnabled() {
+    view.setZoomEnabled( true );
+
+    assertTrue( view.getZoomEnabled() );
+  }
+
+  @Test
+  public void testRenderZoomEnabled() {
+    view.setZoomEnabled( true );
+
+    verify( remoteObject ).set( PROPERTY_ZOOM_ENABLED, true );
+  }
+
+  public void testGetZoomLevel_default() {
+    assertEquals( 1f, view.getZoomLevel(), 0 );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testSetZoomLevel_withoutZoomEnabled() {
+    view.setZoomLevel( 2f );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testSetZoomLevel_lowerThanMinZoomLevel() {
+    view.setZoomEnabled( true );
+
+    view.setZoomLevel( 0.5f );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testSetZoomLevel_higherThanMinZoomLevel() {
+    view.setZoomEnabled( true );
+
+    view.setZoomLevel( 3.5f );
+  }
+
+  @Test
+  public void testRenderZoomLevel() {
+    view.setZoomEnabled( true );
+
+    view.setZoomLevel( 2f );
+    render();
+
+    JsonObject expected = new JsonObject()
+      .set( PROPERTY_MIN, 1f )
+      .set( PROPERTY_VALUE, 2f )
+      .set( PROPERTY_MAX, 3f );
+    verify( remoteObject ).set( PROPERTY_ZOOM_LEVEL, expected );
+  }
+
+  public void testGetMinZoomLevel_default() {
+    assertEquals( 1f, view.getMinZoomLevel(), 0 );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testSetMinZoomLevel_withoutZoomEnabled() {
+    view.setMinZoomLevel( 2f );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testSetMinZoomLevel_higherThanMaxZoomLevel() {
+    view.setZoomEnabled( true );
+
+    view.setMinZoomLevel( 4f );
+  }
+
+  @Test
+  public void testSetMinZoomLevel_adjustZoomLevel() {
+    view.setZoomEnabled( true );
+
+    view.setMinZoomLevel( 2.5f );
+
+    assertEquals( 2.5f, view.getZoomLevel(), 0 );
+  }
+
+  @Test
+  public void testRenderZoomLevel_afterMinZoomLevelChanges() {
+    view.setZoomEnabled( true );
+
+    view.setMinZoomLevel( 1.5f );
+    render();
+
+    JsonObject expected = new JsonObject()
+      .set( PROPERTY_MIN, 1.5f )
+      .set( PROPERTY_VALUE, 1.5f )
+      .set( PROPERTY_MAX, 3f );
+    verify( remoteObject ).set( PROPERTY_ZOOM_LEVEL, expected );
+  }
+
+  public void testGetMxnZoomLevel_default() {
+    assertEquals( 3f, view.getMaxZoomLevel(), 0 );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testSetMaxZoomLevel_withoutZoomEnabled() {
+    view.setMaxZoomLevel( 2f );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testSetMaxZoomLevel_lowerThanMinZoomLevel() {
+    view.setZoomEnabled( true );
+
+    view.setMaxZoomLevel( 0.5f );
+  }
+
+  @Test
+  public void testSetMaxZoomLevel_adjustZoomLevel() {
+    view.setZoomEnabled( true );
+
+    view.setZoomLevel( 2.5f );
+    view.setMaxZoomLevel( 2f );
+
+    assertEquals( 2f, view.getZoomLevel(), 0 );
+  }
+
+  @Test
+  public void testRenderZoomLevel_afterMaxZoomLevelChanges() {
+    view.setZoomEnabled( true );
+
+    view.setMaxZoomLevel( 2f );
+    render();
+
+    JsonObject expected = new JsonObject()
+      .set( PROPERTY_MIN, 1f )
+      .set( PROPERTY_VALUE, 1f )
+      .set( PROPERTY_MAX, 2f );
+    verify( remoteObject ).set( PROPERTY_ZOOM_LEVEL, expected );
   }
 
   @Test
