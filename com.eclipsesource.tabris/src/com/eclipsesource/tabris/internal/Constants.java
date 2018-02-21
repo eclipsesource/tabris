@@ -247,6 +247,14 @@ public class Constants {
   public static final String PROPERTY_MIN = "min";
   public static final String PROPERTY_MAX = "max";
 
+  // BarcodeScanner Constants
+  public static final String TYPE_BARCODE_SCANNER = "tabris.widgets.BarcodeScanner";
+  public static final String METHOD_START = "start";
+  public static final String METHOD_STOP = "stop";
+  public static final String PROPERTY_FORMATS = "formats";
+  public static final String PROPERTY_FORMAT = "format";
+  public static final String PROPERTY_RUNNING = "running";
+
   private Constants() {
     // prevent instantiation
   }
