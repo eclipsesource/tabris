@@ -17,8 +17,8 @@ import com.eclipsesource.tabris.device.ClientDevice.Orientation;
 
 
 /**
- * <a>
- * This listener can be attached to a {@link ClientDevice} to get notifications about changes regarding the clien
+ * <p>
+ * This listener can be attached to a {@link ClientDevice} to get notifications about changes regarding the client
  * device, e.g. when the orientation has changed.
  * </p>
  * <p>

@@ -189,7 +189,7 @@ public class ImageView extends Composite {
   }
 
   /**
-   * Selects the method used for image scaling. The default is </code>ScaleMode.AUTO</code>.
+   * Selects the method used for image scaling. The default is <code>ScaleMode.AUTO</code>.
    *
    * @param scaleMode the scale mode to use, must not be <code>null</code>
    *

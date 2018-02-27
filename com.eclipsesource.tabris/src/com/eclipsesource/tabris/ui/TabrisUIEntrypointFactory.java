@@ -21,7 +21,7 @@ import org.eclipse.rap.rwt.application.EntryPointFactory;
 
 /**
  * <p>
- * A {@link TabrisUIEntryPoint} does not have a <strong>no</string> no-argument constructor. Therefore it needs to be
+ * A {@link TabrisUIEntryPoint} does not have a <strong>no</strong> no-argument constructor. Therefore it needs to be
  * added to an {@link ApplicationConfiguration} with an {@link EntryPointFactory}. You don't need to implement this
  * factory yourself. The {@link TabrisUIEntrypointFactory} can be used to accomplish this task.
  * </p>

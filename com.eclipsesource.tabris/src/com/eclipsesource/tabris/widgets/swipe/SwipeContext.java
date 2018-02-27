@@ -17,7 +17,7 @@ import java.util.Map;
 
 /**
  * <p>
- * A <code>SwipeContet</p> is a shared store that exists only once per {@link Swipe} object. The context will be shared
+ * A <code>SwipeContet</code> is a shared store that exists only once per {@link Swipe} object. The context will be shared
  * during all swiping events.
  * </p>
  *

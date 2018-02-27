@@ -117,11 +117,11 @@ public class Swipe implements Serializable {
   /**
    * <p>
    * Configures the amount of pre loaded items. A size of 2 means that when showing item 3, item 1, 2, 4 and 5 will
-   * be loaded. The cache size must be > 0.
+   * be loaded. The cache size must be &gt; 0.
    * </p>
    *
    * @param size The amount of item to pre loading each direction.
-   * @throws IllegalArgumentException when cache size is <= 0
+   * @throws IllegalArgumentException when cache size is &lt;= 0
    */
   public void setCacheSize( int size ) throws IllegalArgumentException {
     verifyIsNotDisposed();

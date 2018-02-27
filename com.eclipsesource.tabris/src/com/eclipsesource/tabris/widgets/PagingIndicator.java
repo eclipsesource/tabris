@@ -53,6 +53,7 @@ public class PagingIndicator extends Composite {
   /**
    * <p>
    * Creates a new {@link PagingIndicator} with the provided parent. Default values are:
+   * </p>
    * <ul>
    *   <li>bullet count = 1</li>
    *   <li>active bullet index = 0</li>
@@ -61,7 +62,6 @@ public class PagingIndicator extends Composite {
    *   <li>active color = blue</li>
    *   <li>inactive color = gray</li>
    * </ul>
-   * </p>
    *
    * @param parent the parent to use. Must not be <code>null</code>.
    */
@@ -112,7 +112,7 @@ public class PagingIndicator extends Composite {
    * Sets the number of the bullets to show.
    * </p>
    *
-   * @param count the number of bullets. Must be >= 0.
+   * @param count the number of bullets. Must be &gt;= 0.
    */
   public void setCount( int count ) {
     when( count < 0 ).throwIllegalArgument( "Count must be positive but was " + count );
@@ -134,7 +134,7 @@ public class PagingIndicator extends Composite {
    * Marks the bullet with the defined index as active.
    * </p>
    *
-   * @param index the index of the bullet to become active. Must be >= 0.
+   * @param index the index of the bullet to become active. Must be &gt;= 0.
    *
    * @throws IllegalStateException when the defined index does not exist.
    */
@@ -203,7 +203,7 @@ public class PagingIndicator extends Composite {
    * Sets the spacing used between bullets.
    * </p>
    *
-   * @param spacing the spacing to use in pixel. Must be >= 0.
+   * @param spacing the spacing to use in pixel. Must be &gt;= 0.
    */
   public void setSpacing( int spacing ) {
     when( spacing < 0  ).throwIllegalArgument( "Spacing must be positive but was " + spacing );
@@ -225,7 +225,7 @@ public class PagingIndicator extends Composite {
    * Sets the diameter of the bullets.
    * </p>
    *
-   * @param diameter the diameter to use for the bullets. Must be >= 0.
+   * @param diameter the diameter to use for the bullets. Must be &gt;= 0.
    */
   public void setDiameter( int diameter ) {
     when( diameter < 0  ).throwIllegalArgument( "Diameter must be positive but was " + diameter );

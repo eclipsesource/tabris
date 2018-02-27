@@ -15,7 +15,7 @@ import org.eclipse.rap.rwt.client.service.ClientService;
 
 /**
  * <p>
- * A <code>ClientStore</p> can be used to store data on the client device. It's comparable with cookies for the Browser.
+ * A <code>ClientStore</code> can be used to store data on the client device. It's comparable with cookies for the Browser.
  * </p>
  * <p>
  * NOTE: Please don't use the ClientStore to store big data. When a session will be created form a device all
@@ -53,7 +53,7 @@ public interface ClientStore extends ClientService {
    * <p>
    * Removes a entry from the ClientStore. The removed value will also be removed on the client device.
    * </p>
-   * @param key keys to identify the stored values. Must not be empty or <code>null</code>.
+   * @param keys keys to identify the stored values. Must not be empty or <code>null</code>.
    */
   void remove( String... keys );
 

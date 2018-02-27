@@ -107,7 +107,7 @@ public interface App extends ClientService {
 
   /**
    * <p>
-   * Instructs the client to set the given number >= 0 as badge on the application icon.
+   * Instructs the client to set the given number &gt;= 0 as badge on the application icon.
    * Set to {see SWT.NONE} to hide.
    * Not all clients support badges on the application icon.
    * </p>

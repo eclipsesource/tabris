@@ -149,7 +149,7 @@ public class BarcodeScanner extends Composite {
   }
 
   /**
-   * Selects the method used for camera frame scaling. The default is </code>ScaleMode.FIT</code>.
+   * Selects the method used for camera frame scaling. The default is <code>ScaleMode.FIT</code>.
    *
    * @param scaleMode the scale mode to use, must not be <code>null</code>
    *
@@ -260,6 +260,7 @@ public class BarcodeScanner extends Composite {
    * <ul>
    *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
    *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
+   * </ul>
    */
    public void addScanListener( ScanListener listener ) {
      checkWidget();
@@ -276,6 +277,7 @@ public class BarcodeScanner extends Composite {
    * <ul>
    *    <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
    *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
+   * </ul>
    */
    public void removeScanListener( ScanListener listener ) {
      checkWidget();

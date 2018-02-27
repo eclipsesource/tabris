@@ -104,7 +104,7 @@ public class TreeDecorator extends WidgetDecorator<TreeDecorator> {
    * <code>Tree</code>.
    * </p>
    *
-   * @param preloadedItems the items to preload. Must be > 0.
+   * @param preloadedItems the items to preload. Must be &gt; 0.
    *
    * @since 1.2
    */
@@ -138,7 +138,7 @@ public class TreeDecorator extends WidgetDecorator<TreeDecorator> {
    * Set the item height of a {@link TreeItem} in pixels.
    * </p>
    *
-   * @param itemHeight the item height in pixels. Must be >= 0.
+   * @param itemHeight the item height in pixels. Must be &gt;= 0.
    *
    * @since 1.2
    */

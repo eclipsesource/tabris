@@ -39,7 +39,7 @@ import com.eclipsesource.tabris.internal.GCOperationDispatcher;
  * <p>
  * A <code>ClientCanvas</code> can be used like a SWT <code>Canvas</code> with the difference that a client can draw on
  * it's area, too. Client side drawing will be sent back to the server and registered <code>ClientDrawListeners</code>
- * will be notified.</code>
+ * will be notified.
  * </p>
  *
  * @see ClientDrawListener

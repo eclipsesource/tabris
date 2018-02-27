@@ -18,7 +18,7 @@ import java.io.Serializable;
  * A {@link ScanListener} is usually added to the {@link BarcodeScanner} widget to get notification about the scan results.
  * </p>
  * <p>
- * <b>Please note:</p> You can also use the {@link ScanAdapter} as a base implementation of your listener.
+ * <strong>Please note:</strong> You can also use the {@link ScanAdapter} as a base implementation of your listener.
  * </p>
  *
  * @see BarcodeScanner

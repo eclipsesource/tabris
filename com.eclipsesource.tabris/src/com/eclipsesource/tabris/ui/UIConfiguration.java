@@ -37,7 +37,7 @@ import com.eclipsesource.tabris.internal.ui.UpdateUtil;
  * Two types of pages exist. These are top level pages and normal pages. A top level page marks the beginning of an
  * application flow. E.g. when you developing a book browsing app the top level page may be your shelf from where you
  * can browse the books. Of course in such an app you will need to browse from a book to another book without the way
- * back to the shelf. This means the book page needs to be a normal pages that can be chained together.</br>
+ * back to the shelf. This means the book page needs to be a normal pages that can be chained together.<br>
  * This is what normal pages are, the second type of pages. They can appear everywhere in the application. The depth
  * level of such a page is not defined.
  * </p>
