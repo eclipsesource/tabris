@@ -119,6 +119,9 @@ public class Swipe implements Serializable {
    * Configures the amount of pre loaded items. A size of 2 means that when showing item 3, item 1, 2, 4 and 5 will
    * be loaded. The cache size must be &gt; 0.
    * </p>
+   * <p>
+   * <strong>Note:</strong> On iOS at least two pre loaded items are needed to make swipe work as intended.
+   * </p>
    *
    * @param size The amount of item to pre loading each direction.
    * @throws IllegalArgumentException when cache size is &lt;= 0
