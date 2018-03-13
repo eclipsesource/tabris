@@ -63,6 +63,15 @@
             </message_arguments>
         </filter>
     </resource>
+    <resource path="src/com/eclipsesource/tabris/internal/PrinterImpl.java" type="com.eclipsesource.tabris.internal.PrinterImpl">
+        <filter id="574668824">
+            <message_arguments>
+                <message_argument value="Printer"/>
+                <message_argument value="PrinterImpl"/>
+                <message_argument value="ClientService"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="src/com/eclipsesource/tabris/internal/TableItemHeightService.java" type="com.eclipsesource.tabris.internal.TableItemHeightService">
         <filter id="574619656">
             <message_arguments>
