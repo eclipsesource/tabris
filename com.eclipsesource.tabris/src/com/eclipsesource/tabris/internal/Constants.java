@@ -228,11 +228,14 @@ public class Constants {
 
   // CloudPush
   public static final String TYPE_CLOUD_PUSH = "tabris.CloudPush";
-  public static final String EVENT_NOTIFICATION = "Notification";
   public static final String EVENT_REGISTERED = "Registered";
   public static final String EVENT_MESSAGE_RECEIVED = "MessageReceived";
-  public static final String EVENT_ERROR_RECEIVED = "ErrorReceived";
+  public static final String EVENT_TOKEN_CHANGED = "TokenChanged";
+  public static final String EVENT_INSTANCE_ID_CHANGED = "InstanceIdChanged";
+  public static final String PROPERTY_NOTIFICATION_ENABLED = "notificationEnabled";
   public static final String PROPERTY_TOKEN = "token";
+  public static final String PROPERTY_INSTANCE_ID = "instanceId";
+  public static final String METHOD_RESET_INSTANCE_ID = "resetInstanceId";
 
   // ImageView Constants
   public static final String TYPE_IMAGE_VIEW = "tabris.widgets.ImageView";
