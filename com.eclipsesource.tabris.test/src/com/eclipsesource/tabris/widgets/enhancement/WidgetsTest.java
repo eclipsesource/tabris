@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2017 EclipseSource and others.
+ * Copyright (c) 2012, 2018 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import static org.junit.Assert.assertNotSame;
 import static org.mockito.Mockito.mock;
 
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
@@ -205,6 +206,26 @@ public class WidgetsTest {
 
     ProgressBarDecorator decorator1 = Widgets.onProgressBar( widget );
     ProgressBarDecorator decorator2 = Widgets.onProgressBar( widget );
+
+    assertNotSame( decorator1, decorator2 );
+  }
+
+  @Test
+  public void testOnMenuItem() {
+    assertNotNull( Widgets.onMenuItem( mock( MenuItem.class ) ) );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testOnMenuItemWithNull() {
+    Widgets.onMenuItem( null );
+  }
+
+  @Test
+  public void testOnMenuItemDoesNotCache() {
+    MenuItem widget = mock( MenuItem.class );
+
+    MenuItemDecorator decorator1 = Widgets.onMenuItem( widget );
+    MenuItemDecorator decorator2 = Widgets.onMenuItem( widget );
 
     assertNotSame( decorator1, decorator2 );
   }

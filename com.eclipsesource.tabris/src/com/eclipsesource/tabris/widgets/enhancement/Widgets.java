@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2017 EclipseSource and others.
+ * Copyright (c) 2012, 2018 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@ package com.eclipsesource.tabris.widgets.enhancement;
 import static com.eclipsesource.tabris.internal.WidgetsUtil.checkComponent;
 
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
@@ -91,6 +92,14 @@ public class Widgets {
   public static ProgressBarDecorator onProgressBar( ProgressBar progressBar ) {
     checkComponent( progressBar );
     return new ProgressBarDecorator( progressBar );
+  }
+
+  /**
+   * @since 3.5
+   */
+  public static MenuItemDecorator onMenuItem( MenuItem menuItem ) {
+    checkComponent( menuItem );
+    return new MenuItemDecorator( menuItem );
   }
 
   private Widgets() {
