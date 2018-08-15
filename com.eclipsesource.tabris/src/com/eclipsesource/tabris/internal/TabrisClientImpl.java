@@ -14,6 +14,8 @@ import static org.eclipse.rap.rwt.SingletonUtil.getSessionInstance;
 
 import org.eclipse.rap.rwt.client.service.ClientInfo;
 import org.eclipse.rap.rwt.client.service.ClientService;
+import org.eclipse.rap.rwt.client.service.StartupParameters;
+import org.eclipse.rap.rwt.internal.client.StartupParametersImpl;
 
 import com.eclipsesource.tabris.ClientStore;
 import com.eclipsesource.tabris.TabrisClient;
@@ -27,6 +29,7 @@ import com.eclipsesource.tabris.print.Printer;
 import com.eclipsesource.tabris.push.CloudPush;
 
 
+@SuppressWarnings("restriction")
 public class TabrisClientImpl implements TabrisClient {
 
   public TabrisClientImpl() {
@@ -38,6 +41,7 @@ public class TabrisClientImpl implements TabrisClient {
     getService( App.class );
     getService( ClientStore.class );
     getService( CloudPush.class );
+    getService( StartupParameters.class );
     DataWhitelist.register();
   }
 
@@ -63,6 +67,8 @@ public class TabrisClientImpl implements TabrisClient {
       result = ( T )getSessionInstance( GeolocationImpl.class );
     } else if( type == Printer.class ) {
       result = ( T )getSessionInstance( PrinterImpl.class );
+    } else if( type == StartupParameters.class ) {
+      result = ( T )getSessionInstance( StartupParametersImpl.class );
     }
     return result;
   }

@@ -14,6 +14,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
 import org.eclipse.rap.rwt.client.service.ClientInfo;
+import org.eclipse.rap.rwt.client.service.StartupParameters;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -217,6 +218,25 @@ public class TabrisClientImplTest {
     Printer print2 = client.getService( Printer.class );
 
     assertSame( print1, print2 );
+  }
+
+  @Test
+  public void testHasStartupParametersService() {
+    TabrisClient client = new TabrisClientImpl();
+
+    StartupParameters service = client.getService( StartupParameters.class );
+
+    assertNotNull( service );
+  }
+
+  @Test
+  public void testStartupParametersIsSingleton() {
+    TabrisClient client = new TabrisClientImpl();
+
+    StartupParameters service1 = client.getService( StartupParameters.class );
+    StartupParameters service2 = client.getService( StartupParameters.class );
+
+    assertSame( service1, service2 );
   }
 
 }
