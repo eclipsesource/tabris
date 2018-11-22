@@ -39,6 +39,8 @@ public class DataWhitelist implements Serializable {
     REFRESH_HANDLER( "refreshHandler" ),
     REFRESH_COMPOSITE("refreshComposite"),
     LOCAL_CLIPBOARD( "localClipboard" ),
+    DISABLE_LOOKUP_ACTION( "disableLookupAction" ),
+    DISABLE_SHARE_ACTION( "disableShareAction" ),
     ACTION_STYLE( "actionStyle" );
 
     private final String key;

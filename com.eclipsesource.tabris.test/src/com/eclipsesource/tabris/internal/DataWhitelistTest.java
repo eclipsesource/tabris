@@ -136,6 +136,15 @@ public class DataWhitelistTest {
   }
 
   @Test
+  public void testHasDisableLookupAction() {
+    assertContains( "disableLookupAction" );
+  }
+   @Test
+  public void testHasDisableShareAction() {
+    assertContains( "disableShareAction" );
+  }
+
+  @Test
   public void testHasActionStyle() {
     assertContains( "actionStyle" );
   }

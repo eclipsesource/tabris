@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2017 EclipseSource and others.
+ * Copyright (c) 2012, 2018 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,8 @@ package com.eclipsesource.tabris.widgets.enhancement;
 
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.AUTO_CAPITALIZE;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.AUTO_CORRECT;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.DISABLE_LOOKUP_ACTION;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.DISABLE_SHARE_ACTION;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.KEYBOARD;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.LOCAL_CLIPBOARD;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.TEXT_REPLACEMENT;
@@ -151,6 +153,17 @@ public class TextDecoratorTest {
     decorator.useLocalClipboard();
 
     verify( text ).setData( LOCAL_CLIPBOARD.getKey(), Boolean.TRUE );
+  }
+
+  @Test
+  public void testDisableLookupAction() {
+    decorator.disableLookupAction();
+    verify( text ).setData( DISABLE_LOOKUP_ACTION.getKey(), Boolean.TRUE );
+  }
+   @Test
+  public void testDisableShareAction() {
+    decorator.disableShareAction();
+    verify( text ).setData( DISABLE_SHARE_ACTION.getKey(), Boolean.TRUE );
   }
 
   @Test
