@@ -12,7 +12,7 @@
 * {
   color: #4a4a4a;
   background-color: #fff;
-  font: 15px "HelveticaNeue, Helvetica, Arial, sans-serif;
+  font: 15px HelveticaNeue, Helvetica, Arial, sans-serif;
   border: none;
   padding: 0px;
 }
@@ -34,9 +34,9 @@ Display {
   rwt-selectionmarker-color: #fec83c;
   rwt-infobackground-color: #ffffff;
 
-  rwt-fontlist: 15px "HelveticaNeue, Helvetica, Arial, sans-serif;
+  rwt-fontlist: 15px HelveticaNeue, Helvetica, Arial, sans-serif;
 
-  font: 15px "HelveticaNeue, Helvetica, Arial, sans-serif;
+  font: 15px HelveticaNeue, Helvetica, Arial, sans-serif;
 }
 
 /* Composite theme */
@@ -54,7 +54,7 @@ Composite[BORDER] {
 /* Label theme */
 
 Label {
-  font: 15px "HelveticaNeue, Helvetica, Arial, sans-serif;
+  font: 15px HelveticaNeue, Helvetica, Arial, sans-serif;
   color: #4a4a4a;
   background-color: transparent;
   border: none;
@@ -69,7 +69,7 @@ Label-SeparatorLine {
 /* Text theme */
 
 Text {
-  font: 15px "HelveticaNeue, Helvetica, Arial, sans-serif;
+  font: 15px HelveticaNeue, Helvetica, Arial, sans-serif;
   border: none;
   padding: 5px;
   color: #4a4a4a;
@@ -121,7 +121,7 @@ Combo-Button {
 /* Group theme */
 
 Group {
-  font: 15px "HelveticaNeue, Helvetica, Arial, sans-serif;
+  font: 15px HelveticaNeue, Helvetica, Arial, sans-serif;
   color: #4a4a4a;
   background-color: #ffffff;
   border: none;
@@ -142,7 +142,7 @@ Group-Label {
 /* List theme */
 
 List {
-  font: 15px "HelveticaNeue, Helvetica, Arial, sans-serif;
+  font: 15px HelveticaNeue, Helvetica, Arial, sans-serif;
   background-color: #ffffff;
   border: none;
   color: #4a4a4a;
@@ -154,7 +154,7 @@ List[BORDER] {
 
 List-Item {
   padding: 15px 8px 15px 8px;
-  font: 18px "HelveticaNeue, Helvetica, Arial, sans-serif;
+  font: 18px HelveticaNeue, Helvetica, Arial, sans-serif;
   background-color: #ffffff;
   color: #4a4a4a;
 }
@@ -162,7 +162,7 @@ List-Item {
 /* Tree theme */
 
 Tree {
-  font: 15px "HelveticaNeue, Helvetica, Arial, sans-serif;
+  font: 15px HelveticaNeue, Helvetica, Arial, sans-serif;
   background-color: #ffffff;
   border: none;
   color: #4a4a4a;
@@ -191,7 +191,7 @@ Tree-Indent {
 /* Table theme */
 
 Table {
-  font: 15px "HelveticaNeue, Helvetica, Arial, sans-serif;
+  font: 15px HelveticaNeue, Helvetica, Arial, sans-serif;
   background-color: #ffffff;
   border: none;
   color: #4a4a4a;
@@ -228,7 +228,7 @@ Shell-Titlebar {
 /* TabFolder theme */
 
 TabFolder {
-  font: 15px "HelveticaNeue, Helvetica, Arial, sans-serif;
+  font: 15px HelveticaNeue, Helvetica, Arial, sans-serif;
   border: none;
 }
 
@@ -269,7 +269,7 @@ ToolItem-Separator {
 /* DateTime theme */
 
 DateTime {
-  font: 15px "HelveticaNeue, Helvetica, Arial, sans-serif;
+  font: 15px HelveticaNeue, Helvetica, Arial, sans-serif;
   border: none;
   color: #4a4a4a;
 }
