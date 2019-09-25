@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2018 EclipseSource and others.
+ * Copyright (c) 2012, 2019 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.AUT
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.DISABLE_LOOKUP_ACTION;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.DISABLE_SHARE_ACTION;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.KEYBOARD;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.KEYBOARD_APPEARANCE_MODE;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.LOCAL_CLIPBOARD;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.TEXT_REPLACEMENT;
 import static com.eclipsesource.tabris.internal.WidgetsUtil.setData;
@@ -54,6 +55,27 @@ public class TextDecorator extends WidgetDecorator<TextDecorator> {
      * Capitalize every letter.
      */
     ALL
+  }
+
+  /**
+   * Controls the appearance of virtual keyboard.
+   *
+   * @since 3.6
+   */
+  public enum KeyboardAppearance {
+    /**
+     * The keyboard is never shown when focus is gained.
+     */
+    NEVER,
+    /**
+     * The keyboard is not shown when the focus is set programmatically. Only the blinking cursor will be shown.
+     * Touching the `Text` widget will show the keyboard.
+     */
+    ON_TOUCH,
+    /**
+     * The keyboard is always shown when the `Text` widget gains focus.
+     */
+    ON_FOCUS
   }
 
   private final Text text;
@@ -235,6 +257,18 @@ public class TextDecorator extends WidgetDecorator<TextDecorator> {
     if( RWT.getClient() instanceof TabrisClient ) {
       setData( text, TEXT_REPLACEMENT, data.getId() );
     }
+    return this;
+  }
+
+  /**
+   * <p>
+   * Allows to control when to show the virtual keyboard on a {@link Text} widget on Android.
+   * </p>
+   *
+   * @since 3.10
+   */
+  public TextDecorator setKeyboardAppearanceMode ( KeyboardAppearance appearance ) {
+    setData( text, KEYBOARD_APPEARANCE_MODE, appearance.toString() );
     return this;
   }
 

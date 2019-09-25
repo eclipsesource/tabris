@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2018 EclipseSource and others.
+ * Copyright (c) 2012, 2019 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.AUT
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.DISABLE_LOOKUP_ACTION;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.DISABLE_SHARE_ACTION;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.KEYBOARD;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.KEYBOARD_APPEARANCE_MODE;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.LOCAL_CLIPBOARD;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.TEXT_REPLACEMENT;
 import static org.mockito.Matchers.eq;
@@ -190,6 +191,27 @@ public class TextDecoratorTest {
     decorator.setTextReplacement( data );
 
     verify( text, never() ).setData( TEXT_REPLACEMENT.getKey(), "r42" );
+  }
+
+  @Test
+  public void testSetKeyboardAppearanceMode_NEVER() {
+    decorator.setKeyboardAppearanceMode( TextDecorator.KeyboardAppearance.NEVER );
+
+    verify( text ).setData( KEYBOARD_APPEARANCE_MODE.getKey(), "NEVER" );
+  }
+
+  @Test
+  public void testSetKeyboardAppearanceMode_ON_TOUCH() {
+    decorator.setKeyboardAppearanceMode( TextDecorator.KeyboardAppearance.ON_TOUCH );
+
+    verify( text ).setData( KEYBOARD_APPEARANCE_MODE.getKey(), "ON_TOUCH" );
+  }
+
+  @Test
+  public void testSetKeyboardAppearanceMode_ON_FOCUS() {
+    decorator.setKeyboardAppearanceMode( TextDecorator.KeyboardAppearance.ON_FOCUS );
+
+    verify( text ).setData( KEYBOARD_APPEARANCE_MODE.getKey(), "ON_FOCUS" );
   }
 
 }

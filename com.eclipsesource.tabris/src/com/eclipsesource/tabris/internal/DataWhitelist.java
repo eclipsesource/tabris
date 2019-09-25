@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 EclipseSource and others.
+ * Copyright (c) 2013, 2019 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,7 @@ public class DataWhitelist implements Serializable {
     OVERLAY_COLOR( "overlayColor" ),
     TEXT_REPLACEMENT( "textReplacement" ),
     AUTO_CAPITALIZE( "autoCapitalize" ),
+    KEYBOARD_APPEARANCE_MODE( "keyboardAppearanceMode" ),
     AUTO_CORRECT( "autoCorrect" ),
     REFRESH_HANDLER( "refreshHandler" ),
     REFRESH_COMPOSITE("refreshComposite"),
