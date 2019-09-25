@@ -2,14 +2,14 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Tabris Test Util
 Bundle-SymbolicName: com.eclipsesource.tabris.test.util
-Bundle-Version: 3.6.0.qualifier
+Bundle-Version: 3.10.0.qualifier
 Bundle-Vendor: EclipseSource
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.rap.rwt.testfixture;bundle-version="[3.0.0,4.0.0)",
  org.eclipse.rap.rwt;bundle-version="[3.0.0,4.0.0)",
- com.eclipsesource.tabris;bundle-version="[3.6.0,4.0.0)"
-Export-Package: com.eclipsesource.tabris.test.util;version="3.6.0",
- com.eclipsesource.tabris.test.util.internal;version="3.6.0";x-internal:=true
+ com.eclipsesource.tabris;bundle-version="[3.10.0,4.0.0)"
+Export-Package: com.eclipsesource.tabris.test.util;version="3.10.0",
+ com.eclipsesource.tabris.test.util.internal;version="3.10.0";x-internal:=true
 Import-Package: javax.servlet;version="[2.3.0,4.0.0)",
  javax.servlet.http;version="[2.3.0,4.0.0)",
  org.junit;version="[4.10.0,5.0.0)",
