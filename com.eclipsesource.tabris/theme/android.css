@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2017 EclipseSource and others.
+ * Copyright (c) 2012, 2019 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -71,7 +71,7 @@ Label-SeparatorLine {
 Text {
   font: 16px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
   border: none;
-  padding: 12px 2px;
+  padding: 14px;
   color: #4a4a4a;
 }
 
@@ -111,7 +111,7 @@ Combo {
 }
 
 Combo-Field {
-  padding: 10px;
+  padding: 14px;
 }
 
 Combo-Button {
@@ -277,7 +277,7 @@ DateTime {
 DateTime-Field {
   color: inherit;
   background-color: transparent;
-  padding: 12px 2px;
+  padding: 14px;
 }
 
 DateTime-UpButton, DateTime-DownButton {
