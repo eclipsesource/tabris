@@ -85,7 +85,7 @@ Text[MULTI][BORDER] {
 Button[PUSH], Button[TOGGLE] {
   font: 16px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
   border: none;
-  padding: 12px;
+  padding: 12px 18px;
   spacing: 2px;
   color: #4a4a4a;
   background-color: #ffffff;
@@ -258,7 +258,7 @@ ToolItem {
   color: #4a4a4a;
   background-color: #fff;
   background-image: none;
-  padding: 12px;
+  padding: 12px 18px;
   spacing: 2px;
 }
 
