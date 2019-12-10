@@ -69,7 +69,7 @@ Label-SeparatorLine {
 /* Text theme */
 
 Text {
-  font: 16px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+  font: 16px Roboto, Arial, Helvetica, sans-serif;
   border: none;
   padding: 14px;
   color: #4a4a4a;
@@ -83,9 +83,9 @@ Text[MULTI][BORDER] {
 /* Push/Toggle button theme */
 
 Button[PUSH], Button[TOGGLE] {
-  font: 16px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+  font: 14px Roboto, Arial, Helvetica, sans-serif;
   border: none;
-  padding: 12px 18px;
+  padding: 14px 18px;
   spacing: 2px;
   color: #4a4a4a;
   background-color: #ffffff;
@@ -105,7 +105,7 @@ Button[RADIO], Button[CHECK] {
 /* Combo theme */
 
 Combo {
-  font: 16px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+  font: 16px Roboto, Arial, Helvetica, sans-serif;
   color: #4a4a4a;
   background-color: #ffffff;
 }
@@ -121,7 +121,7 @@ Combo-Button {
 /* Group theme */
 
 Group {
-  font: 10px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+  font: 10px Roboto, Arial, Helvetica, sans-serif;
   color: #4a4a4a;
   background-color: #ffffff;
   border: none;
@@ -142,7 +142,7 @@ Group-Label {
 /* List theme */
 
 List {
-  font: 14px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+  font: 14px Roboto, Arial, Helvetica, sans-serif;
   background-color: #ffffff;
   border: none;
   color: #4a4a4a;
@@ -154,7 +154,7 @@ List[BORDER] {
 
 List-Item {
   padding: 15px 8px 15px 8px;
-  font: 14px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+  font: 14px Roboto, Arial, Helvetica, sans-serif;
   background-color: #ffffff;
   color: #4a4a4a;
 }
@@ -162,7 +162,7 @@ List-Item {
 /* Tree theme */
 
 Tree {
-  font: 14px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+  font: 14px Roboto, Arial, Helvetica, sans-serif;
   background-color: #ffffff;
   border: none;
   color: #4a4a4a;
@@ -191,7 +191,7 @@ Tree-Indent {
 /* Table theme */
 
 Table {
-  font: 14px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+  font: 14px Roboto, Arial, Helvetica, sans-serif;
   background-color: #ffffff;
   border: none;
   color: #4a4a4a;
@@ -228,7 +228,7 @@ Shell-Titlebar {
 /* TabFolder theme */
 
 TabFolder {
-  font: 14px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+  font: 14px Roboto, Arial, Helvetica, sans-serif;
   border: none;
 }
 
@@ -247,7 +247,7 @@ TabItem {
 /* ToolBar theme */
 
 ToolBar {
-  font: 16px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+  font: 14px Roboto, Arial, Helvetica, sans-serif;
   color: #4a4a4a;
   spacing: 0;
   background-color: #fff;
@@ -258,7 +258,7 @@ ToolItem {
   color: #4a4a4a;
   background-color: #fff;
   background-image: none;
-  padding: 12px 18px;
+  padding: 14px 18px;
   spacing: 2px;
 }
 
@@ -269,7 +269,7 @@ ToolItem-Separator {
 /* DateTime theme */
 
 DateTime {
-  font: 14px Helvetica, Arial, Verdana, "Lucida Sans", sans-serif;
+  font: 14px Roboto, Arial, Helvetica, sans-serif;
   border: none;
   color: #4a4a4a;
 }
