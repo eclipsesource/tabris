@@ -247,11 +247,11 @@ TabItem {
 /* ToolBar theme */
 
 ToolBar {
-  font: 14px Roboto, Arial, Helvetica, sans-serif;
+  font: 16px Roboto, Arial, Helvetica, sans-serif;
   color: #4a4a4a;
   spacing: 0;
   background-color: #fff;
-  padding: 0px;
+  padding: 5px;
 }
 
 ToolItem {
