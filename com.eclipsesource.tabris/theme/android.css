@@ -69,9 +69,9 @@ Label-SeparatorLine {
 /* Text theme */
 
 Text {
-  font: 16px Roboto, Arial, Helvetica, sans-serif;
+  font: 14px Roboto, Arial, Helvetica, sans-serif;
   border: none;
-  padding: 14px;
+  padding: 15px;
   color: #4a4a4a;
 }
 
@@ -105,13 +105,13 @@ Button[RADIO], Button[CHECK] {
 /* Combo theme */
 
 Combo {
-  font: 16px Roboto, Arial, Helvetica, sans-serif;
+  font: 14px Roboto, Arial, Helvetica, sans-serif;
   color: #4a4a4a;
   background-color: #ffffff;
 }
 
 Combo-Field {
-  padding: 14px;
+  padding: 15px;
 }
 
 Combo-Button {
@@ -277,7 +277,7 @@ DateTime {
 DateTime-Field {
   color: inherit;
   background-color: transparent;
-  padding: 14px;
+  padding: 15px;
 }
 
 DateTime-UpButton, DateTime-DownButton {
