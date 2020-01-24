@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2019 EclipseSource and others.
+ * Copyright (c) 2012, 2020 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.AUT
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.AUTO_CORRECT;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.DISABLE_LOOKUP_ACTION;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.DISABLE_SHARE_ACTION;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.ENTER_KEY_TYPE;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.KEYBOARD;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.KEYBOARD_APPEARANCE_MODE;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.LOCAL_CLIPBOARD;
@@ -212,6 +213,48 @@ public class TextDecoratorTest {
     decorator.setKeyboardAppearanceMode( TextDecorator.KeyboardAppearance.ON_FOCUS );
 
     verify( text ).setData( KEYBOARD_APPEARANCE_MODE.getKey(), "ON_FOCUS" );
+  }
+
+  @Test
+  public void testSetEnterKeyType_DEFAULT() {
+    decorator.setEnterKeyType( TextDecorator.EnterKeyType.DEAFAUL );
+
+    verify( text ).setData( ENTER_KEY_TYPE.getKey(), "DEAFAUL" );
+  }
+
+  @Test
+  public void testSetEnterKeyType_DONE() {
+    decorator.setEnterKeyType( TextDecorator.EnterKeyType.DONE );
+
+    verify( text ).setData( ENTER_KEY_TYPE.getKey(), "DONE" );
+  }
+
+  @Test
+  public void testSetEnterKeyType_NEXT() {
+    decorator.setEnterKeyType( TextDecorator.EnterKeyType.NEXT );
+
+    verify( text ).setData( ENTER_KEY_TYPE.getKey(), "NEXT" );
+  }
+
+  @Test
+  public void testSetEnterKeyType_SEND() {
+    decorator.setEnterKeyType( TextDecorator.EnterKeyType.SEND );
+
+    verify( text ).setData( ENTER_KEY_TYPE.getKey(), "SEND" );
+  }
+
+  @Test
+  public void testSetEnterKeyType_SEARCH() {
+    decorator.setEnterKeyType( TextDecorator.EnterKeyType.SEARCH );
+
+    verify( text ).setData( ENTER_KEY_TYPE.getKey(), "SEARCH" );
+  }
+
+  @Test
+  public void testSetEnterKeyType_GO() {
+    decorator.setEnterKeyType( TextDecorator.EnterKeyType.GO );
+
+    verify( text ).setData( ENTER_KEY_TYPE.getKey(), "GO" );
   }
 
 }

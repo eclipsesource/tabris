@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2019 EclipseSource and others.
+ * Copyright (c) 2012, 2020 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.AUT
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.AUTO_CORRECT;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.DISABLE_LOOKUP_ACTION;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.DISABLE_SHARE_ACTION;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.ENTER_KEY_TYPE;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.KEYBOARD;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.KEYBOARD_APPEARANCE_MODE;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.LOCAL_CLIPBOARD;
@@ -76,6 +77,20 @@ public class TextDecorator extends WidgetDecorator<TextDecorator> {
      * The keyboard is always shown when the `Text` widget gains focus.
      */
     ON_FOCUS
+  }
+
+  /**
+   * Label or icon to display on the keyboard ‘confirmation’ key.
+   *
+   * @since 3.10
+   */
+  public enum EnterKeyType {
+    DEAFAUL,
+    DONE,
+    NEXT,
+    SEND,
+    SEARCH,
+    GO
   }
 
   private final Text text;
@@ -269,6 +284,20 @@ public class TextDecorator extends WidgetDecorator<TextDecorator> {
    */
   public TextDecorator setKeyboardAppearanceMode ( KeyboardAppearance appearance ) {
     setData( text, KEYBOARD_APPEARANCE_MODE, appearance.toString() );
+    return this;
+  }
+
+  /**
+   * <p>
+   * Allows to control label or icon to display on the keyboard ‘confirmation’ key.
+   * Setting an <code>enterKeyType</code> other than default will change the key
+   * behavior to not close the keyboard automatically.
+   * </p>
+   *
+   * @since 3.10
+   */
+  public TextDecorator setEnterKeyType ( EnterKeyType type ) {
+    setData( text, ENTER_KEY_TYPE, type.toString() );
     return this;
   }
 
