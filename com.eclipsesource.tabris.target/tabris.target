@@ -7,10 +7,10 @@
             <repository location="http://hstaudacher.github.io/osgi-additionals"/>
         </location>
 	    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-		    <repository location="http://download.eclipse.org/rt/rap/3.10"/>
-		    <unit id="org.eclipse.rap.equinox.target.feature.feature.group" version="3.10.0.20190911-0532"/>
-		    <unit id="org.eclipse.rap.feature.feature.group" version="3.10.0.20190905-0827"/>
-		    <unit id="org.eclipse.rap.sdk.feature.feature.group" version="3.10.0.20190905-0827"/>
+		    <repository location="http://download.eclipse.org/rt/rap/3.12"/>
+		    <unit id="org.eclipse.rap.equinox.target.feature.feature.group" version="3.12.0.20200309-1200"/>
+		    <unit id="org.eclipse.rap.feature.feature.group" version="3.12.0.20200306-0915"/>
+		    <unit id="org.eclipse.rap.sdk.feature.feature.group" version="3.12.0.20200306-0915"/>
 	    </location>
     </locations>
 </target>
