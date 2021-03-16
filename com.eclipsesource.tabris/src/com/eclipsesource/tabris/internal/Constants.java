@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2018 EclipseSource and others.
+ * Copyright (c) 2012, 2021 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -257,6 +257,13 @@ public class Constants {
   public static final String PROPERTY_FORMATS = "formats";
   public static final String PROPERTY_FORMAT = "format";
   public static final String PROPERTY_RUNNING = "running";
+
+  //PdfView Constants
+  public static final String TYPE_PDF_VIEW = "tabris.widgets.PdfView";
+  public static final String PROPERTY_PAGE_BACKGROUND = "pageBackground";
+  public static final String PROPERTY_SPACING = "spacing";
+  public static final String PROPERTY_PADDING = "padding";
+  public static final String PROPERTY_PAGE_ELEVATION = "pageElevation";
 
   private Constants() {
     // prevent instantiation
