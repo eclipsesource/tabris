@@ -5,7 +5,7 @@ Bundle-SymbolicName: com.eclipsesource.tabris.tracking.test
 Bundle-Version: 3.17.0.qualifier
 Bundle-Vendor: EclipseSource
 Fragment-Host: com.eclipsesource.tabris.tracking;bundle-version="3.17.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.junit;bundle-version="[4.10.0,5.0.0)",
  org.mockito.mockito-all;bundle-version="1.9.5",
  com.eclipsesource.rest.client.driver;bundle-version="1.0.0",

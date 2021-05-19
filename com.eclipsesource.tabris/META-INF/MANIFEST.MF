@@ -4,7 +4,7 @@ Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: com.eclipsesource.tabris
 Bundle-Version: 3.17.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.eclipse.rap.rwt;bundle-version="[3.0.0,4.0.0)",
  org.eclipse.rap.fileupload;bundle-version="[3.0.0,4.0.0)"
 Export-Package: com.eclipsesource.tabris;version="3.17.0",

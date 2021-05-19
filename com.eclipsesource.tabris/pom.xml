@@ -38,7 +38,7 @@
 							<restrictTo>
 								<type>osgi-bundle</type>
 								<id>javax.servlet</id>
-								<versionRange>[2.3.0,4.0.0)</versionRange>
+								<versionRange>[2.3.0,5.0.0)</versionRange>
 							</restrictTo>
 						</filter>
 					</filters>
