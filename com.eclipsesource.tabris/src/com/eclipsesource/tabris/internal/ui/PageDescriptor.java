@@ -30,6 +30,7 @@ public class PageDescriptor implements Serializable {
   private boolean topLevel;
   private PageStyle[] style;
   private String title;
+  private String backCaption;
   private byte[] image;
 
   public PageDescriptor( String id, Class<? extends Page> pageType ) {
@@ -73,6 +74,15 @@ public class PageDescriptor implements Serializable {
 
   public String getTitle() {
     return title;
+  }
+
+  public PageDescriptor setBackCaption( String backCaption ) {
+    this.backCaption = backCaption;
+    return this;
+  }
+
+  public String getBackCaption() {
+    return backCaption;
   }
 
   public PageDescriptor setPageStyle( PageStyle... style ) {
