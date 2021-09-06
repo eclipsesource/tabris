@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 EclipseSource and others.
+ * Copyright (c) 2013, 2021 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -67,6 +67,34 @@ public class ShellDecoratorTest {
 
     JsonArray expectedColor = new JsonArray().add( 233 ).add( 244 ).add( 255 ).add( 34 );
     verify( shell ).setData( WhiteListEntry.OVERLAY_COLOR.getKey(), expectedColor );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testSetTitlebarColor_FailsWithNegativeAlpha() {
+    Color color = new Color( display, 233, 244, 255 );
+
+    decorator.setTitlebarColor( color, -34 );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testSetTitlebarColor_FailsWithToBigAlpha() {
+    Color color = new Color( display, 233, 244, 255 );
+
+    decorator.setTitlebarColor( color, 256 );
+  }
+
+  @Test( expected = IllegalArgumentException.class )
+  public void testSetTitlebarColor_FailsWithNullColor() {
+    decorator.setTitlebarColor( null, 254 );
+  }
+
+  @Test
+  public void testSetTitlebarColor() {
+    Color color = new Color( display, 233, 244, 255 );
+    decorator.setTitlebarColor( color, 34 );
+
+    JsonArray expectedColor = new JsonArray().add( 233 ).add( 244 ).add( 255 ).add( 34 );
+    verify( shell ).setData( WhiteListEntry.TITLEBAR_COLOR.getKey(), expectedColor );
   }
 
 }

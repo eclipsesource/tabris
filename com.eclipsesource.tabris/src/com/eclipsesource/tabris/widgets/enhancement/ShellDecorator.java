@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 EclipseSource and others.
+ * Copyright (c) 2013, 2021 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@ package com.eclipsesource.tabris.widgets.enhancement;
 import static com.eclipsesource.tabris.internal.Clauses.when;
 import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.OVERLAY_COLOR;
+import static com.eclipsesource.tabris.internal.DataWhitelist.WhiteListEntry.TITLEBAR_COLOR;
 import static com.eclipsesource.tabris.internal.WidgetsUtil.setData;
 
 import org.eclipse.rap.json.JsonArray;
@@ -49,6 +50,25 @@ public class ShellDecorator extends WidgetDecorator<ShellDecorator> {
     RGB rgb = color.getRGB();
     JsonArray overlay = new JsonArray().add( rgb.red ).add( rgb.green ).add( rgb.blue ).add( alpha );
     setData( shell, OVERLAY_COLOR, overlay );
+    return this;
+  }
+
+  /**
+   * <p>
+   * Specifies the titlebar color of modal shells.
+   * </p>
+   *
+   * @param color the color to use for shell titlebar. Must not be <code>null</code>.
+   * @param alpha the alpha value of the color.
+   *
+   * @since 3.17
+   */
+  public ShellDecorator setTitlebarColor( Color color, int alpha ) {
+    whenNull( color ).throwIllegalArgument( "Color must not be null" );
+    when( alpha < 0 || alpha > 255 ).throwIllegalArgument( "Alpha must be >= 0 and <= 255 but was " + alpha );
+    RGB rgb = color.getRGB();
+    JsonArray overlay = new JsonArray().add( rgb.red ).add( rgb.green ).add( rgb.blue ).add( alpha );
+    setData( shell, TITLEBAR_COLOR, overlay );
     return this;
   }
 }
