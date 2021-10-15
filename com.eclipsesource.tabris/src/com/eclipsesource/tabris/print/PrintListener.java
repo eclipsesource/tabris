@@ -18,7 +18,7 @@ import java.io.Serializable;
  * A {@link PrintListener} is usually added to the {@link Printer} service to get notification about the print results.
  * </p>
  * <p>
- * <b>Please note:</p> You can also use the {@link PrintAdapter} as a base implementation of your listener.
+ * <b>Please note:</b> You can also use the {@link PrintAdapter} as a base implementation of your listener.
  * </p>
  *
  * @see Printer
