@@ -10,11 +10,11 @@
 
 ### _Start rocket-fast with our introductional documentation._
 
-### [Creating a New Application](https://github.com/eclipsesource/tabris/wiki/Creating-a-new-Application)
+### [Creating a New Application](doc/creating-a-new-application.md)
 
 Your Tabris adventure begins here - consume Tabris as an Eclipse Platform, create an app and deploy it to a server.
 
-### [Running a Mobile Client](https://eclipsesource.com/products/tabris/eclipse-rap-documentation/tabris-for-eclipse-rap-running-a-mobile-client/)
+### [Running a Mobile Client](doc/running-a-mobile-client.md)
 
 You have a basic Tabris app set-up, now it's time to learn how to start a mobile client and see your app running.
 

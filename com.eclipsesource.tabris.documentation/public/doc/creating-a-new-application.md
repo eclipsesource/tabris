@@ -20,4 +20,4 @@ To get started with creating a Tabris application, you should consume Tabris fro
 
 CONTEXT\_PATH is usually the name of the .war.
 
-Now it’s time to [run a mobile client.](https://eclipsesource.com/products/tabris/eclipse-rap-documentation/tabris-for-eclipse-rap-running-a-mobile-client/)
+Now it’s time to [run a mobile client.](running-a-mobile-client.md)
