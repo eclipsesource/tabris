@@ -148,7 +148,7 @@ Getting Started, RAP Widget Toolkit, Scopes and Threads in RAP, Building Applica
 
 ### JavaDoc
 
-Download our [javadoc](https://eclipsesource.com/wp-content/uploads/2021/10/javadoc-.zip).
+View Tabris JavaDoc [here](../javadoc/index.html).
 
 ### [Tabris Forum on StackOverflow](https://stackoverflow.com/search?q=tabris)
 

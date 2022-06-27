@@ -1,0 +1,17 @@
+com.eclipsesource.tabris
+com.eclipsesource.tabris.app
+com.eclipsesource.tabris.camera
+com.eclipsesource.tabris.device
+com.eclipsesource.tabris.geolocation
+com.eclipsesource.tabris.interaction
+com.eclipsesource.tabris.internal
+com.eclipsesource.tabris.internal.ui
+com.eclipsesource.tabris.internal.ui.rendering
+com.eclipsesource.tabris.internal.ui.web
+com.eclipsesource.tabris.print
+com.eclipsesource.tabris.push
+com.eclipsesource.tabris.ui
+com.eclipsesource.tabris.ui.action
+com.eclipsesource.tabris.widgets
+com.eclipsesource.tabris.widgets.enhancement
+com.eclipsesource.tabris.widgets.swipe
