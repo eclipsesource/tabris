@@ -50,15 +50,15 @@ See how we make SWT widgets go mobile in Tabris - native animations, touch feedb
 
 Many widgets, meant to be handled as a group? Add a grouped Listener for one touch to rule them all.
 
-### [Scrolling](https://eclipsesource.com/products/tabris/eclipse-rap-documentation/scrolling/)
+### [Scrolling](scrolling.md)
 
 ScrollingComposite - Tabris' alternative solution to SWT's ScrolledComposite making it easier to manage oversized content.
 
-### [List Styling](https://eclipsesource.com/products/tabris/eclipse-rap-documentation/list-styling/)
+### [List Styling](list-styling.md)
 
 Not happy with the default 2-column layout? Apply Row Templates to your Tables and Trees and style lists to your heart's content.
 
-### [Refresh Content](https://eclipsesource.com/products/tabris/eclipse-rap-documentation/refresh-content/)
+### [Refresh Content](refresh-content.md)
 
 Let the user refresh the content of Trees, Tables or Composite easily.
 
