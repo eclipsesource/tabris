@@ -22,11 +22,11 @@ You have a basic Tabris app set-up, now it's time to learn how to start a mobile
 
 Multi-platformity, lifecycle, UI, client-server communication. Learn how a Tabris app works.
 
-### [Sample Applications](https://eclipsesource.com/products/tabris/eclipse-rap-documentation/tabris-for-eclipse-rap-sample-applications/)
+### [Sample Applications](sample-applications.md)
 
 Running examples show you how a basic Tabris app looks and performs like.
 
-### [Migrate an existing RAP Application](https://eclipsesource.com/products/tabris/eclipse-rap-documentation/tabris-for-eclipse-rap-migrate-an-existing-rap-application/)
+### [Migrate an existing RAP Application](migrate-an-existing-rap-application.md)
 
 Having an existing RAP application? Learn how to migrate it to run on mobile devices.
 
