@@ -34,19 +34,19 @@ Having an existing RAP application? Learn how to migrate it to run on mobile dev
 
 ### _Now that you know the basics, it's time to learn more about the components of a Tabris app._
 
-### [Tabris UI](https://eclipsesource.com/products/tabris/eclipse-rap-documentation/tabris-ui/)
+### [Tabris UI](tabris-ui.md)
 
 Understand how Tabris manages to look great on all supported mobile platforms with the help of Tabris UI.
 
-### [Client Services](https://eclipsesource.com/products/tabris/eclipse-rap-documentation/client-services/)
+### [Client Services](client-services.md)
 
 Access your mobile device's goodies using RAP Client Services: app events, back navigation, inactivity time, screen protection, badges, launcher, device information, local storage, camera, and GPS.
 
-### [Widget Enhancements](https://eclipsesource.com/products/tabris/eclipse-rap-documentation/widget-enhancements/)
+### [Widget Enhancements](widget-enhancements.md)
 
 See how we make SWT widgets go mobile in Tabris - native animations, touch feedback, keyboard type and more.
 
-### [Grouped Events](https://eclipsesource.com/products/tabris/eclipse-rap-documentation/grouped-events/)
+### [Grouped Events](grouped-events.md)
 
 Many widgets, meant to be handled as a group? Add a grouped Listener for one touch to rule them all.
 
