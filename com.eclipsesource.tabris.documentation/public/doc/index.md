@@ -114,11 +114,11 @@ Deploying .ipks and .ipas: Google Play, App Store or ad hoc - reach your audienc
 
 ### _Need to implement a feature for your app or want to contribute to the Tabris Server or web client projects? You've come to the right place._
 
-### [Building Tabris from Source](https://eclipsesource.com/products/tabris/eclipse-rap-documentation/building-tabris-from-source/)
+### [Building Tabris from Source](building-tabris-from-source.md)
 
 Customize Tabris and try out your great change - build Tabris from the source.
 
-### [Repositories](https://eclipsesource.com/products/tabris/eclipse-rap-documentation/repositories/)
+### [Repositories](repositories.md)
 
 Get Tabris components from your favourite repository - Git or p2 provisioning.
 
@@ -130,15 +130,15 @@ Help us make Tabris better.
 
 ### _Need more help? Take a look at these resources._
 
-### [Available UI Controls](https://eclipsesource.com/products/tabris/eclipse-rap-documentation/available-ui-controls/)
+### [Available UI Controls](available-ui-controls.md)
 
 Buttons, input fields, labels and more - the visual controls of Tabris, on top of SWT.
 
-### [Tabris FAQ](https://eclipsesource.com/products/tabris/eclipse-rap-documentation/tabris-faq/)
+### [Tabris FAQ](tabris-faq.md)
 
 Take a look, your question might have already been answered.
 
-### [Tabris Training/Workshop](https://eclipsesource.com/en/services/training/training-details/tabris-workshop/)
+### [Tabris Training/Workshop](tabris-workshop.md)
 
 Need a reliable starting point? Get a Tabris skill boost with our 1-day workshop: "Mobile Apps with Tabris".
 
