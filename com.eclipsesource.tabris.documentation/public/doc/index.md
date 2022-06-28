@@ -94,19 +94,19 @@ Dialogs need to look like native Dialogs on mobile devices. See how to create na
 
 ### _Create a custom App Launcher for our supported mobile platforms._
 
-### [Creating a Launcher](https://eclipsesource.com/create-an-launcher/)
+### [Creating a Launcher](create-an-launcher.md)
 
 Learn how to create a launcher – use tabris.js build service, create a Tabris-based application, customize and run your app.
 
-### [Binding a Client](https://eclipsesource.com/products/tabris/eclipse-rap-documentation/bind-a-client/)
+### [Binding a Client](bind-a-client.md)
 
 Learn how to bind a client to a specific server or disabled the version check.
 
-### [Building an Application](https://eclipsesource.com/products/tabris/eclipse-rap-documentation/building-an-application/)
+### [Building an Application](building-an-application.md)
 
 Tabris apps are just Java web applications. Maven, Tycho, PDE Build... Choose your favourite build automation tool.
 
-### [Deploying Launchers](https://eclipsesource.com/products/tabris/eclipse-rap-documentation/deploying-launchers/)
+### [Deploying Launchers](deploying-launchers.md)
 
 Deploying .ipks and .ipas: Google Play, App Store or ad hoc - reach your audience.
 
