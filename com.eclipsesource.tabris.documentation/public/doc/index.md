@@ -62,31 +62,31 @@ Not happy with the default 2-column layout? Apply Row Templates to your Tables a
 
 Let the user refresh the content of Trees, Tables or Composite easily.
 
-### [Responsive Design](https://eclipsesource.com/products/tabris/eclipse-rap-documentation/responsive-design/)
+### [Responsive Design](responsive-design.md)
 
 Different screen sizes require different layouts. Learn about Tabris' responsive design solution called Passe-Partout.
 
-### [Client Canvas](https://eclipsesource.com/products/tabris/eclipse-rap-documentation/clientcanvas/)
+### [Client Canvas](clientcanvas.md)
 
 Create a Client Canvas and handle user drawing with the ClientDrawListener.
 
-### [Video](https://eclipsesource.com/products/tabris/eclipse-rap-documentation/video/)
+### [Video](video.md)
 
 Spawn a Video widget, control the playback, get user interactions feedback or disable interactions altogether.
 
-### [Swipe](https://eclipsesource.com/products/tabris/eclipse-rap-documentation/swipe-3/)
+### [Swipe](swipe.md)
 
 Create a Swipe widget. Swipe through items using the swipe gesture and load items on demand.
 
-### [Paging Indicator](https://eclipsesource.com/products/tabris/eclipse-rap-documentation/pagingindicator/)
+### [Paging Indicator](pagingindicator.md)
 
 Pagewise navigation often requires visual feedback. The PagingIndicator solves this problem by adding an optional indication.
 
-### [UI Tracking](https://eclipsesource.com/products/tabris/eclipse-rap-documentation/ui-tracking/)
+### [UI Tracking](ui-tracking.md)
 
 Track UI and eCommerce Events and submit them to Google Analytics or Piwik.
 
-### [Native Dialogs](https://eclipsesource.com/products/tabris/eclipse-rap-documentation/native-dialogs/)
+### [Native Dialogs](native-dialogs.md)
 
 Dialogs need to look like native Dialogs on mobile devices. See how to create native Dialogs.
 
