@@ -1,6 +1,6 @@
 ## Creating a new Application
 
-To get started with creating a Tabris application, you should consume Tabris from the p2 repository, available on the [download page](https://eclipsesource.com/products/tabris/downloads/).  The following sites can be used to consume Tabris as an Eclipse Target Platform:
+To get started with creating a Tabris application, you should consume Tabris from the p2 repository, available on the [download page](downloads.md).  The following sites can be used to consume Tabris as an Eclipse Target Platform:
 
 - **release:** `https://download.eclipsesource.com/technology/tabris/downloads/releases` Contains all the latest releases.
 - **staging:** `https://download.eclipsesource.com/technology/tabris/downloads/staging` Can be used as a stable target. We will not purge any version. Contains picked nightly builds.
