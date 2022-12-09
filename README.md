@@ -4,7 +4,7 @@ This repository contains the [Tabris](https://github.com/eclipsesource/tabris/bl
 
 Tabris for Eclipse RAP provides two components: a target platform for your server-side code, and Tabris App Launcher for App / Play Store. You can download them [here](https://github.com/eclipsesource/tabris/blob/master/com.eclipsesource.tabris.documentation/public/doc/downloads.md).
 
-It is free to develop a component and test your application with our generic app launcher. To build and publish your own app, you need access to the [Tabris.js registry](https://npm.tabrisjs.com/) under a [commercial license](https://eclipsesource.com/products/tabris/pricing/).
+It is free to develop a component and test your application with our generic app launcher. To build and publish your own app, you need access to the [Tabris.js registry](https://npm.tabrisjs.com/) under a [commercial license](https://github.com/eclipsesource/tabris/blob/master/com.eclipsesource.tabris.documentation/public/doc/pricing.md).
 
 ## Documentation
 A detailed Developer Guide incl. JavaDoc can be found on the [official project documentation site](https://github.com/eclipsesource/tabris/blob/master/com.eclipsesource.tabris.documentation/public/doc/index.md).
