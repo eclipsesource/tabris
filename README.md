@@ -1,6 +1,6 @@
-# Tabris [![Build Status](https://travis-ci.org/eclipsesource/tabris.png)](https://travis-ci.org/eclipsesource/tabris)
+# Tabris for Eclipse RAP - Server Part [![Build Status](https://travis-ci.org/eclipsesource/tabris.png)](https://travis-ci.org/eclipsesource/tabris)
 
-This repository contains the [Tabris](https://github.com/eclipsesource/tabris/blob/master/com.eclipsesource.tabris.documentation/public/home.md) server parts and additional features that are not contained in the [RAP core](http://eclipse.org/rap/).
+This repository contains the [Tabris for Eclipse RAP](https://github.com/eclipsesource/tabris/blob/master/com.eclipsesource.tabris.documentation/public/home.md) server parts and additional features that are not contained in the [RAP core](http://eclipse.org/rap/).
 
 Tabris for Eclipse RAP provides two components: a target platform for your server-side code, and Tabris App Launcher for App / Play Store. You can download them [here](https://github.com/eclipsesource/tabris/blob/master/com.eclipsesource.tabris.documentation/public/doc/downloads.md).
 
