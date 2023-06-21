@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2016 EclipseSource and others.
+ * Copyright (c) 2012, 2023 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.remote.Connection;
@@ -135,7 +137,7 @@ public class Video extends Composite {
     remoteObject.setHandler( new VideoOperationHandler( this ) );
     remoteObject.set( PROPERTY_PARENT, getId( this ) );
     remoteObject.set( PROPERTY_CACHE_SIZE, getCacheSize() );
-    remoteObject.set( PROPERTY_URL, getURL().toString() );
+    remoteObject.set( PROPERTY_URL, videoUrl );
     remoteAdapter = new VideoRemoteAdapter( this, remoteObject );
   }
 
@@ -148,10 +150,20 @@ public class Video extends Composite {
 
   private void setVideoUrl( String videoUrl ) {
     try {
-      this.videoUrl = new URL( videoUrl );
+      this.videoUrl = new URL( videoUrl.startsWith( "http" ) ? videoUrl : getBaseUrl() + videoUrl );
     } catch( MalformedURLException mfURLe ) {
       throw new IllegalArgumentException( videoUrl + " is not a valid url", mfURLe );
     }
+  }
+
+  private static String getBaseUrl() {
+    HttpServletRequest request = RWT.getRequest();
+    String baseUrl = request.getScheme() + "://" + request.getServerName();
+    int port = request.getServerPort();
+    if( port != 80 && port != 443 ) {
+      baseUrl += ":" + port;
+    }
+    return baseUrl + request.getContextPath() + "/";
   }
 
   /**

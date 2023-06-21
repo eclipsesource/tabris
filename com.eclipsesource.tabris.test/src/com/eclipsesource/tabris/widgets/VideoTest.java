@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2016 EclipseSource and others.
+ * Copyright (c) 2012, 2023 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -58,9 +58,15 @@ public class VideoTest {
     assertEquals( new URL( "http://localhost/video.mp4" ).toString(), video.getURL().toString() );
   }
 
+  @Test
+  public void testGetUrl_relativePath() throws MalformedURLException {
+    video = new Video( parent, "video/video.mp4" );
+    assertEquals( new URL( "http://fooserver:8080/fooapp/video/video.mp4" ).toString(), video.getURL().toString() );
+  }
+
   @Test( expected = IllegalArgumentException.class )
   public void testMallformedUrl() {
-    new Video( parent, "foo.bar" );
+    new Video( parent, "http://local:host/foo.bar" );
   }
 
   @Test( expected = IllegalArgumentException.class )
