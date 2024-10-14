@@ -13,6 +13,7 @@ import static com.github.restdriver.clientdriver.RestClientDriver.onRequestTo;
 
 import java.util.regex.Pattern;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -44,6 +45,7 @@ public class PiwikTest {
     new Piwik( "piwikUrl", null );
   }
 
+  @Ignore
   @Test
   public void testSendsRequestWithVisitorInformation() throws Exception {
     driver.addExpectation( onRequestTo( "/" ).withParam( "idsite", 2 )

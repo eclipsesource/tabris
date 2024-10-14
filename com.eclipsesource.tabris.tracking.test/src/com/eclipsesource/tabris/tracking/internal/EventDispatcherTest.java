@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.tabris.tracking.internal;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
@@ -43,7 +43,7 @@ public class EventDispatcherTest {
   @Test( expected = IllegalStateException.class )
   public void testThrowsISEWithoutExceptionHandler() {
     Tracker tracker = mock( Tracker.class );
-    List<Tracker> trackers = new ArrayList<Tracker>();
+    List<Tracker> trackers = new ArrayList<>();
     trackers.add( tracker );
 
     doThrow( RuntimeException.class ).when( tracker ).handleEvent( any( TrackingEvent.class ) );
@@ -57,7 +57,7 @@ public class EventDispatcherTest {
   @Test
   public void testCallExceptionHandlerOnException() {
     Tracker tracker = mock( Tracker.class );
-    List<Tracker> trackers = new ArrayList<Tracker>();
+    List<Tracker> trackers = new ArrayList<>();
     trackers.add( tracker );
     doThrow( RuntimeException.class ).when( tracker ).handleEvent( any( TrackingEvent.class ) );
     EventDispatcher dispatcher = new EventDispatcher( mock( ScheduledExecutorService.class ) );
@@ -74,7 +74,7 @@ public class EventDispatcherTest {
   @Test
   public void testFlushesQueueOnRun() {
     Tracker tracker = mock( Tracker.class );
-    List<Tracker> trackers = new ArrayList<Tracker>();
+    List<Tracker> trackers = new ArrayList<>();
     trackers.add( tracker );
     EventDispatcher dispatcher = new EventDispatcher( mock( ScheduledExecutorService.class ) );
     TrackingEvent event = mock( TrackingEvent.class );
@@ -88,7 +88,7 @@ public class EventDispatcherTest {
   @Test
   public void testFlushesQueueNotWithoutRun() {
     Tracker tracker = mock( Tracker.class );
-    List<Tracker> trackers = new ArrayList<Tracker>();
+    List<Tracker> trackers = new ArrayList<>();
     trackers.add( tracker );
     EventDispatcher dispatcher = new EventDispatcher( mock( ScheduledExecutorService.class ) );
     TrackingEvent event = mock( TrackingEvent.class );
@@ -101,7 +101,7 @@ public class EventDispatcherTest {
   @Test
   public void testFlushesQueueOnRunWithMultipleEvents() {
     Tracker tracker = mock( Tracker.class );
-    List<Tracker> trackers = new ArrayList<Tracker>();
+    List<Tracker> trackers = new ArrayList<>();
     trackers.add( tracker );
     EventDispatcher dispatcher = new EventDispatcher( mock( ScheduledExecutorService.class ) );
     TrackingEvent event1 = mock( TrackingEvent.class );

@@ -19,12 +19,12 @@ import static com.eclipsesource.tabris.internal.Constants.PROPERTY_VERSION_CHECK
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_ANDROID;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_IOS;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_WINDOWS;
-import static javax.servlet.http.HttpServletResponse.SC_PRECONDITION_FAILED;
+import static jakarta.servlet.http.HttpServletResponse.SC_PRECONDITION_FAILED;
 
 import java.io.Serializable;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.eclipse.rap.json.JsonValue;
 import org.eclipse.rap.rwt.RWT;

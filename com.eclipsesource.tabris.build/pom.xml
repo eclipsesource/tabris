@@ -28,16 +28,14 @@
     <artifact-build-version>${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}.v${maven.build.timestamp}-${build-identifier}</artifact-build-version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <baseline.repository>http://download.eclipsesource.com/technology/tabris/downloads/nightly/</baseline.repository>
-    <tycho-version>2.1.0</tycho-version>
-    <tycho-extras-version>2.1.0</tycho-extras-version>
+    <tycho-version>3.0.4</tycho-version>
     <tycho-groupid>org.eclipse.tycho</tycho-groupid>
     <surefire-version>2.22.2</surefire-version>
     <junit-version>4.11</junit-version>
-    <mockito-version>1.9.5</mockito-version>
+    <mockito-version>5.14.0</mockito-version>
     <jacocoagent>${basedir}/../com.eclipsesource.tabris.build/lib/jacocoagent.jar</jacocoagent>
     <test-arguments>-Xms512m -Xmx512m
       -javaagent:${jacocoagent}=destfile=${basedir}/../com.eclipsesource.tabris/target/jacoco.exec,append=true</test-arguments>
-    <baseline.repository>http://download.eclipsesource.com/technology/tabris/downloads/nightly/</baseline.repository>
   </properties>
 
   <licenses>
@@ -129,21 +127,6 @@
             </environment>
           </environments>
         </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.eclipse.tycho.extras</groupId>
-        <artifactId>tycho-source-feature-plugin</artifactId>
-        <version>${tycho-extras-version}</version>
-        <executions>
-          <execution>
-            <id>source-feature</id>
-            <phase>package</phase>
-            <goals>
-              <goal>source-feature</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
 
       <plugin>

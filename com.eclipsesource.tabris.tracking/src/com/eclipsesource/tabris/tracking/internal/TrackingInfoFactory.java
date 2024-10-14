@@ -13,7 +13,7 @@ package com.eclipsesource.tabris.tracking.internal;
 import java.io.Serializable;
 import java.util.UUID;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.graphics.Point;

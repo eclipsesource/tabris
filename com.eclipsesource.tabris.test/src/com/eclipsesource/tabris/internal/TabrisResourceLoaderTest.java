@@ -24,8 +24,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.servlet.ServletContext;
-
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.internal.application.ApplicationContextImpl;
@@ -34,11 +32,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import jakarta.servlet.ServletContext;
 
 
 @SuppressWarnings("restriction")
-@RunWith( MockitoJUnitRunner.class )
+@RunWith( MockitoJUnitRunner.Silent.class )
 public class TabrisResourceLoaderTest {
 
   @Mock private EntryPointManager manager;
@@ -98,7 +98,7 @@ public class TabrisResourceLoaderTest {
   }
 
   private Collection<String> createPathList() {
-    Collection<String> paths = new ArrayList<String>();
+    Collection<String> paths = new ArrayList<>();
     paths.add( "/test" );
     paths.add( "/test2" );
     return paths;

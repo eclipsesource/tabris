@@ -18,8 +18,8 @@ import static com.eclipsesource.tabris.tracking.tracker.GoogleAnalyticsTracker.L
 import static com.eclipsesource.tabris.tracking.tracker.GoogleAnalyticsTracker.LABEL_EXECUTE;
 import static com.eclipsesource.tabris.tracking.tracker.GoogleAnalyticsTracker.LABEL_SEARCH;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;

@@ -13,7 +13,7 @@ package com.eclipsesource.tabris.tracking;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -127,7 +127,7 @@ public class TrackingTest {
   @Test( expected = IllegalArgumentException.class )
   public void testFailsWithNullExceptionHandler() {
     EventDispatcher dispatcher = mock( EventDispatcher.class );
-    Tracking tracking = new Tracking( dispatcher, new ArrayList<Tracker>() );
+    Tracking tracking = new Tracking( dispatcher, new ArrayList<>() );
 
     tracking.setUncaughtExceptionHandler( null );
   }
@@ -136,7 +136,7 @@ public class TrackingTest {
   public void testSetsExceptionHandlerOnDispatcher() {
     UncaughtExceptionHandler handler = mock( UncaughtExceptionHandler.class );
     EventDispatcher dispatcher = mock( EventDispatcher.class );
-    Tracking tracking = new Tracking( dispatcher, new ArrayList<Tracker>() );
+    Tracking tracking = new Tracking( dispatcher, new ArrayList<>() );
 
     tracking.setUncaughtExceptionHandler( handler );
 
@@ -146,7 +146,7 @@ public class TrackingTest {
   @Test
   public void testDispatchesPageTransition() {
     EventDispatcher dispatcher = mock( EventDispatcher.class );
-    Tracking tracking = new Tracking( dispatcher, new ArrayList<Tracker>() );
+    Tracking tracking = new Tracking( dispatcher, new ArrayList<>() );
     PageConfiguration pageConfiguration = mock( PageConfiguration.class );
     UIConfiguration configuration = mock( UIConfiguration.class );
 
@@ -174,7 +174,7 @@ public class TrackingTest {
   @Test
   public void testDispatchesActionExecution() {
     EventDispatcher dispatcher = mock( EventDispatcher.class );
-    Tracking tracking = new Tracking( dispatcher, new ArrayList<Tracker>() );
+    Tracking tracking = new Tracking( dispatcher, new ArrayList<>() );
     ActionConfiguration actionConfiguration = mock( ActionConfiguration.class );
     when( actionConfiguration.getId() ).thenReturn( "bar" );
     UIConfiguration configuration = mock( UIConfiguration.class );
@@ -193,7 +193,7 @@ public class TrackingTest {
   @Test
   public void testDispatchesEventExecution() {
     EventDispatcher dispatcher = mock( EventDispatcher.class );
-    Tracking tracking = new Tracking( dispatcher, new ArrayList<Tracker>() );
+    Tracking tracking = new Tracking( dispatcher, new ArrayList<>() );
 
     tracking.submitEvent( display, "foo" );
 
@@ -207,21 +207,21 @@ public class TrackingTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testDispatchesEventFailsWithNullDisplay() {
-    Tracking tracking = new Tracking( mock( EventDispatcher.class ), new ArrayList<Tracker>() );
+    Tracking tracking = new Tracking( mock( EventDispatcher.class ), new ArrayList<>() );
 
     tracking.submitEvent( null, "foo" );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testDispatchesEventFailsWithNullId() {
-    Tracking tracking = new Tracking( mock( EventDispatcher.class ), new ArrayList<Tracker>() );
+    Tracking tracking = new Tracking( mock( EventDispatcher.class ), new ArrayList<>() );
 
     tracking.submitEvent( display, null );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testDispatchesEventFailsWithEmptyId() {
-    Tracking tracking = new Tracking( mock( EventDispatcher.class ), new ArrayList<Tracker>() );
+    Tracking tracking = new Tracking( mock( EventDispatcher.class ), new ArrayList<>() );
 
     tracking.submitEvent( display, "" );
   }
@@ -229,7 +229,7 @@ public class TrackingTest {
   @Test
   public void testDispatchesOrder() {
     EventDispatcher dispatcher = mock( EventDispatcher.class );
-    Tracking tracking = new Tracking( dispatcher, new ArrayList<Tracker>() );
+    Tracking tracking = new Tracking( dispatcher, new ArrayList<>() );
     Order order = new Order( "foo", BigDecimal.ONE );
 
     tracking.submitOrder( display, order );
@@ -244,14 +244,14 @@ public class TrackingTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void testSubmitOrderFailsWithNullDisplay() {
-    Tracking tracking = new Tracking( mock( EventDispatcher.class ), new ArrayList<Tracker>() );
+    Tracking tracking = new Tracking( mock( EventDispatcher.class ), new ArrayList<>() );
 
     tracking.submitOrder( null, new Order( "foo", BigDecimal.ONE ) );
   }
 
   @Test( expected = IllegalArgumentException.class )
   public void testSubmitOrderFailsWithNullOrder() {
-    Tracking tracking = new Tracking( mock( EventDispatcher.class ), new ArrayList<Tracker>() );
+    Tracking tracking = new Tracking( mock( EventDispatcher.class ), new ArrayList<>() );
 
     tracking.submitOrder( display, null );
   }
@@ -268,7 +268,7 @@ public class TrackingTest {
   @Test
   public void testDispatchesSearch() {
     EventDispatcher dispatcher = mock( EventDispatcher.class );
-    Tracking tracking = new Tracking( dispatcher, new ArrayList<Tracker>() );
+    Tracking tracking = new Tracking( dispatcher, new ArrayList<>() );
     ActionConfiguration actionConfiguration = mock( ActionConfiguration.class );
     when( actionConfiguration.getId() ).thenReturn( "bar" );
     UIConfiguration configuration = mock( UIConfiguration.class );

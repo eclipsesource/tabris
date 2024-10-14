@@ -3,7 +3,7 @@ package com.eclipsesource.tabris.internal;
 import static com.eclipsesource.tabris.internal.Constants.ID_SWT;
 import static com.eclipsesource.tabris.internal.Constants.THEME_ID_SWT;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.client.Client;

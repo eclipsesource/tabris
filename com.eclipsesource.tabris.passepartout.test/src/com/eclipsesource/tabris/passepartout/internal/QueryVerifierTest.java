@@ -13,7 +13,7 @@ package com.eclipsesource.tabris.passepartout.internal;
 import static com.eclipsesource.tabris.passepartout.test.PassPartoutTestUtil.createEnvironment;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -77,7 +77,7 @@ public class QueryVerifierTest {
   public void testCompliesWithRule() {
     Rule rule = mock( Rule.class );
     QueryVerifier verifier = new QueryVerifier( createEnvironment() );
-    List<Condition> conditions = new ArrayList<Condition>();
+    List<Condition> conditions = new ArrayList<>();
     conditions.add( new AlwaysTrueContidtion() );
     when( rule.getConditions() ).thenReturn( conditions );
 
@@ -92,7 +92,7 @@ public class QueryVerifierTest {
     QueryVerifier verifier = new QueryVerifier( createEnvironment() );
     Condition condition = mock( Condition.class );
     doReturn( Boolean.FALSE ).when( condition ).compliesWith( any( UIEnvironment.class ) );
-    List<Condition> conditions = new ArrayList<Condition>();
+    List<Condition> conditions = new ArrayList<>();
     conditions.add( new AlwaysTrueContidtion() );
     conditions.add( condition );
     when( rule.getConditions() ).thenReturn( conditions );

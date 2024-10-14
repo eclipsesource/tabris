@@ -2,11 +2,16 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Tabris Tracking Tests
 Bundle-SymbolicName: com.eclipsesource.tabris.tracking.test
-Bundle-Version: 3.17.0.qualifier
+Bundle-Version: 4.0.0.qualifier
 Bundle-Vendor: EclipseSource
-Fragment-Host: com.eclipsesource.tabris.tracking;bundle-version="3.17.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Fragment-Host: com.eclipsesource.tabris.tracking;bundle-version="4.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: org.junit;bundle-version="[4.10.0,5.0.0)",
- org.mockito.mockito-all;bundle-version="1.9.5",
  com.eclipsesource.rest.client.driver;bundle-version="1.0.0",
- com.eclipsesource.tabris.test.util;bundle-version="3.17.0"
+ com.eclipsesource.tabris.test.util;bundle-version="4.0.0",
+ net.bytebuddy.byte-buddy,
+ net.bytebuddy.byte-buddy-agent
+Import-Package: org.mockito;version="[5.0.0,6.0.0)",
+ org.mockito.invocation;version="[5.0.0,6.0.0)",
+ org.mockito.stubbing;version="[5.0.0,6.0.0)",
+ org.objenesis;version="[3.3.0,4.0.0)"
