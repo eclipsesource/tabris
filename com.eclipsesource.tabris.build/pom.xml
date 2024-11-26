@@ -32,7 +32,7 @@
     <tycho-groupid>org.eclipse.tycho</tycho-groupid>
     <surefire-version>2.22.2</surefire-version>
     <junit-version>4.11</junit-version>
-    <mockito-version>5.14.0</mockito-version>
+    <mockito-version>5.14.2</mockito-version>
     <jacocoagent>${basedir}/../com.eclipsesource.tabris.build/lib/jacocoagent.jar</jacocoagent>
     <test-arguments>-Xms512m -Xmx512m
       -javaagent:${jacocoagent}=destfile=${basedir}/../com.eclipsesource.tabris/target/jacoco.exec,append=true</test-arguments>
