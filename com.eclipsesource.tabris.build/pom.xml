@@ -29,6 +29,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <baseline.repository>http://download.eclipsesource.com/technology/tabris/downloads/nightly/</baseline.repository>
     <tycho-version>3.0.4</tycho-version>
+    <tycho.scmUrl>scm:git:https://github.com/eclipsesource/tabris</tycho.scmUrl>
     <tycho-groupid>org.eclipse.tycho</tycho-groupid>
     <surefire-version>2.22.2</surefire-version>
     <junit-version>4.11</junit-version>
