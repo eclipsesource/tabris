@@ -26,6 +26,7 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -43,6 +44,7 @@ public class WebUI implements UIRenderer {
 
   private static final int BACK_BUTTON_SIZE = 32;
   private static final String BACK_BUTTON_CUSTOM_VARIANT = CUSTOM_VARIANT_TABRIS_UI + "_back";
+  private static final String TITLE_CUSTOM_VARIANT = CUSTOM_VARIANT_TABRIS_UI + "_title";
   private static final String DATA_ACTIVATED = "activated";
 
   private final Shell shell;
@@ -50,6 +52,7 @@ public class WebUI implements UIRenderer {
   private Composite pageParent;
   private Composite uiParent;
   private Button backButton;
+  private Label title;
   private Listener backButtonSelectionListener;
   private ToolBar pageSwitcher;
   private Menu pageSwitcherMenu;
@@ -62,7 +65,7 @@ public class WebUI implements UIRenderer {
     createPageParent();
     createBackButton();
     createPageSwitcher();
-    createSeparator();
+    createTitle();
     createActionsBar();
   }
 
@@ -183,13 +186,15 @@ public class WebUI implements UIRenderer {
     pageSwitcherDropDown.addListener( SWT.Selection, new PageSwitcherSelectionListener() );
     pageSwitcherMenu = new Menu( uiParent.getShell(), SWT.POP_UP );
     pageSwitcherMenu.setData( RWT.CUSTOM_VARIANT, CUSTOM_VARIANT_TABRIS_UI );
+    // Hide page switcher for now
+    pageSwitcher.setVisible( false );
   }
 
-  private void createSeparator() {
-    Composite separator = new Composite( uiParent, SWT.NONE );
+  private void createTitle() {
+    title = new Label( uiParent, SWT.CENTER );
+    title.setData( RWT.CUSTOM_VARIANT, TITLE_CUSTOM_VARIANT );
     GridData layoutData = new GridData( GridData.FILL, GridData.CENTER, true, false );
-    layoutData.heightHint = 1;
-    separator.setLayoutData( layoutData );
+    title.setLayoutData( layoutData );
   }
 
   private void createActionsBar() {
@@ -249,6 +254,10 @@ public class WebUI implements UIRenderer {
   void updatePageSwitcher( PageDescriptor descriptor, String title ) {
     updateMenuItems( descriptor, title );
     updateToolItems( descriptor, title );
+  }
+
+  void setTtitle( String title ) {
+    this.title.setText( title == null ? "" : title );
   }
 
   private void updateMenuItems( PageDescriptor descriptor, String title ) {

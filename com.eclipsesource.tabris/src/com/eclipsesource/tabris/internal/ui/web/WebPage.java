@@ -113,6 +113,7 @@ public class WebPage implements PageRenderer {
   public void setTitle( String title ) {
     this.title = title;
     setBrowserTitle();
+    uiRenderer.setTtitle( title );
     uiRenderer.updatePageSwitcher( descriptor, title );
   }
 
@@ -171,6 +172,7 @@ public class WebPage implements PageRenderer {
 
   void pageActivated() {
     setBrowserTitle();
+    uiRenderer.setTtitle( title );
   }
 
   private void setBrowserTitle() {

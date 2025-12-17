@@ -91,3 +91,7 @@ Button[PUSH].tabrisUI_back:disabled {
 Button-FocusIndicator[PUSH].tabrisUI, Button-FocusIndicator[PUSH].tabrisUI_back {
   border: none;
 }
+
+Label.tabrisUI_title {
+  color: #ffffff;
+}
