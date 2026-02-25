@@ -180,7 +180,10 @@ public class WebUI implements UIRenderer {
   private void createPageSwitcher() {
     pageSwitcher = new ToolBar( uiParent, SWT.NONE );
     pageSwitcher.setData( RWT.CUSTOM_VARIANT, CUSTOM_VARIANT_TABRIS_UI );
-    pageSwitcher.setLayoutData( new GridData( GridData.FILL, GridData.CENTER, false, false ) );
+    GridData layoutData = new GridData( GridData.FILL, GridData.CENTER, false, false );
+    // Exclude page switcher for now from the layout
+    layoutData.exclude = true;
+    pageSwitcher.setLayoutData( layoutData );
     ToolItem pageSwitcherDropDown = new ToolItem( pageSwitcher, SWT.DROP_DOWN );
     pageSwitcherDropDown.setData( RWT.CUSTOM_VARIANT, CUSTOM_VARIANT_TABRIS_UI );
     pageSwitcherDropDown.addListener( SWT.Selection, new PageSwitcherSelectionListener() );
