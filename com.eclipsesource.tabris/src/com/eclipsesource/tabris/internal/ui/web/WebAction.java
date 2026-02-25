@@ -16,6 +16,7 @@ import static com.eclipsesource.tabris.internal.ui.ImageUtil.getImage;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -51,7 +52,11 @@ public class WebAction implements ActionRenderer {
       control.setEnabled( descriptor.isEnabled() );
       control.setVisible( descriptor.isVisible() );
       control.setToolTipText( descriptor.getTitle() );
-      control.setImage( getImage( control.getDisplay(), descriptor.getImage() ) );
+      Image image = getImage( control.getDisplay(), descriptor.getImage() );
+      control.setImage( image );
+      if( image == null ) {
+        control.setText( descriptor.getTitle() );
+      }
       control.addListener( SWT.Selection, new ActionSelectionListener() );
     }
   }
