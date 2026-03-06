@@ -53,9 +53,10 @@ public class WebAction implements ActionRenderer {
       control.setVisible( descriptor.isVisible() );
       control.setToolTipText( descriptor.getTitle() );
       Image image = getImage( control.getDisplay(), descriptor.getImage() );
+      String title = descriptor.getTitle();
       control.setImage( image );
-      if( image == null ) {
-        control.setText( descriptor.getTitle() );
+      if( image == null && title != null ) {
+        control.setText( title );
       }
       control.addListener( SWT.Selection, new ActionSelectionListener() );
     }

@@ -142,7 +142,7 @@ public class WebPageTest {
 
     webPage.setTitle( "foo \"" );
 
-    verify( javaScriptExecutor ).execute( eq( "document.title = \"foo &quot;\";" ) );
+    verify( javaScriptExecutor ).execute( eq( "document.title = \"foo \\\"\";" ) );
   }
 
   @Test
@@ -171,7 +171,7 @@ public class WebPageTest {
 
   @Test
   public void testUpdateCreatesNewActionsCallsActionCreateUi() {
-    List<ActionDescriptor> actions = new ArrayList<ActionDescriptor>();
+    List<ActionDescriptor> actions = new ArrayList<>();
     actions.add( new ActionDescriptor( "actionFoo", new TestAction() ) );
     when( descriptor.getActions() ).thenReturn( actions );
     webPage.createActions( WebRendererFactory.getInstance(), shell );
@@ -186,7 +186,7 @@ public class WebPageTest {
 
   @Test
   public void testUpdateDestroysOldActionsIfDeleted() {
-    List<ActionDescriptor> actions = new ArrayList<ActionDescriptor>();
+    List<ActionDescriptor> actions = new ArrayList<>();
     actions.add( new ActionDescriptor( "actionFoo", new TestAction() ) );
     actions.add( new ActionDescriptor( "actionFoo2", new TestAction() ) );
     when( descriptor.getActions() ).thenReturn( actions );
@@ -207,7 +207,7 @@ public class WebPageTest {
     when( descriptor.getTitle() ).thenReturn( "bar" );
     doReturn( Boolean.TRUE ).when( descriptor ).isTopLevel();
     when( descriptor.getPageStyle() ).thenReturn( new PageStyle[] { PageStyle.DEFAULT } );
-    List<ActionDescriptor> actions = new ArrayList<ActionDescriptor>();
+    List<ActionDescriptor> actions = new ArrayList<>();
     actions.add( new ActionDescriptor( "actionFoo", new TestAction() ) );
     when( descriptor.getActions() ).thenReturn( actions );
     when( descriptor.getImage() ).thenReturn( UITestUtil.getImageBytes() );
