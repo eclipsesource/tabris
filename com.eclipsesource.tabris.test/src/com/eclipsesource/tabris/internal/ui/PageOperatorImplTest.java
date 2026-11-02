@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 EclipseSource and others.
+ * Copyright (c) 2013, 2026 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -72,7 +72,7 @@ public class PageOperatorImplTest {
   public void testGetsCurrentPage() {
     Controller controller = mock( Controller.class );
     when( controller.getCurrentPage() ).thenReturn( mock( Page.class ) );
-    UIImpl ui = new UIImpl( display, controller, mock( UIConfiguration.class ) );
+    UIImpl ui = new UIImpl( display, null, controller, mock( UIConfiguration.class ) );
 
     ui.markInitialized();
     ui.getPageOperator().getCurrentPage();
@@ -84,7 +84,7 @@ public class PageOperatorImplTest {
   public void testGetsCurrentPageId() {
     Controller controller = mock( Controller.class );
     when( controller.getCurrentPageId() ).thenReturn( "foo" );
-    UIImpl ui = new UIImpl( display, controller, mock( UIConfiguration.class ) );
+    UIImpl ui = new UIImpl( display, null, controller, mock( UIConfiguration.class ) );
 
     ui.markInitialized();
     String id = ui.getPageOperator().getCurrentPageId();
@@ -96,7 +96,7 @@ public class PageOperatorImplTest {
   public void testGetsPagePageData() {
     Controller controller = mock( Controller.class );
     when( controller.getCurrentData() ).thenReturn( mock( PageData.class ) );
-    UIImpl ui = new UIImpl( display, controller, mock( UIConfiguration.class ) );
+    UIImpl ui = new UIImpl( display, null, controller, mock( UIConfiguration.class ) );
 
     ui.markInitialized();
     PageData data = ui.getPageOperator().getCurrentPageData();
@@ -108,7 +108,7 @@ public class PageOperatorImplTest {
   @Test
   public void testClosesCurrentPage() {
     Controller controller = mock( Controller.class );
-    UIImpl ui = new UIImpl( display, controller, mock( UIConfiguration.class ) );
+    UIImpl ui = new UIImpl( display, null, controller, mock( UIConfiguration.class ) );
     doReturn( Boolean.TRUE ).when( controller ).closeCurrentPage( ui );
 
     ui.markInitialized();
@@ -127,7 +127,7 @@ public class PageOperatorImplTest {
     doReturn( Boolean.TRUE ).when( page ).isTopLevel();
     contentHolder.add( page );
     when( configuration.getAdapter( UIDescriptor.class ) ).thenReturn( contentHolder );
-    UIImpl ui = new UIImpl( display, controller, configuration );
+    UIImpl ui = new UIImpl( display, null, controller, configuration );
     ui.markInitialized();
     ui.getPageOperator().openPage( "foo" );
 
@@ -138,7 +138,7 @@ public class PageOperatorImplTest {
     public void testOpenPageFailsWithNonExistingPage() {
       UIConfiguration configuration = mock( UIConfiguration.class );
       when( configuration.getAdapter( UIDescriptor.class ) ).thenReturn( mock( UIDescriptor.class ) );
-      UIImpl ui = new UIImpl( display, controller, configuration );
+      UIImpl ui = new UIImpl( display, null, controller, configuration );
       ui.markInitialized();
 
       ui.getPageOperator().openPage( "foo" );
@@ -154,7 +154,7 @@ public class PageOperatorImplTest {
     doReturn( Boolean.TRUE ).when( page ).isTopLevel();
     contentHolder.add( page );
     when( configuration.getAdapter( UIDescriptor.class ) ).thenReturn( contentHolder );
-    UIImpl ui = new UIImpl( display, controller, configuration );
+    UIImpl ui = new UIImpl( display, null, controller, configuration );
 
     ui.markInitialized();
     ui.getPageOperator().openPage( "foo" );
@@ -172,7 +172,7 @@ public class PageOperatorImplTest {
     doReturn( Boolean.TRUE ).when( page ).isTopLevel();
     contentHolder.add( page );
     when( configuration.getAdapter( UIDescriptor.class ) ).thenReturn( contentHolder );
-    UIImpl ui = new UIImpl( display, controller, configuration );
+    UIImpl ui = new UIImpl( display, null, controller, configuration );
     ui.markInitialized();
 
     ui.getPageOperator().openPage( "foo", null );
@@ -188,7 +188,7 @@ public class PageOperatorImplTest {
     doReturn( Boolean.TRUE ).when( page ).isTopLevel();
     contentHolder.add( page );
     when( configuration.getAdapter( UIDescriptor.class ) ).thenReturn( contentHolder );
-    UIImpl ui = new UIImpl( display, controller, configuration );
+    UIImpl ui = new UIImpl( display, null, controller, configuration );
     ui.markInitialized();
     PageData data = mock( PageData.class );
 
@@ -201,7 +201,7 @@ public class PageOperatorImplTest {
   public void testShowsPageWithController() {
     Controller controller = mock( Controller.class );
     UIConfiguration configuration = mock( UIConfiguration.class );
-    UIImpl ui = new UIImpl( display, controller, configuration );
+    UIImpl ui = new UIImpl( display, null, controller, configuration );
     UIDescriptor contentHolder = new UIDescriptor();
     PageDescriptor page = mock( PageDescriptor.class );
     when( page.getId() ).thenReturn( "foo" );
@@ -219,7 +219,7 @@ public class PageOperatorImplTest {
   public void testShowsPageFailsWithNullPageData() {
     Controller controller = mock( Controller.class );
     UIConfiguration configuration = mock( UIConfiguration.class );
-    UIImpl ui = new UIImpl( display, controller, configuration );
+    UIImpl ui = new UIImpl( display, null, controller, configuration );
     UIDescriptor contentHolder = new UIDescriptor();
     PageDescriptor page = mock( PageDescriptor.class );
     when( page.getId() ).thenReturn( "foo" );
@@ -235,7 +235,7 @@ public class PageOperatorImplTest {
   public void testShowsPageWithControllerAndPageData() {
     Controller controller = mock( Controller.class );
     UIConfiguration configuration = mock( UIConfiguration.class );
-    UIImpl ui = new UIImpl( display, controller, configuration );
+    UIImpl ui = new UIImpl( display, null, controller, configuration );
     UIDescriptor contentHolder = new UIDescriptor();
     PageDescriptor page = mock( PageDescriptor.class );
     when( page.getId() ).thenReturn( "foo" );
@@ -254,7 +254,7 @@ public class PageOperatorImplTest {
     public void testSetCurrentPageTitleFailsWithNullTitle() {
       Controller controller = mock( Controller.class );
       when( controller.getCurrentPage() ).thenReturn( mock( Page.class ) );
-      UIImpl ui = new UIImpl( display, controller, mock( UIConfiguration.class ) );
+      UIImpl ui = new UIImpl( display, null, controller, mock( UIConfiguration.class ) );
       ui.markInitialized();
 
       ui.getPageOperator().setCurrentPageTitle( null );
@@ -265,7 +265,7 @@ public class PageOperatorImplTest {
       Controller controller = mock( Controller.class );
       Page page = mock( Page.class );
       when( controller.getCurrentPage() ).thenReturn( page );
-      UIImpl ui = new UIImpl( display, controller, mock( UIConfiguration.class ) );
+      UIImpl ui = new UIImpl( display, null, controller, mock( UIConfiguration.class ) );
       ui.markInitialized();
 
       ui.getPageOperator().setCurrentPageTitle( "foo" );

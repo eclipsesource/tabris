@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 EclipseSource and others.
+ * Copyright (c) 2013, 2026 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ import static com.eclipsesource.tabris.internal.Clauses.whenNull;
 
 import java.io.Serializable;
 
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 
 import com.eclipsesource.tabris.ui.Action;
@@ -33,14 +34,20 @@ public class UIImpl implements UI, Serializable {
   private final UIConfiguration configuration;
   private final ActionOperatorImpl actionOperator;
   private final PageOperatorImpl pageOperator;
+  private final Button backNavigationButton;
   private boolean initialized;
 
-  public UIImpl( Display display, Controller controller, UIConfiguration configuration ) {
+  public UIImpl( Display display,
+                 Button backNavigationButton,
+                 Controller controller,
+                 UIConfiguration configuration )
+  {
     this.controller = controller;
     whenNull( display ).throwIllegalArgument( "Display must not be null" );
     whenNull( controller ).throwIllegalArgument( "Controller must not be null" );
     whenNull( configuration ).throwIllegalArgument( "Configuration must not be null" );
     this.display = display;
+    this.backNavigationButton = backNavigationButton;
     this.configuration = configuration;
     this.actionOperator = new ActionOperatorImpl( controller );
     this.pageOperator = new PageOperatorImpl( controller, this );
@@ -49,6 +56,11 @@ public class UIImpl implements UI, Serializable {
   @Override
   public Display getDisplay() {
     return display;
+  }
+
+  @Override
+  public Button getBackNavigationButton() {
+    return backNavigationButton;
   }
 
   @Override
@@ -87,4 +99,5 @@ public class UIImpl implements UI, Serializable {
   public void markInitialized() {
     initialized = true;
   }
+
 }

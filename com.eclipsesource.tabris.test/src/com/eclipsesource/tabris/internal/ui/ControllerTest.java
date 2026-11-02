@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 EclipseSource and others.
+ * Copyright (c) 2013, 2026 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -232,7 +232,7 @@ public class ControllerTest {
     when( remoteUI.getActionsParent() ).thenReturn( shell );
     Controller controller = new Controller( remoteUI, uiDescriptor );
     controller.createGlobalActions( ui );
-    when( uiDescriptor.getGlobalActions() ).thenReturn( new ArrayList<ActionDescriptor>() );
+    when( uiDescriptor.getGlobalActions() ).thenReturn( new ArrayList<>() );
     UIConfiguration configuration = mock( UIConfiguration.class );
     when( configuration.getAdapter( UIDescriptor.class ) ).thenReturn( uiDescriptor );
 
@@ -572,7 +572,7 @@ public class ControllerTest {
   public void testShowPreviousCreatesActionsBeforeActive() {
     ActionDescriptor descriptor = mock( ActionDescriptor.class );
     PageDescriptor rootPage = createRootPage( "foo" );
-    List<ActionDescriptor> actions = new ArrayList<ActionDescriptor>();
+    List<ActionDescriptor> actions = new ArrayList<>();
     actions.add( descriptor );
     when( rootPage.getActions() ).thenReturn( actions );
     RendererFactory factory = spy( RemoteRendererFactory.getInstance() );
@@ -596,7 +596,7 @@ public class ControllerTest {
   public void testShowPageCreatesActionsBeforeActive() {
     ActionDescriptor descriptor = mock( ActionDescriptor.class );
     createRootPage( "foo" );
-    List<ActionDescriptor> actions = new ArrayList<ActionDescriptor>();
+    List<ActionDescriptor> actions = new ArrayList<>();
     actions.add( descriptor );
     RendererFactory factory = spy( RemoteRendererFactory.getInstance() );
     when( uiDescriptor.getRendererFactory() ).thenReturn( factory );
@@ -618,7 +618,7 @@ public class ControllerTest {
   public void testShowRootCreatesActionsBeforeActive() {
     ActionDescriptor descriptor = mock( ActionDescriptor.class );
     PageDescriptor rootPage = createRootPage( "foo" );
-    List<ActionDescriptor> actions = new ArrayList<ActionDescriptor>();
+    List<ActionDescriptor> actions = new ArrayList<>();
     actions.add( descriptor );
     RendererFactory factory = spy( RemoteRendererFactory.getInstance() );
     when( uiDescriptor.getRendererFactory() ).thenReturn( factory );
@@ -926,7 +926,7 @@ public class ControllerTest {
     ActionDescriptor descriptor = mock( ActionDescriptor.class );
     when( descriptor.getId() ).thenReturn( "foo" );
     PageDescriptor rootPage = createRootPage( "foo" );
-    List<ActionDescriptor> actions = new ArrayList<ActionDescriptor>();
+    List<ActionDescriptor> actions = new ArrayList<>();
     actions.add( descriptor );
     when( rootPage.getActions() ).thenReturn( actions );
     uiDescriptor.add( descriptor );
@@ -945,7 +945,7 @@ public class ControllerTest {
     ActionDescriptor descriptor = mock( ActionDescriptor.class );
     when( descriptor.getId() ).thenReturn( "foo" );
     PageDescriptor rootPage = createRootPage( "foo" );
-    List<ActionDescriptor> actions = new ArrayList<ActionDescriptor>();
+    List<ActionDescriptor> actions = new ArrayList<>();
     actions.add( descriptor );
     when( rootPage.getActions() ).thenReturn( actions );
     uiDescriptor.add( descriptor );
@@ -1016,7 +1016,7 @@ public class ControllerTest {
     PageConfiguration pageConfiguration = new PageConfiguration( "foo", TestPage.class ).setTopLevel( true );
     configuration.addPageConfiguration( pageConfiguration );
     Controller controller = new Controller( new RemoteUI( shell ), configuration.getAdapter( UIDescriptor.class ) );
-    UIImpl ui = new UIImpl( shell.getDisplay(), controller, configuration );
+    UIImpl ui = new UIImpl( shell.getDisplay(), null, controller, configuration );
     controller.setUI( ui );
     controller.createRootPages( ui );
 
@@ -1033,7 +1033,7 @@ public class ControllerTest {
     configuration.addPageConfiguration( pageConfiguration );
     configuration.addPageConfiguration( pageConfiguration2 );
     Controller controller = new Controller( new RemoteUI( shell ), configuration.getAdapter( UIDescriptor.class ) );
-    UIImpl ui = new UIImpl( shell.getDisplay(), controller, configuration );
+    UIImpl ui = new UIImpl( shell.getDisplay(), null, controller, configuration );
     controller.setUI( ui );
     controller.createRootPages( ui );
     PageRenderer page = controller.showPage( ui, pageConfiguration2.getAdapter( PageDescriptor.class ), new PageData() );
@@ -1052,7 +1052,7 @@ public class ControllerTest {
     configuration.addActionConfiguration( actionConfiguration );
     UIDescriptor uiDescriptor = configuration.getAdapter( UIDescriptor.class );
     Controller controller = new Controller( new RemoteUI( shell ), uiDescriptor );
-    UIImpl ui = new UIImpl( shell.getDisplay(), controller, configuration );
+    UIImpl ui = new UIImpl( shell.getDisplay(), null, controller, configuration );
     controller.setUI( ui );
     controller.createRootPages( ui );
     controller.createGlobalActions( ui );
@@ -1073,7 +1073,7 @@ public class ControllerTest {
     pageConfiguration2.addActionConfiguration( actionConfiguration );
     UIDescriptor uiDescriptor = configuration.getAdapter( UIDescriptor.class );
     Controller controller = new Controller( new RemoteUI( shell ), uiDescriptor );
-    UIImpl ui = new UIImpl( shell.getDisplay(), controller, configuration );
+    UIImpl ui = new UIImpl( shell.getDisplay(), null, controller, configuration );
     controller.setUI( ui );
     controller.createRootPages( ui );
     controller.createGlobalActions( ui );
@@ -1092,7 +1092,7 @@ public class ControllerTest {
     configuration.addPageConfiguration( pageConfiguration );
     UIDescriptor uiDescriptor = configuration.getAdapter( UIDescriptor.class );
     Controller controller = new Controller( new RemoteUI( shell ), uiDescriptor );
-    UIImpl ui = new UIImpl( shell.getDisplay(), controller, configuration );
+    UIImpl ui = new UIImpl( shell.getDisplay(), null, controller, configuration );
     controller.setUI( ui );
     controller.createRootPages( ui );
     controller.createGlobalActions( ui );
@@ -1109,7 +1109,7 @@ public class ControllerTest {
     configuration.addPageConfiguration( pageConfiguration );
     UIDescriptor uiDescriptor = configuration.getAdapter( UIDescriptor.class );
     Controller controller = new Controller( new RemoteUI( shell ), uiDescriptor );
-    UIImpl ui = new UIImpl( shell.getDisplay(), controller, configuration );
+    UIImpl ui = new UIImpl( shell.getDisplay(), null, controller, configuration );
     controller.setUI( ui );
     controller.createRootPages( ui );
     controller.createGlobalActions( ui );

@@ -95,7 +95,7 @@ public class TabrisUI implements Serializable {
   }
 
   private UIImpl prepareUi( Display display, UIRenderer uiRenderer, UIConfiguration configuration, Controller controller ) {
-    UIImpl ui = new UIImpl( display, controller, configuration );
+    UIImpl ui = new UIImpl( display, uiRenderer.getBackNavigationButton(), controller, configuration );
     uiRenderer.setUi( ui );
     uiRenderer.setController( controller );
     return ui;

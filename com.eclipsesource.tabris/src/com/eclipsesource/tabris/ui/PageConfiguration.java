@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 EclipseSource and others.
+ * Copyright (c) 2013, 2026 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -53,6 +53,7 @@ public class PageConfiguration implements Adaptable, Serializable {
   private String title;
   private PageStyle[] style;
   private boolean topLevel;
+  private boolean backNavigationEnabled;
   private byte[] image;
 
   /**
@@ -75,6 +76,7 @@ public class PageConfiguration implements Adaptable, Serializable {
     this.pageType = pageType;
     this.title = "";
     this.topLevel = false;
+    this.backNavigationEnabled = true;
     this.style = new PageStyle[] {};
     this.actions = new ArrayList<ActionConfiguration>();
   }
@@ -109,6 +111,26 @@ public class PageConfiguration implements Adaptable, Serializable {
    */
   public boolean isTopLevel() {
     return topLevel;
+  }
+
+  /**
+   * <p>
+   * Control the enablement of the page back navigation. Default is true.
+   * </p>
+   */
+  public PageConfiguration setBackNavigationEnabled( boolean enabled ) {
+    backNavigationEnabled = enabled;
+    return this;
+  }
+
+  /**
+   * <p>
+   * Returns if the back navigation for this page is enabled.
+   * </p>
+   *
+   */
+  public boolean isBackNavigationEnabled() {
+    return backNavigationEnabled;
   }
 
   /**

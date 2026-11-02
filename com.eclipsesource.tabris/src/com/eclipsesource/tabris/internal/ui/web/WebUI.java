@@ -38,6 +38,8 @@ import com.eclipsesource.tabris.internal.ui.Controller;
 import com.eclipsesource.tabris.internal.ui.PageDescriptor;
 import com.eclipsesource.tabris.internal.ui.rendering.PageRenderer;
 import com.eclipsesource.tabris.internal.ui.rendering.UIRenderer;
+import com.eclipsesource.tabris.ui.PageConfiguration;
+import com.eclipsesource.tabris.ui.PageOperator;
 import com.eclipsesource.tabris.ui.UI;
 
 public class WebUI implements UIRenderer {
@@ -109,6 +111,11 @@ public class WebUI implements UIRenderer {
   @Override
   public Composite getActionsParent() {
     return actionsBar;
+  }
+
+  @Override
+  public Button getBackNavigationButton() {
+    return backButton;
   }
 
   void pageCreated( WebPage page ) {
@@ -284,7 +291,11 @@ public class WebUI implements UIRenderer {
 
     @Override
     public void handleEvent( Event event ) {
-      ui.getPageOperator().closeCurrentPage();
+      PageOperator pageOperator = ui.getPageOperator();
+      PageConfiguration pageConfiguration = ui.getPageConfiguration( pageOperator.getCurrentPage() );
+      if( pageConfiguration.isBackNavigationEnabled() ) {
+        pageOperator.closeCurrentPage();
+      }
     }
   }
 

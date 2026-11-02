@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 EclipseSource and others.
+ * Copyright (c) 2013, 2026 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -54,7 +54,7 @@ public class TabrisUIIntegrationTest {
       .addActionConfiguration( actionConfiguration ) );
     RemoteUI remoteUI = new RemoteUI( shell );
     Controller controller = new Controller( remoteUI, configuration.getAdapter( UIDescriptor.class ) );
-    UIImpl ui = new UIImpl( shell.getDisplay(), controller, configuration );
+    UIImpl ui = new UIImpl( shell.getDisplay(), null, controller, configuration );
     remoteUI.setController( controller );
     remoteUI.setUi( ui );
     ui.markInitialized();

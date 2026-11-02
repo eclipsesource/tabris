@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 EclipseSource and others.
+ * Copyright (c) 2013, 2026 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -43,6 +44,7 @@ import org.junit.Test;
 
 import com.eclipsesource.tabris.internal.ui.PageDescriptor;
 import com.eclipsesource.tabris.test.util.TabrisEnvironment;
+import com.eclipsesource.tabris.ui.PageConfiguration;
 import com.eclipsesource.tabris.ui.PageOperator;
 import com.eclipsesource.tabris.ui.UI;
 
@@ -212,7 +214,10 @@ public class WebUITest {
   public void testBackButtonSelection_callsCloseCurrentPage() {
     UI ui = mock( UI.class );
     PageOperator pageOperator = mock( PageOperator.class );
+    PageConfiguration pageConfiguration = mock( PageConfiguration.class );
+    doReturn( Boolean.TRUE ).when( pageConfiguration ).isBackNavigationEnabled();
     when( ui.getPageOperator() ).thenReturn( pageOperator );
+    when( ui.getPageConfiguration( any() ) ).thenReturn( pageConfiguration );
     webUI.setUi( ui );
     webUI.pageCreated( createWebPage( true ) );
     WebPage page = createWebPage( false );
